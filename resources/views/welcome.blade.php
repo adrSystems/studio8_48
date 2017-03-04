@@ -48,11 +48,14 @@ Main
       padding: 0px 15px 15px 15px;
       box-shadow: 0 1px 10px 3px #000;
       top: 100px;
+      opacity: 0;
       color: white;
+      -webkit-transform: scale(.7);
+      -webkit-transition: -webkit-transform .5s, opacity .4s;
     }
     .close-btn{
       background: linear-gradient(to bottom, #eee,#999);
-      padding: 0 8px 2px 8px;
+      padding: 5px 5px 0px 5px;
       border-radius: 100%;
       color: #444;
       position: absolute;
@@ -64,6 +67,9 @@ Main
       border-left-color: #fff;
       border-bottom-color: #666;
       cursor: pointer;
+    }
+    .close-btn > i{
+      font-size: 16px;
     }
     .white-btn1{
       background-color: rgba(0,0,0,0);
@@ -94,7 +100,6 @@ Main
     #advice-container{
       position:fixed;
       z-index:1;
-      display: none;
     }
 </style>
 @endsection
@@ -104,7 +109,9 @@ Main
 @if(!Auth::check())
 <div class="col-xs-12" id="advice-container">
   <div class="col-xs-12 col-sm-4 col-md-3 login-advice">
-    <div class="close-btn">x</div>
+    <div class="close-btn">
+      <i class="material-icons">close</i>
+    </div>
     <h3 style="font-family: Cookie;color:#C5B358;">No haz iniciado sesión.</h3>
     <p>
       Inicia sesión o crea una cuenta para poder
@@ -169,10 +176,11 @@ Main
 @section('js')
 <script type="text/javascript">
   $(document).ready(function() {
-
-    $('#advice-container').fadeIn(3000);
+    $('.login-advice').css('opacity',1);
+    $('.login-advice').css('-webkit-transform','scale(1)');
 
     $('.close-btn').click(function () {
+      $(this).parent().css('-webkit-transform','scale(.7)');
       $(this).parent().parent().fadeOut(400,function () {
         this.remove();
       });

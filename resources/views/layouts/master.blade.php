@@ -162,7 +162,7 @@
               padding: 0 20px 0 20px;
               border-left: 1px solid #333;
               height: 100%;
-              line-height: 56px;
+              line-height: 61px;
               font-family: Cookie;
               font-size: 18px;
               border-bottom: 1px solid transparent;
@@ -181,6 +181,38 @@
               color: white;
               text-decoration: none;
             }
+            .user-photo{
+              height: 90%;
+              border-radius: 100%;
+              width: auto;
+              margin-top: -17px;
+              display: none;
+            }
+            #user-options{
+              cursor: pointer;
+              color: #ddd;
+              margin-top: 10px;
+              -webkit-transition: color .5s, text-shadow .4s;
+            }
+            #user-options:hover{
+              color: #fff;
+              text-shadow: 0px 0px 5px #fff;
+            }
+            #nav-user-info{
+              float: right;
+              height: 100%;
+              padding: 10px 10px 10px 15px;
+              border-left: 1px solid #333;
+            }
+            #user-menu{
+              position: fixed;
+              right: 8px;
+              background: #111;
+              top: 68px;
+              padding: 10px;
+              border-radius: 3px;
+              box-shadow: 0px 1px 3px #000;
+            }
         </style>
         @yield('css')
     </head>
@@ -198,12 +230,23 @@
             <a href="" class="nav-item">Portafolio</a>
             @if(!Auth::check())
             <a href="/login" id="nav-login">Login</a>
+            @else
+            <div href="#" id="nav-user-info">
+              @if(Auth::user()->photo)
+              <img class="user-photo" src="{{asset('img/profile_photos/'.Auth::user()->photo)}}" alt="">
+              @else
+              <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              @endif
+              <i class="material-icons" id="user-options">keyboard_arrow_down</i>
+            </div>
             @endif
         </nav>
+
         <div class="menu">
           <h4 id="menu-title">Menú</h4>
           <i class="material-icons" id="hide-menu-btn">keyboard_arrow_left</i>
         </div>
+
         @yield('body')
 
         <div class="footer">
@@ -246,6 +289,8 @@
                 }
 
                 $('.nav-item').css('opacity',1);
+
+                $('.user-photo').slideDown("slow");
 
                 $(window).resize(function () {
                   if($(this).width() < 576){
