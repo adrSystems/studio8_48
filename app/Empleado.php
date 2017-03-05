@@ -11,4 +11,7 @@ class Empleado extends Model
     public function cuenta(){
       return $this->morphOne('App\User','cuentable');
     }
+    public function roles(){
+      return $this->belongsToMany('App\Rol');
+    }
 }
