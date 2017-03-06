@@ -12,13 +12,14 @@
 */
 
 Route::get('/', function () {
-    //$user = new App\User;
-    //$user->email='lacr@gmail.com';
-    //$user->password = '123';
-    //$user->active = 1;
-    //$user->fb = 0;
-    //$user->cuentable_id=1;
-    //$user->cuentable_type='App\Cliente';
-    //Auth::login($user);
+
+    $cuenta = App\User::find(2);
+    Auth::login($cuenta);
+
     return view('welcome');
+});
+
+Route::get('/logout',function (){
+  Auth::logout();
+  return redirect('/');
 });
