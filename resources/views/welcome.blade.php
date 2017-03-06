@@ -6,13 +6,14 @@ Main
 
 @section('css')
 <style>
-    .main-cover{
-
-    }
     .card{
       font-family: Cookie;
-      box-shadow: 0 0 10px 0 #555;
+      box-shadow: 0 0 10px 0 #000;
       overflow: hidden;
+      -webkit-transition: box-shadow .4s;
+    }
+    .card:hover{
+      box-shadow: 0 0 10px 0 #333;
     }
     .card > h3{
       position: absolute;

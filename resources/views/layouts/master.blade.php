@@ -48,8 +48,8 @@
                 color: #ed5;
                 font-size: 16px;
                 padding: 0 20px 0 20px;
-                height: 98%;
-                -webkit-transition: color .4s, opacity .7s;
+                border-bottom: 1px solid transparent;
+                -webkit-transition: color .4s, opacity .7s, border-bottom 1s;
                 line-height: 56px;
             }
             a.nav-item>p{
@@ -57,6 +57,7 @@
             }
             .nav-item:hover{
                 color: #fff;
+                border-bottom: 1px solid #fff;
             }
             a.nav-item:link{
                 text-decoration: none;
@@ -109,7 +110,7 @@
               color: #aaa;
             }
             .menu{
-              background-color: #000;
+              background-color: rgba(0,0,0,.9);
               box-shadow: 0 0 10px 1px #000;
               border-right: 1px solid #222;
               position: fixed;
@@ -118,6 +119,15 @@
               left: -200px;
               z-index: 4;
               -webkit-transition: left .7s, margin-left .7s;
+            }
+            .menu>div{
+              height: 100%;
+              width: 100%;
+              padding-bottom: 100px;
+              overflow: auto;
+            }
+            .menu>div::-webkit-scrollbar{
+              display: none;
             }
             #menu-title{
               font-family: Cookie;
@@ -205,7 +215,7 @@
               float: right;
               height: 100%;
               padding: 10px 10px 10px 15px;
-              border-left: 1px solid #333;
+              border-left: 1px solid rgba(255,255,255,.1);
             }
             #user-menu{
               position: fixed;
@@ -217,6 +227,8 @@
               box-shadow: 0px 1px 3px #000;
               display: none;
               overflow: hidden;
+              z-index: 2;
+              border: 1px solid #222;
             }
             #user-menu>p{
               color: #ccc;
@@ -243,8 +255,11 @@
             .down{
               -webkit-transform: rotate(0deg);
             }
-            .nav-dropdown{
-              background: rgba(0,0,0,.2);
+            .nav-dropdown:hover{
+              border-bottom: 0px solid transparent;
+            }
+            .nav-dropdown>p{
+              float: left;
             }
             .nav-item-menu-btn{
               position: absolute;
@@ -273,6 +288,57 @@
             .nav-dropdown-child>a:hover{
               background-color: rgba(255,255,255,.1);
               padding-left: 20px;
+            }
+            .menu-item{
+              font-weight: 100;
+              font-family: 'Lobster Two';
+              padding: 0px 20px 0px 20px;
+              font-size: 16px;
+              color: #ed5;
+              -webkit-transition: color .4s, opacity .7s, text-shadow .5s;
+              width:100%;
+              display:initial;
+              text-decoration: none;
+              margin:0;
+              float:left;
+              height: 50px;
+              cursor: pointer;
+            }
+            .menu-item:hover{
+              color: white;
+              text-shadow: 0 0 5px #ccc;
+              text-decoration: none;
+            }
+            .menu-item>p{
+              float: left;
+              margin-top: 12px;
+            }
+            .menu-item>i{
+              margin-top: 14px;
+            }
+            .menu-item-parent > i{
+              -webkit-transition: -webkit-transform .4s;
+            }
+            .menu-item-children{
+              float: left;
+              width: 100%;
+              font-family: 'Lobster Two';
+              padding: 3px 20px 3px 30px;
+              color: #ccc;
+              display: none;
+              text-decoration: none;
+            }
+            .menu-item-children:hover{
+              color: white;
+              text-decoration: none;
+            }
+            .menu-item-children:link{
+              color: white;
+              text-decoration: none;
+            }
+            .menu-item-children:visited{
+              color: white;
+              text-decoration: none;
             }
         </style>
         @yield('css')
@@ -309,22 +375,53 @@
             @endif
         </nav>
 
+        @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
         <div class="nav-dropdown-child" id="1">
           <a href="#">Inventario</a>
           <a href="#">Citas</a>
           <a href="#">Gestion de productos</a>
+          <a href="#">Gestion de servicios</a>
+          <a href="#">Clientes</a>
+          <a href="#">Personal</a>
+          <a href="#">Gestión de Tips</a>
+          <a href="#">Promociones y concursos</a>
+          <a href="#">Portafolio</a>
         </div>
+        @endif
 
         <div class="menu">
           <h4 id="menu-title">Menú</h4>
           <i class="material-icons" id="hide-menu-btn">keyboard_arrow_left</i>
+          <div class="">
+            <a href="" class="menu-item"><p>Nosotros</p></a>
+            <a href="" class="menu-item"><p>Contacto</p></a>
+            <a href="" class="menu-item"><p>Productos</p></a>
+            <a href="" class="menu-item"><p>Servicios</p></a>
+            <a href="" class="menu-item"><p>Promociones y concursos</p></a>
+            <a href="" class="menu-item"><p>Tips</p></a>
+            <a href="" class="menu-item"><p>Portafolio</p></a>
+            @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
+            <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
+            <a href="#" class="menu-item-children" id="1">Inventario</a>
+            <a href="#" class="menu-item-children" id="1">Citas</a>
+            <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
+            <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
+            <a href="#" class="menu-item-children" id="1">Clientes</a>
+            <a href="#" class="menu-item-children" id="1">Personal</a>
+            <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
+            <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>
+            <a href="#" class="menu-item-children" id="1">Portafolio</a>
+            @endif
+          </div>
         </div>
 
         @if(Auth::check())
         <div class="" id="user-menu">
           <p>{{Auth::user()->cuentable->nombre}}<br>{{Auth::user()->email}}</p>
           <a href="#">Mi cuenta</a>
+          @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
           <a href="#">Mi historial</a>
+          @endif
           <a href="/logout" id="logout-btn">Salir</a>
         </div>
         @endif
@@ -349,25 +446,11 @@
 
                 if($(this).width() < 576){
                   $('.menu-btn').css('display','initial');
-                  $('.menu').append($('.nav-item'));
-                  $('.nav-item').css({
-                    'width':'100%',
-                    'display':'initial',
-                    'margin':'0',
-                    float:'left',
-                    'height':'50px'
-                  });
+                  $('.nav-item').hide();
                 }
                 else{
                   $('.menu-btn').css('display','none');
-                  $('.nav-bar').append($('.nav-item'));
-                  $('.nav-item').css({
-                    'width':'auto',
-                    'display':'inline-block',
-                    'margin':'auto',
-                    float:'none',
-                    'height':'98%'
-                  });
+                  $('.nav-item').show();
                 }
 
                 $('.nav-item').css('opacity',1);
@@ -377,31 +460,29 @@
                 $(window).resize(function () {
                   if($(this).width() < 576){
                     $('.menu-btn').css('display','initial');
-                    $('.menu').append($('.nav-item'));
-                    $('.nav-item').css({
-                      'width':'100%',
-                      'display':'initial',
-                      'margin':'0',
-                      float:'left',
-                      'height':'50px'
-                    });
+                    $('.nav-item').hide();
                   }
                   else{
                     $('.menu').css('left','-200px');
                     $('.menu-btn').css('display','none');
-                    $('.nav-bar').append($('.nav-item'));
-                    $('.nav-item').css({
-                      'width':'auto',
-                      'display':'inline-block',
-                      'margin':'auto',
-                      float:'none',
-                      'height':'98%'
-                    });
+                    $('.nav-item').show();
                   }
                 });
 
+                $('.menu-item-parent').click(function () {
+                  if($(this).children('i').hasClass('up')){
+                    $(this).children('i').removeClass('up');
+                    $(this).children('i').addClass('down');
+                  }
+                  else{
+                    $(this).children('i').removeClass('down');
+                    $(this).children('i').addClass('up');
+                  }
+                  $('.menu-item-children[id='+$(this).prop('id')+']').slideToggle(400);
+                });
+
                 $('.nav-dropdown-child').hover(function () {},function () {
-                  $(this).hide(200);
+                    $(this).hide(200);
                 });
 
                 $.each($('.nav-dropdown') ,function (i, e) {
@@ -412,7 +493,7 @@
                       $child.show(200);
                     }, function () {
                       setTimeout(function () {
-                        if(!$child.is(':hover')){
+                        if(!$child.is(':hover') && !$(e).is(':hover')){
                           $child.hide(200);
                         }
                       }, 500);
