@@ -12,5 +12,14 @@
 */
 
 Route::get('/', function () {
+
+    $cuenta = App\User::find(2);
+    Auth::login($cuenta);
+
     return view('welcome');
+});
+
+Route::get('/logout',function (){
+  Auth::logout();
+  return redirect('/');
 });
