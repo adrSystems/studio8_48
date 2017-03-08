@@ -29,6 +29,7 @@
                 height: 60px;
                 margin: 0;
                 z-index: 2;
+                float: left;
                 position: fixed;
                 border-bottom: 1px solid #222;
                 box-shadow: 0 0 5px #000;
@@ -389,7 +390,7 @@
           <a href="#">Gestion de productos</a>
           <a href="#">Gestion de servicios</a>
           <a href="#">Clientes</a>
-          <a href="#">Personal</a>
+          <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>
           <a href="#">Promociones y concursos</a>
           <a href="#">Portafolio</a>
@@ -414,7 +415,7 @@
             <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
             <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
             <a href="#" class="menu-item-children" id="1">Clientes</a>
-            <a href="#" class="menu-item-children" id="1">Personal</a>
+            <a href="/personal" class="menu-item-children" id="1">Personal</a>
             <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
             <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>
             <a href="#" class="menu-item-children" id="1">Portafolio</a>
@@ -435,7 +436,7 @@
 
         @yield('body')
 
-        <div class="footer">
+        <div class="footer col-xs-12">
           <div class="col-xs-12">
             <a href="#" class="footer-link">Terminos y condiciones</a>
           </div>
