@@ -7,7 +7,7 @@ Main
 @section('css')
 <style>
     .card{
-      font-family: Cookie;
+      font-family: 'Cookie';
       box-shadow: 0 0 10px 0 #000;
       overflow: hidden;
       -webkit-transition: box-shadow .4s;
