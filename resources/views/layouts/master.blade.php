@@ -11,7 +11,7 @@
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
-        <link href="https://fonts.googleapis.com/css?family=Dancing+Script|EB+Garamond|Alegreya|Cookie|Lobster|Lobster+Two|Cinzel" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Dancing+Script|EB+Garamond|Alegreya|Cookie|Lobster|Lobster+Two|Lato|Roboto" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
 
@@ -21,6 +21,7 @@
                 padding: 0;
                 margin: 0;
                 background-color: #111;
+                font-family: 'Lato';
             }
             .nav-bar{
                 background-color: rgba(0,0,0,.6);
@@ -64,6 +65,7 @@
             }
             .footer{
               background-color: #111;
+              text-align: center;
               box-shadow: 0 0 10px 0 #000;
               width: 100%;
               position: relative;
@@ -77,6 +79,7 @@
               padding: 0px 7px 0px 7px;
               border-radius: 100%;
               border: 2px solid #ffa;
+              font-family: 'Raleway';
               background-color: transparent;
               -webkit-transition: background .3s;
             }
@@ -93,7 +96,9 @@
             .footer-link{
               color: #ed5;
               -webkit-transition: color .5s;
-              font-family: 'Cinzel';
+              font-family: 'Lato';
+              font-weight: 100;
+              font-size: 15px;
             }
             .footer-link:link{
               color: #eee;
@@ -107,6 +112,7 @@
               color: #fff;
             }
             #right-msg{
+              font-family: 'Lato';
               color: #aaa;
             }
             .menu{
@@ -195,10 +201,10 @@
               text-decoration: none;
             }
             .user-photo{
-              height: 90%;
+              height: 75%;
               border-radius: 100%;
               width: auto;
-              margin-top: -17px;
+              margin-top: -19px;
               display: none;
             }
             #user-options{
@@ -243,11 +249,7 @@
               -webkit-transition: color .4s, background .3s;
             }
             #user-menu>a:hover{
-              text-shadow: 0 0 5px #fff;
               background-color: #222;
-            }
-            #logout-btn{
-              box-shadow: inset 0 2px 2px #000;
             }
             .up{
               -webkit-transform: rotate(180deg);
@@ -263,8 +265,9 @@
             }
             .nav-item-menu-btn{
               position: absolute;
-              top:33px;
-              left: 54px;
+              font-size: 14px;
+              top:36px;
+              left: 58px;
             }
             .nav-dropdown-child{
               background-color: rgba(0,0,0,.8);
@@ -272,6 +275,7 @@
               border-radius: 3px;
               border: 1px solid #888;
               width: 200px;
+              z-index: 2;
               box-shadow: 0 1px 3px #000;
               display: none;
             }
@@ -317,9 +321,12 @@
               margin-top: 14px;
             }
             .menu-item-parent > i{
+              font-size: 14px;
+              margin-left: 10px;
+              line-height: 25px;
               -webkit-transition: -webkit-transform .4s;
             }
-            .menu-item-children{
+            a.menu-item-children{
               float: left;
               width: 100%;
               font-family: 'Lobster Two';
@@ -328,16 +335,16 @@
               display: none;
               text-decoration: none;
             }
-            .menu-item-children:hover{
-              color: white;
+            a.menu-item-children:hover{
+              color: #fff;
               text-decoration: none;
             }
-            .menu-item-children:link{
-              color: white;
+            a.menu-item-children:link{
+              color: #ccc;
               text-decoration: none;
             }
-            .menu-item-children:visited{
-              color: white;
+            a.menu-item-children:visited{
+              color: #ccc;
               text-decoration: none;
             }
         </style>
@@ -429,10 +436,10 @@
         @yield('body')
 
         <div class="footer">
-          <div class="col-xs-12 col-md-10">
+          <div class="col-xs-12">
             <a href="#" class="footer-link">Terminos y condiciones</a>
           </div>
-          <p id="right-msg" class="col-xs-12 col-md-10">2017. Todos los derechos reservados.</p>
+          <p id="right-msg" class="col-xs-12">2017. Todos los derechos reservados.</p>
           <a href="#" id="help-btn">
             <p>?</p>
           </a>
