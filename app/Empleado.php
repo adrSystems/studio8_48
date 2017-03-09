@@ -14,4 +14,10 @@ class Empleado extends Model
     public function roles(){
       return $this->belongsToMany('App\Rol');
     }
+    public function citas(){
+      return $this->hasMany('App\Cita');
+    }
+    public function servicios(){
+      return $this->belongsToMany('App\Servicio');
+    }
 }
