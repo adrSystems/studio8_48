@@ -13,7 +13,9 @@
 
 Route::get('/', function () {
 
-    $cuenta = App\User::find(2);
+
+
+    $cuenta = App\User::find(1);
     Auth::login($cuenta);
 
     return view('welcome');
@@ -22,4 +24,8 @@ Route::get('/', function () {
 Route::get('/logout',function (){
   Auth::logout();
   return redirect('/');
+});
+
+Route::get('/micuenta', function(){
+  return view('user.micuenta');
 });
