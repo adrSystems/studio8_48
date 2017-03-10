@@ -137,8 +137,6 @@ Studio8 48 - Personal
   }
   .second-container{
     -webkit-transition: margin .6s, opacity .4s;
-    margin-top: -100px;
-    opacity: 0;
   }
   .rol-selected{
     background-color: dodgerblue;
@@ -180,10 +178,80 @@ Studio8 48 - Personal
     cursor: pointer;
     opacity: 0;
   }
+  .msg-container{
+    position: fixed;
+    z-index: 5;
+    top: 0;
+    left: 0;
+    display: none;
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+  }
+  .msg-container>.msg-card{
+    background-color: #fff;
+    border: 1px solid #aaa;
+    box-shadow: 0 0 100px #000;
+    margin-top: 40px;
+    border-radius: 3px;
+    padding: 0px;
+    opacity: 0;
+    overflow: hidden;
+    -webkit-transform: scale(.7);
+    -webkit-transition: -webkit-transform .5s, opacity .4s, margin-top .4s;
+  }
+  .msg-container>.msg-card>.header>h3{
+    font-family: 'Lobster Two';
+    color: goldenrod;
+    padding: 0;
+    margin: 0;
+    margin-left: 0px;
+    border-width: 0px;
+  }
+  .msg-container>.msg-card>.header{
+    background: #eee;
+    box-shadow: inset 0 0 2px #999;
+    padding: 8px 10px 10px 10px;
+  }
+  .msg-container>.msg-card>.body{
+    padding: 30px 10px 30px 10px;
+    text-align: center;
+  }
+  .msg-container>.msg-card>.msg-footer{
+    padding: 10px;
+    box-shadow: 0 0 2px #999;
+    background: #eee;
+  }
+  .msg-container>.msg-card>.msg-footer>button{
+    border: 1px solid goldenrod;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin: auto;
+    display: block;
+    -webkit-transition: box-shadow .3s;
+  }
+  .msg-container>.msg-card>.msg-footer>button:hover{
+    box-shadow: 0 1px 2px #aaa;
+  }
 </style>
 @endsection
 
 @section('body')
+<div class="msg-container">
+  <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <h3>Title</h3>
+    </div>
+    <div class="body">
+      Message
+    </div>
+    <div class="msg-footer">
+      <button type="button" name="button" id="close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <div class="main-container">
   <div class="col-xs-12 col-md-10 col-md-offset-1">
     <h3 class="">Personal</h3>
@@ -227,7 +295,7 @@ Studio8 48 - Personal
       </div>
       <div class="col-xs-12">
         <form class="" action="/add-personal" method="post" enctype="multipart/form-data">
-          <input type="hidden" name="roles[]" value="">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="form-group">
             <label for="">Nombre</label>
             <input type="text" name="name" value="{{old('name')}}" class="black-textbox black-textbox-xs col-xs-12">
@@ -279,11 +347,11 @@ Studio8 48 - Personal
           <div class="" id="opciones-estilista" style="width:100%;">
             <hr style="width:100%;margin-top:25px;">
             <h5>Sobre el estilista</h5>
-            <textarea name="name" class="black-textbox" ></textarea>
+            <textarea name="about" class="black-textbox" ></textarea>
             <h5>Fotografía</h5>
             <div class="img-file-selector col-xs-12">
               <p>Haz click o arrastra un archivo...</p>
-              <input type="file" name="" value="" accept="image/jpeg,.png,.gif">
+              <input type="file" name="foto" value="" accept="image/jpeg,.png,.gif">
             </div>
           </div>
           <div class="form-group" style="float:left;width:100%;">
@@ -299,14 +367,12 @@ Studio8 48 - Personal
 @section('js')
 <script type="text/javascript">
   $(document).ready(function () {
-    $('.second-container').css({
-      'margin-top':'0px',
-      'opacity':'1'
-    });
+
     $('.roles-container').children('.item').click(function () {
       if($(this).children('.select-icon').hasClass('rol-unselected')){
         $(this).children('.select-icon').removeClass('rol-unselected');
         $(this).children('.select-icon').addClass('rol-selected');
+        $('form').append($('<input type="hidden" name="roles[]" value="'+$(this).attr('id')+'">'));
         if($(this).children('label').text().toLowerCase() == 'estilista'){
           $('#opciones-estilista').show(400);
         }
@@ -314,22 +380,62 @@ Studio8 48 - Personal
       else{
         $(this).children('.select-icon').removeClass('rol-selected');
         $(this).children('.select-icon').addClass('rol-unselected');
+        $('input[type=hidden][value='+$(this).attr('id')+']').remove();
         if($(this).children('label').text().toLowerCase() == 'estilista'){
           $('#opciones-estilista').hide(400);
         }
       }
 
       $('.img-file-selector').children('input[type=file]').change(function () {
-        console.log($(this)[0].files);
         if($(this)[0].files.length > 0){
+          console.log($(this)[0].files[0].name);
           $(this).parent().children('p').text($(this)[0].files[0].name);
         }
         else{
           $(this).parent().children('p').text('Haz click o arrastra un archivo...');
         }
       });
-
     });
+
+    $('.msg-footer>button').click(function () {
+      $('.msg-card').css('-webkit-transform','scale(.7)');
+      $('.msg-card').parent().fadeOut(400, function () {
+        $(this).hide();
+      });
+    });
+
+    function showMsg(title, body) {
+      $('.msg-container').show(0);
+      $('.msg-card').css('opacity',1);
+      $('.msg-card').css('margin-top','100px');
+      $('.msg-card').css('-webkit-transform','scale(1)');
+      $('.msg-card>.header>h3').text(title);
+      $('.msg-card>.body').text(body);
+    }
+
+    if('{{old("month")}}' != ''){
+      $('select[name="month"]').children('option[value='+'{{old("month")}}'+']').attr('selected','true');
+    }
+
+    @if(old("roles"))
+    var roles = [];
+    @foreach(old('roles') as $i => $rol)
+    roles[{{$i}}] = {{$rol}};
+    @endforeach
+    $.each(roles, function (i,rol) {
+      $('.roles-container>.item[id='+rol+']').children('.select-icon').removeClass('rol-unselected');
+      $('.roles-container>.item[id='+rol+']').children('.select-icon').addClass('rol-selected');
+      $('form').append($('<input type="hidden" name="roles[]" value="'+rol+'">'));
+      if(rol == {{\App\Rol::where('nombre','estilista')->first()->id}}){
+        $('#opciones-estilista').show(400);
+      }
+    });
+    @endif
+
+    @if(session('msg'))
+    showMsg("{{session('msg')['title']}}","{{session('msg')['body']}}");
+    @endif
+
   });
 </script>
 @endsection

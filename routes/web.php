@@ -13,8 +13,8 @@
 
 Route::get('/', function () {
 
-    $cuenta = App\User::find(2);
-    Auth::login($cuenta);
+    //$cuenta = App\User::find(2);
+    //Auth::login($cuenta);
 
     return view('welcome');
 });
@@ -27,3 +27,5 @@ Route::get('/logout',function (){
 Route::get('/personal',function (){
   return view('admin.personal');
 });
+
+Route::post('/add-personal','Admin\EmpleadosController@add');
