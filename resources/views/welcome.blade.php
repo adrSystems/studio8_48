@@ -1,7 +1,7 @@
 @extends('layouts.master')
 
 @section('title')
-Main
+Studio8 48 - Inicio
 @endsection
 
 @section('css')
@@ -55,19 +55,20 @@ Main
       -webkit-transition: -webkit-transform .5s, opacity .4s;
     }
     .close-btn{
-      background: linear-gradient(to bottom, #eee,#999);
+      background: #111;
+      border: 2px solid #fff;
       padding: 5px 5px 0px 5px;
       border-radius: 100%;
-      color: #444;
+      color: #C5B358;
       position: absolute;
-      font-weight: 600;
+      font-weight: 300;
       right: -7px;
       top: -10px;
-      border-top-color: #fff;
-      border-right-color: #fff;
-      border-left-color: #fff;
-      border-bottom-color: #666;
       cursor: pointer;
+      -webkit-transition: color .4s;
+    }
+    .close-btn:hover{
+      color: #E7D57A;
     }
     .close-btn > i{
       font-size: 16px;

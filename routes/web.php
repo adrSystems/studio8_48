@@ -23,3 +23,7 @@ Route::get('/logout',function (){
   Auth::logout();
   return redirect('/');
 });
+
+Route::get('/personal',function (){
+  return view('admin.personal');
+});
