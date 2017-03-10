@@ -24,7 +24,7 @@
                 font-family: 'Lato';
             }
             .nav-bar{
-                background-color: rgba(0,0,0,.6);
+                background-color: rgba(0,0,0,.8);
                 width: 100%;
                 height: 60px;
                 margin: 0;
