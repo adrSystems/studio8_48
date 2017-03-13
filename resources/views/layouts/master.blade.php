@@ -15,6 +15,7 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
 
+
         <!-- Styles -->
         <style>
             body{
@@ -445,7 +446,7 @@
             <p>?</p>
           </a>
         </div>
-
+        <script src="{{elixir('js/app.js')}}"></script>
         <script src="{{elixir('js/jquery-3.1.1.min.js')}}"></script>
 
         <script>

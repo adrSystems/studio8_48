@@ -25,7 +25,7 @@ Route::get('/logout',function (){
   Auth::logout();
   return redirect('/');
 });
-
+Route::match(["GET","POST"],'/enviarmensajeC',"Cliente\ClienteController@enviarMensaje");
 Route::get('/micuenta', function(){
   return view('user.micuenta');
 });

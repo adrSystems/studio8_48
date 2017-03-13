@@ -11,4 +11,7 @@ class Cliente extends Model
     public function cuenta(){
       return $this->morphOne('App\User','cuentable');
     }
+    public function mensajes(){
+      return $this->hasMany('App\Mensaje');
+    }
 }
