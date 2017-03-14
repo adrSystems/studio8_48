@@ -13,6 +13,7 @@
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Dancing+Script|EB+Garamond|Alegreya|Cookie|Lobster|Lobster+Two|Lato|Roboto" rel="stylesheet">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="{{elixir('css/bootstrap.css')}}">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
 
         <!-- Styles -->
@@ -46,6 +47,7 @@
                 margin: auto;
                 display: inline-block;
                 font-weight: 100;
+                height: 100%;
                 font-family: 'Lobster Two';
                 color: #ed5;
                 font-size: 16px;
@@ -82,7 +84,7 @@
               border: 2px solid #ffa;
               font-family: 'Raleway';
               background-color: transparent;
-              -webkit-transition: background .3s;
+              -webkit-transition: background-color, background .3s;
             }
             #help-btn:hover{
               background: rgba(255,255,255,.1);
@@ -114,7 +116,7 @@
             }
             #right-msg{
               font-family: 'Lato';
-              color: #aaa;
+              color: #fff;
             }
             .menu{
               background-color: rgba(0,0,0,.9);
