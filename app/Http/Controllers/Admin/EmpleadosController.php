@@ -8,6 +8,7 @@ use Validator;
 use \App\Empleado;
 use \App\User;
 use \App\Rol;
+use Carbon\Carbon;
 
 class EmpleadosController extends Controller
 {
@@ -64,6 +65,54 @@ class EmpleadosController extends Controller
         'body' => 'Empleado registrado satisfactoriamente.']);
     }
 
+    public function edit(Request $request)
+    {
+      if(!$request->roles){
+        return back()->with('msg', [
+          'title' => 'Error!',
+          'body' => 'El empleado debe tener almenos un rol.']);
+      }
+      $emp = Empleado::find($request->empId);
+      if($request->name){
+        $emp->nombre =$request->name;
+      }
+      if($request->lastName){
+        $emp->apellido = $request->lastName;
+      }
+      if($request->email){
+        $emp->cuenta->email = $request->email;
+        $emp->cuenta->save();
+      }
+      if($request->day and $request->year){
+        $emp->fecha_nacimiento = $request->year."-".$request->month."-".$request->day;
+      }
+      $emp->roles()->detach();
+      $emp->roles()->attach($request->roles);
+      $emp->servicios()->detach();
+      $emp->servicios()->attach($request->servicios);
+      if($request->about){
+        $emp->info = $request->about;
+      }
+      if($request->foto){
+        $emp->fotografia = $request->foto->store('img/profile_photos','public');
+      }
+
+      $emp->save();
+
+      return back()->with('msg', [
+        'title' => 'Listo!',
+        'body' => 'Empleado modificado con exito.']);
+    }
+
+    public function kick(Request $request, $id)
+    {
+      $emp = Empleado::find($id);
+      $emp->delete();
+      return back()->with('msg', [
+        'title' => 'Listo!',
+        'body' => 'El empleado '.$emp->nombre." ".$emp->apellido.' ahora está inactivo.']);
+    }
+
     public function getEmpleadoById(Request $request)
     {
       $emp = Empleado::find($request->id);
@@ -71,6 +120,7 @@ class EmpleadosController extends Controller
         $emp->fotografia = asset('storage/'.$emp->fotografia);
       }
       $emp->roles = $emp->roles;
+      $emp->edad = Carbon::createFromFormat('Y-m-d', $emp->fecha_nacimiento)->diffInYears(Carbon::now());
       $emp->servicios = $emp->servicios;
       $emp->email = $emp->cuenta->email;
       return $emp;

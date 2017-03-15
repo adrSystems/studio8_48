@@ -75,8 +75,8 @@ Studio8 48 - Personal
     color: #578;
     background-color: #fff;
     border-radius: 5px;
-    border: 1px solid #ccc;
-    box-shadow: 0 0 10px #555;
+    border: 1px solid #bbb;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     margin-bottom: 15px;
   }
   #add-container>.header>h4{
@@ -185,7 +185,7 @@ Studio8 48 - Personal
     width: 100%;
     height: 150px;
   }
-  #opciones-estilista{
+  #opciones-estilista, #opciones-estilista-to-edit{
     display: none;
   }
   .img-file-selector{
@@ -265,8 +265,23 @@ Studio8 48 - Personal
     border-radius: 2px;
     padding: 3px 10px 3px 10px;
     margin: auto;
-    display: block;
+    display: inline-block;
     -webkit-transition: box-shadow .3s;
+  }
+  .msg-container>.msg-card>.msg-footer>a{
+    border: 1px solid goldenrod;
+    width: auto;
+    border-radius: 2px;
+    padding: 3px 10px 3px 10px;
+    margin: auto;
+    display: inline-block;
+    -webkit-transition: box-shadow .3s;
+    text-decoration: none;
+    color: #555;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  .msg-container>.msg-card>.msg-footer>a:hover{
+    box-shadow: 0 1px 2px #aaa;
   }
   .msg-container>.msg-card>.msg-footer>button:hover{
     box-shadow: 0 1px 2px #aaa;
@@ -277,7 +292,7 @@ Studio8 48 - Personal
     height: 100%;
     margin: 0;
     border: none;
-    text-shadow: 0 0 3px rgba(0,0,0,.8);
+    text-shadow: 0 0 5px rgba(0,0,0,.8), 0 0 1px rgba(0,0,0,1);
   }
   #help-btn{
     border: 2px solid #ed5;
@@ -440,6 +455,9 @@ Studio8 48 - Personal
     width: 10vw;
     height: 10vw;
   }
+  .personal, .profesional{
+    -webkit-transition: opacity 0;
+  }
   .personal>div>.img-container>img{
     width: 100%;
   }
@@ -448,26 +466,33 @@ Studio8 48 - Personal
     width: 100%;
     padding-left: 10px;
     padding-right: 10px;
+    padding-bottom: 15px;
     height: 100%;
+    overflow: auto;
     z-index: 2;
     position: fixed;
     display: none;
-    -webkit-transition: opacity .5s;
+  }
+  .modal-container::-webkit-scrollbar{
+    background: transparent;
   }
   .modal-container>.modal-card{
     margin-top: 5%;
     background-color: #fff;
     border: 1px solid #aaa;
     border-radius: 3px;
-    -webkit-transform: scale(.6);
+    -webkit-transform: scale(.3);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 50px rgba(0, 0, 0, 0.5);
-    -webkit-transition: opacity .5s, -webkit-transform .4s;
+    opacity: 0;
+    -webkit-transition: opacity .8s, -webkit-transform .8s;
   }
   .modal-card>.header{
     border-bottom: 1px solid #ddd;
+    margin-bottom: 15px;
   }
   .modal-footer{
     border-top: 1px solid #ddd;
+    margin-top: 15px;
   }
   .personal>p{
     color:skyblue;
@@ -475,20 +500,57 @@ Studio8 48 - Personal
   .personal>p>span{
     color:#888;
   }
+  .info-summary{
+    background-color: #eee;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: auto;
+    display: table;
+    padding: 10px;
+    margin: auto;
+    text-align: center;
+  }
+  .info-summary>div>.img-container{
+    background-color: #555;
+    border-radius: 100%;
+    width: 10vw;
+    height: 10vw;
+    padding: 0;
+    overflow: hidden;
+    margin: auto;
+    display: block;
+  }
+  .info-summary>div>.img-container>.foto{
+    width: 100%;
+  }
 </style>
 @endsection
 
 @section('body')
-<div class="msg-container">
+<div class="msg-container" id="general-msg">
   <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
     <div class="header">
-      <h3>Title</h3>
+      <h3></h3>
     </div>
     <div class="body">
-      Message
     </div>
     <div class="msg-footer">
       <button type="button" name="button" id="close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="msg-container" id="kick-dialog">
+  <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <h3>Confirmar acción</h3>
+    </div>
+    <div class="body">
+      <p>El empleado ya no podrá tener acceso al sistema y no se le podrá agendar citas. Sin embargo, su información e historial seguirán intactos.</p>
+    </div>
+    <div class="msg-footer">
+      <button type="button" name="button" id="close-btn">Cancelar</button>
+      <a id="kick-personal-btn">Continuar</a>
     </div>
   </div>
 </div>
@@ -499,7 +561,7 @@ Studio8 48 - Personal
       <h4 style="text-align: center;">Detalles del empleado</h4>
     </div>
     <div class="body col-xs-12" style="padding:0;">
-      <div class="col-xs-6 personal" style="padding:0;">
+      <div class="col-xs-12 col-sm-6 personal" style="padding:0;">
         <h5 style="text-align: center;">Personal</h5>
         <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
           <span class="no-foto">Sin fotografía.</span>
@@ -516,7 +578,7 @@ Studio8 48 - Personal
           </span>
         </p>
       </div>
-      <div class="col-xs-6 profesional" style="padding:0;">
+      <div class="col-xs-12 col-sm-6 profesional" style="padding:0;">
         <h5 style="text-align: center;">Profesional</h5>
         <p>Roles</p>
         <div class="white-container roles-container">
@@ -532,10 +594,127 @@ Studio8 48 - Personal
   </div>
 </div>
 
+<div class="modal-container" id="empleado-edit">
+  <div class="modal-card col-xs-12 col-md-6 col-md-offset-3">
+    <div class="header col-xs-12">
+      <h4 style="text-align: center;">Actualizar información del empleado</h4>
+    </div>
+    <div class="body col-xs-12" style="padding:0;">
+      <div class="col-xs-12 col-sm-6" style="padding:0;">
+        <div class="info-summary">
+          <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
+            <div class="img-container">
+              <img src="{{asset('img/profile_photos/default.gif')}}" alt="" class="foto">
+            </div>
+          </div>
+          <p class="nombre"></p>
+          <p class="email"></p>
+          <p class="edad"></p>
+          <p class="about-title" style="color:skyblue;">Acerca de mi...</p>
+          <p class="about"></p>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6">
+        <i class="material-icons">info</i>
+        <p>Solo se cambiarán los campos que completes...</p>
+        <form class="" action="/edit-personal" method="post" enctype="multipart/form-data" id="edit-emp">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
+          <input type="hidden" name="empId" value="">
+          <div class="form-group">
+            <label for="">Nombre</label>
+            <input type="text" name="name" value="" class="white-textbox white-textbox-xs col-xs-12">
+          </div>
+          <div class="form-group">
+            <label for="">Apellido</label>
+            <input type="text" name="lastName" value="" class="white-textbox white-textbox-xs col-xs-12">
+          </div>
+          <div class="form-group">
+            <label for="">Email</label>
+            <input type="email" name="email" value="" class="white-textbox white-textbox-xs col-xs-12">
+          </div>
+          <div class="form-group">
+            <label for="" class="">Fecha de nacimiento</label>
+            <div class="" style="width:100%;">
+              <div class="col-xs-4 date-input">
+                <input type="number" name="day" value="" min="1" max="31" class="white-textbox white-textbox-xs day col-xs-12" placeholder="dd" required>
+              </div>
+              <div class="col-xs-4 date-input">
+                <select class="col-xs-12 white-textbox white-textbox-xs" name="month" style="padding-bottom: 5px;">
+                  <option value="1">Enero</option>
+                  <option value="2">Febrero</option>
+                  <option value="3">Marzo</option>
+                  <option value="4">Abril</option>
+                  <option value="5">Mayo</option>
+                  <option value="6">Junio</option>
+                  <option value="7">Julio</option>
+                  <option value="8">Agosto</option>
+                  <option value="9">Septiembre</option>
+                  <option value="10">Octubre</option>
+                  <option value="11">Noviembre</option>
+                  <option value="12">Diciembre</option>
+                </select>
+              </div>
+              <div class="col-xs-4 date-input" style="padding-right: 0;">
+                <input type="number" name="year" value="" min="1900" max="{{date('Y')}}"
+                class="white-textbox white-textbox-xs year col-xs-12" placeholder="YYYY">
+              </div>
+            </div>
+          </div>
+          <hr style="width:100%;margin-top:60px;">
+          <h5>Roles</h5>
+          <div class="white-container" id="roles-to-edit-container">
+            @foreach(App\Rol::get() as $i => $rol)
+            <div class="item" id="{{$rol->id}}"
+              @if($i == App\Rol::count()-1) style="border-bottom: none;"@endif>
+              <label>{{ucfirst($rol->nombre)}}</label>
+              <div class="select-icon rol-unselected">
+              </div>
+            </div>
+            @endforeach
+          </div>
+          <div class="" id="opciones-estilista-to-edit" style="width:100%;">
+            <hr style="width:100%;margin-top:25px;">
+            <h5>Servicios que realiza</h5>
+            @if(\App\Servicio::count() > 0)
+            <div class="white-container" id="servicios-to-edit-container">
+              @foreach(\App\Servicio::get() as $i => $servicio)
+              <div class="item" id="{{$servicio->id}}"
+                @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
+                <img src="{{asset($servicio->icono)}}" alt="">
+                <label>{{ucfirst($servicio->nombre)}}</label>
+                <div class="select-icon rol-unselected">
+                </div>
+              </div>
+              @endforeach
+            </div>
+            @else
+            <p>No se encontraron servicios. Para continuar debes añadirlos.</p>
+            @endif
+            <hr style="width:100%;margin-top:25px;">
+            <h5>Sobre el estilista</h5>
+            <textarea name="about" class="white-textbox"></textarea>
+            <h5>Fotografía</h5>
+            <div class="img-file-selector col-xs-12">
+              <p>Haz click o arrastra un archivo...</p>
+              <input type="file" name="foto" value="" accept="image/jpeg,.png,.gif">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="modal-footer col-xs-12">
+      <button type="button" name="button" class="btn1 close-btn" style="margin-right:10px;">Cancelar</button>
+      <button type="button" name="button" class="btn1" id="edit-btn">Aceptar</button>
+    </div>
+  </div>
+</div>
+
 <div class="main-container">
+
   <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-bottom:10px;">
     <h3 class="main-title">Administración de personal</h3>
   </div>
+
   <div class="col-xs-12 col-md-offset-1 col-md-5 second-container">
     <div class="col-xs-12" id="empleados-container">
       @if(App\Empleado::count() < 1)
@@ -589,13 +768,14 @@ Studio8 48 - Personal
     <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,.8);">{{\App\Empleado::count()." empleados encontrados."}}</p>
     @endif
   </div>
+
   <div class="col-xs-12 col-md-offset-1 col-md-4 second-container">
     <div id="add-container" class="col-xs-12">
       <div class="header">
         <h4>Añadir nuevo personal</h4>
       </div>
       <div class="col-xs-12">
-        <form class="" action="/add-personal" method="post" enctype="multipart/form-data">
+        <form class="" action="/add-personal" method="post" enctype="multipart/form-data" id="add-emp">
           <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="form-group">
             <label for="">Nombre</label>
@@ -684,6 +864,7 @@ Studio8 48 - Personal
       </div>
     </div>
   </div>
+
 </div>
 @endsection
 
@@ -709,10 +890,13 @@ Studio8 48 - Personal
     });
 
     function showModal(id) {
-      $('.modal-container[id='+id+']').fadeIn(400);
-      $('.modal-container>.modal-card').fadeIn(0);
-      $('.modal-container>.modal-card').css('webkit-transform','scale(1)');
-
+      $('.modal-container[id='+id+']').fadeIn(200);
+      setTimeout(function () {
+        $('.modal-container>.modal-card').css({
+          'opacity':'1',
+          'webkit-transform':'scale(1)'
+        });
+      }, 200);
     };
 
     function mostrarInfoEmp(empleadoId) {
@@ -727,7 +911,7 @@ Studio8 48 - Personal
       }).done(function (empleado) {
         var $body = $('#empleado-info>.modal-card>.body');
         $body.find('.nombre').text(empleado.nombre+' '+empleado.apellido);
-        $body.find('.fecha-nac').text(empleado.fecha_nacimiento);
+        $body.find('.fecha-nac').text(empleado.edad+" años ("+empleado.fecha_nacimiento+")");
         $body.find('.email').text(empleado.email);
         if(empleado.fotografia != null){
           $body.find('.no-foto').css('display', 'none');
@@ -764,30 +948,167 @@ Studio8 48 - Personal
     }
 
     function closeModal(id) {
-      $('.modal-container>.modal-card').css('webkit-transform','scale(.6)');
-      $('.modal-container>.modal-card').fadeOut(300);
-      $('.modal-container[id='+id+']').delay(400).fadeOut(300);
+      $('.modal-container>.modal-card').css({
+        'opacity':'0',
+        'webkit-transform':'scale(.6)'
+      });
+      $('.modal-container[id='+id+']').delay(300).fadeOut(600);
     };
 
     $('.empleado-options>.box>.info').click(function () {
       mostrarInfoEmp($(this).parent().parent().attr('id'));
-      showModal('empleado-info');
       $(this).parent().parent().hide();
+      setTimeout(function () {
+        showModal('empleado-info');
+      } ,200);
+    });
+
+    $('.empleado-options>.box>.kick').click(function () {
+      showMsgDialog();
+      $('#kick-personal-btn').attr('href','/kick-personal/'+$(this).parent().parent().attr('id'));
+    });
+
+    function mostrarInfoEmpToEdit(empId) {
+      $.ajax({
+        url: '/getEmpleadoById',
+        type:'post',
+        dataType:'json',
+        data:{
+          _token:'{{csrf_token()}}',
+          id:empId
+        }
+      }).done(function (emp) {
+        $('form[id=edit-emp]').children('input[type=hidden][name=empId]').val(emp.id);
+        if(emp.fotografia == null){
+          $('#empleado-edit>.modal-card').find('.foto').attr('src','{{asset("img/profile_photos/default.gif")}}');
+        }
+        else{
+          $('#empleado-edit>.modal-card').find('.foto').attr('src',emp.fotografia);
+        }
+        $('#empleado-edit>.modal-card').find('p.nombre').text(emp.nombre+" "+emp.apellido);
+        $('#empleado-edit>.modal-card').find('p.email').text(emp.email);
+        $('#empleado-edit>.modal-card').find('p.edad').text(emp.fecha_nacimiento+" ("+emp.edad+" años)");
+        if(emp.info != null){
+          $('#empleado-edit>.modal-card').find('p.about').text(emp.info);
+          $('#empleado-edit>.modal-card').find('p.about').css('display','block');
+          $('#empleado-edit>.modal-card').find('p.about-title').css('display','block');
+        }
+        else{
+          $('#empleado-edit>.modal-card').find('p.about').css('display','none');
+          $('#empleado-edit>.modal-card').find('p.about-title').css('display','none');
+        }
+        $('form#edit-emp').find('input[name=name]').val('');
+        $('form#edit-emp').find('input[name=lastName]').val('');
+        $('form#edit-emp').find('input[name=email]').val('');
+        $('form#edit-emp').find('input[name=day]').val('');
+        $('form#edit-emp').find('input[name=year]').val('');
+        $('form#edit-emp').find('textarea[name=about]').val('');
+        $('form#edit-emp').find('input[name=foto]').val('');
+        $('form#edit-emp').find('.img-file-selector>p').text('Haz click o arrastra un archivo...');
+        $('form#edit-emp').children('input[type=hidden][name="roles[]"]').remove();
+        $('form#edit-emp').children('input[type=hidden][name="servicios[]"]').remove();
+        $('#roles-to-edit-container>.item>.select-icon').removeClass('rol-selected');
+        $('#roles-to-edit-container>.item>.select-icon').addClass('rol-unselected');
+        $('#servicios-to-edit-container>.item>.select-icon').removeClass('rol-selected');
+        $('#servicios-to-edit-container>.item>.select-icon').addClass('rol-unselected');
+        $.each(emp.roles, function (i, rol) {
+          $('#roles-to-edit-container>.item[id='+rol.id+']').children('.select-icon').removeClass('rol-unselected');
+          $('#roles-to-edit-container>.item[id='+rol.id+']').children('.select-icon').addClass('rol-selected');
+          $('form[id=edit-emp]').append($('<input type="hidden" name="roles[]" value="'+rol.id+'">'));
+          if(rol.id == {{\App\Rol::where('nombre','estilista')->first()->id}}){
+            $('#opciones-estilista-to-edit').show(400);
+          }
+        });
+
+        $.each(emp.servicios, function (i,servicio) {
+          $('#servicios-to-edit-container>.item[id='+servicio.id+']').children('.select-icon').removeClass('rol-unselected');
+          $('#servicios-to-edit-container>.item[id='+servicio.id+']').children('.select-icon').addClass('rol-selected');
+          $('form[id=edit-emp]').append($('<input type="hidden" name="servicios[]" class="servicio" value="'+servicio.id+'">'));
+        });
+      });
+    }
+
+    $('.empleado-options>.box>.edit').click(function () {
+      mostrarInfoEmpToEdit($(this).parent().parent().attr('id'));
+      $(this).parent().parent().hide();
+      setTimeout(function () {
+        showModal('empleado-edit');
+      } ,200);
+    });
+
+    $('#edit-btn').click(function () {
+      var serviciosCount = $('form[id=edit-emp]').children('input[type=hidden][name="servicios[]"]').length;
+      var roles = [];
+      $.each($('form[id=edit-emp]').children('input[type=hidden][name="roles[]"]'), function (i, rolInput) {
+        roles[i] = $(rolInput).val();
+      });
+      $.ajax({
+        url:'/getEmpleadoById',
+        type:'post',
+        dataType:'json',
+        data:{
+          _token:'{{csrf_token()}}',
+          id:$('form[id=edit-emp]').children('input[type=hidden][name=empId]').val()
+        }
+      }).done(function (emp) {
+        var eraEstilista = false;
+        $.each(emp.roles, function (i, rol) {
+          if(rol.id == '{{\App\Rol::where("nombre","estilista")->first()->id}}'){
+            eraEstilista=true;
+          }
+        });
+        var estilistaIndex = roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}');
+        var year = $('form[id=edit-emp]').find('input[name=year]').val();
+        var dia = $('form[id=edit-emp]').find('input[name=day]').val();
+        if(roles.length < 1){
+          showMsg('Error!',["El empleado debe tener por lo menos un rol."]);
+        }
+        else if(estilistaIndex > -1 && serviciosCount < 1){
+          showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
+        }
+        else if(!eraEstilista && $('form[id=edit-emp]').find('textarea[name=about]').val() == ''){
+          showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe especificarse la información "Acerca del estilista".']);
+        }
+        else if(!eraEstilista && $('form[id=edit-emp]').find('input[name=foto]').val() == ''){
+          showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe tener una fotografía.']);
+        }
+        else if(roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}') > -1 && serviciosCount < 1){
+          showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
+        }
+        else if(dia != '' && year == ''){
+          showMsg('Error!',["Especifica el año.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
+        }
+        else if(year != '' && dia == ''){
+          showMsg('Error!',["Especifica el dia.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
+        }
+        else if(dia != '' && (dia < 1 || dia > 31)){
+          showMsg('Error!',["Escriba un dia valido. (1-31)"]);
+        }
+        else if(year != '' && (year < 1900 || year > '{{date("Y")}}')){
+          showMsg('Error!',["Escriba un año valido. (1900-{{date('Y')}})"]);
+        }
+        else{
+          $('form[id=edit-emp]').submit();
+        }
+      });
     });
 
     $('.modal-footer>.close-btn').click(function () {
-      closeModal('empleado-info');
+      closeModal($(this).parent().parent().parent().attr('id'));
     });
 
     $('#email-help').click(function () {
-        showMsg('Ayuda','Debes proporcionar el email del personal puesto que este se le requerirá para el inicio de sesión en el sistema.');
+        showMsg('Ayuda', [
+          'Debes proporcionar el email del personal puesto que este se le requerirá para el inicio de sesión en el sistema.',
+          'Se le enviarán al empleado sus datos de inicio de sesión en el email proporcionado.'
+        ]);
       });
 
     $('#roles-container').children('.item').click(function () {
       if($(this).children('.select-icon').hasClass('rol-unselected')){
         $(this).children('.select-icon').removeClass('rol-unselected');
         $(this).children('.select-icon').addClass('rol-selected');
-        $('form').append($('<input type="hidden" name="roles[]" value="'+$(this).attr('id')+'">'));
+        $('form[id=add-emp]').append($('<input type="hidden" name="roles[]" value="'+$(this).attr('id')+'">'));
         if($(this).children('label').text().toLowerCase() == 'estilista'){
           $('#opciones-estilista').show(400);
         }
@@ -795,12 +1116,34 @@ Studio8 48 - Personal
       else{
         $(this).children('.select-icon').removeClass('rol-selected');
         $(this).children('.select-icon').addClass('rol-unselected');
-        $('input[type=hidden][value='+$(this).attr('id')+']').remove();
+        $('form[id=add-emp]').children('input[type=hidden][value='+$(this).attr('id')+']').remove();
         if($(this).children('label').text().toLowerCase() == 'estilista'){
           $('#opciones-estilista').hide(400);
-          $('input[type=hidden][class=servicio]').remove();
+          $('form[id=add-emp]').children('input[type=hidden][class=servicio]').remove();
           $('#servicios-container>.item>.select-icon').removeClass('rol-selected');
           $('#servicios-container>.item>.select-icon').addClass('rol-unselected');
+        }
+      }
+    });
+
+    $('#roles-to-edit-container').children('.item').click(function () {
+      if($(this).children('.select-icon').hasClass('rol-unselected')){
+        $(this).children('.select-icon').removeClass('rol-unselected');
+        $(this).children('.select-icon').addClass('rol-selected');
+        $('form[id=edit-emp]').append($('<input type="hidden" name="roles[]" value="'+$(this).attr('id')+'">'));
+        if($(this).children('label').text().toLowerCase() == 'estilista'){
+          $('#opciones-estilista-to-edit').show(400);
+        }
+      }
+      else{
+        $(this).children('.select-icon').removeClass('rol-selected');
+        $(this).children('.select-icon').addClass('rol-unselected');
+        $('form[id=edit-emp]').children('input[type=hidden][value='+$(this).attr('id')+']').remove();
+        if($(this).children('label').text().toLowerCase() == 'estilista'){
+          $('#opciones-estilista-to-edit').hide(400);
+          $('form[id=edit-emp]').children('input[type=hidden][class=servicio]').remove();
+          $('#servicios-to-edit-container>.item>.select-icon').removeClass('rol-selected');
+          $('#servicios-to-edit-container>.item>.select-icon').addClass('rol-unselected');
         }
       }
     });
@@ -809,12 +1152,25 @@ Studio8 48 - Personal
       if($(this).children('.select-icon').hasClass('rol-unselected')){
         $(this).children('.select-icon').removeClass('rol-unselected');
         $(this).children('.select-icon').addClass('rol-selected');
-        $('form').append($('<input type="hidden" name="servicios[]" class="servicio" value="'+$(this).attr('id')+'">'));
+        $('form[id=add-emp]').append($('<input type="hidden" name="servicios[]" class="servicio" value="'+$(this).attr('id')+'">'));
       }
       else{
         $(this).children('.select-icon').removeClass('rol-selected');
         $(this).children('.select-icon').addClass('rol-unselected');
-        $('input[type=hidden][class=servicio][value='+$(this).attr('id')+']').remove();
+        $('form[id=add-emp]').children('input[type=hidden][class=servicio][value='+$(this).attr('id')+']').remove();
+      }
+    });
+
+    $('#servicios-to-edit-container').children('.item').click(function () {
+      if($(this).children('.select-icon').hasClass('rol-unselected')){
+        $(this).children('.select-icon').removeClass('rol-unselected');
+        $(this).children('.select-icon').addClass('rol-selected');
+        $('form[id=edit-emp]').append($('<input type="hidden" name="servicios[]" class="servicio" value="'+$(this).attr('id')+'">'));
+      }
+      else{
+        $(this).children('.select-icon').removeClass('rol-selected');
+        $(this).children('.select-icon').addClass('rol-unselected');
+        $('form[id=edit-emp]').children('input[type=hidden][class=servicio][value='+$(this).attr('id')+']').remove();
       }
     });
 
@@ -835,12 +1191,22 @@ Studio8 48 - Personal
     });
 
     function showMsg(title, body) {
-      $('.msg-container').show(0);
-      $('.msg-card').css('opacity',1);
-      $('.msg-card').css('margin-top','100px');
-      $('.msg-card').css('-webkit-transform','scale(1)');
-      $('.msg-card>.header>h3').text(title);
-      $('.msg-card>.body').text(body);
+      $('#general-msg').show(0);
+      $('#general-msg>.msg-card').css('opacity',1);
+      $('#general-msg>.msg-card').css('margin-top','100px');
+      $('#general-msg>.msg-card').css('-webkit-transform','scale(1)');
+      $('#general-msg>.msg-card>.header>h3').text(title);
+      $('#general-msg>.msg-card>.body').children().remove();
+      $.each(body, function (i, paragraph) {
+        $('#general-msg>.msg-card>.body').append('<p>'+paragraph);
+      });
+    }
+
+    function showMsgDialog() {
+      $('#kick-dialog').show(0);
+      $('#kick-dialog>.msg-card').css('opacity',1);
+      $('#kick-dialog>.msg-card').css('margin-top','100px');
+      $('#kick-dialog>.msg-card').css('-webkit-transform','scale(1)');
     }
 
     if('{{old("month")}}' != ''){
@@ -859,7 +1225,7 @@ Studio8 48 - Personal
     $.each(roles, function (i,rol) {
       $('#roles-container>.item[id='+rol+']').children('.select-icon').removeClass('rol-unselected');
       $('#roles-container>.item[id='+rol+']').children('.select-icon').addClass('rol-selected');
-      $('form').append($('<input type="hidden" name="roles[]" value="'+rol+'">'));
+      $('form[id=add-emp]').append($('<input type="hidden" name="roles[]" value="'+rol+'">'));
       if(rol == {{\App\Rol::where('nombre','estilista')->first()->id}}){
         $('#opciones-estilista').show(400);
       }
@@ -874,12 +1240,12 @@ Studio8 48 - Personal
     $.each(servicios, function (i,servicio) {
       $('#servicios-container>.item[id='+servicio+']').children('.select-icon').removeClass('rol-unselected');
       $('#servicios-container>.item[id='+servicio+']').children('.select-icon').addClass('rol-selected');
-      $('form').append($('<input type="hidden" name="servicio[] class="servicio" value="'+servicio+'">'));
+      $('form[id=add-emp]').append($('<input type="hidden" name="servicios[]" class="servicio" value="'+servicio+'">'));
     });
     @endif
 
     @if(session('msg'))
-    showMsg("{{session('msg')['title']}}","{{session('msg')['body']}}");
+    showMsg("{{session('msg')['title']}}",["{{session('msg')['body']}}"]);
     @endif
 
   });

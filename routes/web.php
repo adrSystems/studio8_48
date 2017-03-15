@@ -29,5 +29,7 @@ Route::get('/personal',function (){
 });
 
 Route::post('/add-personal','Admin\EmpleadosController@add');
+Route::post('/edit-personal','Admin\EmpleadosController@edit');
+Route::get('/kick-personal/{id}','Admin\EmpleadosController@kick');
 
 Route::post('/getEmpleadoById','Admin\EmpleadosController@getEmpleadoById');
