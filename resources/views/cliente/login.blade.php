@@ -123,50 +123,6 @@ Studio8 48 -Login
 @endsection
 @section('body')
 <div class="container" id="contenedor">
-    @if(Session::has('error'))
-      <br>
-      @foreach(Session::get('error') as $mensaje)
-      <div class="alert alert-warning" role="alert">
-      {{$mensaje}}
-      </div>
-      @endforeach
-    @endif
-
-    @if(Session::has('activar'))
-      <br>
-      @foreach(Session::get('activar') as $activar)
-      <div class="alert alert-warning" role="alert">
-       {{$activar}}
-      </div>
-      @endforeach
-    @endif
-
-    @if(Session::has('c_activada'))
-      <br>
-      @foreach(Session::get('c_activada') as $c_activada)
-      <div class="alert alert-warning" role="alert">
-          {{$c_activada}}
-      </div>
-      @endforeach
-    @endif
-
-    @if(Session::has('error_email'))
-      <br>
-      @foreach(Session::get('error_email') as $error)
-      <div class="alert alert-warning" role="alert">
-          {{$error}}
-      </div>
-      @endforeach
-    @endif
-
-    @if(Session::has('datos_invalidos'))
-      <br>
-      @foreach(Session::get('datos_invalidos') as $error)
-      <div class="alert alert-warning" role="alert">
-          {{$error}}
-      </div>
-      @endforeach
-    @endif
 
   <div class="col-xs-12 col-md-6 login-container">
     <h2 class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Iniciar Sesion</h2>
@@ -208,51 +164,44 @@ Studio8 48 -Login
       $('.login-container').css('border-right','1px solid #eee');
       $('.login-container').css('border-bottom','none');
     }
-    $(window).resize(function () {
-      if($(this).width() < 576){
-        $('.login-container').css('border-right','none');
-        $('.login-container').css('border-bottom','1px solid #eee');
-      }
-      else{
-        $('.login-container').css('border-right','1px solid #eee');
-        $('.login-container').css('border-bottom','none');
-      }
-    });
-    var $formulario= $('Form');
-    var $evento= $('#subir');
-    var result=$formulario.validate({
-        rules:
-        {
-            email:
-            {
-                required:true,
-                email:true
-            },
-            password:
-            {
-                required:true
-            }
-        },
-        messages:
-        {
-            email:
-            {
-                required:"Este campo es requerido",
-                email:"Escribe una direccion de correo valida"
-            },
-            password:
-            {
-                required:'Ingresa tu contraseña'
-            }
+    $(document).ready(function () {
+      $(window).resize(function () {
+        if($(this).width() < 576){
+          $('.login-container').css('border-right','none');
+          $('.login-container').css('border-bottom','1px solid #eee');
         }
-    });
-    $('#subir').click(function(event){
-        event.stopPropagation();
-        event.preventDefault();
-        if($formulario.valid())
-        {
-          $formulario.submit();
+        else{
+          $('.login-container').css('border-right','1px solid #eee');
+          $('.login-container').css('border-bottom','none');
         }
+      });
+      function showMsg(title, body) {
+        $('#general-msg').show(0);
+        $('#general-msg>.msg-card').css('opacity',1);
+        $('#general-msg>.msg-card').css('margin-top','100px');
+        $('#general-msg>.msg-card').css('-webkit-transform','scale(1)');
+        $('#general-msg>.msg-card>.header>h3').text(title);
+        $('#general-msg>.msg-card>.body').children().remove();
+        $.each(body, function (i, paragraph) {
+          $('#general-msg>.msg-card>.body').append('<p>'+paragraph);
+        });
+      }
+      $('.msg-footer>button').click(function () {
+        $('.msg-card').css('-webkit-transform','scale(.7)');
+        $('.msg-card').parent().fadeOut(400, function () {
+          $(this).hide();
+        });
+      });
+
+      @if(session('msg'))
+      showMsg("{{session('msg')['title']}}",["{{session('msg')['body']}}"]);
+      @endif
+
+      var $formulario= $('Form');
+      var $evento= $('#subir');
+      $('#subir').click(function(event){
+        $formulario.submit();
+      });
     });
 </script>
 @endsection

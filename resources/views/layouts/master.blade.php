@@ -350,6 +350,78 @@
               color: #ccc;
               text-decoration: none;
             }
+            .msg-container{
+              position: fixed;
+              z-index: 5;
+              top: 0;
+              left: 0;
+              display: none;
+              padding: 10px;
+              width: 100%;
+              height: 100%;
+              background-color: rgba(0, 0, 0, 0.7);
+            }
+            .msg-container>.msg-card{
+              background-color: #fff;
+              border: 1px solid #aaa;
+              box-shadow: 0 0 50px rgba(0,0,0,.5);
+              margin-top: 40px;
+              border-radius: 3px;
+              padding: 0px;
+              opacity: 0;
+              overflow: hidden;
+              -webkit-transform: scale(.7);
+              -webkit-transition: -webkit-transform .5s, opacity .4s, margin-top .4s;
+            }
+            .msg-container>.msg-card>.header>h3{
+              font-family: 'Lobster Two';
+              color: goldenrod;
+              padding: 0;
+              margin: 0;
+              margin-left: 0px;
+              border-width: 0px;
+            }
+            .msg-container>.msg-card>.header{
+              background: #eee;
+              box-shadow: inset 0 0 2px #999;
+              text-align: center;
+              padding: 8px 10px 10px 10px;
+            }
+            .msg-container>.msg-card>.body{
+              padding: 30px 10px 30px 10px;
+              text-align: center;
+            }
+            .msg-container>.msg-card>.msg-footer{
+              padding: 10px;
+              box-shadow: 0 0 2px #999;
+              background: #eee;
+            }
+            .msg-container>.msg-card>.msg-footer>button{
+              border: 1px solid goldenrod;
+              border-radius: 2px;
+              padding: 3px 10px 3px 10px;
+              margin: auto;
+              display: inline-block;
+              -webkit-transition: box-shadow .3s;
+            }
+            .msg-container>.msg-card>.msg-footer>a{
+              border: 1px solid goldenrod;
+              width: auto;
+              border-radius: 2px;
+              padding: 3px 10px 3px 10px;
+              margin: auto;
+              display: inline-block;
+              -webkit-transition: box-shadow .3s;
+              text-decoration: none;
+              color: #555;
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+            .msg-container>.msg-card>.msg-footer>a:hover{
+              box-shadow: 0 1px 2px #aaa;
+            }
+            .msg-container>.msg-card>.msg-footer>button:hover{
+              box-shadow: 0 1px 2px #aaa;
+            }
         </style>
         @yield('css')
     </head>
@@ -436,6 +508,19 @@
         </div>
         @endif
 
+        <div class="msg-container" id="general-msg">
+          <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
+            <div class="header">
+              <h3></h3>
+            </div>
+            <div class="body">
+            </div>
+            <div class="msg-footer">
+              <button type="button" name="button" id="close-btn">Cerrar</button>
+            </div>
+          </div>
+        </div>
+
         @yield('body')
 
         <div class="footer col-xs-12">
@@ -453,6 +538,18 @@
         <script>
             $(document).ready(function(){
                 $('.main-cover').width('100%');
+
+                function showMsg(title, body) {
+                  $('#general-msg').show(0);
+                  $('#general-msg>.msg-card').css('opacity',1);
+                  $('#general-msg>.msg-card').css('margin-top','100px');
+                  $('#general-msg>.msg-card').css('-webkit-transform','scale(1)');
+                  $('#general-msg>.msg-card>.header>h3').text(title);
+                  $('#general-msg>.msg-card>.body').children().remove();
+                  $.each(body, function (i, paragraph) {
+                    $('#general-msg>.msg-card>.body').append('<p>'+paragraph);
+                  });
+                }
 
                 if($(this).width() < 576){
                   $('.menu-btn').css('display','initial');

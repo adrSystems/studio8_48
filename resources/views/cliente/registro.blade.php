@@ -22,7 +22,7 @@ input[type=text]:focus{
 input[type=email]{
 	background-color: #111;
 	font-size: 20px;
-	
+
 }
 input[type=password]{
 	background-color: #111;
@@ -44,9 +44,9 @@ Registro
 <br>
     @foreach(Session::get('error') as $mensajes)
     <div class="alert alert-warning" role="alert">
-         
+
         {{$mensajes}}
-             
+
     </div>
     @endforeach
 @endif
@@ -54,9 +54,9 @@ Registro
 <br>
     @foreach(Session::get('cuenta_repetida') as $mensaje)
     <div class="alert alert-warning" role="alert">
-         
+
         {{$mensaje}}
-             
+
     </div>
     @endforeach
 @endif
@@ -97,13 +97,13 @@ Registro
 	<label class="control-label col-xs-2">Fecha de nacimiento</label>
 	<div class="col-xs-4">
 		<input type="date" name="fecha" class="form-control input-registro">
-	</div>		
+	</div>
 	</div>
 	<div class="form-group">
 	<label class="control-label col-xs-2">Subir imagen de perfil</label>
 	<div class="col-xs-4">
 		<input type="file" name="imagen" id="file"  accept="image/*">
-	</div>		
+	</div>
 	</div>
      <div class="form-group">
          <div class="col-xs-offset-2 col-xs-10">
@@ -178,7 +178,7 @@ var $formulario= $('Form');
                 required:"Este campo es requerido"
             }
         }
-        
+
     });
     $('#subir').click(function(event){
         event.stopPropagation();

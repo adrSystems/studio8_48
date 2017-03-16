@@ -61,20 +61,25 @@ class CuentaController extends Controller
     	if($request->method()=='GET'){
     		return view('cliente.login');
     	}
-    	$rules = ["email" => "required|email",
-                  "password" => "required"];
-
+    	$rules = [
+        "email" => "required|email",
+        "password" => "required"
+      ];
 
       $resultado = Validator::make($request->all(),$rules);
 
       if($resultado->fails()){
-        return back()->with("error",$resultado->messages()->all())
-        ->withInput();
+        return back()->with("msg",['title' => 'Error.',"body" =>"Proporciona todos los datos."]);
       }
       else{
         if($user = User::where('email','=', $request['email'])->first()){
             if($user->fb){
-                return back()->with("error_email",["error" =>"Esta cuenta ya está registrada con facebook"]);
+                return back()->with("msg",
+                  [
+                    'title' => 'Error.',
+                    "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
+                  ]
+                );
             }
         }
       }
@@ -83,7 +88,7 @@ class CuentaController extends Controller
         return redirect('/');
     	}
     	else{
-    		return back()->with("datos_invalidos",["datos_invalidos" =>"Los datos ingresados son incorrectos"]);
+    		return back()->with("msg",['title' => 'Error.',"body" =>"Los datos ingresados no son correctos"]);
     	}
     }
 
@@ -107,14 +112,13 @@ class CuentaController extends Controller
         $validacion=Validator::make($request->all(),$rules);
         if($validacion->fails())
         {
-            return back()->with("error",$validacion->messages()->all())
-            ->withInput();
+            return back()->with("msg",['title' => 'Error.',"body" =>"Proporciona todos los datos."]);
         }
         else
         {
           if($user=User::where('email',$request->email)->first())
           {
-              return back()->with("cuenta_repetida",["cuenta_repetida"=>"Esta email ya se encuentra registrado"]);
+              return back()->with("msg",['title' => 'Error.',"body" =>"El email ya ha sido tomado para otra cuenta."]);
           }
         	$registro = new User;
         	$registro_cliente = new Cliente;
@@ -142,7 +146,7 @@ class CuentaController extends Controller
           $registro->cuentable()->associate($registro_cliente);
       	  $registro->save();
           Mail::to($request->email)->send(new CodigoVerificacion($codigo));
-          return redirect('/login')->with("activar",["activar" =>"Verifica tu correo para activar tu cuenta"]);
+          return redirect('/login')->with("msg",['title' => 'Error.',"body" =>"Esta cuenta ya está registrada con facebook"]);
         }
     }
 
@@ -164,7 +168,7 @@ class CuentaController extends Controller
         $user->codigo_registro = null;
         $user->save();
 
-        return redirect('/login')->with("c_activada",["c_activada" => "Tu cuenta ha sido activada"]);
+        return redirect('/login')->with("msg",['title' => 'Listo!',"body" =>"La cuenta ha sido activada!"]);
     }
 
 }
