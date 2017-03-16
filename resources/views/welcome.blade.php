@@ -122,9 +122,9 @@ Studio8 48 - Inicio
       a tus amigos.
     </p>
     <hr>
-    <a href="#" class="white-btn1" style="display:block; margin:auto;text-align:center;">Iniciar sesion</a>
+    <a href="/login" class="white-btn1" style="display:block; margin:auto;text-align:center;">Iniciar sesion</a>
     <p style="margin-top:10px;text-align:center;">¿No tienes una cuenta?</p>
-    <a href="#" class="white-btn1" style="display:block; margin:auto;text-align:center;">Registrate</a>
+    <a href="/registro" class="white-btn1" style="display:block; margin:auto;text-align:center;">Registrate</a>
   </div>
 </div>
 @endif
