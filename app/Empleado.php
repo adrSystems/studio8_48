@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Empleado extends Model
 {
+    use SoftDeletes;
+
     public $timestamps = false;
 
     public function cuenta(){
@@ -20,4 +23,6 @@ class Empleado extends Model
     public function servicios(){
       return $this->belongsToMany('App\Servicio');
     }
+
+    protected $dates = ['deleted_at'];
 }

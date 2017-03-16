@@ -178,7 +178,7 @@ Studio8 48 - Inicio
 @section('js')
 <script type="text/javascript">
   $(document).ready(function() {
-    $('.login-advice').css('opacity',1);
+    $('.login-advice').css('opacity', 1);
     $('.login-advice').css('-webkit-transform','scale(1)');
 
     $('.close-btn').click(function () {
