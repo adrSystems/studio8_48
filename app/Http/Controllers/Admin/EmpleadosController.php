@@ -83,9 +83,12 @@ class EmpleadosController extends Controller
       if($request->lastName){
         $emp->apellido = $request->lastName;
       }
+      $emailMsg = "";
       if($request->email){
         $emp->cuenta->email = $request->email;
         $emp->cuenta->save();
+        Mail::to($request->email)->send(new AccountCreated($emp, $emp->cuenta));
+        $emailMsg = "Se ha enviado la contraseña al nuevo correo del empleado. (".$request->email.")";
       }
       if($request->day and $request->year){
         $emp->fecha_nacimiento = $request->year."-".$request->month."-".$request->day;
@@ -105,7 +108,8 @@ class EmpleadosController extends Controller
 
       return back()->with('msg', [
         'title' => 'Listo!',
-        'body' => 'Empleado modificado con exito.']);
+        'body' => 'Empleado modificado con exito. '.$emailMsg]);
+
     }
 
     public function kick(Request $request, $id)
@@ -116,6 +120,8 @@ class EmpleadosController extends Controller
           'body' => 'No se puede despedir al empleado puesto que es el ultimo administrador.']);
       }
       $emp = Empleado::find($id);
+      $emp->cuenta->active = 0;
+      $emp->cuenta->save();
       $emp->delete();
       return back()->with('msg', [
         'title' => 'Listo!',
@@ -125,6 +131,8 @@ class EmpleadosController extends Controller
     public function restore(Request $request, $id)
     {
       $emp = Empleado::onlyTrashed()->where('id',$id)->first();
+      $emp->cuenta->active = 1;
+      $emp->cuenta->save();
       $emp->restore();
       return back()->with('msg', [
         'title' => 'Listo!',
@@ -158,7 +166,7 @@ class EmpleadosController extends Controller
     public function emailIsRepeted(Request $request)
     {
       $emp = Empleado::find($request->id);
-      foreach(Empleado::where('id','!=',$emp->id)->get() as $otherEmpleado){
+      foreach(Empleado::withTrashed()->where('id','!=',$emp->id)->get() as $otherEmpleado){
         if($otherEmpleado->cuenta->email == $request->email)
           return ['result' => true];
       }
