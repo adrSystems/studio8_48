@@ -21,7 +21,7 @@ Studio8 48 - Personal
   h3.main-title{
     border-left: 5px solid #ed5;
     padding-left: 10px;
-    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7),0 0 10px rgba(0, 0, 0, 0.5);
     font-family: 'Lobster Two';
     color: #ed5;
   }
@@ -484,7 +484,7 @@ Studio8 48 - Personal
     -webkit-transform: scale(.3);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5), 0 0 50px rgba(0, 0, 0, 0.5);
     opacity: 0;
-    -webkit-transition: opacity .8s, -webkit-transform .8s;
+    -webkit-transition: opacity .6s, -webkit-transform .6s;
   }
   .modal-card>.header{
     border-bottom: 1px solid #ddd;
@@ -522,6 +522,23 @@ Studio8 48 - Personal
   }
   .info-summary>div>.img-container>.foto{
     width: 100%;
+  }
+  #empleados-trashed-container{
+    background-color: rgba(255, 255, 255, .8);
+    padding: 0;
+    border-radius: 3px;
+    border: 1px solid #999;
+    box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+    max-height: 500px;
+    margin-bottom: 15px;
+  }
+  #empleados-trashed-container::-webkit-scrollbar{
+    width: 7px;
+  }
+  #empleados-trashed-container::-webkit-scrollbar-thumb{
+    border-radius: 10px;
+    background-color: #888;
+    border: 1px solid #666;
   }
 </style>
 @endsection
@@ -736,7 +753,11 @@ Studio8 48 - Personal
           </div>
         </div>
         <div class="img-container col-xs-4">
+          @if($empleado->fotografia)
           <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+          @else
+          <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
+          @endif
         </div>
         <div class="col-xs-8">
           <span style="color: 000;">{{$empleado->nombre." ".$empleado->apellido}}</span>
@@ -763,10 +784,60 @@ Studio8 48 - Personal
       @endif
     </div>
     @if(\App\Empleado::count() == 1)
-    <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,.8);">{{\App\Empleado::count()." empleado encontrado."}}</p>
+    <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5); text-align:right;">{{\App\Empleado::count()." empleado encontrado."}}</p>
     @else
-    <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,.8);">{{\App\Empleado::count()." empleados encontrados."}}</p>
+    <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5); text-align:right;">{{\App\Empleado::count()." empleados encontrados."}}</p>
     @endif
+    <h4 style="text-shadow: 0 0 2px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5);color:#fff;">Despedidos ({{\App\Empleado::onlyTrashed()->count()}})</h4>
+    <div class="col-xs-12" id="empleados-trashed-container">
+      @if(App\Empleado::onlyTrashed()->count() < 1)
+      <strong>No se encontraron empleados en el sistema</strong>
+      @else
+      @foreach(App\Empleado::onlyTrashed()->get() as $empleado)
+      <div class="empleado-item">
+        <div class="options-menu empleado-options" id="{{$empleado->id}}">
+          <div class="menu-triangle-shadow menu-triangle-shadow-left">
+          </div>
+          <div class="menu-triangle-shadow menu-triangle-shadow-right">
+          </div>
+          <div class="menu-triangle">
+          </div>
+          <div class="box">
+            <a class="item info">Información</a>
+            <a class="item restore" href="/restore-personal/{{$empleado->id}}">Restaurar</a>
+          </div>
+        </div>
+        <div class="img-container col-xs-4">
+          @if($empleado->fotografia)
+          <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+          @else
+          <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
+          @endif
+        </div>
+        <div class="col-xs-8">
+          <span style="color: 000;">{{$empleado->nombre." ".$empleado->apellido}}</span>
+            @if($empleado->id == \Auth::user()->cuentable->id)
+            <span class="glyphicon glyphicon-user" aria-hidden="true" style="color:#aaa;font-size:12px;margin-left:10px;"></span>
+            @endif
+          <p class="roles">
+            @foreach($empleado->roles as $i => $rol)
+            @if($i == 0 and $i == $empleado->roles->count()-1)
+            {{"(".ucfirst($rol->nombre).")"}}
+            @elseif($i == 0)
+            {{"(".ucfirst($rol->nombre).", "}}
+            @elseif($i == $empleado->roles->count()-1)
+            {{ucfirst($rol->nombre).")"}}
+            @else
+            {{ucfirst($rol->nombre).", "}}
+            @endif
+            @endforeach
+          </p>
+        </div>
+        <i class="material-icons more-btn" id="{{$empleado->id}}">more_vert</i>
+      </div>
+      @endforeach
+      @endif
+    </div>
   </div>
 
   <div class="col-xs-12 col-md-offset-1 col-md-4 second-container">
@@ -1051,47 +1122,97 @@ Studio8 48 - Personal
           id:$('form[id=edit-emp]').children('input[type=hidden][name=empId]').val()
         }
       }).done(function (emp) {
-        var eraEstilista = false;
-        $.each(emp.roles, function (i, rol) {
-          if(rol.id == '{{\App\Rol::where("nombre","estilista")->first()->id}}'){
-            eraEstilista=true;
-          }
+        $.ajax({
+          url:'/getAdminCount',
+          type:'post',
+          dataType:'json'
+        }).done(function (count) {
+          var email = $('form[id=edit-emp]').find('input[name=email]').val();
+          $.ajax({
+            url:'/emailIsRepeted',
+            type: 'post',
+            dataType:'json',
+            data:{
+              _token: '{{csrf_token()}}',
+              id: emp.id,
+              email: email
+            }
+          }).done(function (response) {
+            var eraEstilista = false;
+            var eraAdmin = false;
+            $.each(emp.roles, function (i, rol) {
+              if(rol.id == '{{\App\Rol::where("nombre","estilista")->first()->id}}'){
+                eraEstilista=true;
+              }
+              else if(rol.id == '{{\App\Rol::where("nombre","administrador")->first()->id}}'){
+                eraAdmin = true;
+              }
+            });
+            var estilistaIndex = roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}');
+            var adminIndex = roles.indexOf('{{\App\Rol::where("nombre","administrador")->first()->id}}');
+            var year = $('form[id=edit-emp]').find('input[name=year]').val();
+            var dia = $('form[id=edit-emp]').find('input[name=day]').val();
+            if(roles.length < 1){
+              showMsg('Error!',["El empleado debe tener por lo menos un rol."]);
+            }
+            else if(estilistaIndex > -1 && serviciosCount < 1){
+              showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
+            }
+            else if(!eraEstilista && $('form[id=edit-emp]').find('textarea[name=about]').val() == '' && estilistaIndex > -1){
+              showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe especificarse la información "Acerca del estilista".']);
+            }
+            else if(!eraEstilista && $('form[id=edit-emp]').find('input[name=foto]').val() == '' && estilistaIndex > -1){
+              showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe tener una fotografía.']);
+            }
+            else if(roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}') > -1 && serviciosCount < 1){
+              showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
+            }
+            else if(eraAdmin && adminIndex < 0 && count < 2){
+              showMsg('Error!',["No es posible revocar el rol de administrador. El sistema debe contar con minimo un administrador"]);
+            }
+            else if(dia != '' && year == ''){
+              showMsg('Error!',["Especifica el año.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
+            }
+            else if(year != '' && dia == ''){
+              showMsg('Error!',["Especifica el dia.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
+            }
+            else if(dia != '' && (dia < 1 || dia > 31)){
+              showMsg('Error!',["Escriba un dia valido. (1-31)"]);
+            }
+            else if(year != '' && (year < 1900 || year > '{{date("Y")}}')){
+              showMsg('Error!',["Escriba un año valido. (1900-{{date('Y')}})"]);
+            }
+            else if(email != '' && response.result){
+              showMsg('Error!',["El correo electronico ya está asociado a otra cuenta."]);
+            }
+            else if(email != '' && !isValidEmail(email)){
+              showMsg('Error!',["El formato de email es incorrecto."]);
+            }
+            else{
+              $('form[id=edit-emp]').submit();
+            }
+          });
         });
-        var estilistaIndex = roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}');
-        var year = $('form[id=edit-emp]').find('input[name=year]').val();
-        var dia = $('form[id=edit-emp]').find('input[name=day]').val();
-        if(roles.length < 1){
-          showMsg('Error!',["El empleado debe tener por lo menos un rol."]);
-        }
-        else if(estilistaIndex > -1 && serviciosCount < 1){
-          showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
-        }
-        else if(!eraEstilista && $('form[id=edit-emp]').find('textarea[name=about]').val() == ''){
-          showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe especificarse la información "Acerca del estilista".']);
-        }
-        else if(!eraEstilista && $('form[id=edit-emp]').find('input[name=foto]').val() == ''){
-          showMsg('Error!',['Intentas otorgar el privilegio de estilista a este empleado, por lo que debe tener una fotografía.']);
-        }
-        else if(roles.indexOf('{{\App\Rol::where("nombre","estilista")->first()->id}}') > -1 && serviciosCount < 1){
-          showMsg('Error!',["Los estilistas deben aplicar por lo menos un servicio."]);
-        }
-        else if(dia != '' && year == ''){
-          showMsg('Error!',["Especifica el año.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
-        }
-        else if(year != '' && dia == ''){
-          showMsg('Error!',["Especifica el dia.","Si no deseas modificar la fecha, deja en blanco los campos dia y año."]);
-        }
-        else if(dia != '' && (dia < 1 || dia > 31)){
-          showMsg('Error!',["Escriba un dia valido. (1-31)"]);
-        }
-        else if(year != '' && (year < 1900 || year > '{{date("Y")}}')){
-          showMsg('Error!',["Escriba un año valido. (1900-{{date('Y')}})"]);
-        }
-        else{
-          $('form[id=edit-emp]').submit();
-        }
       });
     });
+
+    function isValidEmail(email) {
+      var arrobaIndex= email.indexOf('@');
+      var domain = email.slice(arrobaIndex+1, email.length);
+      if(arrobaIndex < 0){
+        return false;
+      }
+      else if(arrobaIndex == email.length - 1){
+        return false;
+      }
+      else if(email.charAt(email.length - 1) == '.'){
+        return false;
+      }
+      else if(domain.indexOf('.') < 0){
+        return false;
+      }
+      return true;
+    }
 
     $('.modal-footer>.close-btn').click(function () {
       closeModal($(this).parent().parent().parent().attr('id'));

@@ -9,6 +9,8 @@ use \App\Empleado;
 use \App\User;
 use \App\Rol;
 use Carbon\Carbon;
+use App\Mail\Empleado\AccountCreated;
+use Mail;
 
 class EmpleadosController extends Controller
 {
@@ -60,9 +62,11 @@ class EmpleadosController extends Controller
       $cuenta->cuentable_type = Empleado::class;
       $cuenta->save();
 
+      Mail::to($cuenta->email)->send(new AccountCreated($empleado,$cuenta));
+
       return back()->with('msg', [
         'title' => 'Listo!',
-        'body' => 'Empleado registrado satisfactoriamente.']);
+        'body' => 'Empleado registrado satisfactoriamente. Se ha enviado al correo del empleado la contraseña con la cual accederá al sistema.']);
     }
 
     public function edit(Request $request)
@@ -106,6 +110,11 @@ class EmpleadosController extends Controller
 
     public function kick(Request $request, $id)
     {
+      if(self::getAdminCount() < 2){
+        return back()->with('msg', [
+          'title' => 'Error!',
+          'body' => 'No se puede despedir al empleado puesto que es el ultimo administrador.']);
+      }
       $emp = Empleado::find($id);
       $emp->delete();
       return back()->with('msg', [
@@ -113,9 +122,18 @@ class EmpleadosController extends Controller
         'body' => 'El empleado '.$emp->nombre." ".$emp->apellido.' ahora está inactivo.']);
     }
 
+    public function restore(Request $request, $id)
+    {
+      $emp = Empleado::onlyTrashed()->where('id',$id)->first();
+      $emp->restore();
+      return back()->with('msg', [
+        'title' => 'Listo!',
+        'body' => 'El empleado '.$emp->nombre." ".$emp->apellido.' ahora está activo.']);
+    }
+
     public function getEmpleadoById(Request $request)
     {
-      $emp = Empleado::find($request->id);
+      $emp = Empleado::withTrashed()->where('id',$request->id)->first();
       if($emp->fotografia){
         $emp->fotografia = asset('storage/'.$emp->fotografia);
       }
@@ -124,5 +142,26 @@ class EmpleadosController extends Controller
       $emp->servicios = $emp->servicios;
       $emp->email = $emp->cuenta->email;
       return $emp;
+    }
+
+    public function getAdminCount()
+    {
+      $adminCount = 0;
+      foreach (Empleado::get() as $key => $empleado) {
+        foreach ($empleado->roles as $key => $rol) {
+          if($rol->nombre == 'administrador') $adminCount++;
+        }
+      }
+      return $adminCount;
+    }
+
+    public function emailIsRepeted(Request $request)
+    {
+      $emp = Empleado::find($request->id);
+      foreach(Empleado::where('id','!=',$emp->id)->get() as $otherEmpleado){
+        if($otherEmpleado->cuenta->email == $request->email)
+          return ['result' => true];
+      }
+      return ['result' => false];
     }
 }
