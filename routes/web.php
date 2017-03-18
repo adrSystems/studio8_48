@@ -12,8 +12,15 @@
 */
 
 Route::get('/',function (){
+  if(\App\Empleado::count() < 1){
+    return view('admin.primer-uso');
+  }
   return view('welcome');
 });
+
+//first use sign up
+Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
+//
 
 //Ayuda
 Route::get('/help',function (){
