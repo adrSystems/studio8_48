@@ -55,7 +55,7 @@ class EmpleadosController extends Controller
       }
       $cuenta = new User;
       $cuenta->email = $request->email;
-      $cuenta->password = str_random(10);
+      $cuenta->password = Hash::make(str_random(10));
       $cuenta->active = 1;
       $cuenta->fb = 0;
       $cuenta->cuentable_id = $empleado->id;

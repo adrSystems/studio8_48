@@ -188,7 +188,7 @@ Studio8 48 -Login
 @endsection
 @section('js')
 <script type="text/javascript">
-    if($(this).width() < 576){
+    if($(this).width() < 768){
       $('.login-container').css('border-right','none');
       $('.login-container').css('border-bottom','1px solid #eee');
     }
@@ -198,7 +198,7 @@ Studio8 48 -Login
     }
     $(document).ready(function () {
       $(window).resize(function () {
-        if($(this).width() < 576){
+        if($(this).width() < 768){
           $('.login-container').css('border-right','none');
           $('.login-container').css('border-bottom','1px solid #eee');
         }
