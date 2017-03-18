@@ -64,7 +64,7 @@ Studio8 48 -Login
   #contenedor{
     float: left;
     margin-top: 100px;
-    margin-bottom:60px;
+    margin-bottom:130px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     padding-top: 30px;
@@ -86,7 +86,7 @@ Studio8 48 -Login
   }
   .footer{
     box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
-    position: absolute;
+    position: fixed;
     bottom: 0;
   }
   .input-container{
@@ -117,7 +117,35 @@ Studio8 48 -Login
     -webkit-transition: box-shadow .3s;
   }
   #registro-btn:hover{
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
+  }
+  .facebook-btn{
+    border: 1px solid #fff;
+    border-radius: 2px;
+    display: table;
+    font-size: 18px;
+    color: white;
+    padding: 6px 10px 8px 10px;
+    text-decoration: none;
+    -webkit-transition: background-color .3s;
+  }
+  .facebook-btn:link{
+    color: #ddd;
+    text-decoration: none;
+  }
+  .facebook-btn:hover{
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+  }
+  .facebook-btn:visited{
+    color: #fff;
+    text-decoration: none;
+  }
+  .facebook-btn>img{
+    margin-right: 5px;
+    width: 22px;
+    margin-top: -2px;
   }
 </style>
 @endsection
@@ -143,7 +171,6 @@ Studio8 48 -Login
       <div class="input-container">
         <div class="col-xs-offset-1 col-xs-11" style="padding:0">
            <button type="submit" class="white-btn1" id="subir" style="margin:auto;">Iniciar Sesion</button>
-           <a href="/social/facebook" class="white-btn1" style="margin:auto;">Inicar Sesion con Facebook</a>
         </div>
       </div>
     </form>
@@ -151,6 +178,11 @@ Studio8 48 -Login
   <div class="col-xs-12 registro-container col-md-6">
     <h4>¿No tienes una cuenta?</h4>
     <a href="/registro" id="registro-btn">Registrate!</a>
+    <p class="" style="margin: 15px 0 15px 0;">o</p>
+    <a href="/social/facebook" class="facebook-btn" style="margin:auto;">
+      <img src="{{asset('img/facebook_logos/FB-f-Logo__white_29.png')}}" alt="">
+      Iniciar Sesión
+    </a>
   </div>
 </div>
 @endsection

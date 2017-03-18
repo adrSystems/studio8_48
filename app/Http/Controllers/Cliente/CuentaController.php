@@ -20,16 +20,16 @@ class CuentaController extends Controller
   public function getSocialAuth($provider=null)
   {
     if(!config("services.$provider")) abort('404');
-    return Socialite::driver($provider)->redirect();
+    return Socialite::with($provider)->stateless()->scopes(['email','user_birthday','public_profile'])->redirect();
   }
 
   public function getSocialAuthCallback($provider=null)
   {
-    $usuario = Socialite::driver($provider)->user();
+    $usuario = Socialite::with($provider)->stateless()->user();
     $user = User::whereEmail($usuario->getEmail())->first();
 
     if(!$user){
-      $codigo= str_random(30);
+      $codigo = str_random(30);
       $cuenta=new User;
       $cliente=new Cliente;
       $cliente->nombre=$usuario['name'];
@@ -42,12 +42,18 @@ class CuentaController extends Controller
       $cuenta->codigo_registro=null;
       $cuenta->cuentable()->associate($cliente);
       $cuenta->save();
-      Auth::login($cuenta);
+      Auth::login($user);
       return redirect ('/');
     }
     else{
       if(!$user->fb){
-        return back();
+        return redirect('/login')->with(
+          "msg",
+          [
+            'title' => 'Error.',
+            "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
+          ]
+        );
       }
       else{
         Auth::login($user);
