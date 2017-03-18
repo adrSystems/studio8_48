@@ -15,6 +15,12 @@ Route::get('/',function (){
   return view('welcome');
 });
 
+//Ayuda
+Route::get('/help',function (){
+  return view('welcome');
+});
+//
+
 //Login registro
 Route::get('/logout','Cliente\CuentaController@logout');
 Route::match(['GET','POST'],'/registro','Cliente\CuentaController@registrar');
