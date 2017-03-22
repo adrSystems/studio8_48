@@ -37,7 +37,9 @@ Route::get('/social/{provider?}', 'Cliente\CuentaController@getSocialAuth');
 Route::get('/social/callback/{provider?}', 'Cliente\CuentaController@getSocialAuthCallback');
 //
 
-//admin
+//////////////////////////////ADMIN///////////////////////////////////////////
+
+//personal
 Route::get('/personal',function (){
   return view('admin.personal');
 });
@@ -49,3 +51,18 @@ Route::post('/getAdminCount','Admin\EmpleadosController@getAdminCount');
 Route::post('/getEmpleadoById','Admin\EmpleadosController@getEmpleadoById');
 Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 //
+
+//clientes
+Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
+Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
+Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
+Route::get('/admin/clientes/info/{id?}',function ($id = null){
+  if($id == null)
+    return redirect('/admin/clientes');
+  if(!$cliente = \App\Cliente::find($id))
+    return redirect('/admin/clientes');
+  return view('admin.clientes.info', ['cliente' => $cliente]);
+});
+//
+
+//////////////////////////////////////////////////////////////////////////
