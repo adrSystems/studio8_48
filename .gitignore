@@ -1,5 +1,7 @@
 vendor/
 node_modules/
+storage
+public/storage
 
 # Laravel 4 specific
 bootstrap/compiled.php
@@ -13,3 +15,4 @@ bootstrap/cache/
 
 # Rocketeer PHP task runner and deployment package. https://github.com/rocketeers/rocketeer
 .rocketeer/
+*.env

@@ -122,9 +122,9 @@ Studio8 48 - Inicio
       a tus amigos.
     </p>
     <hr>
-    <a href="#" class="white-btn1" style="display:block; margin:auto;text-align:center;">Iniciar sesion</a>
+    <a href="/login" class="white-btn1" style="display:block; margin:auto;text-align:center;">Iniciar sesion</a>
     <p style="margin-top:10px;text-align:center;">¿No tienes una cuenta?</p>
-    <a href="#" class="white-btn1" style="display:block; margin:auto;text-align:center;">Registrate</a>
+    <a href="/registro" class="white-btn1" style="display:block; margin:auto;text-align:center;">Registrate</a>
   </div>
 </div>
 @endif
@@ -178,7 +178,7 @@ Studio8 48 - Inicio
 @section('js')
 <script type="text/javascript">
   $(document).ready(function() {
-    $('.login-advice').css('opacity',1);
+    $('.login-advice').css('opacity', 1);
     $('.login-advice').css('-webkit-transform','scale(1)');
 
     $('.close-btn').click(function () {
