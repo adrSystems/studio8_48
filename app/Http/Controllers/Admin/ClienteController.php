@@ -202,4 +202,13 @@ class ClienteController extends Controller
 
       return view('admin.clientes.info', ['cliente' => $cliente]);
     }
+
+    public function updateCredit(Request $request)
+    {
+      $cliente = Cliente::find($request->id);
+      if($cliente->credito) $cliente->credito = 0;
+      else $cliente->credito = 1;
+      $cliente->save();
+    }
+
 }

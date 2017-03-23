@@ -76,6 +76,7 @@ Route::get('/admin/clientes/edit/{id?}', function ($id = null){
   if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
   return view('admin.clientes.edit');
 });
+Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
 //
 
 //////////////////////////////////////////////////////////////////////////
