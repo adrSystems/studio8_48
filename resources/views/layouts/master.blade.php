@@ -424,6 +424,46 @@
             .msg-container>.msg-card>.msg-footer>button:hover{
               box-shadow: 0 1px 2px #aaa;
             }
+            .switch-container{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container>hover{
+              color:#fff;
+            }
+            .switch-container>span{
+              float: left;
+            }
+            .switch-container>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid #fff;
+              position: absolute;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container>.switch-bar>.active{
+              left: 50%;
+              background-color: dodgerblue;
+            }
         </style>
         @yield('css')
     </head>
@@ -540,6 +580,19 @@
         <script>
             $(document).ready(function(){
                 $('.main-cover').width('100%');
+
+                $('.switch-container').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
 
                 function showMsg(title, body) {
                   $('#general-msg').show(0);

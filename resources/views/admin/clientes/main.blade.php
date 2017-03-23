@@ -6,6 +6,15 @@ Gestión de clientes
 
 @section('css')
 <style media="screen">
+  body{
+    background: #323;
+  }
+  .nav-bar{
+      box-shadow: none;
+  }
+  .footer{
+    box-shadow: none;
+  }
   .main-title{
     color: goldenrod;
     font-family: 'Lobster Two';
@@ -214,7 +223,7 @@ Gestión de clientes
     @endif
     </div>
   </div>
-  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;">
+  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;color:rgba(255,255,255,.5)">
     {{count($clientes)}} encontrado(s).
   </p>
 </div>

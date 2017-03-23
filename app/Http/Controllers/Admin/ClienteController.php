@@ -211,4 +211,89 @@ class ClienteController extends Controller
       $cliente->save();
     }
 
+    public function edit(Request $request)
+    {
+      if(!$request->name){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el nombre. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->lastName){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el apellido. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->birthday){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar la fecha de nacimiento. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if($request->credito == null){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar si el cliente tendrá derecho a pagar a plazos y no hacerlo necesariamente en el momento. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->tel){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el celular o teléfono. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+
+      $cliente = Cliente::find($request->id);
+
+      if(!$cliente)
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Ha ocurrido un error. Intente de nuevo.'])
+        ->withInput();
+
+      $cambios = [];
+      if($request->name == $cliente->nombre
+      and $request->lastName == $cliente->apellido
+      and $request->birthday == $cliente->fecha_nacimiento
+      and $request->tel == $cliente->telefono
+      and $request->credito == $cliente->credito)
+        return back()->with('msg', [
+          'title' => 'Nada ha pasado!',
+          'body' => 'No se detectaron cambios.'])
+        ->withInput();
+      if($request->name != $cliente->nombre){
+        $cliente->nombre = $request->name;
+        $cambios[] = "nombre";
+      }
+      if($request->lastName != $cliente->apellido){
+        $cliente->apellido = $request->lastName;
+        $cambios[] = "apellido";
+      }
+      if($request->birthday != $cliente->fecha_nacimiento){
+        $cliente->fecha_nacimiento = $request->birthday;
+        $cambios[] = "fecha de nacimiento";
+      }
+      if($request->tel != $cliente->telefono){
+        $cliente->telefono = $request->tel;
+        $cambios[] = "teléfono";
+      }
+      if($request->credito != $cliente->credito){
+        $cliente->credito = intval(boolval($request->credito));
+        $cambios[] = "credito";
+      }
+      $cliente->save();
+      $cambios[0] = ucfirst($cambios[0]);
+      $cambiosStr = "";
+      for ($i=0; $i < count($cambios); $i++)
+      {
+        if($i == count($cambios) - 1) $cambiosStr .= $cambios[$i].".";
+        else $cambiosStr .= $cambios[$i].", ";
+      }
+
+      return redirect('/admin/clientes/info/'.$cliente->id)->with('msg', [
+        'title' => 'Operación realizada correctamente!',
+        'body' => 'Cambios realizados en: '.$cambiosStr]);
+    }
+
 }

@@ -216,7 +216,7 @@ $(document).ready(function () {
 
   $('#credito-help').click(function () {
     showMsg('Sobre el credito a clientes',[
-      'Activando esta opción, se le permitirá al cliente realizar los pagos de sus servicios en multiples pagos.',
+      'Activando esta opción, se le permitirá al cliente pagar sus servicios en multiples pagos.',
       'Podrá cambiar esta opción en cualquier momento en las opciones del cliente.'
     ]);
   });
