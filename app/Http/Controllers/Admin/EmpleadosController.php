@@ -11,9 +11,38 @@ use \App\Rol;
 use Carbon\Carbon;
 use App\Mail\Empleado\AccountCreated;
 use Mail;
+use Hash;
 
 class EmpleadosController extends Controller
 {
+
+    public function addAdminOnFirstUse(Request $request)
+    {
+      $admin = new Empleado;
+      $admin->nombre = $request->name;
+      $admin->apellido = $request->lastName;
+      $admin->fecha_nacimiento = $request->birthday;
+      $esEstilista = in_array(Rol::where('nombre','estilista')->first()->id, $request->roles);
+      if($esEstilista){
+        $admin->info = $request->about;
+        $admin->fotografia = $request->foto->store('img/profile_photos','public');
+      }
+      $admin->fecha_registro = date("Y-m-d");
+      $admin->save();
+      $admin->roles()->attach($request->roles);
+
+      $cuenta = new User;
+      $cuenta->email = $request->email;
+      $cuenta->password = Hash::make($request->password);
+      $cuenta->active = 1;
+      $cuenta->fb = 0;
+      $cuenta->cuentable_id = $admin->id;
+      $cuenta->cuentable_type = Empleado::class;
+      $cuenta->save();
+
+      return redirect('/login');
+    }
+
     public function add(Request $request)
     {
       if(Validator::make($request->all(), [
@@ -48,6 +77,7 @@ class EmpleadosController extends Controller
         $empleado->info = $request->about;
         $empleado->fotografia = $request->foto->store('img/profile_photos','public');
       }
+      $empleado->fecha_registro = date("Y-m-d");
       $empleado->save();
       $empleado->roles()->attach($request->roles);
       if($esEstilista){
@@ -55,14 +85,15 @@ class EmpleadosController extends Controller
       }
       $cuenta = new User;
       $cuenta->email = $request->email;
-      $cuenta->password = str_random(10);
+      $password = str_random(10);
+      $cuenta->password = Hash::make($password);
       $cuenta->active = 1;
       $cuenta->fb = 0;
       $cuenta->cuentable_id = $empleado->id;
       $cuenta->cuentable_type = Empleado::class;
       $cuenta->save();
 
-      Mail::to($cuenta->email)->send(new AccountCreated($empleado,$cuenta));
+      Mail::to($cuenta->email)->send(new AccountCreated($empleado,$cuenta,$password));
 
       return back()->with('msg', [
         'title' => 'Listo!',
