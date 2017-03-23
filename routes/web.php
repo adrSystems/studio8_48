@@ -13,6 +13,20 @@
 
 Route::get('/',function (){
   if(\App\Empleado::count() < 1){
+    if(\App\Rol::count() < 1){
+      $rol = new \App\Rol;
+      $rol->nombre = "administrador";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "estilista";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "marketing";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "recepcionista";
+      $rol->save();
+    }
     return view('admin.primer-uso');
   }
   return view('welcome');
@@ -56,12 +70,11 @@ Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
 Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
 Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
-Route::get('/admin/clientes/info/{id?}',function ($id = null){
-  if($id == null)
-    return redirect('/admin/clientes');
-  if(!$cliente = \App\Cliente::find($id))
-    return redirect('/admin/clientes');
-  return view('admin.clientes.info', ['cliente' => $cliente]);
+Route::get('/admin/clientes/info/{id?}','Admin\ClienteController@getDetailsForPersonalInfoView');
+Route::get('/admin/clientes/edit/{id?}', function ($id = null){
+  if(!$id) return redirect('/admin/clientes');
+  if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
+  return view('admin.clientes.edit');
 });
 //
 

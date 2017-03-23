@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use Validator;
 use App\Cliente;
 use App\User;
+use Carbon\Carbon;
 
 class ClienteController extends Controller
 {
@@ -32,13 +33,12 @@ class ClienteController extends Controller
         return back()->with('msg', ['title' => 'Ups!', 'body' => 'El cliente ya ha sido registrado en el sistema.'])
                ->withInput();
 
-      return $request->all();
-
       $cliente = new Cliente;
       $cliente->nombre = $request->name;
       $cliente->apellido = $request->lastName;
       $cliente->fecha_nacimiento = $request->birthday;
       $cliente->telefono = $request->tel;
+      $cliente->fecha_registro = date("Y-m-d");
       if($request->credito) $cliente->credito = 1;
       else $cliente->credito = 0;
       $cliente->save();
@@ -60,7 +60,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio')){
+          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
             $deudor=true;
           }
         }
@@ -93,7 +93,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio')){
+          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
             $deudor=true;
           }
         }
@@ -145,5 +145,61 @@ class ClienteController extends Controller
         }
       }
       return $clientes;
+    }
+
+    public function getDetailsForPersonalInfoView(Request $request, $id = null)
+    {
+      if($id == null)
+        return redirect('/admin/clientes');
+
+      if(!$cliente = \App\Cliente::find($id))
+        return redirect('/admin/clientes');
+
+      $cliente->edad  = \Carbon\Carbon::createFromFormat('Y-m-d',$cliente->fecha_nacimiento)->diffInYears(\Carbon\Carbon::now());
+
+      //determinar antiguedad
+      $antiguedad = Carbon::createFromFormat('Y-m-d', $cliente->fecha_registro)->diffInDays(Carbon::now());
+
+      if($antiguedad < 32)
+        $cliente->antiguedad = ['medida' => 'dia(s)', 'tiempo' => $antiguedad];
+      elseif($antiguedad < 365)
+        $cliente->antiguedad = [
+        'medida' => 'mes(es)',
+        'tiempo' => Carbon::createFromFormat('Y-m-d', $cliente->fecha_registro)->diffInMonths(Carbon::now())
+      ];
+      else
+        $cliente->antiguedad = [
+        'medida' => 'año(s)',
+        'tiempo' => Carbon::createFromFormat('Y-m-d', $cliente->fecha_registro)->diffInYears(Carbon::now())
+      ];
+
+      //determinar si es deudor
+      $deudor = false;
+      foreach ($cliente->citas as $cita) {
+        $aPagar=0;
+        foreach ($cita->servicios() as $servicio) {
+          $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+        }
+        $cita->monto = $aPagar;
+        if($cita->pagos()->sum('cantidad') < $aPagar)
+        {
+          $deudor=true;
+          $cita->pagada = false;
+        }
+        else $cita->pagada = true;
+      }
+      foreach ($cliente->compras as $compra) {
+        if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+          $deudor=true;
+        }
+      }
+
+      $cliente->esDeudor = $deudor;
+      $cliente->citas = $cliente->citas;
+      $cliente->compras = $cliente->compras;
+
+      //por cada compra determinar monto y si fue pagada
+
+      return view('admin.clientes.info', ['cliente' => $cliente]);
     }
 }
