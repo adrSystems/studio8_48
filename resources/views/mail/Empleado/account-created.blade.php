@@ -48,7 +48,7 @@
       <p>Haz sido autorizado como empleado. A continuación la información de tu cuenta:</p>
       <p>
         Email: {{$cuenta->email}}<br>
-        Contraseña: {{$cuenta->password}}
+        Contraseña: {{$password}}
       </p>
       <p>Podrás cambiar tu foto de perfil, tu contraseña y otra información dentro de la sección "Mi cuenta" una vez iniciada sesión.</p>
     </div>

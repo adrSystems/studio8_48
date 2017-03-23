@@ -11,23 +11,76 @@
 |
 */
 
-Route::get('/', function () {
-
-
-
-    //$cuenta = App\User::find(1);
-    //Auth::login($cuenta);
-
-    return view('welcome');
+Route::get('/',function (){
+  if(\App\Empleado::count() < 1){
+    if(\App\Rol::count() < 1){
+      $rol = new \App\Rol;
+      $rol->nombre = "administrador";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "estilista";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "marketing";
+      $rol->save();
+      $rol = new \App\Rol;
+      $rol->nombre = "recepcionista";
+      $rol->save();
+    }
+    return view('admin.primer-uso');
+  }
+  return view('welcome');
 });
+
+//first use sign up
+Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
+//
+
+//Ayuda
+Route::get('/help',function (){
+  return view('welcome');
+});
+//
 
 Route::get('/logout',function (){
   Auth::logout();
   return redirect('/');
 });
+
+//cuenta
 Route::match(["GET","POST"],'/enviarmensajeC',"Cliente\ClienteController@enviarMensaje");
 Route::match(["GET","POST"],'/modificarcuenta',"Cliente\ClienteController@modificarCuenta");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirfoto");
 Route::get('/micuenta', function(){
   return view('user.micuenta');
 });
+//
+
+//////////////////////////////ADMIN///////////////////////////////////////////
+
+//personal
+Route::get('/personal',function (){
+  return view('admin.personal');
+});
+Route::post('/add-personal','Admin\EmpleadosController@add');
+Route::post('/edit-personal','Admin\EmpleadosController@edit');
+Route::get('/kick-personal/{id}','Admin\EmpleadosController@kick');
+Route::get("/restore-personal/{id}",'Admin\EmpleadosController@restore');
+Route::post('/getAdminCount','Admin\EmpleadosController@getAdminCount');
+Route::post('/getEmpleadoById','Admin\EmpleadosController@getEmpleadoById');
+Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
+//
+
+//clientes
+Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
+Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
+Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
+Route::get('/admin/clientes/info/{id?}','Admin\ClienteController@getDetailsForPersonalInfoView');
+Route::get('/admin/clientes/edit/{id?}', function ($id = null){
+  if(!$id) return redirect('/admin/clientes');
+  if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
+  return view('admin.clientes.edit');
+});
+//
+
+//////////////////////////////////////////////////////////////////////////

@@ -13,5 +13,14 @@ class Cliente extends Model
     }
     public function mensajes(){
       return $this->hasMany('App\Mensaje');
+
+    public function citas()
+    {
+      return $this->hasMany('App\Cita');
+    }
+
+    public function compras()
+    {
+      return $this->hasMany('App\Compra');
     }
 }

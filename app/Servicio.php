@@ -10,6 +10,6 @@ class Servicio extends Model
       return $this->belongsToMany('App\Empleado');
     }
     public function citas(){
-      return $this->belongsToMany('App\Cita');
+      return $this->belongsToMany('App\Cita')->withPivot('descuento');
     }
 }

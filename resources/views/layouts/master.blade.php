@@ -391,6 +391,7 @@
             .msg-container>.msg-card>.body{
               padding: 30px 10px 30px 10px;
               text-align: center;
+              color: #777;
             }
             .msg-container>.msg-card>.msg-footer{
               padding: 10px;
@@ -402,6 +403,7 @@
               border-radius: 2px;
               padding: 3px 10px 3px 10px;
               margin: auto;
+              color: #777;
               display: inline-block;
               -webkit-transition: box-shadow .3s;
             }
@@ -464,7 +466,7 @@
           <a href="#">Citas</a>
           <a href="#">Gestion de productos</a>
           <a href="#">Gestion de servicios</a>
-          <a href="#">Clientes</a>
+          <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>
           <a href="#">Promociones y concursos</a>
@@ -489,7 +491,7 @@
             <a href="#" class="menu-item-children" id="1">Citas</a>
             <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
             <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
-            <a href="#" class="menu-item-children" id="1">Clientes</a>
+            <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
             <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
             <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>

@@ -16,6 +16,10 @@ class Cita extends Model
       return $this->belongsToMany('App\Producto');
     }
     public function servicios(){
-      return $this->belongsToMany('App\Servicio');
+      return $this->belongsToMany('App\Servicio')->withPivot('descuento');
+    }
+    public function pagos()
+    {
+      return $this->morphMany('App\Pago','pagable');
     }
 }
