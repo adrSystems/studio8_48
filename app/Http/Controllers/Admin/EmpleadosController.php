@@ -27,6 +27,7 @@ class EmpleadosController extends Controller
         $admin->info = $request->about;
         $admin->fotografia = $request->foto->store('img/profile_photos','public');
       }
+      $admin->fecha_registro = date("Y-m-d");
       $admin->save();
       $admin->roles()->attach($request->roles);
 
@@ -76,6 +77,7 @@ class EmpleadosController extends Controller
         $empleado->info = $request->about;
         $empleado->fotografia = $request->foto->store('img/profile_photos','public');
       }
+      $empleado->fecha_registro = date("Y-m-d");
       $empleado->save();
       $empleado->roles()->attach($request->roles);
       if($esEstilista){
