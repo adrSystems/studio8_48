@@ -6,26 +6,37 @@ Registro de cliente
 
 @section('css')
 <style media="screen">
-#add-container{
-  padding: 0;
-  overflow:hidden;
-  color: #578;
-  background-color: #222;
-  border-radius: 3px;
-  border: 1px solid #333;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
-  margin-bottom: 15px;
+body{
+  background-color: #412;
 }
-#add-container>.header>h4{
+.footer{
+  background-color: rgba(0, 0, 0, 0.5);
+  box-shadow: none;
+}
+.nav-bar{
+  background-color: rgba(0, 0, 0, 0.5);
+  border-bottom: none;
+}
+.card{
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, .09);
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 0;
+  padding-bottom: 15px;
+  overflow: hidden;
+}
+.card>.header>h4{
   color: #fff;
   font-family: 'Lobster Two';
   padding: 15px;
   margin: 0;
 }
-#add-container>.header{
-  background-color: #111;
+.card>.header{
+  background: linear-gradient(to bottom,rgba(255, 255, 255, 0.08),rgba(255, 255, 255, 0.04));
   margin:0;
-  box-shadow: inset 0 -1px 5px #000;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
   padding: 15px;
   padding-left: 5%;
   padding-right: 5%;
@@ -45,22 +56,24 @@ Registro de cliente
   margin-bottom: 50px;
 }
 .btn1{
-  background: linear-gradient(to bottom, #444, #222);
-  border: 1px solid goldenrod;
-  color: gold;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
+  border: 1px solid rgba(0, 0, 0, 0.7);
+  color: #ddd;
   text-shadow: 0 0 3px rgba(0, 0, 0, .8);
   padding: 3px 15px 5px 15px;
   font-size: 16px;
   border-radius: 3px;
-  -webkit-transition: box-shadow .3s;
+  -webkit-transition: box-shadow .3s, color .4s, border .4s;
 }
 .btn1:hover{
   box-shadow: 0 1px 3px #000;
+  color: gold;
+  border-color: goldenrod;
 }
 .white-textbox{
   background-color: rgba(0,0,0,.05);
   box-shadow:inset 0 0 5px #000;
-  border: 1px solid #333;
+  border: 1px solid rgba(255, 255, 255, 0.4);
   color: #aaa;
   border-radius: 5px;
   padding: 4px 8px 4px 8px;
@@ -73,6 +86,7 @@ Registro de cliente
 }
 .white-textbox:hover{
   background-color: rgba(255,255,255,.03);
+  border-color: rgba(255, 255, 255, 0.5);
   color: #ccc;
 }
 .white-textbox:focus{
@@ -147,16 +161,47 @@ Registro de cliente
 .btn2:visited{
   color: #eee;
 }
+.icon-btn{
+  text-decoration: none;
+  color: #def;
+  cursor: pointer;
+  display: table;
+  padding: 4px 5px 0 5px;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  margin-left: 10px;
+  float: right;
+  -webkit-transition: color .4s, box-shadow .4s, text-shadow .6s, margin-right .6s, background-color .7s;
+}
+.icon-btn:active{
+  color: #ddd;
+}
+.icon-btn:visited{
+  color: #ddd;
+}
+.icon-btn:hover{
+  color: #fff;
+  text-decoration: none;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 1);
+  text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+}
+.icon-btn>span{
+  padding: 1px 5px 5px 5px;
+  float: right;
+}
 </style>
 @endsection
 
 @section('body')
 <div class="main-container">
-  <div class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0 5px 0 5px; margin-top: 15px; margin-bottom: 15px;">
-    <a href="/admin/clientes" class="btn btn-xs btn2">< Volver a todos los clientes</a>
+  <div class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0 5px 0 5px;">
+    <a href="/admin/clientes" class="icon-btn">
+      <i class="material-icons">arrow_back</i>
+      <span>Volver a todos los clientes</span>
+    </a>
   </div>
   <div class="col-xs-12" style="padding: 0 5px 0 5px">
-    <div class="col-xs-12 col-md-6 col-md-offset-3" id="add-container">
+    <div class="col-xs-12 col-md-6 col-md-offset-3 card">
       <div class="header">
         <h4>Datos del nuevo cliente</h4>
       </div>
@@ -164,22 +209,22 @@ Registro de cliente
         <form class="form-vertical" action="/clientes/agregar" method="post">
           <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="form-group">
-            <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">Nombre</label>
-            <input type="text" name="name" value="{{old('name')}}" class="white-textbox col-xs-12 col-md-6 col-md-offset-3">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Nombre</label>
+            <input type="text" name="name" value="{{old('name')}}" class="white-textbox col-xs-12 col-xs-12 col-md-10 col-md-offset-1">
           </div>
           <div class="form-group">
-            <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">Apellido</label>
-            <input type="text" name="lastName" value="{{old('lastName')}}" class="white-textbox col-xs-12 col-md-6 col-md-offset-3">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Apellido</label>
+            <input type="text" name="lastName" value="{{old('lastName')}}" class="white-textbox col-xs-12 col-md-10 col-md-offset-1">
           </div>
           <div class="form-group">
-            <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">Fecha de nacimiento</label>
-            <input type="date" name="birthday" value="{{old('birthday')}}" class="white-textbox col-xs-12 col-md-6 col-md-offset-3">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Fecha de nacimiento</label>
+            <input type="date" name="birthday" value="{{old('birthday')}}" class="white-textbox col-xs-12 col-md-10 col-md-offset-1">
           </div>
           <div class="form-group">
-            <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">Celular o Telefono</label>
-            <input type="tel" name="tel" value="{{old('tel')}}" class="white-textbox col-xs-12 col-md-6 col-md-offset-3">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Celular o Telefono</label>
+            <input type="tel" name="tel" value="{{old('tel')}}" class="white-textbox col-xs-12 col-md-10 col-md-offset-1">
           </div>
-          <div class="form-group col-xs-12 col-md-6 col-md-offset-3 checkbox-container" style="padding:0; margin-bottom:0">
+          <div class="form-group col-xs-12 col-md-10 col-md-offset-1 checkbox-container" style="padding:0; margin-bottom:0">
             @if(old('credito'))
             <input type="checkbox" name="credito" class="" checked="true"><span>Activar credito</span>
             @else
@@ -187,7 +232,7 @@ Registro de cliente
             @endif
           </div>
           <div class="form-group">
-            <p class="help-toggle col-xs-12 col-md-6 col-md-offset-3" id="credito-help">¿Que es esto?</p>
+            <p class="help-toggle col-xs-12 col-md-10 col-md-offset-1" id="credito-help">¿Que es esto?</p>
           </div>
           <div class="form-group" style="width: 100%; float:left;margin-top:15px">
             <button type="submit" name="button" class="btn1 col-xs-12 col-md-6 col-md-offset-3">Agregar</button>

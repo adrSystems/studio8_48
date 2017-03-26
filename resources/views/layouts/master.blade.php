@@ -464,6 +464,116 @@
               left: 50%;
               background-color: dodgerblue;
             }
+            .main-container{
+              float: left;
+              color: #bbb;
+              width: 100%;
+              margin-top: 100px;
+              margin-bottom: 40px;
+            }
+            .main-title{
+              font-family: 'Lobster Two';
+              color: #aaa;
+            }
+            .card{
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+              border-radius: 3px;
+              border: 1px solid rgba(0, 0, 0, .09);
+              background-color: rgba(0, 0, 0, 0.5);
+              padding: 0;
+              padding-bottom: 15px;
+              overflow: hidden;
+            }
+            .card>.header>h4{
+              color: #fff;
+              font-family: 'Lobster Two';
+              padding: 15px;
+              margin: 0;
+            }
+            .card>.header{
+              background: linear-gradient(to bottom,rgba(255, 255, 255, 0.08),rgba(255, 255, 255, 0.04));
+              margin:0;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 15px;
+              width: 110%;
+              margin-left: -5%;
+            }
+            .btn3{
+              background: linear-gradient(to bottom, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
+              border: 1px solid #111;
+              color: #ddd;
+              text-shadow: 0 0 3px rgba(0, 0, 0, .8);
+              padding: 3px 15px 5px 15px;
+              font-size: 16px;
+              border-radius: 3px;
+              -webkit-transition: box-shadow .3s, color .4s, border .4s;
+            }
+            .btn3:hover{
+              box-shadow: 0 1px 3px #000;
+              color: gold;
+              border-color: goldenrod;
+            }
+            .textbox1{
+              background-color: rgba(0,0,0,.05);
+              box-shadow:inset 0 0 5px #000;
+              border: 1px solid rgba(255, 255, 255, 0.4);
+              color: #aaa;
+              border-radius: 5px;
+              padding: 4px 8px 4px 8px;
+              margin-bottom: 10px;
+              -webkit-transition: color .4s, background-color .3s, box-shadow .4s;
+            }
+            .textbox1-xs{
+              height: 35px;
+              padding-bottom: 7px;
+            }
+            .textbox1:hover{
+              background-color: rgba(255,255,255,.03);
+              border-color: rgba(255, 255, 255, 0.5);
+              color: #ccc;
+            }
+            .textbox1:focus{
+              background-color: rgba(0,0,0,.1);
+              box-shadow:inset 0 0 10px #000;
+              color: #fff;
+              text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+              outline: none;
+            }
+            ::-webkit-clear-button {
+              font-size: 14px;
+              height: 28px;
+              position: relative;
+              right: 5px;
+              margin-right: 4px;
+            }
+            ::-webkit-inner-spin-button {
+              height: 10px;
+              opacity: 0;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator {
+              font-size: 12px;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator:hover{
+              color:#fff;
+            }
+            ::-webkit-datetime-edit-month-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-day-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-year-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
         </style>
         @yield('css')
     </head>
