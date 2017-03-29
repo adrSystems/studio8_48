@@ -301,7 +301,7 @@ Modificar cliente
 
 @section('js')
 <script type="text/javascript">
-if($('.main-container').height() + 380 < $(window).height()){
+if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
   $('.footer').css({
     position:'absolute',
     bottom:'0'
@@ -343,7 +343,7 @@ $(document).ready(function () {
   });
 
   $(window).resize(function () {
-    if($('.main-container').height() + 380 < $(window).height()){
+    if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
       $('.footer').css({
         position:'absolute',
         bottom:'0'

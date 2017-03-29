@@ -7,25 +7,28 @@ Nueva cita
 @section('css')
 <style media="screen">
   body{
-    background-color: #023;
+    background-color: #334;
   }
   .footer{
-    background-color: rgba(255, 255, 255, 0.07);
+    background-color: #223;
     box-shadow: none;
   }
   .nav-bar{
-    background-color: #134;
+    background-color: #223;
+    box-shadow: none;
     border-bottom-color: transparent;
   }
   .card{
-    background-color: rgba(0, 0, 0, 0.1);
     padding-bottom: 30px;
-    border-color: rgba(0, 0, 0, 0.28);
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    margin-bottom: 15px;
+  }
+  .main-title{
+    margin-right: 0;
+    float: left;
+    color: #fff;
   }
   .main-container{
-      padding-left: 10px;
-      padding-right: 10px;
+    padding: 0;
   }
   label{
     font-weight: lighter;
@@ -193,18 +196,37 @@ Nueva cita
     border-right: 1px solid rgba(255, 255, 255, 0.1);
   }
   .options-container>.active{
-    background-color: #134;
+    background-color: #334;
     color: #ddd;
+  }
+  th{
+    font-weight: 100;
+    color: white;
+  }
+  table{
+    width: 100%;
+  }
+  .icon-btn1{
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    display: block;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    margin: auto;
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .icon-btn1:hover{
+    color: rgba(255, 255, 255, 0.95);
   }
 </style>
 @endsection
 
 @section('body')
 <div class="main-container">
-  <div class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">
-    <h3 class="main-title" style="float:left;color:goldenrod;margin-top:0">Nueva cita para {{$cliente->nombre}}</h3>
+  <div class="col-xs-12" style="">
+    <h3 class="main-title" style="">Nueva cita para {{$cliente->nombre}}</h3>
   </div>
-  <div class="col-xs-12 col-md-6 col-md-offset-3" style="padding:0">
+  <div class="col-xs-12">
     <a href="/admin/clientes" class="icon-btn">
       <i class="material-icons">arrow_back</i>
       <span>Volver a todos los clientes</span>
@@ -214,107 +236,146 @@ Nueva cita
       <span>Detalles de {{$cliente->nombre}}</span>
     </a>
   </div>
-  <div class="card col-xs-12 col-md-6 col-md-offset-3">
-    <div class="header">
-      <h4>Datos de la cita</h4>
-    </div>
-    <div class="body">
-      <form class="form-vertical" action="/admin/citas/agregar" method="post">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
-        <input type="hidden" name="estilista" value="{{old('estilista')}}">
-        <input type="hidden" name="today" value="@if(old('today')){{old('today')}}@else{{'1'}}@endif">
-        <input type="hidden" name="tomorrow" value="{{old('tomorrow')}}">
-        <input type="hidden" name="now" value="@if(old('now')){{old('now')}}@else{{'1'}}@endif">
-        <div class="form-group" style="padding:15px;">
-          <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Selecciona la Fecha</label>
-          <div class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">
-            <div class="options-container">
-              <div class="option-item active" id="today">Hoy</div>
-              <div class="option-item option-item-middle" id="tomorrow">Mañana</div>
-              <div class="option-item" id="other">Otra</div>
-            </div>
-          </div>
-          <input type="date" name="date" value="{{old('date')}}" class="textbox1 col-xs-12 col-md-10 col-md-offset-1" style="display:none">
-        </div>
-        <div class="form-group" style="padding:15px;">
-          <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Selecciona la hora</label>
-          <div class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">
-            <div class="options-container">
-              <div class="option-item active" id="now">Ahora mismo</div>
-              <div class="option-item" id="otherTime">Otra</div>
-            </div>
-          </div>
-          <input type="time" name="time" value="{{old('time')}}" class="textbox1 col-xs-12 col-md-10 col-md-offset-1" style="display:none">
-        </div>
-        <h5 class="col-xs-12 col-md-10 col-md-offset-1">Servicios a aplicar</h5>
-        <div class="col-xs-12">
-          <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding-top:15px">
-            @if(\App\Servicio::count() < 1)
-            <p style="margin-top: 10px;">No se encontraron servicios. Agrega servicios para poder agregar una cita.</p>
-            @else
-            @foreach(\App\Servicio::get() as $servicio)
-            <div class="item col-xs-12 col-sm-6" style="padding:0">
-              <div class="img-container">
-                <div class="shadow" id="{{$servicio->id}}">
-                  <i class="material-icons">check</i>
-                </div>
-                <img src="{{asset($servicio->icono)}}" alt="">
-              </div>
-              <div class="info">
-                <span style="color:#ddd;font-size:14px;">{{$servicio->nombre}}</span><br>
-                ${{$servicio->precio}} pesos<br>
-                  Tiempo aprox: {{date('G:i',strtotime($servicio->tiempo))}}
-              </div>
-            </div>
+  <div class="col-xs-12 col-md-5">
+    <div class="card">
+      <div class="header">
+        <h4>Citas de hoy</h4>
+      </div>
+      <div class="body">
+        @if(\App\Cita::whereDate('fecha_hora',date('Y-m-d'))->count() < 1)
+        <p style="text-align:center;padding-top:10px;margin-bottom:0;">No se encontraron citas programadas.</p>
+        @else
+        <table id="table-citas">
+          <thead>
+            <th style="padding-left:10px">Cliente</th>
+            <th>Estilista</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th></th>
+          </thead>
+          <tbody>
+            @foreach(\App\Cita::whereDate('fecha_hora',date('Y-m-d'))->get() as $cita)
+            <tr class="" style="width:100%">
+              <td style="padding-left:10px">{{$cita->cliente->nombre." ".$cita->cliente->apellido}}</td>
+              <td>{{$cita->empleado->nombre." ".$cita->empleado->apellido}}</td>
+              <td>{{date('H:i',strtotime($cita->fecha_hora))}}</td>
+              <td>{{$estados[$cita->estado]}}</td>
+              <td>
+                <i class="material-icons icon-btn1">info</i>
+              </td>
+            </tr>
             @endforeach
-            @endif
+          </tbody>
+        </table>
+        @endif
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-md-7">
+    <div class="card">
+      <div class="header">
+        <h4>Datos de la cita</h4>
+      </div>
+      <div class="body">
+        <form class="form-vertical" action="/admin/citas/agregar" method="post">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
+          <input type="hidden" name="cliente" value="{{$cliente->id}}">
+          <input type="hidden" name="estilista" value="{{old('estilista')}}">
+          <input type="hidden" name="today" value="@if(old('today')){{old('today')}}@else{{'1'}}@endif">
+          <input type="hidden" name="tomorrow" value="{{old('tomorrow')}}">
+          <input type="hidden" name="now" value="@if(old('now')){{old('now')}}@else{{'1'}}@endif">
+          <div class="form-group" style="padding:15px;">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Selecciona la Fecha</label>
+            <div class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">
+              <div class="options-container">
+                <div class="option-item active" id="today">Hoy</div>
+                <div class="option-item option-item-middle" id="tomorrow">Mañana</div>
+                <div class="option-item" id="other">Otra</div>
+              </div>
+            </div>
+            <input type="date" name="date" value="{{old('date')}}" class="textbox1 col-xs-12 col-md-10 col-md-offset-1" style="display:none">
           </div>
-          <p style="text-align:right;padding:0" id="servicios-info" class="col-xs-12 col-md-10 col-md-offset-1"></p>
-        </div>
-        <div class="col-xs-12" style="padding:0" id="estilistas-container">
-          <h5 class="col-xs-12 col-md-10 col-md-offset-1">Estilista de preferencia</h5>
+          <div class="form-group" style="padding:15px;">
+            <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Selecciona la hora</label>
+            <div class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">
+              <div class="options-container">
+                <div class="option-item active" id="now">Ahora mismo</div>
+                <div class="option-item" id="otherTime">Otra</div>
+              </div>
+            </div>
+            <input type="time" name="time" value="{{old('time')}}" class="textbox1 col-xs-12 col-md-10 col-md-offset-1" style="display:none">
+          </div>
+          <h5 class="col-xs-12 col-md-10 col-md-offset-1">Servicios a aplicar</h5>
           <div class="col-xs-12">
-            <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding: 0;padding-top: 15px;">
-              @if(\App\Rol::where('nombre','estilista')->first()->empleados()->count() < 1)
-              <p style="margin: 0px;padding:15px;padding-top:0">No se encontraron estilistas. Agrega estilistas para poder agregar una cita.</p>
+            <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding-top:15px">
+              @if(\App\Servicio::count() < 1)
+              <p style="margin-top: 10px;">No se encontraron servicios. Agrega servicios para poder agregar una cita.</p>
               @else
-              @foreach(\App\Rol::where('nombre','estilista')->first()->empleados as $estilista)
-              <div class="col-xs-12 col-md-4 col-sm-4 col-lg-3">
-                <div class="estilista-item">
-                  <div class="img-container">
-                    <div class="shadow" id="{{$estilista->id}}">
-                      <i class="material-icons">check</i>
-                    </div>
-                    <div class="inactive" id="{{$estilista->id}}"></div>
-                    <img src="{{asset('storage/'.$estilista->fotografia)}}" alt="">
+              @foreach(\App\Servicio::get() as $servicio)
+              <div class="item col-xs-12 col-sm-6" style="padding:0">
+                <div class="img-container">
+                  <div class="shadow" id="{{$servicio->id}}">
+                    <i class="material-icons">check</i>
                   </div>
-                  <div class="name">
-                    {{$estilista->nombre." ".$estilista->apellido}}
-                  </div>
+                  <img src="{{asset($servicio->icono)}}" alt="">
+                </div>
+                <div class="info">
+                  <span style="color:#ddd;font-size:14px;">{{$servicio->nombre}}</span><br>
+                  ${{$servicio->precio}} pesos<br>
+                    Tiempo aprox: {{date('G:i',strtotime($servicio->tiempo))}}
                 </div>
               </div>
               @endforeach
               @endif
             </div>
+            <p style="text-align:right;padding:0" id="servicios-info" class="col-xs-12 col-md-10 col-md-offset-1"></p>
           </div>
-          <div class="col-xs-12 col-md-10 col-md-offset-1">
-            <p style="text-align:right" class="help-toggle" id="select-est-help">¿Porque no puedo seleccionar a un estilista?</p>
+          <div class="col-xs-12" style="padding:0" id="estilistas-container">
+            <h5 class="col-xs-12 col-md-10 col-md-offset-1">Estilista de preferencia</h5>
+            <div class="col-xs-12">
+              <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding: 0;padding-top: 15px;">
+                @if(\App\Rol::where('nombre','estilista')->first()->empleados()->count() < 1)
+                <p style="margin: 0px;padding:15px;padding-top:0">No se encontraron estilistas. Agrega estilistas para poder agregar una cita.</p>
+                @else
+                @foreach(\App\Rol::where('nombre','estilista')->first()->empleados as $estilista)
+                <div class="col-xs-12 col-md-4 col-sm-4 col-lg-3">
+                  <div class="estilista-item">
+                    <div class="img-container">
+                      <div class="shadow" id="{{$estilista->id}}">
+                        <i class="material-icons">check</i>
+                      </div>
+                      <div class="inactive" id="{{$estilista->id}}"></div>
+                      <img src="{{asset('storage/'.$estilista->fotografia)}}" alt="">
+                    </div>
+                    <div class="name">
+                      {{$estilista->nombre." ".$estilista->apellido}}
+                    </div>
+                  </div>
+                </div>
+                @endforeach
+                @endif
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-10 col-md-offset-1">
+              <p style="text-align:right" class="help-toggle" id="select-est-help">¿Porque no puedo seleccionar a un estilista?</p>
+            </div>
           </div>
-        </div>
-        <div class="form-group col-xs-12">
-          <button type="submit" name="button" class="btn3 col-xs-12 col-md-6 col-md-offset-3" style="margin-top:30px">
-            Agendar
-          </button>
-        </div>
-      </form>
+          <div class="form-group col-xs-12">
+            <button type="submit" name="button" class="btn3" style="display:block; margin:auto;margin-top:30px; ">
+              Agendar
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
+
 </div>
 @endsection
 
 @section('js')
 <script type="text/javascript">
-if($('.main-container').height() + 280 < $(window).height()){
+if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
   $('.footer').css({
     position:'absolute',
     bottom:'0'
@@ -331,6 +392,35 @@ $('.estilista-item>.img-container>.shadow>i').css('font-size',($('.estilista-ite
 
 $('#estilistas-container').hide();
 $(document).ready(function () {
+
+  function showSchedule(date) {
+    $.ajax({
+      url:'/getAppointmentsByDate',
+      type:'post',
+      dataType:'json',
+      data:{
+        _token:'{{csrf_token()}}',
+        date:date
+      }
+    }).done(function (appointments) {
+      $('#table-citas>tbody').children().remove();
+      if(appointments.length < 1)
+        $('#table-citas').hidde();
+      else{
+        $.each(appointments, function (i, appointment) {
+          $tr = $('tr');
+          $tr.append($('<td>'+appointment.cliente.nombre+" "+appointment.cliente.apellido+'</td>'));
+          $tr.append($('<td>'+appointment.estilista.nombre+" "+appointment.estilista.apellido+'</td>'));
+          $tr.append($('<td>'+appointment.estilista.nombre+" "+appointment.estilista.apellido+'</td>'));
+          $tr.append($('<td>'+appointment.fecha+'</td>'));
+          $tr.append($('<td>'+appointment.hora+'</td>'));
+          $tr.append($('<td>'+appointment.estado+'</td>'));
+          $('#table-citas>tbody').append($tr);
+        });
+        $('#table-citas').show();
+      }
+    })
+  }
 
   $('.options-container>.option-item').click(function () {
     $(this).parent().children('.option-item').removeClass('active');
@@ -421,10 +511,21 @@ $(document).ready(function () {
           $('#servicios-info').append($('<br>'));
           $('#servicios-info').append($('<span>Tiempo aproximado: <span style="color:#eee">'+response.tiempo+"</span></span>"));
           $('#estilistas-container').slideDown();
+          $('.estilista-item>.img-container').css('height',$('.estilista-item>.img-container').width());
+          $('.estilista-item>.img-container>.shadow>i').css('font-size',($('.estilista-item>.img-container>.shadow').width()*.40)+'px');
           //mostrar solo estilistas que apliquen todos los servicios especificados
           $('.estilista-item>.img-container>.shadow').hide();
+          $('input[name=estilista]').val('');
           $('.estilista-item>.img-container>.inactive').show();
           $.each(response.estilistas, function (i, estilista) {
+            $.each($('.estilista-item>.img-container>.shadow'), function (i, shadowItem) {
+              if($(shadowItem).is(':visible')){
+                $.each(response.estilistas, function (i,est) {
+                  $('.estilista-item>.img-container>.shadow[id='+est.id+']').show();
+                  $('input[name=estilista]').val(est.id);
+                })
+              }
+            })
             $('.estilista-item>.img-container>.inactive[id='+estilista.id+']').hide();
           })
         })
@@ -444,9 +545,9 @@ $(document).ready(function () {
 
   $(window).resize(function () {
     $('.estilista-item>.img-container').css('height',$('.estilista-item>.img-container').width());
-    $('.estilista-item>.img-container>.shadow>i').css('font-size',$('.estilista-item>.img-container>.shadow>i').width()+'px');
+    $('.estilista-item>.img-container>.shadow>i').css('font-size',($('.estilista-item>.img-container>.shadow').width()*.40)+'px');
 
-    if($('.main-container').height() + 280 < $(window).height()){
+    if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
       $('.footer').css({
         position:'absolute',
         bottom:'0'

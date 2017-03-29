@@ -221,7 +221,9 @@
               text-shadow: 0px 0px 5px #fff;
             }
             #nav-user-info{
-              float: right;
+              position: absolute;
+              top: 0;
+              right: 0;
               height: 100%;
               padding: 10px 10px 10px 15px;
               border-left: 1px solid rgba(255,255,255,.1);
@@ -574,6 +576,14 @@
               background-color: transparent;
               color: goldenrod;
             }
+            .nav-item>img{
+              float: left;
+              margin-top: 8px;
+              width: 100px;
+            }
+            #brand{
+              padding: 0;
+            }
         </style>
         @yield('css')
     </head>
@@ -586,6 +596,9 @@
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="" class="nav-item"><p>Productos</p></a>
             <a href="" class="nav-item"><p>Servicios</p></a>
+            <a href="/" class="nav-item" id="brand">
+              <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
+            </a>
             <a href="" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="" class="nav-item"><p>Tips</p></a>
             <a href="" class="nav-item"><p>Portafolio</p></a>
@@ -716,9 +729,10 @@
                   });
                 }
 
-                if($(this).width() < 576){
+                if($(this).width() < 1196){
                   $('.menu-btn').css('display','initial');
                   $('.nav-item').hide();
+                  $('#brand').show();
                 }
                 else{
                   $('.menu-btn').css('display','none');
@@ -730,9 +744,10 @@
                 $('.user-photo').slideDown("slow");
 
                 $(window).resize(function () {
-                  if($(this).width() < 576){
+                  if($(this).width() < 1196){
                     $('.menu-btn').css('display','initial');
                     $('.nav-item').hide();
+                    $('#brand').show();
                   }
                   else{
                     $('.menu').css('left','-200px');

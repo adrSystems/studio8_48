@@ -7,7 +7,10 @@ Gestión de clientes
 @section('css')
 <style media="screen">
   body{
-    background: #323;
+    background-image: url('{{asset("img/walls/3.jpg")}}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
   }
   .nav-bar{
       box-shadow: none;
@@ -24,12 +27,13 @@ Gestión de clientes
   }
   #list{
     box-shadow:  0 0 3px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 0;
     border-radius: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   #list>.header{
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 15px;
   }
   #searcher{
@@ -67,14 +71,17 @@ Gestión de clientes
     text-align: center;
   }
   tbody{
-    color: #bbb;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5),0 0 3px rgba(0, 0, 0, 0.5);
+    color: #fff;
   }
   thead{
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     color:#ccc;
   }
   th{
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 0, 0, 0.5);
     font-weight: 100;
+    color: #fff;
     padding-top: 20px;
     padding-bottom: 20px;
   }
@@ -230,7 +237,7 @@ Gestión de clientes
     @endif
     </div>
   </div>
-  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;color:rgba(255,255,255,.5)">
+  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;color:#fff;text-shadow: 0 0 3px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,1)">
     {{count($clientes)}} encontrado(s).
   </p>
 </div>

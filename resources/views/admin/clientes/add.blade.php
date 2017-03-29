@@ -7,7 +7,7 @@ Registro de cliente
 @section('css')
 <style media="screen">
 body{
-  background-color: #412;
+  background-color: #445;
 }
 .footer{
   background-color: rgba(0, 0, 0, 0.5);

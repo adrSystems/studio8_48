@@ -43,7 +43,7 @@ class ClienteController extends Controller
       else $cliente->credito = 0;
       $cliente->save();
 
-      return back()->with('msg', ['title' => 'Acción satisfactoria!', 'body' => 'Cliente registrado correctamente.']);
+      return redirect('/admin/clientes/info/'.$cliente->id)->with('msg', ['title' => 'Acción satisfactoria!', 'body' => 'Cliente registrado correctamente.']);
     }
 
     public function getDetailsForMainView()
@@ -175,9 +175,11 @@ class ClienteController extends Controller
 
       //determinar si es deudor
       $deudor = false;
+      $cliente->citas = $cliente->citas()->orderBy('fecha_hora','desc')->get();
+      $cliente->compras = $cliente->compras()->orderBy('fecha_hora','desc')->get();
       foreach ($cliente->citas as $cita) {
         $aPagar=0;
-        foreach ($cita->servicios() as $servicio) {
+        foreach ($cita->servicios as $servicio) {
           $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;
@@ -195,12 +197,12 @@ class ClienteController extends Controller
       }
 
       $cliente->esDeudor = $deudor;
-      $cliente->citas = $cliente->citas;
-      $cliente->compras = $cliente->compras;
-
       //por cada compra determinar monto y si fue pagada
 
-      return view('admin.clientes.info', ['cliente' => $cliente]);
+      return view('admin.clientes.info', [
+        'cliente' => $cliente,
+        'estados' => ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada']
+      ]);
     }
 
     public function updateCredit(Request $request)

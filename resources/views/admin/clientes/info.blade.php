@@ -10,6 +10,14 @@ Información cliente
     height: 100%;
     margin: 0;
     padding: 0;
+    background-image: url('{{asset("img/walls/4.jpg")}}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .footer{
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: none;
   }
   .main-container{
     float: left;
@@ -81,9 +89,6 @@ Información cliente
     border-radius: 3px;
     padding: 4px;
   }
-  #citas-container{
-
-  }
   .subcontainer{
     border: 1px solid rgba(255, 255, 255, .1);
     border-radius: 3px;
@@ -94,6 +99,32 @@ Información cliente
 
   #modificar-credito{
     margin-bottom: 10px;
+  }
+  #citas-container{
+  }
+  #citas-container::-webkit-scrollbar{
+    background-color: rgba(255, 255, 255, 0.02);
+    height: 9px;
+  }
+  #citas-container::-webkit-scrollbar-thumb{
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, .6);
+  }
+  table{
+    width: 100%;
+  }
+  th{
+    background-color: rgba(255, 255, 255, 0.05);
+    font-weight: 100;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #ddd;
+  }
+  td{
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 </style>
 @endsection
@@ -171,25 +202,25 @@ Información cliente
       @else
       <table>
         <thead>
-          <th>Fecha</th>
+          <th style="padding-left:5px">Fecha</th>
           <th>Hora</th>
           <th>Estado</th>
-          <th>Monto</th>
-          <th>Pagada</th>
+          <th class="hidden-xs">Monto</th>
+          <th class="hidden-xs">Pagada</th>
           <th></th>
         </thead>
         <tbody>
-          @foreach($cliente->citas()->orderBy('fecha_hora','desc') as $cita)
+          @foreach($cliente->citas as $cita)
+          <td style="padding-left:5px">{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
           <td>{{date('g:i a',strtotime($cita->fecha_hora))}}</td>
-          <td>{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
-          <td>{{$cita->estado}}</td>
-          <td>{{$cita->monto}}</td>
+          <td>{{$estados[$cita->estado]}}</td>
+          <td class="hidden-xs">${{$cita->monto}}</td>
           @if($cita->pagada)
-          <td>Si</td>
+          <td class="hidden-xs">Si</td>
           @else
-          <td>No</td>
+          <td class="hidden-xs">No</td>
           @endif
-          <td><div class="btn btn-xs btn-warning">Mas información</div></td>
+          <td style="padding-right:5px"><div class="btn btn-xs btn-success" style="width:100%">Detalles</div></td>
           @endforeach
         </tbody>
       </table>
@@ -198,7 +229,7 @@ Información cliente
   </div>
   <div class="col-xs-12 col-md-4">
     <h3 class="title">Compras</h3>
-    <div class="subcontainer" id="citas-container">
+    <div class="subcontainer">
       @if($cliente->compras()->count() < 1)
       <p style="margin: 0; padding:5px;">El cliente no ha realizado ninguna compra</p>
       @else
@@ -214,7 +245,7 @@ Información cliente
           @foreach($cliente->compras()->orderBy('fecha_hora','desc') as $compra)
           <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
           <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
-          <td>{{$compra->productos()->sum('precio_venta')}}</td>
+          <td>${{$compra->productos()->sum('precio_venta')}}</td>
           @if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta'))
           <td>No</td>
           @else
@@ -234,7 +265,7 @@ Información cliente
 
 @section('js')
 <script type="text/javascript">
-  if($('.main-container').height() + 220 < $(window).height()){
+  if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
     $('.footer').css({
       position:'absolute',
       bottom:'0'
@@ -265,7 +296,7 @@ Información cliente
     });
 
     $(window).resize(function () {
-      if($('.main-container').height() + 220 < $(window).height()){
+      if($('.main-container').height() + $('.footer').outerHeight() + 150 < $(window).height()){
         $('.footer').css({
           position:'absolute',
           bottom:'0'
