@@ -20,6 +20,10 @@ class Empleado extends Model
     public function citas(){
       return $this->hasMany('App\Cita');
     }
+    public function mensajes()
+    {
+      return $this->hasMany('App\Mensaje');
+    }
     public function servicios(){
       return $this->belongsToMany('App\Servicio');
     }

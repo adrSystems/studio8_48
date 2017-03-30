@@ -33,6 +33,7 @@ class CuentaController extends Controller
       $cuenta=new User;
       $cliente=new Cliente;
       $cliente->nombre=$usuario['name'];
+      $cliente->telefono=839114442;
       $cliente->save();
       $cuenta->email=$usuario['email'];
       $cuenta->password= Hash::make($usuario['id']);

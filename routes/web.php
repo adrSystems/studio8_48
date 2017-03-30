@@ -74,11 +74,15 @@ Route::get('/admin/clientes/edit/{id?}', function ($id = null){
 //////////////////////////////////////////////////////////////////////////
 
 //cuenta
-Route::match(["GET","POST"],'/enviarmensajeC',"Cliente\ClienteController@enviarMensaje");
-Route::match(["GET","POST"],'/modificarcuenta',"Cliente\ClienteController@modificarCuenta");
-Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirfoto");
+Route::match(["GET","POST"],'/modificarnombre',"Cliente\ClienteController@modificarNombre");
+Route::match(["GET","POST"],'/modificarapellido',"Cliente\ClienteController@modificarApellido");
+Route::match(["GET","POST"],'/modificarfechanacimiento',"Cliente\ClienteController@modificarFechanacimiento");
+Route::match(["GET","POST"],'/modificarcorreo',"Cliente\ClienteController@modificarCorreo");
+Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modificarTelefono");
+Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
+Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta', function(){
-  $cuenta = App\User::find(1);
+  $cuenta = App\User::find(3);
   Auth::login($cuenta);
   return view('user.micuenta');
 });

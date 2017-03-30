@@ -451,7 +451,7 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('img/profile_photos/'.Auth::user()->photo)}}" alt="">
+              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
               @else
               <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
               @endif
