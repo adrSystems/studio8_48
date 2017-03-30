@@ -10,6 +10,14 @@ Información cliente
     height: 100%;
     margin: 0;
     padding: 0;
+    background-image: url('{{asset("img/walls/4.jpg")}}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .footer{
+    background: rgba(0, 0, 0, 0.5);
+    box-shadow: none;
   }
   .main-container{
     float: left;
@@ -81,15 +89,42 @@ Información cliente
     border-radius: 3px;
     padding: 4px;
   }
-  #citas-container{
-
-  }
   .subcontainer{
     border: 1px solid rgba(255, 255, 255, .1);
     border-radius: 3px;
   }
   #options-container{
     padding-top: 11px;
+  }
+
+  #modificar-credito{
+    margin-bottom: 10px;
+  }
+  #citas-container{
+  }
+  #citas-container::-webkit-scrollbar{
+    background-color: rgba(255, 255, 255, 0.02);
+    height: 9px;
+  }
+  #citas-container::-webkit-scrollbar-thumb{
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, .6);
+  }
+  table{
+    width: 100%;
+  }
+  th{
+    background-color: rgba(255, 255, 255, 0.05);
+    font-weight: 100;
+    text-align: center;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    color: #ddd;
+  }
+  td{
+    padding-top: 5px;
+    padding-bottom: 5px;
   }
 </style>
 @endsection
@@ -142,10 +177,21 @@ Información cliente
         <i class="material-icons">date_range</i>
         <span>Agendar cita</span>
       </a>
-      <div class="icon-btn icon-square">
-        <i class="material-icons">credit_card</i>
+      @if($cliente->credito)
+      <div class="switch-container" id="modificar-credito" active="1">
         <span>Activar credito</span>
+        <div class="switch-bar">
+          <div class="switch-btn active"></div>
+        </div>
       </div>
+      @else
+      <div class="switch-container" id="modificar-credito" active="0">
+        <span>Activar credito</span>
+        <div class="switch-bar">
+          <div class="switch-btn inactive"></div>
+        </div>
+      </div>
+      @endif
     </div>
   </div>
   <div class="col-xs-12 col-md-4">
@@ -156,25 +202,25 @@ Información cliente
       @else
       <table>
         <thead>
-          <th>Fecha</th>
+          <th style="padding-left:5px">Fecha</th>
           <th>Hora</th>
           <th>Estado</th>
-          <th>Monto</th>
-          <th>Pagada</th>
+          <th class="hidden-xs">Monto</th>
+          <th class="hidden-xs">Pagada</th>
           <th></th>
         </thead>
         <tbody>
-          @foreach($cliente->citas()->orderBy('fecha_hora','desc') as $cita)
+          @foreach($cliente->citas as $cita)
+          <td style="padding-left:5px">{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
           <td>{{date('g:i a',strtotime($cita->fecha_hora))}}</td>
-          <td>{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
-          <td>{{$cita->estado}}</td>
-          <td>{{$cita->monto}}</td>
+          <td>{{$estados[$cita->estado]}}</td>
+          <td class="hidden-xs">${{$cita->monto}}</td>
           @if($cita->pagada)
-          <td>Si</td>
+          <td class="hidden-xs">Si</td>
           @else
-          <td>No</td>
+          <td class="hidden-xs">No</td>
           @endif
-          <td><div class="btn btn-xs btn-warning">Mas información</div></td>
+          <td style="padding-right:5px"><div class="btn btn-xs btn-success" style="width:100%">Detalles</div></td>
           @endforeach
         </tbody>
       </table>
@@ -183,7 +229,7 @@ Información cliente
   </div>
   <div class="col-xs-12 col-md-4">
     <h3 class="title">Compras</h3>
-    <div class="subcontainer" id="citas-container">
+    <div class="subcontainer">
       @if($cliente->compras()->count() < 1)
       <p style="margin: 0; padding:5px;">El cliente no ha realizado ninguna compra</p>
       @else
@@ -199,7 +245,7 @@ Información cliente
           @foreach($cliente->compras()->orderBy('fecha_hora','desc') as $compra)
           <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
           <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
-          <td>{{$compra->productos()->sum('precio_venta')}}</td>
+          <td>${{$compra->productos()->sum('precio_venta')}}</td>
           @if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta'))
           <td>No</td>
           @else
@@ -219,7 +265,7 @@ Información cliente
 
 @section('js')
 <script type="text/javascript">
-  if($('.main-container').height() + 220 < $(window).height()){
+  if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
     $('.footer').css({
       position:'absolute',
       bottom:'0'
@@ -233,13 +279,24 @@ Información cliente
 
   $(document).ready(function () {
 
+    $('#modificar-credito').click(function () {
+      $.ajax({
+        url:'/admin/clientes/update-credit',
+        type:'post',
+        data:{
+          _token:'{{csrf_token()}}',
+          id:'{{$cliente->id}}'
+        }
+      });
+    });
+
     $('#back-btn').css({
       'margin-right':'0px',
       'background-color':'#222'
     });
 
     $(window).resize(function () {
-      if($('.main-container').height() + 220 < $(window).height()){
+      if($('.main-container').height() + $('.footer').outerHeight() + 150 < $(window).height()){
         $('.footer').css({
           position:'absolute',
           bottom:'0'
@@ -251,6 +308,30 @@ Información cliente
         });
       }
     })
+
+    function showMsg(title, body) {
+      $('#general-msg').show(0);
+      $('#general-msg>.msg-card').css('opacity',1);
+      $('#general-msg>.msg-card').css('margin-top','100px');
+      $('#general-msg>.msg-card').css('-webkit-transform','scale(1)');
+      $('#general-msg>.msg-card>.header>h3').text(title);
+      $('#general-msg>.msg-card>.body').children().remove();
+      $.each(body, function (i, paragraph) {
+        $('#general-msg>.msg-card>.body').append('<p>'+paragraph);
+      });
+    }
+
+    $('.msg-footer>button').click(function () {
+      $('.msg-card').css('-webkit-transform','scale(.7)');
+      $('.msg-card').parent().fadeOut(400, function () {
+        $(this).hide();
+      });
+    });
+
+    @if(session('msg'))
+    showMsg("{{session('msg')['title']}}",["{{session('msg')['body']}}"]);
+    @endif
+
   })
 </script>
 @endsection

@@ -613,9 +613,9 @@ Studio8 48 - Personal
               @foreach(\App\Servicio::get() as $i => $servicio)
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
-                <img src="{{asset($servicio->icono)}}" alt="">
+                <img src="{{asset($servicio->icono)}}" alt="" style="height:4vh;width:4vh">
                 <label>{{ucfirst($servicio->nombre)}}</label>
-                <div class="select-icon rol-unselected">
+                <div class="select-icon rol-unselected" style="margin-top:8px">
                 </div>
               </div>
               @endforeach

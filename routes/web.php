@@ -70,12 +70,17 @@ Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
 Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
 Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
-Route::get('/admin/clientes/info/{id?}','Admin\ClienteController@getDetailsForPersonalInfoView');
-Route::get('/admin/clientes/edit/{id?}', function ($id = null){
+Route::get('/admin/clientes/info/{id}','Admin\ClienteController@getDetailsForPersonalInfoView');
+Route::get('/admin/clientes/edit/{id}', function ($id = null){
   if(!$id) return redirect('/admin/clientes');
   if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
-  return view('admin.clientes.edit');
+  return view('admin.clientes.edit', ['cliente' => $cliente]);
 });
+Route::post('/clientes/editar','Admin\ClienteController@edit');
+Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
+Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
 //
 
+//citas
+Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
 //////////////////////////////////////////////////////////////////////////
