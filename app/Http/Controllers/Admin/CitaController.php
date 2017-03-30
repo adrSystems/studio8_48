@@ -125,4 +125,39 @@ class CitaController extends Controller
         'estilistas' => $estilistas
      ];
     }
+
+    public function getAppointmentDetails(Request $request)
+    {
+      $cita = Cita::find($request->id);
+      $cita->estilista = $cita->empleado;
+      $cita->estilista->fotografia = asset("storage/".$cita->estilista->fotografia);
+      $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$cita->fecha_hora);
+      $cita->fecha = $fecha->toDateString();
+      $cita->hora = $fecha->format('g:i a');
+      $estados = ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada'];
+      $cita->estado = $estados[$cita->estado];
+      $cita->pagos = $cita->pagos;
+      $cita->servicios = $cita->servicios;
+      $tiempo = Carbon::createFromFormat('H:i','00:00');
+      $monto = 0;
+      foreach ($cita->servicios as $servicio) {
+        //concatenar storage, imagenes se guardaran en otro lado despues
+        $servicio->icono = asset($servicio->icono);
+        $tiempo->addHours(date('H',strtotime($servicio->tiempo)));
+        $tiempo->addMinutes(date('i',strtotime($servicio->tiempo)));
+        $monto += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+      }
+      //tiempo total, horario aproximado
+      $cita->tiempo = $tiempo->format('G')." horas, ".$tiempo->format('i')." minutos";
+      $cita->pagado = $cita->pagos()->sum('cantidad');
+      $cita->monto = $monto;
+      $fechaCita = Carbon::createFromFormat('Y-m-d H:i:s',$cita->fecha_hora);
+      $cita->diff = $fechaCita->diffForHumans(Carbon::now());
+      $horaTermino = Carbon::createFromFormat('Y-m-d H:i:s',$cita->fecha_hora);
+      $horaTermino->addHours($tiempo->format('H'));
+      $horaTermino->addMinutes($tiempo->format('i'));
+      $cita->horarioAprox = $fechaCita->format('H:i')." - ".$horaTermino->format('H:i');
+
+      return $cita;
+    }
 }

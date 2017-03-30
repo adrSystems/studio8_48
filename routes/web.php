@@ -83,4 +83,5 @@ Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@a
 
 //citas
 Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
+Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
 //////////////////////////////////////////////////////////////////////////

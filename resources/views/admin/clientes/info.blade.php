@@ -11,9 +11,10 @@ Información cliente
     margin: 0;
     padding: 0;
     background-image: url('{{asset("img/walls/4.jpg")}}');
-    background-size: cover;
-    background-repeat: no-repeat;
     background-attachment: fixed;
+  }
+  .nav-bar{
+    border-bottom-color: rgba(255, 255, 255, 0.2);
   }
   .footer{
     background: rgba(0, 0, 0, 0.5);
@@ -33,10 +34,12 @@ Información cliente
     float: left;
   }
   #summary-container{
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.7);
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
     height: 100%;
     padding: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     position: relative;
     float: left;
   }
@@ -44,7 +47,8 @@ Información cliente
     color: #eee;
   }
   .title{
-    color: #bbb;
+    color: #eee;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);
     font-family: 'Lobster Two';
     width: 100%;
   }
@@ -81,16 +85,18 @@ Información cliente
   }
   #back-btn{
     float: right;
-    background-color: #111;
+    background-color: rgba(255, 255, 255, 0.5);
+    border: 1px solid transparent;
     margin-right: -10px;
   }
   .title-card{
-    background-color: #333;
+    background-color: rgba(255, 255, 255, 0.1);
     border-radius: 3px;
     padding: 4px;
   }
   .subcontainer{
-    border: 1px solid rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .3);
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     border-radius: 3px;
   }
   #options-container{
@@ -99,6 +105,9 @@ Información cliente
 
   #modificar-credito{
     margin-bottom: 10px;
+  }
+  .switch-container{
+    background-color: rgba(255, 255, 255, 0.1);
   }
   #citas-container{
   }
@@ -120,16 +129,195 @@ Información cliente
     text-align: center;
     padding-top: 8px;
     padding-bottom: 8px;
-    color: #ddd;
+    color: #fff;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);
   }
   td{
     padding-top: 5px;
     padding-bottom: 5px;
+    color: #ddd;
+    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);
+  }
+  .modal-back{
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    display: none;
+    z-index: 2;
+    padding:  65px 15px 65px 15px;
+
+  }
+  .modal-back>.modal-black-card{
+    position: relative;
+    background-color: #111;
+    border: 1px solid #555;
+    border-radius: 2px;
+    padding: 0;
+    display: none;
+    height: 100%;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),0 0 10px rgba(0, 0, 0, 0.7);
+    -webkit-transform: scale(.7);
+    -webkit-transition: -webkit-transform .4s;
+  }
+  .modal-black-card>.header,.modal-black-card>.modal-footer{
+    background-color: rgba(255, 255, 255, .05);
+    margin: 0;
+    padding: 10px;
+  }
+  .modal-black-card>.header>.close-btn{
+    float: right;
+    cursor: pointer;
+    font-size: 18px;
+    color:#aaa;
+    border-radius: 3px;
+  }
+  .modal-black-card>.header>.close-btn:hover{
+    color: #fff;
+    background-color: rgba(255, 255, 255, .08);
+  }
+  .modal-black-card>.modal-footer{
+    border-top: none;
+    margin-bottom: 0;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+  }
+  .modal-black-card>.modal-footer>button{
+    border: 1px solid #111;
+    color: #eee;
+    border-radius: 3px;
+    -webkit-transition: background-color .4s, border .5s;
+    padding: 3px 8px 3px 8px;
+  }
+  .modal-black-card>.modal-footer>button>i{
+    font-size: 14px;
+    float: left;
+    margin-top: 3.5px;
+    margin-right: 3px;
+  }
+  .modal-black-card>.modal-footer>button:hover{
+    background-color: rgba(255, 255, 255, .09);
+    border: 1px solid #ccc;
+  }
+  .modal-black-card>.header>h4{
+    margin: 0;
+    color: goldenrod;
+    font-family: 'Lobster Two';
+  }
+  .modal-black-card>.body{
+    position: relative;
+    padding: 10px;
+    overflow: auto;
+    color:#ddd;
+  }
+  .modal-black-card>.body::-webkit-scrollbar{
+    width:  15px;
+    border-radius: 12px;
+  }
+  .modal-black-card>.body::-webkit-scrollbar-thumb{
+    background: #222;
+    border: 4px solid #111;
+    border-radius: 12px;
+  }
+  .success-btn{
+    background: linear-gradient(to bottom, #3ba, #198);
+  }
+  .warning-btn{
+    background: linear-gradient(to bottom, #cb1, #a80);
+  }
+  .cancel-btn{
+    background: linear-gradient(to bottom, #934, #623);
+  }
+  .img-container{
+    overflow: hidden;
+    width: 10vh;
+    height: 10vh;
+    border-radius: 100%;
+    margin: auto;
+    display: block;
+    margin-bottom: 10px;
+  }
+  .img-container>img{
+    width: 100%;
+  }
+  .estilista-info{
+    width: 100%;
+    padding: 10px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    text-align: center;
+  }
+  .result{
+    background: rgba(255, 255, 255, .05);
+    border-radius: 3px;
+    padding: 0px 3px 3px 3px;
+    border: 1px solid rgba(255, 255, 255, .05);
+    border-bottom: 1px solid rgba(255, 255, 255, .01);
+    color: goldenrod;
+  }
+  p.topic{
+    margin-top: 10px;
+    margin-bottom: 0;
   }
 </style>
 @endsection
 
 @section('body')
+<div class="modal-back" id="appointment-details-modal">
+  <div class="modal-black-card col-xs-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Detalles de la cita</h4>
+    </div>
+    <div class="body">
+      <div class="col-xs-12 col-md-6">
+        <p>Cita para <span class="result" id="nombre-cliente">{{$cliente->nombre}}</span></p>
+        <p>Atiende</p>
+        <div class="estilista-info">
+          <div class="img-container">
+            <img src="" alt="" id="foto-estilista">
+          </div>
+          <span id="nombre-estilista">xxxx</span>
+        </div>
+        <p style="margin-top:10px;margin-bottom:0">Fecha</p>
+        <span class="result" id="fecha">xxxx</span>
+        <p style="margin-top:10px;margin-bottom:0">Hora</p>
+        <span class="result" id="hora">xxxx</span>
+        <div class="col-xs-12" style="padding: 0;margin-top:15px;margin-bottom:10px">
+          <span class="result" id="tiempo-restante">xxxx</span>
+        </div>
+        <p style="margin-top:10px;margin-bottom:0">Estado</p>
+        <span class="result" id="estado">xxxx</span>
+      </div>
+      <div class="col-xs-12 col-md-6">
+        <h5>Servicios o paquetes</h5>
+        <div class="subcontainer" id="servicios-container">
+
+        </div>
+        <p style="margin-top:10px;margin-bottom:0">Tiempo aproximado de duración total: <span class="result" id="tiempo-total">10 horas</span></p>
+        <p style="margin-top:10px;margin-bottom:0">Horario aproximado: <span class="result" id="horario-aprox">10:00 a 13:00</span></p>
+        <h5>Pagos</h5>
+        <p style="margin-top:10px;margin-bottom:0">
+          Se ha pagado <span class="result" id="pagado">xxxx</span> pesos de un total de
+          <span class="result" id="total">xxxx</span> pesos.
+        </p>
+        <p style="margin-top:10px;margin-bottom:0">Por pagar</p>
+        <span class="result" id="por-pagar">xxxx</span>
+        <div class="subcontainer" id="pagos-container" style="margin-top:10px">
+
+        </div>
+        <p id="no-pagos-msg" style="margin-top:10px;margin-bottom:0">No se han realizado pagos.</p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" class="success-btn"><i class="material-icons">attach_money</i>Abonar</button>
+      <button type="button" name="button" class="warning-btn"><i class="material-icons">update</i>Cambiar fecha</button>
+      <button type="button" name="button" class="cancel-btn"><i class="material-icons">block</i>Cancelar</button>
+    </div>
+  </div>
+</div>
 <div class="main-container">
   <div class="col-xs-12">
     <h3 class="main-title">Detalles del cliente</h3>
@@ -198,7 +386,7 @@ Información cliente
     <h3 class="title">Citas</h3>
     <div class="subcontainer" id="citas-container">
       @if($cliente->citas()->count() < 1)
-      <p style="margin: 0; padding:5px;">El cliente no ha programado ninguna cita</p>
+      <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha programado ninguna cita</p>
       @else
       <table>
         <thead>
@@ -220,7 +408,7 @@ Información cliente
           @else
           <td class="hidden-xs">No</td>
           @endif
-          <td style="padding-right:5px"><div class="btn btn-xs btn-success" style="width:100%">Detalles</div></td>
+          <td style="padding-right:5px"><div class="btn btn-xs btn-success details-toggle" style="width:100%" id="{{$cita->id}}">Detalles</div></td>
           @endforeach
         </tbody>
       </table>
@@ -231,7 +419,7 @@ Información cliente
     <h3 class="title">Compras</h3>
     <div class="subcontainer">
       @if($cliente->compras()->count() < 1)
-      <p style="margin: 0; padding:5px;">El cliente no ha realizado ninguna compra</p>
+      <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha realizado ninguna compra</p>
       @else
       <table>
         <thead>
@@ -279,6 +467,68 @@ Información cliente
 
   $(document).ready(function () {
 
+    $('.details-toggle').click(function () {
+      openAppointmentDetails($(this).attr('id'));
+    })
+
+    $('.close-btn').click(function () {
+      var $parent = $(this).parent().parent();
+      $parent.css('-webkit-transform','scale(.7)');
+      $parent.fadeOut(200, function () {
+        $parent.parent().fadeOut();
+      });
+    })
+
+    $('.modal-back').click(function (e) {
+      if(e.target === this){
+        $(this).children('.modal-black-card').css('-webkit-transform','scale(.7)');
+        $(this).children('.modal-black-card').fadeOut(200, function () {
+          $(this).parent().fadeOut();
+        });
+      }
+    });
+
+    function openAppointmentDetails(id) {
+      $.ajax({
+        url:'/getAppointmentDetails',
+        type:'post',
+        dataType:'json',
+        data:{
+          _token:'{{csrf_token()}}',
+          id:id
+        }
+      }).done(function (cita) {
+        $('.modal-black-card').find('#foto-estilista').attr('src',cita.estilista.fotografia);
+        $('.modal-black-card').find('#nombre-estilista').text(cita.estilista.nombre+" "+cita.estilista.apellido);
+        $('.modal-black-card').find('#fecha').text(cita.fecha);
+        $('.modal-black-card').find('#hora').text(cita.hora);
+        $('.modal-black-card').find('#tiempo-restante').text(cita.diff);
+        $('.modal-black-card').find('#estado').text(cita.estado);
+        $('.modal-black-card').find('#tiempo-total').text(cita.tiempo);
+        $('.modal-black-card').find('#horario-aprox').text(cita.horarioAprox);
+        $('.modal-black-card').find('#pagado').text("$"+cita.pagado);
+        $('.modal-black-card').find('#total').text("$"+cita.monto);
+        $('.modal-black-card').find('#por-pagar').text("$"+(cita.monto-cita.pagado));
+        $.each(cita.servicios, function (i, servicio) {
+          //servicio item
+        })
+        if(cita.pagos.length < 1){
+          $('.modal-black-card').find('#no-pagos-msg').show();
+        }
+        else{
+          $('.modal-black-card').find('#no-pagos-msg').hide();
+          $.each(cita.pagos, function (i, pago) {
+            //pago item
+          })
+        }
+        $('.modal-back').fadeIn();
+        $('.modal-back>.modal-black-card').fadeIn(400, function () {
+          $('.modal-back>.modal-black-card>.body').height(($('.modal-back>.modal-black-card').height()-($('.modal-back>.modal-black-card>.header').outerHeight()+$('.modal-back>.modal-black-card>.modal-footer').outerHeight())-20)+'px');
+        });
+        $('.modal-back>.modal-black-card').css('-webkit-transform','scale(1)');
+      })
+    }
+
     $('#modificar-credito').click(function () {
       $.ajax({
         url:'/admin/clientes/update-credit',
@@ -292,10 +542,12 @@ Información cliente
 
     $('#back-btn').css({
       'margin-right':'0px',
-      'background-color':'#222'
+      'background-color':'rgba(0,0,0,.5)',
+      'border-color':'rgba(255,255,255,.5)'
     });
 
     $(window).resize(function () {
+      $('.modal-back>.modal-black-card>.body').height(($('.modal-back>.modal-black-card').height()-($('.modal-back>.modal-black-card>.header').outerHeight()+$('.modal-back>.modal-black-card>.modal-footer').outerHeight())-20)+'px');
       if($('.main-container').height() + $('.footer').outerHeight() + 150 < $(window).height()){
         $('.footer').css({
           position:'absolute',
