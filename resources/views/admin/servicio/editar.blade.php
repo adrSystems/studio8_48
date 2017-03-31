@@ -1,0 +1,10 @@
+@extends(layouts.master)
+@section('title')
+Editar
+@endsection
+@section('css')
+@endsection
+@section('body')
+@endsection
+@section('js')
+@endsection

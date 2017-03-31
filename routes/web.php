@@ -86,4 +86,15 @@ Route::get('/micuenta', function(){
   Auth::login($cuenta);
   return view('user.micuenta');
 });
-//
+//servicios_admin
+Route::get('/admin/servicios',function(){
+  return view ('admin.servicios');
+});
+Route::match(['GET','POST'],'/servicio/agregar','Admin\ServiciosController@agregar');
+Route::get('/servicio/editar/{id?}',function($id=null){
+  if(!$id)
+  return redirect ('/admin/servicios');
+  if($servicio = \App\Servicio::find($id))
+  return redirect ('/admin/servicios');
+  return view ('admin.servicio.editar');
+});
