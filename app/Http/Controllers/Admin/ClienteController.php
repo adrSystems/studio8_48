@@ -183,7 +183,10 @@ class ClienteController extends Controller
           $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;
-        if($cita->pagos()->sum('cantidad') < $aPagar)
+        if($cita->estado == 5){
+          $cita->pagada = false;
+        }
+        elseif($cita->pagos()->sum('cantidad') < $aPagar)
         {
           $deudor=true;
           $cita->pagada = false;

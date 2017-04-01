@@ -178,8 +178,8 @@
               color: white;
             }
             #nav-login{
-              float: right;
-              position: relative;
+              position: absolute;
+              right: 0;
               color: #ddd;
               padding: 0 20px 0 20px;
               border-left: 1px solid #333;

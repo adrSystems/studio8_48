@@ -203,6 +203,10 @@ Nueva cita
     font-weight: 100;
     color: white;
   }
+  td{
+    padding-top: 6px;
+    padding-bottom: 6px;
+  }
   table{
     width: 100%;
   }

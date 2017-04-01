@@ -84,4 +84,12 @@ Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@a
 //citas
 Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
 Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
+Route::post('/changeStylistFromAppointment','Admin\CitaController@changeStylistFromAppointment');
+Route::post('/admin/pay','Admin\CitaController@payByAdmin');
+Route::post('/admin/liquidar-cita','Admin\CitaController@liquidar');
+Route::post('/admin/start-appointment','Admin\CitaController@iniciar');
+Route::post('/admin/end-appointment','Admin\CitaController@end');
+Route::post('/admin/cancel-appointment','Admin\CitaController@cancel');
+Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
+Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
 //////////////////////////////////////////////////////////////////////////
