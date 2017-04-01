@@ -469,7 +469,8 @@
           <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>
-          <a href="#">Promociones y concursos</a>
+          <a href="/admin/promociones">Promociones</a>
+          <a href="/admin/concursos">Concursos</a>
           <a href="#">Portafolio</a>
         </div>
         @endif
