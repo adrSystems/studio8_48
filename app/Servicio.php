@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Servicio extends Model
 {
   use SoftDeletes;
+  public $timestamps=false;
   protected $dates = ['deleted_at'];
     public function empleados(){
       return $this->belongsToMany('App\Empleado');
