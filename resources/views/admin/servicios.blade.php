@@ -20,6 +20,7 @@ Studio8 48 - Servicios
   }
   .panel{
     border: 0px;
+    margin-top: 30px;
   }
   .panel-heading{
     font-family: 'Lobster Two';
@@ -39,17 +40,33 @@ Studio8 48 - Servicios
   }
   .servicios{
     background-color: white;
-    height: 300px;
+    height: 320px;
     border-radius: 4px;
     padding: 15px;
+    overflow-y: scroll;
+  }
+  .servicios::-webkit-scrollbar {
+    width: 0.5em;
+  }
+  .servicios::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+  }
+
+  .servicios::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    outline: 1px solid slategrey;
   }
   .servicio{
     border: 1px solid gray;
-
     height: 100px;
+    width: 450px;
+    border-radius: 2px;
+    padding: 10px 20px;
   }
   h3.title-servicios{
     border-left: 6px solid #ed5;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
     color: white;
     font-family: 'Lobster Two';
   }
@@ -57,30 +74,38 @@ Studio8 48 - Servicios
     font-size: 14px;
   }
   .dropdown{
-    margin-left: -32px;
+    margin-left: -42px;
   }
   .btn-default{
     border: 0px;
     background-color: transparent;
   }
   img{
-    width: 90%;
+    width: 100%;
     border-radius: 100%;
+  }
+  .dropdown-menu li a{
+    display: inline-block;
+    clear: none;
+    font-weight: 200;
+  }
+  .open .dropdown-menu{
+    width: 100px;
   }
 </style>
 @endsection
 @section('body')
 <div class="col-md-12">
   <div class="gestion-servicios">
-    <div class=" col-xs-offset-1 col-xs-4">
+    <div class=" col-xs-offset-1 col-xs-5">
       <h3 class="title-servicios"><p> Servicios disponibles</p></h3>
       <div class="servicios">
         @foreach(App\Servicio::get() as $servicio)
         <div class="servicio">
-          <div class="col-xs-4">
+          <div class="col-xs-3">
             <img src="{{asset('storage/'.$servicio->icono)}}" alt="">
           </div>
-          <div class="col-xs-7">
+          <div class="col-xs-8">
             <p>Nombre: {{$servicio->nombre}}</p>
             <p>Precio: $ {{$servicio->precio}}</p>
             <p>Tiempo: <i class="material-icons time-size">query_builder</i> {{$servicio->tiempo}}</p>
@@ -91,9 +116,8 @@ Studio8 48 - Servicios
                 <i class="material-icons">more_vert</i>
               </button>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="/servicio/editar/{{$servicio->id}}">Editar</a></li>
-                <li><a href="/servicio/eliminar/{{$servicio->id}}">Eliminar</a></li>
-                <li><a href="#">Something else here</a></li>
+                <li><a href="/servicio/editar/{{$servicio->id}}"><i class="material-icons">edit</i>Editar</a></li>
+                <li><a href="/servicio/eliminar/{{$servicio->id}}"><i class="material-icons">delete_sweep</i>Eliminar</a></li>
               </ul>
             </div>
           </div>
@@ -101,7 +125,7 @@ Studio8 48 - Servicios
         @endforeach
       </div>
     </div>
-    <div class="col-xs-offset-2 col-xs-5">
+    <div class="col-xs-offset-1 col-xs-5">
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">Subir servicios</h3>

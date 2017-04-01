@@ -23,13 +23,24 @@ class ServiciosController extends Controller
       $servicio->save();
       return redirect ('/admin/servicios');
     }
-    public function editar(Request $request, $id = null)
+    public function editar(Request $request)
     {
       if($request->isMethod('GET'))
       {
-        $servicio = Servicio::find($id);
-        return view ('admin.servicio.editar',['servicio'=> $servicio]);
+        return view ('admin.servicios');
       }
-      
+      $servicio = Servicio::find($request->id);
+      if($request->file('icono'))
+      {
+        $file = $request->file('icono');
+        $temp = $file->store('IconosServicios','public');
+        $servicio->icono= $temp;
+      }
+      $servicio->nombre= $request->nombre;
+      $servicio->precio = $request->precio;
+      $servicio->tiempo = $request->duracion;
+      $servicio->update();
+      return redirect ('/admin/servicios');
+
     }
 }
