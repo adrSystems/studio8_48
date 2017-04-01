@@ -86,7 +86,7 @@ Route::get('/micuenta', function(){
   Auth::login($cuenta);
   return view('user.micuenta');
 });
-//servicios_admin
+////servicios_admin/////////////
 Route::get('/admin/servicios',function(){
   return view ('admin.servicios');
 });
@@ -108,4 +108,8 @@ Route::get('/servicio/eliminar/{id?}',function($id = null){
   return redirect ('/admin/servicios');
   $servicio->delete();
   return redirect ('/admin/servicios');
+});
+////promociones-admin-clientes//
+Route::get('admin/promociones',function(){
+  return view ('admin.promociones');
 });
