@@ -35,6 +35,11 @@
         </div>
       </div>
       <div class="col-xs-offset-1 col-xs-6">
+        <div class="panel">
+          <div class="panel-heading">
+            
+          </div>
+        </div>
         <form class="horizontal" action="/promocion/agregar" method="post">
           <div class="form-group">
             <input type="file" name="cover" value="" class="form-control">
