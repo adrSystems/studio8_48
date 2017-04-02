@@ -14,6 +14,6 @@ class Servicio extends Model
       return $this->belongsToMany('App\Cita')->withPivot('descuento');
     }
     public function promociones(){
-      return $this->belongsToMany('App\Promocion');
+      return $this->hasMany('App\Promocion');
     }
 }
