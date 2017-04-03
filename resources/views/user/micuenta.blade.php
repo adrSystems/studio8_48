@@ -422,9 +422,7 @@ Mi cuenta
                     <th>Fecha</th>
                   </thead>
                   <tbody>
-
-                    <td></td>
-
+                    <td>{{App\Cliente::find(3)->citas}}</td>
                   </tbody>
                 </table>
               </div>
