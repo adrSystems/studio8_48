@@ -16,6 +16,7 @@
         <link rel="stylesheet" href="{{elixir('css/bootstrap.css')}}">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
 
+
         <!-- Styles -->
         <style>
             body{
@@ -665,7 +666,7 @@
         @if(Auth::check())
         <div class="" id="user-menu">
           <p>{{Auth::user()->cuentable->nombre}}<br>{{Auth::user()->email}}</p>
-          <a href="#">Mi cuenta</a>
+          <a href="/micuenta">Mi cuenta</a>
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
           <a href="#">Mi historial</a>
           @endif
@@ -697,7 +698,7 @@
             <p>?</p>
           </a>
         </div>
-
+        <script src="{{elixir('js/app.js')}}"></script>
         <script src="{{elixir('js/jquery-3.1.1.min.js')}}"></script>
 
         <script>

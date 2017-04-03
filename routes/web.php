@@ -31,17 +31,14 @@ Route::get('/',function (){
   }
   return view('welcome');
 });
-
 //first use sign up
 Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
 //
-
 //Ayuda
 Route::get('/help',function (){
   return view('welcome');
 });
 //
-
 //Login registro
 Route::get('/logout','Cliente\CuentaController@logout');
 Route::match(['GET','POST'],'/registro','Cliente\CuentaController@registrar');
@@ -50,9 +47,7 @@ Route::get('/registro/verificar/{codigo}','Cliente\CuentaController@confirmar');
 Route::get('/social/{provider?}', 'Cliente\CuentaController@getSocialAuth');
 Route::get('/social/callback/{provider?}', 'Cliente\CuentaController@getSocialAuthCallback');
 //
-
 //////////////////////////////ADMIN///////////////////////////////////////////
-
 //personal
 Route::get('/personal',function (){
   return view('admin.personal');
@@ -65,7 +60,6 @@ Route::post('/getAdminCount','Admin\EmpleadosController@getAdminCount');
 Route::post('/getEmpleadoById','Admin\EmpleadosController@getEmpleadoById');
 Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 //
-
 //clientes
 Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
 Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
@@ -102,3 +96,12 @@ Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@delete
 Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
 Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
 /////////////////////////////
+
+//cuenta
+Route::match(["GET","POST"],'/enviarmensajeC',"Cliente\ClienteController@enviarMensaje");
+Route::match(["GET","POST"],'/modificarcuenta',"Cliente\ClienteController@modificarCuenta");
+Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirfoto");
+Route::get('/micuenta', function(){
+  return view('user.micuenta');
+});
+//
