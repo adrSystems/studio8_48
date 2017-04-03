@@ -380,6 +380,8 @@ Studio8 48 - Personal
     padding: 0;
     border-radius: 3px;
     overflow: hidden;
+    display: block;
+    margin: auto;
     width: 10vw;
     height: 10vw;
   }
@@ -494,17 +496,17 @@ Studio8 48 - Personal
       <h4 style="text-align: center;">Detalles del empleado</h4>
     </div>
     <div class="body col-xs-12" style="padding:0;">
-      <div class="col-xs-12 col-sm-6 personal" style="padding:0;">
+      <div class="col-xs-12 col-sm-6 personal" style="padding:0; text-align:center">
         <h5 style="text-align: center;">Personal</h5>
         <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
           <span class="no-foto">Sin fotografía.</span>
-          <div class="img-container col-xs-12">
+          <div class="img-container">
             <img src="" alt="" class="foto">
           </div>
         </div>
-        <p>Nombre: <span class="nombre"></span></p>
-        <p>Edad: <span class="fecha-nac"></span></p>
-        <p>Email: <span class="email"></span></p>
+        <p>Nombre: <br><span class="nombre"></span></p>
+        <p>Edad: <br><span class="fecha-nac"></span></p>
+        <p>Email: <br><span class="email"></span></p>
         <p class="about-title">Acerca de mi</p>
         <p>
           <span class="about">
@@ -613,9 +615,9 @@ Studio8 48 - Personal
               @foreach(\App\Servicio::get() as $i => $servicio)
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
-                <img src="{{asset($servicio->icono)}}" alt="">
+                <img src="{{asset($servicio->icono)}}" alt="" style="height:4vh;width:4vh">
                 <label>{{ucfirst($servicio->nombre)}}</label>
-                <div class="select-icon rol-unselected">
+                <div class="select-icon rol-unselected" style="margin-top:8px">
                 </div>
               </div>
               @endforeach
@@ -651,7 +653,7 @@ Studio8 48 - Personal
   <div class="col-xs-12 col-md-offset-1 col-md-5 second-container">
     <div class="col-xs-12" id="empleados-container">
       @if(App\Empleado::count() < 1)
-      <strong>No se encontraron empleados en el sistema</strong>
+      <strong style="color:#555;padding:5px">No se encontraron empleados en el sistema</strong>
       @else
       @foreach(App\Empleado::get() as $empleado)
       <div class="empleado-item">
@@ -665,7 +667,7 @@ Studio8 48 - Personal
           <div class="box">
             <a class="item info">Información</a>
             <a class="item edit">Editar</a>
-            <a class="item kick">Despedir</a>
+            <a class="item kick">Desactivar</a>
           </div>
         </div>
         <div class="img-container col-xs-4">
@@ -704,10 +706,10 @@ Studio8 48 - Personal
     @else
     <p style="color: white; text-shadow: 0 0 3px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5); text-align:right;">{{\App\Empleado::count()." empleados encontrados."}}</p>
     @endif
-    <h4 style="text-shadow: 0 0 2px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5);color:#fff;">Despedidos ({{\App\Empleado::onlyTrashed()->count()}})</h4>
+    <h4 style="text-shadow: 0 0 2px rgba(0,0,0,1),0 0 10px rgba(0,0,0,.5);color:#fff;">Inactivos ({{\App\Empleado::onlyTrashed()->count()}})</h4>
     <div class="col-xs-12" id="empleados-trashed-container">
       @if(App\Empleado::onlyTrashed()->count() < 1)
-      <strong>No se encontraron empleados en el sistema</strong>
+      <strong style="color:#555;padding:5px">No se encontraron empleados inactivos en el sistema</strong>
       @else
       @foreach(App\Empleado::onlyTrashed()->get() as $empleado)
       <div class="empleado-item">

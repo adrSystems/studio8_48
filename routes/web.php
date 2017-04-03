@@ -70,12 +70,35 @@ Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
 Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
 Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
-Route::get('/admin/clientes/info/{id?}','Admin\ClienteController@getDetailsForPersonalInfoView');
-Route::get('/admin/clientes/edit/{id?}', function ($id = null){
+Route::get('/admin/clientes/info/{id}','Admin\ClienteController@getDetailsForPersonalInfoView');
+Route::get('/admin/clientes/edit/{id}', function ($id = null){
   if(!$id) return redirect('/admin/clientes');
   if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
-  return view('admin.clientes.edit');
+  return view('admin.clientes.edit', ['cliente' => $cliente]);
 });
+Route::post('/clientes/editar','Admin\ClienteController@edit');
+Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
+Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
 //
 
-//////////////////////////////////////////////////////////////////////////
+//citas
+Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
+Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
+Route::post('/changeStylistFromAppointment','Admin\CitaController@changeStylistFromAppointment');
+Route::post('/admin/pay','Admin\CitaController@payByAdmin');
+Route::post('/admin/liquidar-cita','Admin\CitaController@liquidar');
+Route::post('/admin/start-appointment','Admin\CitaController@iniciar');
+Route::post('/admin/end-appointment','Admin\CitaController@end');
+Route::post('/admin/cancel-appointment','Admin\CitaController@cancel');
+Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
+Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
+
+//inventario
+Route::get('/admin/inventario', function (){
+  return view('admin.inventario');
+});
+Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agregarMarca');
+Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
+Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
+Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+/////////////////////////////
