@@ -13,4 +13,8 @@ class Mensaje extends Model
     {
       return $this->belongsTo('App\Cliente');
     }
+    public function empleado()
+    {
+      return $this->belongsTo('App\Cliente');
+    }
 }
