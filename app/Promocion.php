@@ -11,7 +11,6 @@ class Promocion extends Model
     protected $dates = ['deleted_at'];
     public $timestamps = false;
     protected $table = "promociones";
-    
     public function servicio(){
       return $this->belongsTo('App\Servicio');
     }
