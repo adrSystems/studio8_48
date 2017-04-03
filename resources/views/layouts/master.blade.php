@@ -437,7 +437,7 @@
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="" class="nav-item"><p>Productos</p></a>
             <a href="" class="nav-item"><p>Servicios</p></a>
-            <a href="" class="nav-item"><p>Promociones y concursos</p></a>
+            <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="" class="nav-item"><p>Tips</p></a>
             <a href="" class="nav-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))

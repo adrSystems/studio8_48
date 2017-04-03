@@ -153,3 +153,6 @@ Route::get('/concurso/eliminar/{id?}',function($id=null){
   $concurso->delete();
   return redirect ('/admin/concursos');
 });
+Route::get('/promociones_concursos',function(){
+  return view ('cliente.promociones_concursos');
+});
