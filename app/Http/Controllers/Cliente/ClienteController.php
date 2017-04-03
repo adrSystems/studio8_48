@@ -67,27 +67,6 @@ class ClienteController extends Controller
         return redirect ('/micuenta');
       }
     }
-    public function modificarCorreo(Request $request)
-    {
-      if($request->isMethod('GET'))
-      {
-        return view ('user.micuenta');
-      }
-      if(\Auth::user()->cuentable_type=='App\Empleado')
-      {
-        $usuario = Empleado::find(\Auth::user()->id);
-        $usuario->cuenta->email=$request->correo;
-        $usuario->cuenta->update();
-        return redirect ('/micuenta');
-      }
-      else
-      {
-        $usuario = Cliente::find(\Auth::user()->id);
-        $usuario->cuenta->email=$request->correo;
-        $usuario->cuenta->update();
-        return redirect ('/micuenta');
-      }
-    }
     public function modificarTelefono(Request $request)
     {
       if($request->isMethod('GET'))
@@ -135,7 +114,8 @@ class ClienteController extends Controller
         $usuario->cuenta->update();
         return redirect ('/micuenta');
       }
-      else if(\Auth::user()->cuentable_type=='App\Cliente'){
+      else if(\Auth::user()->cuentable_type=='App\Cliente')
+      {
         $usuario = Cliente::find(\Auth::user()->id);
         $file= $request->file('foto');
         return $file;
@@ -154,7 +134,7 @@ class ClienteController extends Controller
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
         $usuario = Empleado::find(\Auth::user()->id);
-        return $usuario->cuenta->password;
+
         if($usuario->cuenta->password==$request->actualpassword)
         {
           $usuario->cuenta->password=Hash::make($request->nuevacontrasena);

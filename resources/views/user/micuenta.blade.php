@@ -186,8 +186,6 @@ Mi cuenta
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation" class="active title-nav"><a href="#">Home</a></li>
         <li role="presentation" class="item item-perfil"><a href="#" class="item-nav"><i class="material-icons icon-nav">person</i><p> Profile</p></a></li>
-        <li role="presentation" class="item item-mensaje"><a href="#" class="item-nav"><i class="material-icons icon-nav">forum</i><p> Messages</p></a></li>
-        <li role="presentation" class="item item-seguridad"><a href="#" class="item-nav"><i class="material-icons icon-nav">lock</i><p> Seguridad</p></a></li>
         <li role="presentation" class="item item-historial"><a href="#" class="item-nav"><i class="material-icons icon-nav">history</i><p> Historial</p></a></li>
       </ul>
     </div>
@@ -265,7 +263,7 @@ Mi cuenta
                           <button type="submit" class="btn button-guardar" name="button">Guardar cambios</button>
                         </div>
                         <div class="col-xs-3">
-                          <button type="button" class="btn button-guardar" name="button" id="nombre" class="collapse out">Cancelar</button>
+                          <button type="button" class="btn button-guardar" name="button" data-toggle="collapse" id="#apellido">Cancelar</button>
                         </div>
                       </form>
                     </div>
@@ -274,7 +272,7 @@ Mi cuenta
                   <div class="panel panel-default">
                     <div class="panel-heading">
                       <h4 class="panel-title">
-                        <span>Correo:</span> {{Auth::user()->email}}<a class="pull-right" data-toggle="collapse" data-parent="#accordion" href="#correo"><i class="material-icons edit-icono">edit</i>Editar</a>
+                        <span>Correo:</span> {{Auth::user()->email}}
                       </h4>
                     </div>
                     <div id="correo" class="panel-collapse collapse">
@@ -356,7 +354,7 @@ Mi cuenta
           </div>
         </div>
       </div>
-      <div class="mensajes">
+    <!--  <div class="mensajes">
         <div class="panel panel-dark">
           <div class="panel-heading heading-dark">
             <h3 class="panel-title">Mensajes</h3>
@@ -388,9 +386,9 @@ Mi cuenta
             </div>
           </form>
         </div>
-        </div>
+      </div> -->
         <br>
-        <div class="seguridad">
+      <!--  <div class="seguridad">
           <div class="panel-dark">
             <div class="panel-heading heading-dark">
               <h3 class="panel-title">Seguridad</h3>
@@ -411,17 +409,27 @@ Mi cuenta
               </form>
             </div>
           </div>
-        </div>
+        </div> -->
         <div class="historial">
-          <table class="table table-hover">
-            <thead>
-              <th>Servicio</th>
-              <th>Fecha</th>
-            </thead>
-            <tbody>
-              <td></td>
-            </tbody>
-          </table>
+          <div class="panel panel-dark">
+            <div class="panel-heading heading-dark">
+              <h3 class="panel-title">Historial de servicios hechos</h3>
+            </div>
+              <div class="panel-body">
+                <table class="table table-hover">
+                  <thead>
+                    <th>Servicio</th>
+                    <th>Fecha</th>
+                  </thead>
+                  <tbody>
+
+                    <td></td>
+
+                  </tbody>
+                </table>
+              </div>
+
+          </div>
         </div>
       </div>
     </div>

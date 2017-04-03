@@ -82,8 +82,6 @@ Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modi
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta', function(){
-  $cuenta = App\User::find(3);
-  Auth::login($cuenta);
   return view('user.micuenta');
 });
 //
