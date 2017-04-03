@@ -628,7 +628,7 @@
           <a href="/admin/inventario">Inventario</a>
           <a href="#">Citas</a>
           <a href="#">Gestion de productos</a>
-          <a href="#">Gestion de servicios</a>
+          <a href="/admin/servicios">Gestion de servicios</a>
           <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>

@@ -110,4 +110,30 @@ Route::get('/micuenta', function(){
   Auth::login($cuenta);
   return view('user.micuenta');
 });
-//
+////servicios_admin/////////////
+Route::get('/admin/servicios',function(){
+  return view ('admin.servicios');
+});
+Route::match(['GET','POST'],'/servicio/agregar','Admin\ServiciosController@agregar');
+Route::get('/servicio/editar/{id?}',function($id=null){
+  $servicio = \App\Servicio::find($id);
+  if(!$id)
+  return redirect ('/admin/servicios');
+  if(!$servicio = \App\Servicio::find($id))
+  return redirect ('/admin/servicios');
+  return view ('admin.servicio.editar',['servicio'=>$servicio]);
+});
+Route::match(['GET','POST'], '/servicio/editar','Admin\ServiciosController@editar');
+Route::get('/servicio/eliminar/{id?}',function($id = null){
+  $servicio = \App\Servicio::find($id);
+  if(!$id)
+  return redirect ('/admin/servicios');
+  if(!$servicio = \App\Servicio::find($id))
+  return redirect ('/admin/servicios');
+  $servicio->delete();
+  return redirect ('/admin/servicios');
+});
+////promociones-admin-clientes//
+Route::get('admin/promociones',function(){
+  return view ('admin.promociones');
+});
