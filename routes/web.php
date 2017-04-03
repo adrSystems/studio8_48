@@ -92,4 +92,13 @@ Route::post('/admin/end-appointment','Admin\CitaController@end');
 Route::post('/admin/cancel-appointment','Admin\CitaController@cancel');
 Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
 Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
-//////////////////////////////////////////////////////////////////////////
+
+//inventario
+Route::get('/admin/inventario', function (){
+  return view('admin.inventario');
+});
+Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agregarMarca');
+Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
+Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
+Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+/////////////////////////////

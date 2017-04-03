@@ -64,6 +64,10 @@ Información cliente
     float: right;
     -webkit-transition: color .4s, box-shadow .4s, text-shadow .6s, margin-right .6s, background-color .7s;
   }
+  .icon-btn>i{
+    font-size: 18px;
+    padding-top: 2px;
+  }
   .icon-btn:active{
     color: #ddd;
   }
@@ -725,6 +729,10 @@ Información cliente
         <i class="material-icons">date_range</i>
         <span>Agendar cita</span>
       </a>
+      <a href="/admin/ventas/agregar/{{$cliente->id}}" class="icon-btn icon-square">
+        <i class="material-icons">shopping_cart</i>
+        <span>Nueva venta</span>
+      </a>
       @if($cliente->credito)
       <div class="switch-container" id="modificar-credito" active="1">
         <span>Activar credito</span>
@@ -1081,6 +1089,7 @@ Información cliente
     $('#abonar-toggle').click(function () {
       showModal('#abonar-modal-back',true);
     })
+    
     function showModal(id,table) {
       $modal = $(id)
       $modal.fadeIn();

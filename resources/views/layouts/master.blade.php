@@ -624,7 +624,7 @@
 
         @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
         <div class="nav-dropdown-child" id="1">
-          <a href="#">Inventario</a>
+          <a href="/admin/inventario">Inventario</a>
           <a href="#">Citas</a>
           <a href="#">Gestion de productos</a>
           <a href="#">Gestion de servicios</a>
@@ -649,7 +649,7 @@
             <a href="" class="menu-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
-            <a href="#" class="menu-item-children" id="1">Inventario</a>
+            <a href="/admin/inventario" class="menu-item-children" id="1">Inventario</a>
             <a href="#" class="menu-item-children" id="1">Citas</a>
             <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
             <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
