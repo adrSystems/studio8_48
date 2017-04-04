@@ -48,8 +48,15 @@ Mi cuenta
     background: white;
     transition: width .3s;
   }
-  .nav li.item a:hover::after{
+  .nav li.item a:hover::after,
+  .nav li.item a:focus::after{
     width: 100%;
+  }
+  .clase-menu{
+    display: block;
+    width: 0px;
+    height: 2px;
+    background: white;
   }
   .title-nav{
     border-bottom-left-radius: 0px;
@@ -76,6 +83,7 @@ Mi cuenta
   }
   .panel-heading{
     font-family: 'Lobster Two';
+    height: 50px;
   }
   .panel-body{
 
@@ -177,16 +185,37 @@ Mi cuenta
   .text-send{
     margin-top: 6px;
   }
+  .td-realizada{
+    background-color: #00BF00;
+    color: #1F1F1F;
+  }
+  .td-pendiente{
+    background-color: #BFBF00;
+    color: #1F1F1F;
+  }
+  .panel-title{
+    font-size: 20px;
+  }
+  .panel-body-dark{
+    background-color: #3F3F3F;
+  }
 </style>
 @endsection
 @section('body')
 <div class="container">
   <div class="cuenta col-md-12">
+    @if(Session::has('error'))
+        <div class="alert alert-warning" role="alert">
+            <h5>{{session('error')['titulo']}}</h5>
+            <p><strong>{{session('error')['cuerpo']}}</strong></p>
+        </div>
+    @endif
     <div class="col-xs-3">
       <ul class="nav nav-pills nav-stacked">
         <li role="presentation" class="active title-nav"><a href="#">Home</a></li>
         <li role="presentation" class="item item-perfil"><a href="#" class="item-nav"><i class="material-icons icon-nav">person</i><p> Profile</p></a></li>
-        <li role="presentation" class="item item-historial"><a href="#" class="item-nav"><i class="material-icons icon-nav">history</i><p> Historial</p></a></li>
+        <li role="presentation" class="item item-historial"><a href="#" class="item-nav"><i class="material-icons icon-nav">history</i><p>  Historial de citas</p></a></li>
+        <li role="presentation" class="item item-historialcompras"><a href="#" class="item-nav"><i class="material-icons icon-nav">shopping_cart</i><p>  Historial de compras</p></a></li>
       </ul>
     </div>
     <div class="col-xs-offset-1 col-xs-8">
@@ -199,9 +228,7 @@ Mi cuenta
             <div class="col-xs-4">
               <div class="container-photo" id="parent">
                 <img src="{{asset('storage/'.Auth::user()->photo)}}" alt="" class="photo">
-                <div class="medio">
-                  <a class="ancla" href="#"><i class="material-icons">add_a_photo</i></a>
-                </div>
+
             </div>
             </div>
             <div class="col-xs-3 form-photo">
@@ -224,7 +251,7 @@ Mi cuenta
                   </h4>
                 </div>
                 <div id="nombre" class="collapse">
-                  <div class="panel-body">
+                  <div class="panel-body panel-body-dark">
                     <form class="horizontal" action="/modificarnombre" method="post">
                       {{csrf_field()}}
                       <div class="col-xs-4 collapse-ref">
@@ -250,7 +277,7 @@ Mi cuenta
                     </h4>
                   </div>
                   <div id="apellido" class="collapse">
-                    <div class="panel-body">
+                    <div class="panel-body panel-body-dark">
                       <form class="horizontal" action="/modificarapellido" method="post">
                         {{csrf_field()}}
                         <div class="col-xs-4 collapse-ref">
@@ -276,7 +303,7 @@ Mi cuenta
                       </h4>
                     </div>
                     <div id="correo" class="panel-collapse collapse">
-                      <div class="panel-body">
+                      <div class="panel-body panel-body-dark">
                         <form class="horizontal" action="/modificarcorreo" method="post">
                           {{csrf_field()}}
                           <div class="col-xs-4 collapse-ref">
@@ -303,14 +330,14 @@ Mi cuenta
                         </h4>
                       </div>
                       <div id="telefono" class="panel-collapse collapse">
-                        <div class="panel-body">
+                        <div class="panel-body panel-body-dark">
                           <form class="horizontal" action="/modificartelefono" method="post">
                             {{csrf_field()}}
                             <div class="col-xs-4 collapse-ref">
                               Telefono actual:
                             </div>
                             <div class="col-xs-offset-2 col-xs-6">
-                              <input type="date" class="form-control box-control" name="fecha_nacimiento" value="{{Auth::user()->cuentable->telefono}}">
+                              <input type="text" class="form-control box-control" name="telefono" value="{{Auth::user()->cuentable->telefono}}">
                             </div>
                             <div class="col-xs-offset-6 col-xs-3">
                               <button type="submit" class="btn button-guardar" name="button">Guardar cambios</button>
@@ -330,7 +357,7 @@ Mi cuenta
                         </h4>
                       </div>
                       <div id="fecha_nacimiento" class="panel-collapse collapse">
-                        <div class="panel-body">
+                        <div class="panel-body panel-body-dark">
                           <form class="horizontal" action="/modificarfechanacimiento" method="post">
                             {{csrf_field()}}
                             <div class="col-xs-4 collapse-ref">
@@ -413,22 +440,68 @@ Mi cuenta
         <div class="historial">
           <div class="panel panel-dark">
             <div class="panel-heading heading-dark">
-              <h3 class="panel-title">Historial de servicios hechos</h3>
+              @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
+              <h1 class="panel-title">Historial de citas</h1>
+              @else
+              <h1 class="panel-title">Historial de citas empleado</h1>
+              @endif
             </div>
               <div class="panel-body">
                 <table class="table table-hover">
                   <thead>
                     <th>Servicio</th>
-                    <th>Fecha</th>
+                    <th>Fecha y hora</th>
+                    <th>Estado</th>
                   </thead>
                   <tbody>
-                    <td>{{App\Cliente::find(3)->citas}}</td>
+
+                    @foreach($citas as $cit)
+                    <tr>
+                      @foreach($cit->servicios as $servicios)
+                      <td>{{$servicios->nombre}}</td>
+                      <td>{{$cit->fecha_hora}}</td>
+                      @if($cit->estado==0)
+                        <td class="td-pendiente">Pendiente</td>
+                        @elseif($cit->estado==1)
+                        <td class="td-realizada">Realizada</td>
+                      @endif
+                      @endforeach
+                    </tr>
+                    @endforeach
                   </tbody>
                 </table>
               </div>
-
           </div>
         </div>
+        @if(!Auth::user()->cuentable_type == strval(App\Cliente::class))
+        <div class="historial-compras">
+          <div class="panel panel-dark">
+            <div class="panel-heading heading-dark">
+              <h1 class="panel-title">Historial de compras</h1>
+            </div>
+              <div class="panel-body">
+                <table class="table table-hover">
+                  <thead>
+                    <th>Producto</th>
+                    <th>Fecha y hora</th>
+                    <th>Estado</th>
+                  </thead>
+                  <tbody>
+                    @foreach($compras as $compra)
+                    <tr>
+                      @foreach($compra->productos as $productos)
+                      <td>{{$productos->nombre}}</td>
+                      <td>{{$compra->fecha_hora}}</td>
+                      <td>{{$productos->precio_venta}}</td>
+                      @endforeach
+                    </tr>
+                    @endforeach
+                  </tbody>
+                </table>
+              </div>
+          </div>
+        </div>
+        @endif
       </div>
     </div>
   </div>
@@ -436,32 +509,25 @@ Mi cuenta
 @endsection
 @section('js')
 <script type="text/javascript">
-//  $(document).ready(function(){
-//    $(".mensajes").hide();
-//    $(".seguridad").hide();
-//    $(".item-mensaje").click(function(){
-//      $(".mensajes").show(500);
-//      $(".mensajes").show("slow");
-//      $(".perfil").hide(400);
-//      $(".perfil").hide("slow");
-//      $(".seguridad").hide(500);
-//      $(".seguridad").hide("slow");
-//    });
-//    $(".item-perfil").click(function(){
-//      $(".mensajes").hide("slow");
-//      $(".perfil").show(400);
-//      $(".perfil").show("slow");
-//      $(".seguridad").hide(500);
-//      $(".seguridad").hide("slow");
-//    });
-//    $(".item-seguridad").click(function (){
-//      $(".perfil").hide(400);
-//      $(".perfil").hide("slow");
-//      $(".mensajes").hide(500);
-//      $(".mensajes").hide("slow");
-//      $(".seguridad").show(500);
-//      $(".seguridad").show("slow");
-//    });
-//  });
+  $(document).ready(function(){
+    $(".item-perfil").focus();
+    $(".historial").hide();
+    $(".item-historial").click(function(){
+      $(".historial").show(500);
+      $(".historial").show("slow");
+      $(".perfil").hide(400);
+      $(".perfil").hide("slow");
+      $(this).removeClase('active2');
+      $(this).addClass('active2');
+    });
+    $(".item-perfil").click(function(){
+      $(".historial").hide(500);
+      $(".historial").hide("slow");
+      $(".perfil").show(400);
+      $(".perfil").show("slow");
+      $(this).removeClase('active2');
+      $(this).addClass('active2');
+    });
+  });
 </script>
 @endsection

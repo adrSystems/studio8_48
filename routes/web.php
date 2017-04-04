@@ -30,6 +30,7 @@ Route::get('/',function (){
     return view('admin.primer-uso');
   }
   return view('welcome');
+
 });
 //first use sign up
 Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
@@ -81,7 +82,6 @@ Route::match(["GET","POST"],'/modificarcorreo',"Cliente\ClienteController@modifi
 Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modificarTelefono");
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
-Route::get('/micuenta', function(){
-  return view('user.micuenta');
-});
+Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
+Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
 //

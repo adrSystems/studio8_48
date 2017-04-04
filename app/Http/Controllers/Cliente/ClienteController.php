@@ -7,6 +7,7 @@ use App\Cliente;
 use App\User;
 use App\Empleado;
 use Storage;
+use Validator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
@@ -33,6 +34,15 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
+      $rules= ['nombre'=>'required'];
+      $validacion= Validator::make($request->all(),$rules);
+      if($validacion->fails())
+      {
+        return back()->with('error',[
+          'titulo'=>'Error!',
+          'cuerpo'=>'El campo nombre es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo'
+        ]);
+      }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
         $usuario = Empleado::find(\Auth::user()->id);
@@ -52,6 +62,15 @@ class ClienteController extends Controller
       if($request->isMethod('GET'))
       {
         return view ('user.micuenta');
+      }
+      $rules= ['apellido'=>'required'];
+      $validacion= Validator::make($request->all(),$rules);
+      if($validacion->fails())
+      {
+        return back()->with('error',[
+          'titulo'=>'Error!',
+          'cuerpo'=>'El campo apellido es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
+        ]);
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -73,6 +92,15 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
+      $rules= ['apellido'=>'required'];
+      $validacion= Validator::make($request->all(),$rules);
+      if($validacion->fails())
+      {
+        return back()->with('error',[
+          'titulo'=>'Error!',
+          'cuerpo'=>'El campo telefono es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
+        ]);
+      }
       $usuario = Cliente::find(\Auth::user()->id);
       $usuario->telefono=$request->telefono;
       $usuario->update();
@@ -83,6 +111,15 @@ class ClienteController extends Controller
       if($request->isMethod('GET'))
       {
         return view ('user.micuenta');
+      }
+      $rules= ['fecha_nacimiento'=>'required'];
+      $validacion= Validator::make($request->all(),$rules);
+      if($validacion->fails())
+      {
+        return back()->with('error',[
+          'titulo'=>'Error!',
+          'cuerpo'=>'El campo fecha de nacimiento es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
+        ]);
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -104,7 +141,15 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
-
+      $rules= ['foto'=>'required|mimes:jpeg,bmp,png,jpg'];
+      $validacion= Validator::make($request->all(),$rules);
+      if($validacion->fails())
+      {
+        return back()->with('error',[
+          'titulo'=>'Error!',
+          'cuerpo'=>'No se encontro ninguna imagen, intentelo de nuevo.'
+        ]);
+      }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
         $usuario = Empleado::find(\Auth::user()->id);
@@ -118,7 +163,6 @@ class ClienteController extends Controller
       {
         $usuario = Cliente::find(\Auth::user()->id);
         $file= $request->file('foto');
-        return $file;
         $temp= $file->store('ProfilePhotos','public');
         $usuario->cuenta->photo = $temp;
         $usuario->cuenta->update();
@@ -144,5 +188,41 @@ class ClienteController extends Controller
         }
         return redirect ('/');
       }
+    }
+    public function getDetailsCliente($id =null)
+    {
+
+      if(!$cliente = Cliente::find($id))
+      {
+        return redirect ('/');
+      }
+      
+      //$pila = array("naranja", "plátano");
+      //array_push($pila, "manzana", "arándano");
+      //return $pila;
+      $citas =[];
+      $compras=[];
+      //return $cliente->citas[1];
+      foreach($cliente->citas as $cita)
+      {
+        array_push($citas,$cita);
+      }
+      foreach($cliente->compras as $compra)
+      {
+        array_push($compras,$compra);
+      }
+      return view ('user.micuenta',['citas'=>$citas,'compras'=>$compras]);
+    }
+    public function getDetailsEmpleado($id = null)
+    {
+      if(!$empleado = Empleado::find($id))
+      {
+        return redirect ('/');
+      }
+      $citas = [];
+      foreach ($empleado->citas as $cita) {
+        array_push($citas,$cita);
+      }
+      return view ('user.micuenta',['citas'=>$citas]);
     }
 }
