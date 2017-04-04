@@ -7,9 +7,6 @@ Editar promociones
   body{
     background-image: url("{{asset('/img/walls/admin.jpg')}}");
   }
-  .panel{
-    margin-top: 100px;
-  }
   .promo{
     width: 200px;
     margin-left: 20px;
@@ -22,13 +19,21 @@ Editar promociones
 @section('body')
 <div class="container">
   <div class="col-md-12">
-    <div class="col-xs-offset-3 col-xs-6">
+    <div class="col-xs-offset-3 col-xs-6" style="margin-top: 100px;">
+      @if(Session::has('error'))
+
+          <div class="alert alert-warning" role="alert">
+              <h4>{{session('error')['titulo']}}</h4>
+              <p>{{session('error')['cuerpo']}}</p>
+          </div>
+
+      @endif
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">Editar concurso</h3>
         </div>
         <div class="panel-body">
-          <form class="horizontal" action="/promocion/editar" method="post" enctype="multipart/form-data">
+          <form class="horizontal" action="/concurso/editar" method="post" enctype="multipart/form-data">
             {{csrf_field()}}
             <input type="hidden" name="id" value="{{$concurso->id}}">
             <div class="form-group">

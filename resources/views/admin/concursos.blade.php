@@ -72,6 +72,14 @@ Promociones
 <div class="container">
   <div class="col-md-12">
     <div class="gestion-concursos">
+      @if(Session::has('error'))
+
+          <div class="alert alert-warning" role="alert">
+              <h4>{{session('error')['titulo']}}</h4>
+              <p>{{session('error')['cuerpo']}}</p>
+          </div>
+
+      @endif
       <div class="col-xs-5">
         <div class="concursos">
           @foreach(\App\Concurso::get() as $concurso)

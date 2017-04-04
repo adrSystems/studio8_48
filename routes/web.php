@@ -144,6 +144,7 @@ Route::get('/concurso/editar/{id?}',function($id=null){
   return redirect ('/admin/concursos');
   return view ('admin.concursos.edit',['concurso'=>$concurso]);
 });
+Route::match(['GET','POST'],'/concurso/editar','Admin\ConcursoController@editar');
 Route::get('/concurso/eliminar/{id?}',function($id=null){
   $concurso = \App\Concurso::find($id);
   if(!$id)

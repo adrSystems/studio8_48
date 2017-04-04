@@ -73,6 +73,14 @@ Promociones
 <div class="container">
   <div class="col-md-12">
     <div class="gestion-promociones">
+      @if(Session::has('error'))
+
+          <div class="alert alert-warning" role="alert">
+              <h4>{{session('error')['titulo']}}</h4>
+              <p>{{session('error')['cuerpo']}}</p>
+          </div>
+
+      @endif
       <div class="col-xs-5">
         <div class="promociones">
           @foreach(\App\Promocion::get() as $promocion)
