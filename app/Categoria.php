@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categoria extends Model
 {
+  public $timestamps = false;
   public function marcas()
   {
     return $this->belongsToMany('App\Marca');

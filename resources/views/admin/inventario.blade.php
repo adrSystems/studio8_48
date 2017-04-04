@@ -232,10 +232,13 @@ Inventario
     padding: 0;
     display: none;
     max-height: 100%;
-    overflow: hidden;
+    overflow: auto;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5),0 0 10px rgba(0, 0, 0, 0.7);
     -webkit-transform: scale(.7);
     -webkit-transition: -webkit-transform .4s;
+  }
+  .modal-back>.modal-black-card::-webkit-scrollbar{
+    display: none;
   }
   .modal-black-card>.header,.modal-black-card>.modal-footer{
     background-color: rgba(0, 0, 0, .05);
@@ -341,6 +344,100 @@ Inventario
   #add-subcategoria-toggle:hover{
     background-color: dodgerblue;
   }
+  #agregar-subcategoria-modal-back{
+    z-index: 3;
+  }
+  .textbox3{
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
+    padding-left: 5px;
+  }
+  .textbox3-with-btn{
+    padding-right: 25px;
+    width: 100%;
+  }
+  .textbox3-btn{
+    position: absolute;
+    right: 5px;
+    top: 3px;
+  }
+  .categorias-subcontainer{
+    padding: 0;
+    overflow: auto;
+    max-height: 600px;
+  }
+  .categorias-subcontainer::-webkit-scrollbar{
+    display: none;
+  }
+  .categorias-subcontainer>div>.item{
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0;
+    border-radius: 2px;
+  }
+  .categorias-subcontainer>div>.item>.header{
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 5px;
+    padding-bottom: 7px;
+    text-align: center;
+    position: relative;
+    cursor: pointer;
+  }
+  .categorias-subcontainer>div>.item>.header>h5{
+    margin: 0;
+  }
+  .categorias-subcontainer>div>.item>.header>.select-btn{
+    position: absolute;
+    top: 4px;
+    border-radius: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    right: 3px;
+    height: 20px;
+    width: 20px;
+  }
+  .categorias-subcontainer>div>.item>.header>.select-btn>i{
+    padding-top: 1px;
+    padding-right: 1px;
+    font-size: 18px;
+  }
+  .categorias-subcontainer>div>.item>.header>.selected{
+    color: rgba(255, 0, 0, 0.6);
+  }
+  .categorias-subcontainer>div>.item>.header>.unselected{
+    color: #777;
+  }
+  .categorias-subcontainer>div>.item>.body{
+
+  }
+  .categorias-subcontainer>div>.item>.body>.item{
+    text-align: center;
+    color: #ddd;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .item2{
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    width: 100%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  .item2:hover{
+    color: #ddd;
+  }
+  .item2-selected{
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.8);
+    color: #fff;
+  }
+  #manage-cat-panel{
+    display: none;
+  }
+  #subcategorias-cont-to-manage{
+    padding: 5px;
+    padding-top: 0;
+  }
 </style>
 @endsection
 
@@ -368,24 +465,16 @@ Inventario
         <input type="text" name="categoriaNombre" value="" class="textbox2" style="width:100%">
       </div>
       <div class="col-xs-12" style="margin-top:10px">
-        <label for="" class="dark">Seleccione o agregue subcategorias</label>
-        <div class="circle-btn" id="add-subcategoria-toggle">
-          <i class="material-icons">add</i>
-        </div>
+        <label for="" class="dark">Agregue subcategorias</label>
       </div>
       <div class="col-xs-12">
-        <div class="subcontainer">
-          @if(\App\Subcategoria::count() < 1)
-          <div class="alert alert-danger">
-            <p>No se encontraron subcategorias en el sistema. Añada subcategorias para continuar.</p>
+        <div class="subcontainer" id="subcategorias-to-add-container">
+          <div class="col-xs-12" style="padding:0">
+            <input type="text" name="subcategoria-to-add" value="" class="textbox3 textbox3-with-btn" placeholder="escribe el nombre de la subcategoria...">
+            <div class="circle-btn textbox3-btn" id="add-subcategoria-btn">
+              <i class="material-icons">add</i>
+            </div>
           </div>
-          @else
-          @foreach(\App\Subcategoria::get() as $subcategoria)
-          <div class="item">
-            {{$subcategoria->nombre}}
-          </div>
-          @endforeach
-          @endif
         </div>
       </div>
     </div>
@@ -403,7 +492,7 @@ Inventario
       <h4>Editar marca</h4>
     </div>
     <div class="body">
-      <form class="" action="/admin/inventario/marcas/editar" method="post" enctype="multipart/form-data" id="form-editar-marca">
+      <form action="/admin/inventario/marcas/editar" method="post" enctype="multipart/form-data" id="form-editar-marca">
         <input type="hidden" name="marcaToEdit" value="">
         <input type="hidden" name="_token" value="{{csrf_token()}}">
         <div class="col-xs-12">
@@ -429,6 +518,34 @@ Inventario
           <div class="img-file-selector col-xs-12">
             <p>Haz click o arrastra un archivo...</p>
             <input type="file" name="nuevoLogo" value="" accept="image/jpeg,.png,.gif">
+          </div>
+        </div>
+        <div class="col-xs-12">
+          <hr>
+        </div>
+        <div class="col-xs-12">
+          <div class=" col-xs-12 subcontainer categorias-subcontainer" id="categorias-subcontainer1">
+          @if(\App\Categoria::count() < 1)
+          <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice1">No se encontraron categorias, añada una nueva para continuar.</p>
+          @else
+          @foreach(\App\Categoria::get() as $cat)
+          <div class="col-xs-12 col-lg-6" style="padding:5px">
+            <div class="item" style="border-color: rgba(0,0,0,.2)">
+              <div class="header for-edit-marca-header" id="{{$cat->id}}" style="background: linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.2))">
+                <h5 style="color: #555;">{{$cat->nombre}}</h5>
+                <div class="select-btn unselected" style="background-color:rgba(0,0,0,.1)">
+                  <i class="material-icons">check</i>
+                </div>
+              </div>
+              <div class="body">
+                @foreach($cat->subcategorias as $sub)
+                <div class="item" style="color:#888">{{$sub->nombre}}</div>
+                @endforeach
+              </div>
+            </div>
+          </div>
+          @endforeach
+          @endif
           </div>
         </div>
       </form>
@@ -527,7 +644,7 @@ Inventario
       <div class="col-xs-12 col-md-8" style="padding: 15px;">
         <div class="sub-card">
           <h4 style="text-align:center">Agregar nueva marca</h4>
-          <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data">
+          <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="col-xs-12">
               <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
@@ -549,15 +666,32 @@ Inventario
                 <hr>
               </div>
               <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
-                <label for="" class="pull-left">Categorias que maneja</label>
+                <label for="" class="pull-left">Selecciona las categorias que maneja</label>
                 <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
                   <i class="material-icons">add</i>
                 </div>
               </div>
-              <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer" style="padding:0">
+              <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
               @if(\App\Categoria::count() < 1)
-              <p style="margin-top:10px;padding:0 10px 0 10px">No se encontraron categorias, añada una nueva para continuar.</p>
+              <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
               @else
+              @foreach(\App\Categoria::get() as $cat)
+              <div class="col-xs-12 col-lg-6" style="padding:5px">
+                <div class="item">
+                  <div class="header for-add-marca-header" id="{{$cat->id}}">
+                    <h5>{{$cat->nombre}}</h5>
+                    <div class="select-btn unselected">
+                      <i class="material-icons">check</i>
+                    </div>
+                  </div>
+                  <div class="body">
+                    @foreach($cat->subcategorias as $sub)
+                    <div class="item">{{$sub->nombre}}</div>
+                    @endforeach
+                  </div>
+                </div>
+              </div>
+              @endforeach
               @endif
               </div>
               <div class="col-xs-12 col-md-8 col-md-offset-2">
@@ -579,18 +713,51 @@ Inventario
     </div>
     <div class="body">
       <div class="col-xs-12 col-md-4" style="padding:15px">
-        <div class="list-container">
+        <div class="list-container" style="padding:5px">
+          <h5 style="text-align:center;padding-bottom:5px">Seleccione una categoria</h5>
           @if(\App\Categoria::count() == 0)
           <p style="padding:0 10px 0 10px">No se encontraron categorias registradas en el sistema.</p>
           @else
           @foreach(\App\Categoria::get() as $categoria)
-          <div class="list-item">
+          <div class="item2 cat-item" id="{{$categoria->id}}">
             <div class="info">
               <span>{{$categoria->nombre}}</span>
             </div>
           </div>
           @endforeach
           @endif
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-8" style="padding:15px">
+        <div class="list-container col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
+          <div class="col-xs-12">
+            <h4 style="text-align:center">Modificar categoria</h4>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="alert alert-warning" style="display:none">
+              <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
+            </div>
+          </div>
+          <input type="hidden" name="idCatAEditar" value="">
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <label for="">Nombre</label>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
+            <button type="button" class="btn3 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <hr>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <label for="">Subcategorias</label>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="subcontainer" id="subcategorias-cont-to-manage">
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -643,6 +810,7 @@ Inventario
   </div>
 
 </div>
+
 </div>
 @endsection
 
@@ -677,14 +845,293 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
+  $('#cambiar-nombre-cat-btn').click(function () {
+    if($('input[name=nuevoNombreCategoria]').val() == '')
+      showMsg('Ups!',['El nombre no puede estar vacio'])
+    else{
+      $.ajax({
+        url:"/admin/inventario/categorias/is-repeated",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token: "{{csrf_token()}}",
+          nombre: $('input[name=nuevoNombreCategoria]').val()
+        }
+      }).done(function(response){
+        if(response.result == true)
+        {
+          showMsg('Ups!', ['Ya existe una categoria con ese nombre en el sistema.'])
+        }
+        else
+        {
+        $.ajax({
+          url:"/admin/inventario/categorias/cambiar-nombre",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: $('input[type=hidden][name=idCatAEditar]').val(),
+            nombre: $('input[name=nuevoNombreCategoria]').val()
+          }
+        }).done(function(response){
+          if(response.result)
+          {
+            $('.item2-selected>.info>span').text($('input[name=nuevoNombreCategoria]').val())
+            $('#nombre-categoria-a-editar').text($('input[name=nuevoNombreCategoria]').val())
+            showMsg('Ok!',['Nombre de la categoria cambiado con exito'])
+          }
+          else showMsg('Ups!',['Ha ocurrido un error'])
+        })
+        }
+      })
+    }
+  })
+
+  $('.cat-item').click(function () {
+    var id = $(this).attr('id')
+    var $catItem  = $(this)
+    $.ajax({
+      url:"/admin/inventario/marcas/get-subcategories",
+      type:"post",
+      dataType:"json",
+      data:{
+        _token:"{{csrf_token()}}",
+        id: id
+      }
+    }).done(function(subcategorias){
+      $('.cat-item').removeClass('item2-selected')
+      $catItem.addClass('item2-selected')
+      $('input[type=hidden][name=idCatAEditar]').val(id)
+      $('#nombre-categoria-a-editar').text($catItem.text())
+      $('#manage-cat-panel').slideDown(400)
+      $('#nombre-categoria-a-editar').parent().delay(400).slideDown(400)
+      $('#subcategorias-cont-to-manage').children('.subcategoria-item').remove()
+      $.each(subcategorias, function (i, sub) {
+        $item = $('<div class="subcategoria-item">')
+        $item.css({
+          'width':'100%',
+          padding:'3px',
+          'background-color':'rgba(255,255,255,.5)',
+          'border-radius':'3px',
+          'margin-top':'5px',
+          position:'relative'
+        })
+        $tb = $('<input type="text">')
+        $tb.val(sub.nombre)
+        $tb.css({
+          border:'none',
+          'padding-left':'5px',
+          'padding-right':'5px',
+          width:'100%',
+          'padding-right':'50px',
+          'color':'#555'
+        })
+        $item.append($tb)
+        $('#subcategorias-cont-to-manage').append($item)
+      })
+    })
+  })
+
+  var subcategorias = [];
   $('div#add-categoria-btn').click(function () {
     showModal('#agregar-categoria-modal-back')
   })
 
-  $('#editar-marca').click(function () {
-    if($('input[name=nuevoLogo]').val() == '' && $('input[name=newMarcaName]').val() == '')
+  $('.categorias-subcontainer>div>.item>.for-add-marca-header').click(function () {
+    toggleCategories('add-marca', $(this))
+  })
+
+  $('.categorias-subcontainer>div>.item>.for-edit-marca-header').click(function () {
+    toggleCategories('form-editar-marca', $(this))
+  })
+
+  function toggleCategories(formId, $header) {
+    var $selectBtn = $header.children('.select-btn')
+    if($selectBtn.hasClass('selected'))
     {
-      showMsg('Ups!', ['Debes proporcionar por lo menos un parametro'])
+      $selectBtn.removeClass('selected')
+      $selectBtn.addClass('unselected')
+      $('form[id='+formId+']').children('input[type=hidden][id=categorias-input][value='+$header.attr('id')+']').remove()
+    }
+    else {
+      $selectBtn.removeClass('unselected')
+      $selectBtn.addClass('selected')
+      $('form#'+formId).append($('<input type="hidden" name="categorias[]" id="categorias-input" value="'+$header.attr('id')+'">'))
+    }
+  }
+
+  $('#agregar-categoria-modal-back').find('.close-btn').click(function () {
+    $('#subcategorias-to-add-container').children('div.item').remove()
+    $('input[name=categoriaNombre]').val('')
+    subcategorias = []
+  })
+
+  $('#agregar-categoria-modal-back').find('#close-btn').click(function () {
+    $('#subcategorias-to-add-container').children('div.item').remove()
+    $('input[name=categoriaNombre]').val('')
+    subcategorias = []
+  })
+
+  $('#agregar-categoria-btn').click(function () {
+    if($('input[name=categoriaNombre]').val() == '' || subcategorias.length == 0)
+      showMsg('Ups!', ['Debe proporcionar el nombre de la categoria así como las subcategorias de ella.'])
+    else
+    {
+      $.ajax({
+        url:"/admin/inventario/categorias/is-repeated",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token: "{{csrf_token()}}",
+          nombre: $('input[name=categoriaNombre]').val()
+        }
+      }).done(function(response){
+        if(response.result == true)
+        {
+          showMsg('Ups!', ['Ya existe una categoria con ese nombre en el sistema.'])
+        }
+        else
+        {
+          $.ajax({
+            url:"/admin/inventario/agregar-categoria",
+            type:"post",
+            dataType:"json",
+            data:{
+              _token:"{{csrf_token()}}",
+              nombre: $('input[name=categoriaNombre]').val(),
+              subcategorias: subcategorias
+            }
+          }).done(function(response1){
+            if(!response1.result) showMsg('Ups!', ['Ha ocurrido un error. intentelo de nuevo'])
+            else
+            {
+              var $itemParent = $('<div class="col-xs-12 col-lg-6">')
+              $itemParent.css('padding','5px')
+              var $item = $('<div class="item">')
+              var $header = $('<div class="header">')
+              $header.attr('id',response1.cat.id)
+              $selectBtn = $('<div class="select-btn selected">')
+              $selectBtn.append($('<i class="material-icons">check</i>'))
+              $header.append($('<h5>'+response1.cat.nombre+'</h5>'))
+              $header.append($selectBtn)
+              $header.click(function () {
+                var $selectBtn = $(this).children('.select-btn')
+                if($selectBtn.hasClass('selected'))
+                {
+                  $selectBtn.removeClass('selected')
+                  $selectBtn.addClass('unselected')
+                  $('input[type=hidden][id=categorias-input][value='+$(this).attr('id')+']').remove()
+                }
+                else {
+                  $selectBtn.removeClass('unselected')
+                  $selectBtn.addClass('selected')
+                  $('form[id=add-marca]').append($('<input type="hidden" name="categorias[]" id="categorias-input" value="'+$(this).attr('id')+'">'))
+                }
+              })
+              $item.append($header)
+              $body=$('<div class="body">')
+              for (var i = 0; i < subcategorias.length; i++) {
+                $body.append($('<div class="item">'+subcategorias[i]+'</div>'))
+              }
+              $item.append($body)
+              $('form[id=add-marca]').append($('<input type="hidden" name="categorias[]" id="categorias-input" value="'+$header.attr('id')+'">'))
+              $('#no-cat-advice').hide()
+              $itemParent.append($item)
+              $('.categorias-subcontainer').append($itemParent)
+
+              var $itemParent1 = $('<div class="col-xs-12 col-lg-6">')
+              $itemParent1.css('padding','5px')
+              var $item1 = $('<div class="item">')
+              var $header1 = $('<div class="header">')
+              $header1.attr('id',response1.cat.id)
+              $selectBtn1 = $('<div class="select-btn selected">')
+              $selectBtn1.append($('<i class="material-icons">check</i>'))
+              $header1.append($('<h5>'+response1.cat.nombre+'</h5>'))
+              $header1.append($selectBtn1)
+              $header1.click(function () {
+                var $selectBtn1 = $(this).children('.select-btn')
+                if($selectBtn1.hasClass('selected'))
+                {
+                  $selectBtn1.removeClass('selected')
+                  $selectBtn1.addClass('unselected')
+                  $('form[id=form-editar-marca]').children('input[type=hidden][id=categorias-input][value='+$(this).attr('id')+']').remove()
+                }
+                else {
+                  $selectBtn1.removeClass('unselected')
+                  $selectBtn1.addClass('selected')
+                  $('form[id=form-editar-marca]').append($('<input type="hidden" name="categorias[]" id="categorias-input" value="'+$(this).attr('id')+'">'))
+                }
+              })
+              $item1.append($header1)
+              $body1=$('<div class="body">')
+              for (var i = 0; i < subcategorias.length; i++) {
+                $body1.append($('<div class="item">'+subcategorias[i]+'</div>'))
+              }
+              $item1.append($body1)
+              $('#no-cat-advice1').hide()
+              $itemParent1.append($item1)
+              $('#categorias-subcontainer1').append($itemParent)
+
+              categorias=[]
+              closeModal('#agregar-categoria-modal-back')
+              showMsg('Ok!',['Categoria añadida con exito al sistema'])
+            }
+          })
+        }
+      })
+    }
+  })
+
+  $('#add-subcategoria-btn').click(function () {
+    addSubcategoria()
+  })
+
+  $('input[name=subcategoria-to-add]').keypress(function (e) {
+    if(e.charCode == 13)
+    {
+      addSubcategoria()
+    }
+  })
+
+  function addSubcategoria() {
+    if($('input[name=subcategoria-to-add]').val() == '')
+      showMsg('Ups!', ['Ingrese un nombre para la subcategoria.'])
+    else if(subcategorias.indexOf($('input[name=subcategoria-to-add]').val()) > -1)
+    {
+      showMsg('Ups!', ['Dos subcategorias no pueden tener el mismo nombre.'])
+    }
+    else
+    {
+      $subName = $('input[name=subcategoria-to-add]').val()
+      subcategorias.push($subName)
+      $item = $('<div class="item">')
+      $item.css({
+        'border':'1px solid rgba(0,0,0,.06)',
+        padding:'3px',
+        'border-radius':'3px'
+      })
+      $span = $('<span>'+$subName+'</span>')
+      $removeBtn = $('<div class="circle-btn"><i class="material-icons">remove</i></div>')
+      $removeBtn.css({
+        'float':'right'
+      })
+      $item.append($span)
+      $item.append($removeBtn)
+      $removeBtn.attr('value',$subName)
+      $removeBtn.click(function () {
+        $(this).parent().remove()
+        subcategorias.splice(subcategorias.indexOf($(this).attr('value')), 1)
+      })
+      $('#subcategorias-to-add-container').prepend($item)
+      $('input[name=subcategoria-to-add]').val('')
+      $('input[name=subcategoria-to-add]').focus()
+    }
+  }
+
+  $('#editar-marca').click(function () {
+    if($('form[id=form-editar-marca]').children('#categorias-input').length < 1)
+    {
+      showMsg('Ups!', ['Debes proporcionar al menos una categoria de productos'])
     }
     else
     {
@@ -697,9 +1144,30 @@ $(document).ready(function () {
   })
 
   $('.edit-marca').click(function () {
-    $('input[name=marcaToEdit]').val($(this).attr('id'))
-    $('span#marca-a-modificar').text($(this).attr('marca'))
-    showModal('#editar-marca-modal-back')
+    var id = $(this).attr('id')
+    var marca = $(this).attr('marca')
+    $.ajax({
+      url:"/admin/inventario/marcas/get-categories",
+      type:"post",
+      dataType:"json",
+      data:{
+        _token:"{{csrf_token()}}",
+        id:id
+      }
+    }).done(function(categorias){
+      $('input[name=marcaToEdit]').val(id)
+      $('span#marca-a-modificar').text(marca)
+      $('form[id=form-editar-marca]').children('#categorias-input').remove()
+      $('#categorias-subcontainer1').find('.select-btn').removeClass('selected')
+      $('#categorias-subcontainer1').find('.select-btn').addClass('unselected')
+      $.each(categorias, function (i, cat) {
+        $('#categorias-subcontainer1').find('.header#'+cat.id).find('.select-btn').removeClass('unselected')
+        $('#categorias-subcontainer1').find('.header#'+cat.id).find('.select-btn').addClass('selected')
+        $('form#form-editar-marca').append($('<input type="hidden" name="categorias[]" id="categorias-input" value="'+cat.id+'">'))
+      })
+      showModal('#editar-marca-modal-back')
+    })
+
   })
 
   $('.restore-marca').click(function () {

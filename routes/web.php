@@ -101,4 +101,9 @@ Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agreg
 Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
 Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
 Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+Route::post('/admin/inventario/categorias/is-repeated','Admin\InventarioController@categoriaEsRepetida');
+Route::post('/admin/inventario/agregar-categoria','Admin\InventarioController@agregarCategoria');
+Route::post('/admin/inventario/marcas/get-categories','Admin\InventarioController@getCategories');
+Route::post('/admin/inventario/marcas/get-subcategories','Admin\InventarioController@getSubcategories');
+Route::post('/admin/inventario/categorias/cambiar-nombre','Admin\InventarioController@cambiarNombreCategoria');
 /////////////////////////////

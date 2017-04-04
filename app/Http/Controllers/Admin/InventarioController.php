@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Marca;
+use App\Subcategoria;
+use App\Categoria;
+use App\Producto;
 
 class InventarioController extends Controller
 {
@@ -28,10 +31,18 @@ class InventarioController extends Controller
           'activeItem' => 'marcas-card'
         ])->withInput();
 
+      if(!$request->categorias)
+        return back()->with('options', [
+          'msg' => ['title' => 'Ups!', 'body' => 'Debes seleccionar al menos una categoria.'],
+          'activeItem' => 'marcas-card'
+        ])->withInput();
+
       $marca = new Marca;
       $marca->nombre = $request->nombreMarca;
       $marca->logo = $request->logo->store('img/marcas','public');
       $marca->save();
+
+      $marca->categorias()->attach($request->categorias);
 
       return back()->with('options', [
         'msg' => ['title' => 'Ok!', 'body' => 'Marca registrada con exito. Ahora puede añadir categorias de productos para la marca.'],
@@ -95,9 +106,9 @@ class InventarioController extends Controller
 
     public function editarMarca(Request $request)
     {
-      if(!$request->nuevoLogo and !$request->newMarcaName)
+      if(!$request->categorias)
         return back()->with('options', [
-          'msg' => ['title' => 'Ups!', 'body' => 'Proporcione al menos un cambio.'],
+          'msg' => ['title' => 'Ups!', 'body' => 'Proporcione al menos una categoria.'],
           'activeItem' => 'marcas-card'
         ]);
 
@@ -107,15 +118,73 @@ class InventarioController extends Controller
         'activeItem' => 'marcas-card'
       ])->withInput();
 
-      $marca = Marca::find($request->marcaId);
+      $marca = Marca::find($request->marcaToEdit);
       if($request->nuevoLogo) $marca->logo = $request->nuevoLogo->store('img/marcas','public');
       if($request->newMarcaName) $marca->nombre = $request->newMarcaName;
 
       $marca->save();
 
+      $marca->categorias()->detach();
+      $marca->categorias()->attach($request->categorias);
+
       return back()->with('options', [
         'msg' => ['title' => 'Ok!', 'body' => 'Marca modificada con exito.'],
         'activeItem' => 'marcas-card'
       ]);
+    }
+
+    public function categoriaEsRepetida(Request $request)
+    {
+      $found;
+      if(Categoria::where('nombre',$request->nombre)->first()) $found = true;
+      else $found = false;
+      return ['result' => $found];
+    }
+
+    public function agregarCategoria(Request $request)
+    {
+      if(Marca::where('nombre',$request->nombre)->first())
+        return ['result' => false];
+
+      $categoria = new Categoria;
+      $categoria->nombre = $request->nombre;
+      $categoria->save();
+
+      foreach ($request->subcategorias as $subName) {
+        if(!Subcategoria::where('nombre',$subName)->where('categoria_id',$categoria->id)->first())
+        {
+          $sub = new Subcategoria;
+          $sub->nombre = $subName;
+          $sub->categoria_id = $categoria->id;
+          $sub->save();
+        }
+      }
+
+      return [
+        'result' => true,
+        'cat' => $categoria
+      ];
+    }
+
+    public function getCategories(Request $request)
+    {
+      return Marca::find($request->id)->categorias;
+    }
+
+    public function cambiarNombreCategoria(Request $request)
+    {
+      if(!$request->id || !$request->nombre)
+        return ['result' => false];
+
+      $cat = Categoria::find($request->id);
+      $cat->nombre = $request->nombre;
+      $cat->save();
+
+      return ['result' => true];
+    }
+
+    public function getSubcategories(Request $request)
+    {
+      return Categoria::find($request->id)->subcategorias;
     }
 }
