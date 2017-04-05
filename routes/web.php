@@ -102,8 +102,14 @@ Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@delete
 Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
 Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
 Route::post('/admin/inventario/categorias/is-repeated','Admin\InventarioController@categoriaEsRepetida');
+Route::post('/admin/inventario/subcategorias/is-repeated','Admin\InventarioController@subcategoriaEsRepetida');
 Route::post('/admin/inventario/agregar-categoria','Admin\InventarioController@agregarCategoria');
 Route::post('/admin/inventario/marcas/get-categories','Admin\InventarioController@getCategories');
 Route::post('/admin/inventario/marcas/get-subcategories','Admin\InventarioController@getSubcategories');
 Route::post('/admin/inventario/categorias/cambiar-nombre','Admin\InventarioController@cambiarNombreCategoria');
+Route::post('/admin/inventario/subcategorias/cambiar-nombre','Admin\InventarioController@cambiarNombreSubcategoria');
+Route::post('/admin/inventario/categorias/get-tabla-categorias','Admin\InventarioController@getTablaCategorias');
+Route::post('/admin/inventario/subcategorias/eliminar','Admin\InventarioController@eliminarSubcategoria');
+Route::post('/admin/inventario/subcategorias/agregar','Admin\InventarioController@agregarSubcategoria');
+Route::post('/admin/inventario/subcategorias/restaurar','Admin\InventarioController@restaurarSubcategoria');
 /////////////////////////////

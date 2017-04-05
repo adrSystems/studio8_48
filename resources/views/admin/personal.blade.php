@@ -215,7 +215,7 @@ Studio8 48 - Personal
     opacity: 0;
   }
   .footer{
-    background-color: rgba(0,0,0,.2);
+    background-color: rgba(0,0,0,.5);
     box-shadow: none;
     height: 100%;
     margin: 0;

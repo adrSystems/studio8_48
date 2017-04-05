@@ -141,6 +141,15 @@ class InventarioController extends Controller
       return ['result' => $found];
     }
 
+    public function subcategoriaEsRepetida(Request $request)
+    {
+      $cat = Categoria::find($request->id);
+      $found;
+      if($cat->subcategorias()->where('nombre',$request->nombre)->first()) $found = true;
+      else $found = false;
+      return ['result' => $found];
+    }
+
     public function agregarCategoria(Request $request)
     {
       if(Marca::where('nombre',$request->nombre)->first())
@@ -183,8 +192,82 @@ class InventarioController extends Controller
       return ['result' => true];
     }
 
+    public function cambiarNombreSubcategoria(Request $request)
+    {
+      if(!$request->id || !$request->nombre)
+        return ['result' => false];
+
+      $sub = Subcategoria::find($request->id);
+      $sub->nombre = $request->nombre;
+      $sub->save();
+
+      return ['result' => true];
+    }
+
     public function getSubcategories(Request $request)
     {
-      return Categoria::find($request->id)->subcategorias;
+      $subcategorias  = Categoria::find($request->id)->subcategorias()->withTrashed()->get();
+      foreach ($subcategorias as $key => $sub) {
+        $sub->productos = $sub->productos()->withTrashed()->get();
+        $sub->trashed = $sub->trashed();
+      }
+      return $subcategorias;
+    }
+
+    public function getTablaCategorias(Request $request)
+    {
+      return view('admin.tabla-categorias');
+    }
+
+    public function eliminarSubcategoria(Request $request)
+    {
+      $sub = Subcategoria::find($request->id);
+
+      if($sub->productos()->withTrashed()->count() < 1)
+        $sub->forceDelete();
+      else {
+        foreach ($sub->productos as $producto) {
+          $producto->delete();
+        }
+        $sub->delete();
+      }
+      return ['result' => true];
+    }
+
+    public function agregarSubcategoria(Request $request)
+    {
+      $cat = Categoria::find($request->id);
+
+      if($cat->subcategorias()->where('nombre',$request->nombre)->first())
+        return [
+          'result' => false,
+          'msg' => [
+            'title' => 'Ups!',
+            'body' => 'Ya existe una subcategoria con ese nombre en la categoria',
+          ]
+        ];
+
+      $sub = new Subcategoria;
+      $sub->nombre = $request->nombre;
+      $sub->categoria_id = $cat->id;
+      $sub->save();
+
+      return [
+        'result' => true,
+        'sub' => $sub
+      ];
+
+    }
+
+    public function restaurarSubcategoria(Request $request)
+    {
+      $sub = Subcategoria::find($request->id);
+
+      foreach ($sub->productos()->onlyTrashed()->get() as $producto) {
+        $producto->restore();
+      }
+      $sub->restore();
+
+      return ['result' => true];
     }
 }

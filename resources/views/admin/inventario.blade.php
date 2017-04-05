@@ -11,7 +11,7 @@ Inventario
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    color: #aaa;
+    color: #555;
   }
   .footer{
     background-color: rgba(0, 0, 0, 0.5);
@@ -59,25 +59,33 @@ Inventario
     width: 100%;
     position: relative;
     float: left;
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-radius: 2px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
   }
   .main-card>.header{
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
+    text-align: center;
     text-shadow: 0 0 15px rgba(0, 0, 0, 0.9), 0 0 1px rgba(0, 0, 0, 0.9);
     padding: 10px;
   }
+  .main-card>.body{
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #777;
+  }
   .list-container{
     border-radius: 3px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
     margin-bottom: 5px;
-    border: 1px solid rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.25);
   }
   .list-container>p{
     color:#fff;
     margin-top: 5px;
+  }
+  .list-container>h5{
+    color:#fff;
   }
   .list-container>.list-item{
 
@@ -85,17 +93,15 @@ Inventario
   .sub-card{
     border-radius: 3px;
     padding: 15px;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.25);
     float: left;
     position: relative;
     width: 100%;
   }
   label{
     font-weight: 400;
-    color: #fff;
-  }
-  h5,h4,h3{
-    color: #fff;
+    color: #eee;
   }
   .textbox2{
     background-color: rgba(255, 255, 255, .8);
@@ -417,9 +423,10 @@ Inventario
   }
   .item2{
     text-align: center;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
     width: 100%;
     padding-top: 5px;
+    color:#bbb;
     padding-bottom: 5px;
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -434,9 +441,78 @@ Inventario
   #manage-cat-panel{
     display: none;
   }
-  #subcategorias-cont-to-manage{
-    padding: 5px;
+  #subcategorias-cont-to-manage, #subcategorias-des-cont-to-manage{
+    padding: 4px;
     padding-top: 0;
+    margin-bottom: 5px;
+  }
+  .action-item-btn{
+    border-radius: 5px;
+    border: 1px solid red;
+    background: #f43;
+  }
+  .action-item-btn:hover{
+    background: #f65;
+  }
+  .action-item-btn-xs{
+    width: 30px;
+    height: 18px;
+    cursor: pointer;
+  }
+  .prodcutos-sub-item-btn{
+    position: absolute;
+    top: 6px;
+    right: 22px;
+    text-align: center;
+    color: #eee;
+    line-height: 15px;
+  }
+  #categorias-subcontainer{
+    background-color: #fff;
+    border-radius: 3px;
+  }
+  .btn2{
+    background: linear-gradient(to bottom, #e42, #d31);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    color: #ddd;
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5);
+    -webkit-transition: padding .4s;
+  }
+  .btn2:hover{
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+  .add-sub-tb-container{
+    background: rgba(255, 0, 0, 0.5);
+    border-radius: 3px;
+    margin-top: 3px;
+    position: relative;
+    padding: 3px;
+  }
+  .add-sub-tb-container>.add-sub-btn{
+    position: absolute;
+    top: 10px;
+    cursor: pointer;
+    right: 6px;
+    font-size: 18px;
+    color: #e43;
+  }
+  .add-sub-tb-container>.add-sub-tb{
+    width: 100%;
+    padding: 5px 22px 5px 10px;
+    border: 1px solid rgba(255, 0, 0, 0.5);
+    border-radius: 3px;
+  }
+  textarea{
+    width: 100%;
+    resize: none;
+  }
+  .switch-center{
+    float: none;
+    display: table;
+    margin: auto;
+    width: auto;
   }
 </style>
 @endsection
@@ -526,7 +602,7 @@ Inventario
         <div class="col-xs-12">
           <div class=" col-xs-12 subcontainer categorias-subcontainer" id="categorias-subcontainer1">
           @if(\App\Categoria::count() < 1)
-          <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice1">No se encontraron categorias, añada una nueva para continuar.</p>
+          <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
           @else
           @foreach(\App\Categoria::get() as $cat)
           <div class="col-xs-12 col-lg-6" style="padding:5px">
@@ -557,6 +633,20 @@ Inventario
   </div>
 </div>
 
+<div class="msg-container" id="eliminar-sub-msg-dialog">
+  <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <h3></h3>
+    </div>
+    <div class="body">
+    </div>
+    <div class="msg-footer">
+      <button type="button" name="button" id="delete-sub-btn" sub="">Eliminar</button>
+      <button type="button" name="button" id="close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
 <div class="msg-container" id="msg-dialog">
   <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
     <div class="header">
@@ -582,7 +672,6 @@ Inventario
     <div class="body">
       <div class="item item-active" for="marcas-card">Marcas</div>
       <div class="item" for="categorias-card">Categorias</div>
-      <div class="item" for="subcategorias-card">Subcategorias</div>
       <div class="item" for="productos-card">Productos</div>
     </div>
   </div>
@@ -594,7 +683,7 @@ Inventario
     <div class="header">
       <h4>Gestión de marcas</h4>
     </div>
-    <div class="body">
+    <div class="body col-xs-12" style="padding:0">
       <div class="col-xs-12 col-md-4" style="padding:15px">
         <div class="list-container col-xs-12" style="padding:0">
           @if(\App\Marca::count() == 0)
@@ -643,7 +732,7 @@ Inventario
       </div>
       <div class="col-xs-12 col-md-8" style="padding: 15px;">
         <div class="sub-card">
-          <h4 style="text-align:center">Agregar nueva marca</h4>
+          <h4 style="text-align:center;color:#fff">Agregar nueva marca</h4>
           <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
             <div class="col-xs-12">
@@ -658,7 +747,7 @@ Inventario
               <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
                 <label for="">Logo</label>
               </div>
-              <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2">
+              <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
                 <p>Haz click o arrastra un archivo...</p>
                 <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
               </div>
@@ -677,16 +766,16 @@ Inventario
               @else
               @foreach(\App\Categoria::get() as $cat)
               <div class="col-xs-12 col-lg-6" style="padding:5px">
-                <div class="item">
-                  <div class="header for-add-marca-header" id="{{$cat->id}}">
+                <div class="item" style="border-color: rgba(0,0,0,.2)">
+                  <div class="header for-add-marca-header" id="{{$cat->id}}" style="background: linear-gradient(to bottom,rgba(0,0,0,.1),rgba(0,0,0,.2))">
                     <h5>{{$cat->nombre}}</h5>
-                    <div class="select-btn unselected">
+                    <div class="select-btn unselected" style="background-color:rgba(0,0,0,.1)">
                       <i class="material-icons">check</i>
                     </div>
                   </div>
                   <div class="body">
                     @foreach($cat->subcategorias as $sub)
-                    <div class="item">{{$sub->nombre}}</div>
+                    <div class="item" style="color:#888">{{$sub->nombre}}</div>
                     @endforeach
                   </div>
                 </div>
@@ -714,7 +803,7 @@ Inventario
     <div class="body">
       <div class="col-xs-12 col-md-4" style="padding:15px">
         <div class="list-container" style="padding:5px">
-          <h5 style="text-align:center;padding-bottom:5px">Seleccione una categoria</h5>
+          <h5 style="text-align:center;padding-bottom:5px;text-shadow:0 0 3px rgba(0,0,0,.8),0 0 15px rgba(0,0,0,1)">Seleccione una categoria</h5>
           @if(\App\Categoria::count() == 0)
           <p style="padding:0 10px 0 10px">No se encontraron categorias registradas en el sistema.</p>
           @else
@@ -731,7 +820,7 @@ Inventario
       <div class="col-xs-12 col-md-8" style="padding:15px">
         <div class="list-container col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
           <div class="col-xs-12">
-            <h4 style="text-align:center">Modificar categoria</h4>
+            <h4 style="text-align:center;color:#fff">Modificar categoria</h4>
           </div>
           <div class="col-xs-12 col-md-6 col-md-offset-3">
             <div class="alert alert-warning" style="display:none">
@@ -746,7 +835,7 @@ Inventario
             <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
           </div>
           <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
-            <button type="button" class="btn3 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
+            <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
           </div>
           <div class="col-xs-12 col-md-6 col-md-offset-3">
             <hr>
@@ -756,31 +845,19 @@ Inventario
           </div>
           <div class="col-xs-12 col-md-6 col-md-offset-3">
             <div class="subcontainer" id="subcategorias-cont-to-manage">
+              <div class="add-sub-tb-container">
+                <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
+                <i class="material-icons add-sub-btn" id="">add_circle</i>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="main-card" for="subcategorias-card" style="display:none">
-    <div class="header">
-      <h4>Gestión de subcategorias</h4>
-    </div>
-    <div class="body">
-      <div class="col-xs-12 col-md-4" style="padding:15px">
-        <div class="list-container col-xs-12">
-          @if(\App\Subcategoria::count() == 0)
-          <p style="padding:0 10px 0 10px">No se encontraron subcategorias registradas en el sistema.</p>
-          @else
-          @foreach(\App\Subcategoria::get() as $subcategoria)
-          <div class="list-item">
-            <div class="info">
-              <span>{{$subcategoria->nombre}}</span>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
+          </div>
+          <div class="col-xs-12 col-md-6 col-md-offset-3">
+            <div class="subcontainer" id="subcategorias-des-cont-to-manage">
             </div>
           </div>
-          @endforeach
-          @endif
         </div>
       </div>
     </div>
@@ -804,6 +881,70 @@ Inventario
           </div>
           @endforeach
           @endif
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-8" style="padding:15px">
+        <div class="sub-card">
+          <h4 style="color:#fff; text-align:center">Nuevo producto</h4>
+          <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+            <select class="textbox2" name="marcaForProduct">
+              <option value="">Seleccione una marca...</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+            <select class="textbox2" name="catForProduct">
+              <option value="">Seleccione una categoria...</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+            <select class="textbox2" name="subForProduct">
+              <option value="">Seleccione una subcategoria...</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Fotografía</label>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
+              <p>Haz click o arrastra un archivo...</p>
+              <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Nombre</label>
+            <input type="text" name="nombreProducto" value="" class="textbox2">
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Descripción</label>
+            <textarea name="descripcion" class="textbox2"></textarea>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Precio compra</label>
+            <input type="text" name="precioCompra" value="" class="textbox2">
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px">
+            <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.6)">
+              <span style="color:#eee">Venta al público</span>
+              <div class="switch-bar switch-center">
+                <div class="switch-btn inactive"></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Precio venta</label>
+            <input type="text" name="precioVenta" value="" class="textbox2">
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2">
+            <label for="">Contenido</label>
+            <input type="text" name="contenido" value="" class="textbox2">
+            <select class="textbox2" name="uMedida">
+              <option value="gr">gramos</option>
+              <option value="ml">mililitros</option>
+            </select>
+          </div>
+          <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:30px; margin-bottom:30px">
+            <button type="button" name="button" id="agregar-producto-btn" class="btn2" style="margin:auto;display:block">Agregar</button>
+          </div>
         </div>
       </div>
     </div>
@@ -887,6 +1028,243 @@ $(document).ready(function () {
     }
   })
 
+  $('.add-sub-btn').click(function () {
+    if($('input.add-sub-tb').val() != '')
+    {
+      var id = $(this).attr('id')
+      $.ajax({
+        url:"/admin/inventario/subcategorias/agregar",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token:"{{csrf_token()}}",
+          nombre: $('input.add-sub-tb').val(),
+          id: id,
+        }
+      }).done(function(res){
+        if(!res.result) showMsg(res.msg.title,[res.msg.body])
+        else
+        {
+          sub = res.sub;
+          $item = $('<div class="subcategoria-item">')
+          $item.css({
+            'width':'100%',
+            padding:'3px',
+            'background-color':'rgba(255,255,255,.5)',
+            'border-radius':'3px',
+            'margin-top':'5px',
+            position:'relative'
+          })
+          $tb = $('<input type="text" class="tb-sub-name" id="'+sub.id+'">')
+          $tb.val(sub.nombre)
+          $tb.css({
+            border:'none',
+            'padding-left':'5px',
+            'padding-right':'5px',
+            width:'100%',
+            'padding-right':'40px',
+            'color':'#555'
+          })
+          $tb.attr('readOnly',true)
+          var $productosBtn = $('<div class="action-item-btn prodcutos-sub-item-btn action-item-btn-xs">')
+          var $productosAbbr = $('<abbr title="0 productos"></abbr>')
+          var $optionsBtn = $('<i class="material-icons">more_vert</i>')
+          var $options =$('<div class="sub-options">')
+          $options.attr('id',sub.id)
+          $options.css({
+            background:'#fff',
+            border:'1px solid #888',
+            padding:'0',
+            position:'absolute',
+            top:'0px',
+            right:'-33px',
+            'border-radius':'2px',
+            'z-index':1,
+            display:'none'
+          })
+          $optionsBtn.css({
+            'position':'absolute',
+            right:'2px',
+            top:'6px',
+            color:'red',
+            'font-size':'18px',
+            cursor:'pointer'
+          })
+          $optionsBtn.click(function () {
+            $.each($('.sub-options'), function (i, e) {
+              if($options.attr('id') != $(e).attr('id')) $(e).hide()
+            })
+            $options.toggle()
+          })
+          $productosBtn.text(0)
+          $productosAbbr.append($productosBtn)
+          $item.append($options)
+          $item.append($productosAbbr)
+          $item.append($optionsBtn)
+          var $cancelBtn = $('<i class="material-icons cancel-sub-changes">cancel</i>')
+          var $savebtn = $('<i class="material-icons save-sub-changes">save</i>')
+          $savebtn.css({
+            'position':'absolute',
+            top:'6px',
+            'font-size':'18px',
+            right:'55px',
+            color:'#f65',
+            cursor:'pointer',
+            display:'none'
+          })
+          $cancelBtn.css({
+            'position':'absolute',
+            top:'6px',
+            'font-size':'18px',
+            right:'75px',
+            color:'#f65',
+            cursor:'pointer',
+            display:'none'
+          })
+          $cancelBtn.click(function () {
+            $('.tb-sub-name[id='+sub.id+']').attr('readOnly',true)
+            $(this).hide()
+            $savebtn.hide()
+            $('.tb-sub-name[id='+sub.id+']').val(sub.nombre)
+          })
+          $savebtn.click(function () {
+            $.ajax({
+              url:"/admin/inventario/subcategorias/is-repeated",
+              type:"post",
+              dataType:"json",
+              data:{
+                _token: "{{csrf_token()}}",
+                nombre: $tb.val(),
+                id:id
+              }
+            }).done(function(res2){
+              if(res2.result == true)
+              {
+                showMsg('Ups!', ['Ya existe una subcategoria con ese nombre en el sistema.'])
+              }
+              else
+              {
+                $.ajax({
+                  url:"/admin/inventario/subcategorias/cambiar-nombre",
+                  type:"post",
+                  dataType:"json",
+                  data:{
+                    _token:"{{csrf_token()}}",
+                    id: sub.id,
+                    nombre: $tb.val()
+                  }
+                }).done(function(res3){
+                  if(!res3.result) showMsg('Ups!',['Ha ocurrido un error.'])
+                  $tb.attr('readonly',true)
+                  $.ajax({
+                    url:"/admin/inventario/categorias/get-tabla-categorias",
+                    type:"post",
+                    dataType:"html",
+                    data:{
+                      _token:"{{csrf_token()}}"
+                    }
+                  }).done(function(html){
+                    $('.categorias-subcontainer').children().remove()
+                    $('.categorias-subcontainer').append(html)
+                    $savebtn.hide()
+                    $cancelBtn.hide()
+                    $('.categorias-subcontainer>div>.item>.for-add-marca-header').click(function () {
+                      toggleCategories('add-marca', $(this))
+                    })
+
+                    $('.categorias-subcontainer>div>.item>.for-edit-marca-header').click(function () {
+                      toggleCategories('form-editar-marca', $(this))
+                    })
+                  })
+                })
+              }
+            })
+          })
+          $item.append($cancelBtn)
+          $item.append($savebtn)
+          $item.append($tb)
+          var $editBtn = $('<i class="material-icons">edit</i>')
+          var $removeBtn = $('<i class="material-icons">remove_circle</i>')
+          $editBtn.css({
+            'color':'#f65',
+            position:'relative',
+            float:'none',
+            display:'block',
+            margin:'auto',
+            'font-size':'18px',
+            padding:'0 2px 0 2px',
+            cursor:'pointer'
+          })
+          $removeBtn.css({
+            'color':'#f65',
+            position:'relative',
+            float:'none',
+            display:'block',
+            margin:'auto',
+            'font-size':'18px',
+            padding:'0 2px 0 2px',
+            cursor:'pointer'
+          })
+          $editBtn.attr('id',sub.id)
+          $removeBtn.attr('id',sub.id)
+          $removeBtn.click(function () {
+            $.ajax({
+              url:"/admin/inventario/subcategorias/eliminar",
+              type:"post",
+              dataType:"json",
+              data:{
+                _token:"{{csrf_token()}}",
+                id: sub.id
+              }
+            }).done(function(res2){
+              if(!res2.result) showMsg('Ups!',['Ha ocurrido un error, intentelo de nuevo.'])
+              else
+              {
+                $options.hide()
+                $item.remove()
+              }
+            })
+          })
+          $editBtn.click(function () {
+            $(this).parent().hide()
+            $('.tb-sub-name').attr('readOnly',true)
+            $('.tb-sub-name[id='+sub.id+']').attr('readOnly',false)
+            $('.tb-sub-name[id='+sub.id+']').focus()
+            $('.cancel-sub-changes').hide()
+            $('.save-sub-changes').hide()
+            $cancelBtn.show()
+            $savebtn.show()
+          })
+          $options.append($editBtn)
+          $options.append($removeBtn)
+          $('#subcategorias-cont-to-manage').append($item)
+        }
+      })
+    }
+  })
+
+  $('#delete-sub-btn').click(function () {
+    var id = $(this).attr('sub')
+    var $btn = $(this)
+    $.ajax({
+      url:"/admin/inventario/subcategorias/eliminar",
+      type:"post",
+      dataType:"json",
+      data:{
+        _token:"{{csrf_token()}}",
+        id: id
+      }
+    }).done(function(response){
+      if(!response.result) showMsg('Ups!',['Ha ocurrido un error, intentelo de nuevo.'])
+      var $msgCard = $btn.parent().parent()
+      $msgCard.parent().show()
+      $msgCard.css('opacity',0);
+      $msgCard.css('margin-top','0px');
+      $msgCard.css('-webkit-transform','scale(.7)');
+      // quitar item, si fue descontinuado, mover a div descontinuados
+    })
+  })
+
   $('.cat-item').click(function () {
     var id = $(this).attr('id')
     var $catItem  = $(this)
@@ -899,13 +1277,27 @@ $(document).ready(function () {
         id: id
       }
     }).done(function(subcategorias){
+      $('.add-sub-btn').attr('id',id)
       $('.cat-item').removeClass('item2-selected')
       $catItem.addClass('item2-selected')
       $('input[type=hidden][name=idCatAEditar]').val(id)
       $('#nombre-categoria-a-editar').text($catItem.text())
       $('#manage-cat-panel').slideDown(400)
-      $('#nombre-categoria-a-editar').parent().delay(400).slideDown(400)
+      $('#nombre-categoria-a-editar').parent().delay(400).slideDown(400, function () {
+        if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
+          $('.footer').css({
+            position:'absolute',
+            bottom:'0'
+          });
+        }
+        else{
+          $('.footer').css({
+            position:'relative'
+          });
+        }
+      })
       $('#subcategorias-cont-to-manage').children('.subcategoria-item').remove()
+      var subcategoriasDescount = 0;
       $.each(subcategorias, function (i, sub) {
         $item = $('<div class="subcategoria-item">')
         $item.css({
@@ -916,19 +1308,240 @@ $(document).ready(function () {
           'margin-top':'5px',
           position:'relative'
         })
-        $tb = $('<input type="text">')
+        $tb = $('<input type="text" class="tb-sub-name" id="'+sub.id+'">')
         $tb.val(sub.nombre)
         $tb.css({
           border:'none',
           'padding-left':'5px',
           'padding-right':'5px',
           width:'100%',
-          'padding-right':'50px',
+          'padding-right':'40px',
           'color':'#555'
         })
-        $item.append($tb)
-        $('#subcategorias-cont-to-manage').append($item)
+        $tb.attr('readOnly',true)
+        var $productosBtn = $('<div class="action-item-btn prodcutos-sub-item-btn action-item-btn-xs">')
+        var $productosAbbr = $('<abbr title="'+sub.productos.length+' productos"></abbr>')
+        var $optionsBtn = $('<i class="material-icons">more_vert</i>')
+        var $options =$('<div class="sub-options">')
+        $options.attr('id',sub.id)
+        $options.css({
+          background:'#fff',
+          border:'1px solid #888',
+          padding:'0',
+          position:'absolute',
+          top:'0px',
+          right:'-33px',
+          'border-radius':'2px',
+          'z-index':1,
+          display:'none'
+        })
+        $optionsBtn.css({
+          'position':'absolute',
+          right:'2px',
+          top:'6px',
+          color:'red',
+          'font-size':'18px',
+          cursor:'pointer'
+        })
+        $optionsBtn.click(function () {
+          $.each($('.sub-options'), function (i, e) {
+            if($options.attr('id') != $(e).attr('id')) $(e).hide()
+          })
+          $options.toggle()
+        })
+        $productosBtn.text(sub.productos.length)
+        $productosAbbr.append($productosBtn)
+        $item.append($options)
+        $item.append($productosAbbr)
+        $item.append($optionsBtn)
+
+        if(!sub.trashed)
+        {
+          var $cancelBtn = $('<i class="material-icons cancel-sub-changes">cancel</i>')
+          var $savebtn = $('<i class="material-icons save-sub-changes">save</i>')
+          $savebtn.css({
+            'position':'absolute',
+            top:'6px',
+            'font-size':'18px',
+            right:'55px',
+            color:'#f65',
+            cursor:'pointer',
+            display:'none'
+          })
+          $cancelBtn.css({
+            'position':'absolute',
+            top:'6px',
+            'font-size':'18px',
+            right:'75px',
+            color:'#f65',
+            cursor:'pointer',
+            display:'none'
+          })
+          $cancelBtn.click(function () {
+            $('.tb-sub-name[id='+sub.id+']').attr('readOnly',true)
+            $(this).hide()
+            $savebtn.hide()
+            $('.tb-sub-name[id='+sub.id+']').val(sub.nombre)
+          })
+          $savebtn.click(function () {
+            $.ajax({
+              url:"/admin/inventario/subcategorias/is-repeated",
+              type:"post",
+              dataType:"json",
+              data:{
+                _token: "{{csrf_token()}}",
+                nombre: $tb.val(),
+                id:id
+              }
+            }).done(function(response){
+              if(response.result == true)
+              {
+                showMsg('Ups!', ['Ya existe una subcategoria con ese nombre en el sistema.'])
+              }
+              else
+              {
+                $.ajax({
+                  url:"/admin/inventario/subcategorias/cambiar-nombre",
+                  type:"post",
+                  dataType:"json",
+                  data:{
+                    _token:"{{csrf_token()}}",
+                    id: sub.id,
+                    nombre: $tb.val()
+                  }
+                }).done(function(response){
+                  if(!response.result) showMsg('Ups!',['Ha ocurrido un error.'])
+                  $tb.attr('readonly',true)
+                  $.ajax({
+                    url:"/admin/inventario/categorias/get-tabla-categorias",
+                    type:"post",
+                    dataType:"html",
+                    data:{
+                      _token:"{{csrf_token()}}"
+                    }
+                  }).done(function(html){
+                    $('.categorias-subcontainer').children().remove()
+                    $('.categorias-subcontainer').append(html)
+                    $savebtn.hide()
+                    $cancelBtn.hide()
+                    $('.categorias-subcontainer>div>.item>.for-add-marca-header').click(function () {
+                      toggleCategories('add-marca', $(this))
+                    })
+
+                    $('.categorias-subcontainer>div>.item>.for-edit-marca-header').click(function () {
+                      toggleCategories('form-editar-marca', $(this))
+                    })
+                  })
+                })
+              }
+            })
+          })
+          $item.append($cancelBtn)
+          $item.append($savebtn)
+          $item.append($tb)
+          var $editBtn = $('<i class="material-icons">edit</i>')
+          var $removeBtn = $('<i class="material-icons">remove_circle</i>')
+          $editBtn.css({
+            'color':'#f65',
+            position:'relative',
+            float:'none',
+            display:'block',
+            margin:'auto',
+            'font-size':'18px',
+            padding:'0 2px 0 2px',
+            cursor:'pointer'
+          })
+          $removeBtn.css({
+            'color':'#f65',
+            position:'relative',
+            float:'none',
+            display:'block',
+            margin:'auto',
+            'font-size':'18px',
+            padding:'0 2px 0 2px',
+            cursor:'pointer'
+          })
+          $editBtn.attr('id',sub.id)
+          $removeBtn.attr('id',sub.id)
+          $removeBtn.click(function () {
+            if(sub.productos.length > 0)
+            {
+              $('#delete-sub-btn').attr('sub',sub.id)
+              showMsgDialog('Confirmar acción',[
+                '¿Está seguro de que desea descontinuar la subcategoria junto con sus '+sub.productos.length+' productos?'
+              ], '#eliminar-sub-msg-dialog')
+            }
+            else {
+              $.ajax({
+                url:"/admin/inventario/subcategorias/eliminar",
+                type:"post",
+                dataType:"json",
+                data:{
+                  _token:"{{csrf_token()}}",
+                  id: sub.id
+                }
+              }).done(function(response){
+                if(!response.result) showMsg('Ups!',['Ha ocurrido un error, intentelo de nuevo.'])
+                else
+                {
+                  $options.hide()
+                  $item.remove()
+                }
+              })
+            }
+          })
+          $editBtn.click(function () {
+            $(this).parent().hide()
+            $('.tb-sub-name').attr('readOnly',true)
+            $('.tb-sub-name[id='+sub.id+']').attr('readOnly',false)
+            $('.tb-sub-name[id='+sub.id+']').focus()
+            $('.cancel-sub-changes').hide()
+            $('.save-sub-changes').hide()
+            $cancelBtn.show()
+            $savebtn.show()
+          })
+          $options.append($editBtn)
+          $options.append($removeBtn)
+          $('#subcategorias-cont-to-manage').append($item)
+        }
+        else
+        {
+          var $restoreBtn = $('<i class="material-icons restore-sub">restore</i>')
+          $restoreBtn.css({
+            'color':'#f65',
+            position:'relative',
+            float:'none',
+            display:'block',
+            margin:'auto',
+            'font-size':'18px',
+            padding:'0 2px 0 2px',
+            cursor:'pointer'
+          })
+          $restoreBtn.attr('id',sub.id)
+          $restore.click(function () {
+            var subId = $(this).attr('id')
+            $.ajax({
+              url:"/admin/inventario/subcategorias/restaurar",
+              type:"post",
+              dataType:"json",
+              data:{
+                _token:"{{csrf_token()}}",
+                id: subId
+              }
+            }).done(function(response){
+              if(!response.result) showMsg('Ups!',['Ha ocurrido un error, intentelo de nuevo.'])
+              else {
+                //probar (en caso de no, poner al item id para localizarlo)
+                $('#subcategorias-cont-to-manage').append($item)
+              }
+            })
+          })
+          $options.append($restoreBtn)
+          $('#subcategorias-des-cont-to-manage').append($item)
+          subcategoriasDescount++;
+        }
       })
+      $('#sub-des-count').text(subcategoriasDescount)
     })
   })
 
@@ -1179,7 +1792,7 @@ $(document).ready(function () {
     showMsgDialog('Confirmar Acción', [
       '¿Desea descontinuar la marca?',
       'Todos los productos de la marca no podrán ser vendidos ni administrados en inventario hasta que los restaure.'
-    ])
+    ], '#msg-dialog')
     $('input[type=hidden][name=marcaId]').val($(this).attr('id'))
   })
 
@@ -1219,7 +1832,7 @@ $(document).ready(function () {
     $.each($('div.main-card'), function (i,e) {
       if($(e).attr('for') == $toggle.attr('for'))
       {
-        $(e).delay(300).fadeIn(200,function () {
+        $(e).delay(400).slideDown(400,function () {
           if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
             $('.footer').css({
               position:'absolute',
@@ -1233,7 +1846,7 @@ $(document).ready(function () {
           }
         })
       }
-      else $(e).fadeOut(200)
+      else $(e).slideUp(300)
     })
   })
 
@@ -1290,15 +1903,15 @@ $(document).ready(function () {
     });
   }
 
-  function showMsgDialog(title, body) {
-    $('#msg-dialog').show(0);
-    $('#msg-dialog>.msg-card').css('opacity',1);
-    $('#msg-dialog>.msg-card').css('margin-top','100px');
-    $('#msg-dialog>.msg-card').css('-webkit-transform','scale(1)');
-    $('#msg-dialog>.msg-card>.header>h3').text(title);
-    $('#msg-dialog>.msg-card>.body').children().remove();
+  function showMsgDialog(title, body, id) {
+    $(id).show(0);
+    $(id+'>.msg-card').css('opacity',1);
+    $(id+'>.msg-card').css('margin-top','100px');
+    $(id+'>.msg-card').css('-webkit-transform','scale(1)');
+    $(id+'>.msg-card>.header>h3').text(title);
+    $(id+'>.msg-card>.body').children().remove();
     $.each(body, function (i, paragraph) {
-      $('#msg-dialog>.msg-card>.body').append('<p>'+paragraph);
+      $(id+'>.msg-card>.body').append('<p>'+paragraph);
     });
   }
 
