@@ -84,4 +84,8 @@ Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modi
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
 Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
+Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');
+Route::get('/admin/forum','Admin\ForumController@getAll');
+Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
+Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
 //

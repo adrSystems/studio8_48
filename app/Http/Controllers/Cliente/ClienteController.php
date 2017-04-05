@@ -18,15 +18,22 @@ class ClienteController extends Controller
       {
         return view('user.micuenta');
       }
+      $rules=['contenido'=>'required'];
+      $validacion = Validator::make($request->all(),$rules);
+      if($validacion->fails()){
+        return back ()->with('error',
+        ['titulo'=>'Debe de enviar un mensaje.',
+        'cuerpo'=>'No puede enviar un mensaje en blanco.']);
+      }
       $datetim= Carbon::now();
       $mensaje = new Mensaje;
-      $mensaje->contenido = $request['msnj'];
+      $mensaje->contenido = $request->contenido;
       $mensaje->fecha_hora=$datetim;
       $mensaje->visto=0;
       $mensaje->by_cliente=1;
       $mensaje->cliente_id=\Auth::user()->id;
       $mensaje->save();
-      return redirect ('/micuenta#mensajes');
+      return redirect ('/micuenta/'.\Auth::user()->id);
     }
     public function modificarNombre(Request $request)
     {
@@ -202,6 +209,7 @@ class ClienteController extends Controller
       //return $pila;
       $citas =[];
       $compras=[];
+      $mensajes = [];
       //return $cliente->citas[1];
       foreach($cliente->citas as $cita)
       {
@@ -211,7 +219,10 @@ class ClienteController extends Controller
       {
         array_push($compras,$compra);
       }
-      return view ('user.micuenta',['citas'=>$citas,'compras'=>$compras]);
+      foreach ($cliente->mensajes as $mensaje) {
+        array_push($mensajes,$mensaje);
+      }
+      return view ('user.micuenta',['citas'=>$citas,'compras'=>$compras,'mensajes'=>$mensajes]);
     }
     public function getDetailsEmpleado($id = null)
     {
