@@ -17,7 +17,7 @@ class ConcursoController extends Controller
         return view ('admin.concursos');
       }
       $rules = [
-        'imagen'=>'mimes:jpeg,bmp,png,jpg',
+        'imagen'=>'required|mimes:jpeg,bmp,png,jpg',
         'fecha_inicio'=>'required',
         'fecha_fin'=>'required'];
       $validacion=Validator::make($request->all(),$rules);
@@ -27,7 +27,7 @@ class ConcursoController extends Controller
       }
       $concurso = new Concurso;
       $file = $request->file('imagen');
-      
+
       $temp = $file->store('ImagenConcurso','public');
       $concurso->imagen=$temp;
       $concurso->fecha_inicio = $request->fecha_inicio;

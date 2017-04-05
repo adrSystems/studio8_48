@@ -11,11 +11,10 @@ Promociones
     margin-top: 100px;
   }
   .concursos{
-    background-color: white;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 4px;
     color: #1F1F1F;
     height: 460px;
-    padding: 10px 20px;
     overflow-y: scroll;
   }
   .concursos::-webkit-scrollbar {
@@ -30,18 +29,27 @@ Promociones
     outline: 1px solid slategrey;
   }
   .concurso{
-    border: 1px solid darkgray;
+    height: 120px;
+    display: inline-block;
     border-radius: 2px;
-    height: 100px;
-    padding: 5px 10px;
+    padding: 10px;
+  }
+  .concurso:hover{
+    background-color: rgba(255, 255, 255, 0.6);
   }
   .panel{
     border: 0px;
   }
   .panel-heading{
     background-color: darkgray;
-    color: gray;
+    color: #3F3F3F;
+    font-weight: bold;
+    height: 100px;
     font-family: 'Lobster Two';
+  }
+  .panel-title{
+    margin-top: 25px;
+    font-size: 20px;
   }
   .icono{
     float: left;
@@ -59,12 +67,36 @@ Promociones
   }
   .btn-default{
     border: 0px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100%;
+  }
+  .btn-default.active.focus,
+  .btn-default.active:focus,
+  .btn-default.active:hover,
+  .btn-default:active.focus,
+  .btn-default:active:focus,
+  .btn-default:active:hover,
+  .open>.btn-default.dropdown-toggle.focus,
+  .open>.btn-default.dropdown-toggle:focus,
+  .open>.btn-default.dropdown-toggle:hover{
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: inherit;
+  }
+  .open{
+    background-color: rgba(255, 255, 255, 0);
   }
   .dropdown-menu{
-    margin-left: -100px;
+    margin-left: -108px;
   }
   .footer{
     margin-top: 100px;
+  }
+  .title-concurso{
+    border-left: 5px solid #ed5;
+    border-radius: 4px;
+    font-family: 'Lobster Two';
+    color: white;
+    letter-spacing: 1px;
   }
 </style>
 @endsection
@@ -74,20 +106,21 @@ Promociones
     <div class="gestion-concursos">
       @if(Session::has('error'))
 
-          <div class="alert alert-warning" role="alert">
+          <div class="alert alert-danger" role="alert" style="text-align: center;">
               <h4>{{session('error')['titulo']}}</h4>
-              <p>{{session('error')['cuerpo']}}</p>
+              <p><b>{{session('error')['cuerpo']}}</b></p>
           </div>
 
       @endif
-      <div class="col-xs-5">
+      <div class="col-xs-6">
+        <h3 class="title-concurso"> Concursos existente</h3>
         <div class="concursos">
           @foreach(\App\Concurso::get() as $concurso)
           <div class="concurso">
-            <div class="col-xs-3" style="padding: 5px 10px;">
+            <div class="col-xs-3" style="padding: 2px 5px;">
               <img class="promo" src="{{asset('storage/'.$concurso->imagen)}}" alt="">
             </div>
-            <div class="col-xs-8">
+            <div class="col-xs-8" style="margin-top: 25px;">
               <p>Fecha inicio: <i class="material-icons icono">date_range</i>{{$concurso->fecha_inicio}}</p>
               <p>Fecha termino: <i class="material-icons icono">date_range</i>{{$concurso->fecha_termino}}</p>
             </div>
@@ -106,8 +139,8 @@ Promociones
           @endforeach
         </div>
       </div>
-      <div class="col-xs-offset-1 col-xs-6">
-        <div class="panel">
+      <div class="col-xs-offset-1 col-xs-5">
+        <div class="panel" style="margin-top: 60px;">
           <div class="panel-heading">
             <h3 class="panel-title">Agregar un concurso</h3>
           </div>

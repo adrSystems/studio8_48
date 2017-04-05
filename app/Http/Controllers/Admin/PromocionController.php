@@ -54,7 +54,7 @@ class PromocionController extends Controller
       {
         return back()->with('error',[
           'titulo'=>'Error',
-          'cuerpo'=>'Datos incorrectos'
+          'cuerpo'=>'Alguno de los datos esta incorrecto'
         ])->withInput();
       }
       $promocion = Promocion::find($request->id);

@@ -11,6 +11,24 @@ Editar promociones
     width: 200px;
     margin-left: 20px;
   }
+  .panel{
+    border: 0px;
+  }
+  .panel-heading{
+    background-color: #1F1F1F;
+    font-family: 'Lobster Two';
+    color: white;
+    height: 100px;
+    text-align: left;
+    margin: 0;
+  }
+  .panel-title{
+    font-size: 20px;
+    margin-top: 30px;
+  }
+  .panel-body{
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 </style>
 @endsection
 @section('body')

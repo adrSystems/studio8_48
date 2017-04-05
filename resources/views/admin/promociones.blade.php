@@ -11,11 +11,10 @@ Promociones
     margin-top: 100px;
   }
   .promociones{
-    background-color: white;
+    background: rgba(255, 255, 255, 0.8);
     border-radius: 4px;
     color: #1F1F1F;
     height: 460px;
-    padding: 10px 20px;
     overflow-y: scroll;
   }
   .promociones::-webkit-scrollbar {
@@ -30,25 +29,33 @@ Promociones
     outline: 1px solid slategrey;
   }
   .promocion{
-    border: 1px solid darkgray;
-    border-radius: 2px;
-    height: 130px;
+    height: 140px;
+    display: inline-block;
   }
   .panel{
     border: 0px;
   }
   .panel-heading{
     background-color: darkgray;
-    color: gray;
+    color: #3F3F3F;
+    font-weight: bold;
+    height: 100px;
     font-family: 'Lobster Two';
+  }
+  .panel-title{
+    margin-top: 25px;
+    font-size: 20px;
   }
   .icono{
     float: left;
   }
   .promocion{
-    border: 1px solid gray;
     border-radius: 2px;
     padding: 5px 10px;
+    padding: 15px;
+  }
+  .promocion:hover{
+    background-color: rgba(255, 255, 255, 0.6);
   }
   .promo{
     width: 100%;
@@ -63,9 +70,33 @@ Promociones
   }
   .btn-default{
     border: 0px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 100%;
+  }
+  .btn-default.active.focus,
+  .btn-default.active:focus,
+  .btn-default.active:hover,
+  .btn-default:active.focus,
+  .btn-default:active:focus,
+  .btn-default:active:hover,
+  .open>.btn-default.dropdown-toggle.focus,
+  .open>.btn-default.dropdown-toggle:focus,
+  .open>.btn-default.dropdown-toggle:hover{
+      background-color: rgba(255, 255, 255, 0.1);
+      border-color: inherit;
+  }
+  .open{
+    background-color: rgba(255, 255, 255, 0);
   }
   .dropdown-menu{
-    margin-left: -100px;
+    margin-left: -108px;
+  }
+  .title-promociones{
+    border-left: 5px solid #ed5;
+    border-radius: 4px;
+    font-family: 'Lobster Two';
+    color: white;
+    letter-spacing: 1px;
   }
 </style>
 @endsection
@@ -75,17 +106,18 @@ Promociones
     <div class="gestion-promociones">
       @if(Session::has('error'))
 
-          <div class="alert alert-warning" role="alert">
+          <div class="alert alert-danger" role="alert" style="text-align: center;">
               <h4>{{session('error')['titulo']}}</h4>
-              <p>{{session('error')['cuerpo']}}</p>
+              <p><b>{{session('error')['cuerpo']}}</b></p>
           </div>
 
       @endif
-      <div class="col-xs-5">
+      <div class="col-xs-6">
+        <h3 class="title-promociones">Promociones existentes</h3>
         <div class="promociones">
           @foreach(\App\Promocion::get() as $promocion)
           <div class="promocion">
-            <div class="col-xs-3" style="padding: 5px 10px;">
+            <div class="col-xs-3" style="padding: 2px 5px;">
               <img class="promo" src="{{asset('storage/'.$promocion->cover)}}" alt="">
             </div>
             <div class="col-xs-8">
@@ -97,7 +129,7 @@ Promociones
             <div class="col-xs-1">
               <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                  <i class="material-icons">more_vert</i>
+                  <i class="material-icons" style="margin-top: 4px;">more_vert</i>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
                   <li><a href="/promocion/editar/{{$promocion->id}}"><i class="material-icons">edit</i>Editar</a></li>
@@ -109,8 +141,8 @@ Promociones
           @endforeach
         </div>
       </div>
-      <div class="col-xs-offset-1 col-xs-6">
-        <div class="panel">
+      <div class="col-xs-offset-1 col-xs-5">
+        <div class="panel" style="margin-top: 60px;">
           <div class="panel-heading">
             <h3 class="panel-title">Agregar una promoción</h3>
           </div>
@@ -143,7 +175,7 @@ Promociones
                 <input type="text" name="descuento" value="" class="form-control">
               </div>
               <div class="pull-right">
-                <button type="submit" name="button" class="form-control"><i class="material-icons">save</i>Guardar</button>
+                <button type="submit" name="button" class="form-control"><i class="material-icons icono">save</i>Guardar</button>
               </div>
             </form>
           </div>
