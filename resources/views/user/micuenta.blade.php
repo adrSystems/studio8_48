@@ -215,7 +215,9 @@ Mi cuenta
         <li role="presentation" class="active title-nav"><a href="#">Home</a></li>
         <li role="presentation" class="item item-perfil"><a href="#" class="item-nav"><i class="material-icons icon-nav">person</i><p> Profile</p></a></li>
         <li role="presentation" class="item item-historial"><a href="#" class="item-nav"><i class="material-icons icon-nav">history</i><p>  Historial de citas</p></a></li>
-        <li role="presentation" class="item item-historialcompras"><a href="#" class="item-nav"><i class="material-icons icon-nav">shopping_cart</i><p>  Historial de compras</p></a></li>
+        @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
+          <li role="presentation" class="item item-historialcompras"><a href="#" class="item-nav"><i class="material-icons icon-nav">shopping_cart</i><p>  Historial de compras</p></a></li>
+        @endif
       </ul>
     </div>
     <div class="col-xs-offset-1 col-xs-8">
@@ -473,7 +475,7 @@ Mi cuenta
               </div>
           </div>
         </div>
-        @if(!Auth::user()->cuentable_type == strval(App\Cliente::class))
+        @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
         <div class="historial-compras">
           <div class="panel panel-dark">
             <div class="panel-heading heading-dark">
@@ -484,16 +486,12 @@ Mi cuenta
                   <thead>
                     <th>Producto</th>
                     <th>Fecha y hora</th>
-                    <th>Estado</th>
                   </thead>
                   <tbody>
                     @foreach($compras as $compra)
                     <tr>
-                      @foreach($compra->productos as $productos)
-                      <td>{{$productos->nombre}}</td>
+                      <td></td>
                       <td>{{$compra->fecha_hora}}</td>
-                      <td>{{$productos->precio_venta}}</td>
-                      @endforeach
                     </tr>
                     @endforeach
                   </tbody>

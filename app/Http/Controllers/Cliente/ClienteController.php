@@ -48,13 +48,13 @@ class ClienteController extends Controller
         $usuario = Empleado::find(\Auth::user()->id);
         $usuario->nombre = $request->nombre;
         $usuario->update();
-        return redirect('/micuenta');
+        return redirect('/micuentaE/'.\Auth::user()->id);
       }
       else {
-        $usuario = Cliente::find(\Auth::user()->id);
-        $usuario->nombre = $request->nombre;
-        $usuario->update();
-        return redirect ('/micuenta');
+        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente->nombre = $request->nombre;
+        $cliente->update();
+        return redirect ('/micuenta/'.\Auth::user()->id);
       }
     }
     public function modificarApellido(Request $request)
@@ -77,13 +77,13 @@ class ClienteController extends Controller
         $usuario = Empleado::find(\Auth::user()->id);
         $usuario->apellido = $request->apellido;
         $usuario->update();
-        return redirect ('/micuenta');
+        return redirect('/micuentaE/'.\Auth::user()->id);
       }
       else {
-        $usuario = Cliente::find(\Auth::user()->id);
-        $usuario->apellido = $request->apellido;
-        $usuario->update();
-        return redirect ('/micuenta');
+        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente->apellido = $request->apellido;
+        $cliente->update();
+        return redirect ('/micuenta/'.\Auth::user()->id);
       }
     }
     public function modificarTelefono(Request $request)
@@ -101,10 +101,10 @@ class ClienteController extends Controller
           'cuerpo'=>'El campo telefono es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
         ]);
       }
-      $usuario = Cliente::find(\Auth::user()->id);
-      $usuario->telefono=$request->telefono;
-      $usuario->update();
-      return redirect ('/micuenta');
+      $cliente = Cliente::find(\Auth::user()->id);
+      $cliente->telefono=$request->telefono;
+      $cliente->update();
+      return redirect ('/micuenta/'.\Auth::user()->id);
     }
     public function modificarFechanacimiento(Request $request)
     {
@@ -126,13 +126,13 @@ class ClienteController extends Controller
         $usuario = Empleado::find(\Auth::user()->id);
         $usuario->fecha_nacimiento=$request->fecha_nacimiento;
         $usuario->update();
-        return redirect ('/micuenta');
+        return redirect ('/micuentaE/'.\Auth::user()->id);
       }
       else {
-        $usuario = Cliente::find(\Auth::user()->id);
-        $usuario->fecha_nacimiento=$request->fecha_nacimiento;
-        $usuario->update();
-        return redirect ('/micuenta');
+        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente->fecha_nacimiento=$request->fecha_nacimiento;
+        $cliente->update();
+        return redirect ('/micuenta/'.\Auth::user()->id);
       }
     }
     public function subirFoto(Request $request)
@@ -157,16 +157,16 @@ class ClienteController extends Controller
         $temp= $file->store('ProfilePhotos','public');
         $usuario->cuenta->photo = $temp;
         $usuario->cuenta->update();
-        return redirect ('/micuenta');
+        return redirect ('/micuentaE/'.\Auth::user()->id);
       }
       else if(\Auth::user()->cuentable_type=='App\Cliente')
       {
-        $usuario = Cliente::find(\Auth::user()->id);
+        $cliente = Cliente::find(\Auth::user()->id);
         $file= $request->file('foto');
         $temp= $file->store('ProfilePhotos','public');
-        $usuario->cuenta->photo = $temp;
-        $usuario->cuenta->update();
-        return redirect ('/micuenta');
+        $cliente->cuenta->photo = $temp;
+        $cliente->cuenta->update();
+        return redirect ('/micuenta/'.\Auth::user()->id);
       }
     }
     public function modificarContrasena(Request $request)
@@ -196,7 +196,7 @@ class ClienteController extends Controller
       {
         return redirect ('/');
       }
-      
+
       //$pila = array("naranja", "plátano");
       //array_push($pila, "manzana", "arándano");
       //return $pila;
