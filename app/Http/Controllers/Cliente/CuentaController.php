@@ -134,6 +134,7 @@ class CuentaController extends Controller
           $registro_cliente->fecha_nacimiento=$request['fecha'];
           $registro_cliente->telefono=$request['telefono'];
           $registro_cliente->fecha_registro=carbon::now();
+          $registro_cliente->credito=0;
           $registro_cliente->save();
         	$registro->email=$request['email'];
         	$registro->password= hash::make($request['pass']);
