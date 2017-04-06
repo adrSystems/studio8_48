@@ -9,9 +9,10 @@ class Categoria extends Model
 {
   use SoftDeletes;
   public $timestamps = false;
-  public function marcas()
+  
+  public function marca()
   {
-    return $this->belongsToMany('App\Marca');
+    return $this->belongsTo('App\Marca');
   }
 
   public function subcategorias()

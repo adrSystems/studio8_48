@@ -466,6 +466,48 @@
               left: 50%;
               background-color: dodgerblue;
             }
+            .switch-container-red{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container-red>hover{
+              color:#fff;
+            }
+            .switch-container-red>span{
+              float: left;
+            }
+            .switch-container-red>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border: 1px solid rgba(255, 0, 0, 0.5);
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container-red>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid rgba(0, 0, 0, 0.3);
+              position: absolute;
+              top: -1px;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container-red>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container-red>.switch-bar>.active{
+              left: 50%;
+              background-color: #f53;
+            }
             .main-container{
               float: left;
               color: #bbb;
@@ -705,6 +747,19 @@
                 $('.main-cover').width('100%');
 
                 $('.switch-container').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
+
+                $('.switch-container-red').click(function () {
                   if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
                     $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
                     $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');

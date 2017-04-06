@@ -12,7 +12,7 @@ class Subcategoria extends Model
 
   public function categoria()
   {
-    $this->belongsTo('App\Categoria')->withTrashed();
+    return $this->belongsTo('App\Categoria');
   }
 
   public function productos()

@@ -10,8 +10,10 @@ class Producto extends Model
 
   use SoftDeletes;
 
+  public $timestamps = false;
+
   public function citas(){
-    return $this->belongsToMany('App\Cita');
+    return $this->belongsToMany('App\Cita')->withPivot('cantidad');
   }
 
   public function compras()
@@ -22,5 +24,10 @@ class Producto extends Model
   public function subcategoria()
   {
     return $this->belongsTo('App\Subcategoria');
+  }
+
+  public function surticiones()
+  {
+    return $this->hasMany('App\Surticion');
   }
 }
