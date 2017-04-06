@@ -643,6 +643,7 @@
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
             </a>
             <a href="" class="nav-item"><p>Promociones y concursos</p></a>
+            <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="" class="nav-item"><p>Tips</p></a>
             <a href="" class="nav-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
@@ -674,7 +675,8 @@
           <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>
-          <a href="#">Promociones y concursos</a>
+          <a href="/admin/promociones">Promociones</a>
+          <a href="/admin/concursos">Concursos</a>
           <a href="#">Portafolio</a>
         </div>
         @endif
@@ -699,7 +701,8 @@
             <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
             <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
-            <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>
+            <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
+            <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
             <a href="#" class="menu-item-children" id="1">Portafolio</a>
             @endif
           </div>

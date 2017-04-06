@@ -157,3 +157,47 @@ Route::get('/servicio/eliminar/{id?}',function($id = null){
 Route::get('admin/promociones',function(){
   return view ('admin.promociones');
 });
+Route::match(['GET','POST'],'/promocion/agregar','Admin\PromocionController@agregar');
+Route::get('/promocion/editar/{id?}',function($id = null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  return view ('admin.promociones.edit',['promocion'=>$promocion]);
+});
+Route::match(['GET','POST'],'/promocion/editar','Admin\PromocionController@editar');
+Route::get('/promocion/eliminar/{id?}',function($id= null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  $promocion->delete();
+  return redirect ('/admin/promociones');
+});
+Route::get('/admin/concursos',function(){
+  return view ('admin.concursos');
+});
+Route::match(['GET','POST'],'/concurso/agregar','Admin\ConcursoController@agregar');
+Route::get('/concurso/editar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  return view ('admin.concursos.edit',['concurso'=>$concurso]);
+});
+Route::match(['GET','POST'],'/concurso/editar','Admin\ConcursoController@editar');
+Route::get('/concurso/eliminar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  $concurso->delete();
+  return redirect ('/admin/concursos');
+});
+Route::get('/promociones_concursos',function(){
+  return view ('cliente.promociones_concursos');
+});
