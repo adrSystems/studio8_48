@@ -130,6 +130,12 @@ Foro Admin
 
   </div>
   <div class="col-offset-1 col-xs-8">
+    <div class="ayuda">
+
+    </div>
+  </div>
+  @if($mensaje)
+  <div class="col-offset-1 col-xs-8">
     <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">
@@ -171,6 +177,7 @@ Foro Admin
         </div>
     </div>
   </div>
+  @endif
 </div>
 @endsection
 @section('js')

@@ -12,7 +12,7 @@ use Validator;
 class ForumController extends Controller
 {
     public function getAll(){
-      $mensaje=[];
+      $mensaje= [];
       return view ('admin.forum',['mensaje'=>$mensaje]);
     }
     public function getMensajes($id = null)
