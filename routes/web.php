@@ -118,4 +118,7 @@ Route::post('/admin/inventario/productos/agregar','Admin\InventarioController@ag
 Route::post('/admin/inventario/marcas/get-productos-table','Admin\InventarioController@getProductsTable');
 Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
 Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
+Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
+Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
+
 /////////////////////////////

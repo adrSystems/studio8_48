@@ -405,6 +405,7 @@ class InventarioController extends Controller
         else $paraAplicacion += $surticion->cantidad;
       }
       $producto->paraAplicacion = $paraAplicacion;
+      $producto->fotografia = asset('storage/'.$producto->fotografia);
       $producto->paraVenta = $paraVenta;
       $producto->agregadosEsteMes = $surticionesMensuales->count();
       $producto->inversionMensual = $surticionesMensuales->count() * $producto->precio_compra;
@@ -448,10 +449,6 @@ class InventarioController extends Controller
       {
         $producto->precio_compra = $request->nuevoPrecioCompra;
       }
-      if($request->nuevoPrecioVenta)
-      {
-        $producto->precio_venta = $request->nuevoPrecioVenta;
-      }
       if($request->contenido)
       {
         $producto->contenido = $request->contenido;
@@ -460,13 +457,46 @@ class InventarioController extends Controller
       {
         $producto->fotografia = $request->nuevaFoto->store('img/productos','public');
       }
+      if($request->nuevoSeVendeAlPublico == '1' and $producto->precio_venta == null && !$request->nuevoSeVendeAlPublico)
+      return back()->with('options', [
+        'msg' => ['title' => 'Ups!', 'body' => 'No puede activar la venta al publico si no especifica el precio de venta.'],
+        'activeItem' => 'productos-card'
+      ]);
+      if($request->nuevoPrecioVenta)
+      {
+        $producto->precio_venta = $request->nuevoPrecioVenta;
+      }
       $producto->venta_publico = $request->nuevoSeVendeAlPublico;
-      $producto->u_medida = $request->nuevaUnidadMedida;
+      if($request->nuevaUnidadMedida) $producto->u_medida = $request->nuevaUnidadMedida;
       $producto->save();
 
       return back()->with('options', [
         'msg' => ['title' => 'OK!', 'body' => 'Cambios efectuados con exito!'],
         'activeItem' => 'productos-card'
       ]);
+    }
+
+    public function descontinuarById(Request $request)
+    {
+      $producto = Producto::find($request->id);
+      $producto->delete();
+      $producto->subcategoria = $producto->subcategoria;
+
+      return [
+        'result' => true,
+        'producto' => $producto
+      ];
+    }
+
+    public function restaurarById(Request $request)
+    {
+      $producto = Producto::onlyTrashed()->find($request->id);
+      $producto->restore();
+      $producto->subcategoria = $producto->subcategoria;
+
+      return [
+        'result' => true,
+        'producto' => $producto
+      ];
     }
 }

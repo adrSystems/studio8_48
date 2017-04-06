@@ -628,14 +628,22 @@ Inventario
   }
   .producto-item>.img-container>i{
     position: absolute;
+    background-color: rgba(255, 0, 0, 0.5);
     cursor: pointer;
     color: #fff;
-    top: 4px;
-    right: 4px;
+    padding: 4px;
     z-index: 1;
   }
+  .producto-item>.img-container>.descontinuar-producto-toggle{
+    top: 0px;
+    left: 0px;
+  }
+  .producto-item>.img-container>.editar-producto-toggle{
+    top: 0px;
+    right: 0px;
+  }
   .producto-item>.img-container>i:hover{
-    color: #e43;
+    color: #fda;
   }
   .producto-item>.img-container>img{
     width: 100%;
@@ -671,6 +679,36 @@ Inventario
     font-weight: 600;
     padding-bottom: 15px;
   }
+  #producto-summary{
+    float: left;
+    position: relative;
+  }
+  #producto-summary>.img-container{
+    position: relative;
+    width: 100px;
+    margin: auto;
+    display: block;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid skyblue;
+    margin-bottom: 15px;
+  }
+  #producto-summary>.img-container>img{
+    width: 100%;
+  }
+  #producto-summary>div>span{
+    float: right;
+    padding-left: 5px;
+    text-align: right;
+    font-weight: 600;
+  }
+  #producto-summary>div>p{
+    float: left;
+  }
+  .restore-producto-toggle{
+    top: 0;
+    left: 0;
+  }
 </style>
 @endsection
 
@@ -685,88 +723,119 @@ Inventario
 </form>
 
 <div class="modal-back" id="editar-producto-modal-back">
-  <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
+  <div class="modal-black-card col-xs-12 col-md-8 col-md-offset-2">
     <div class="header">
       <i class="close-btn material-icons">close</i>
       <h4>Editar producto</h4>
     </div>
     <div class="body">
-      <form action="/admin/inventario/producto/editar" method="post" enctype="multipart/form-data" id="form-editar-producto">
-        <input type="hidden" name="productoToEdit" value="">
-        <input type="hidden" name="nuevoSeVendeAlPublico" value="0">
-        <input type="hidden" name="_token" value="{{csrf_token()}}">
+      <div class="col-xs-12 col-md-6">
         <div class="col-xs-12">
-          <div class="col-xs-12 alert alert-warning">
-            <p>Complete solamente lo que quiere cambiar</p>
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <div class="alert alert-info">
-            <p>Producto a modificar: <span id="producto-a-modificar"></span></p>
-            <p>De la marca: <span id="marca-producto-a-modificar"></span></p>
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <label for="" class="dark">Ingrese el nuevo nombre</label>
-        </div>
-        <div class="col-xs-12">
-          <input type="text" name="newProductoName" value="" class="textbox2" style="width:100%">
-        </div>
-        <div class="col-xs-12" style="margin-top:10px">
-          <label for="" class="dark">Seleccione la nueva foto</label>
-        </div>
-        <div class="col-xs-12">
-          <div class="img-file-selector col-xs-12">
-            <p>Haz click o arrastra un archivo...</p>
-            <input type="file" name="nuevaFoto" value="" accept="image/jpeg,.png,.gif">
-          </div>
-        </div>
-        <div class="col-xs-12">
-          <hr>
-        </div>
-        <div class="col-xs-12" style="margin-top:15px">
-          <label for="" style="color:#555">Descripción</label>
-          <textarea name="nuevaDescripcion" class="textbox2"></textarea>
-        </div>
-        <div class="col-xs-12" style="margin-top:15px">
-          <label for="" style="color:#555">Precio compra</label>
-          <div class="textbox2-group-container">
-            <div class="icon-red">
-              <i class="material-icons">attach_money</i>
+          <h5 style="text-align:center">Producto a modificar</h5>
+          <div class="alert alert-info" id="producto-summary">
+            <div class="img-container">
+              <img src="" alt="" id="producto-summary-img">
             </div>
-            <input type="text" name="nuevoPrecioCompra" value="" class="textbox2 money">
-          </div>
-        </div>
-        <div class="col-xs-12" style="margin-top:15px">
-          <div class="switch-container-red switch-center" id="venta-publico-to-edit" active="0" style="background-color:rgba(0,0,0,.1)">
-            <span style="color:#f53;padding-left:2px">Venta al público</span>
-            <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.08);border-color:rgba(0,0,0,.15)">
-              <div class="switch-btn inactive" style=""></div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Nombre:</p><span id="producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>De la marca:</p><span id="marca-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Código:</p><span id="codigo-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Precio Compra:</p><span id="precio-compra-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Venta al público:</p><span id="venta-publico-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Precio venta:</p><span id="precio-venta-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Contenido:</p><span id="contenido-producto-a-modificar"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Descripción:</p><span id="descripcion-producto-a-modificar"></span>
             </div>
           </div>
         </div>
-        <div class="col-xs-12" id="precio-venta-container">
-          <label for="" style="color:#555">Precio venta</label>
-          <div class="textbox2-group-container">
-            <div class="icon-red">
-              <i class="material-icons" style="">attach_money</i>
+      </div>
+      <div class="col-md-6">
+        <form action="/admin/inventario/producto/editar" method="post" enctype="multipart/form-data" id="form-editar-producto">
+          <input type="hidden" name="productoToEdit" value="">
+          <input type="hidden" name="nuevoSeVendeAlPublico" value="0">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
+          <div class="col-xs-12">
+            <div class="col-xs-12 alert alert-warning">
+              <p>Complete solamente lo que quiere cambiar</p>
             </div>
-            <input type="text" name="nuevoPrecioVenta" value="" class="textbox2 money">
           </div>
-        </div>
-        <div class="col-xs-12" style="margin-top:15px">
-          <label for="" style="color:#555">Contenido</label>
-        </div>
-        <div class="col-xs-12">
-          <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
-          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
-            <select class="textbox2-auto" name="nuevaUnidadMedida" style="width:100%;height:34px">
-              <option value="gr">gramos</option>
-              <option value="ml">mililitros</option>
-            </select>
+          <div class="col-xs-12">
+            <label for="" class="dark">Ingrese el nuevo nombre</label>
           </div>
-        </div>
-      </form>
+          <div class="col-xs-12">
+            <input type="text" name="newProductoName" value="" class="textbox2" style="width:100%">
+          </div>
+          <div class="col-xs-12" style="margin-top:10px">
+            <label for="" class="dark">Seleccione la nueva foto</label>
+          </div>
+          <div class="col-xs-12">
+            <div class="img-file-selector col-xs-12">
+              <p>Haz click o arrastra un archivo...</p>
+              <input type="file" name="nuevaFoto" value="" accept="image/jpeg,.png,.gif">
+            </div>
+          </div>
+          <div class="col-xs-12">
+            <hr>
+          </div>
+          <div class="col-xs-12" style="margin-top:15px">
+            <label for="" style="color:#555">Descripción</label>
+            <textarea name="nuevaDescripcion" class="textbox2"></textarea>
+          </div>
+          <div class="col-xs-12" style="margin-top:15px">
+            <label for="" style="color:#555">Precio compra</label>
+            <div class="textbox2-group-container">
+              <div class="icon-red">
+                <i class="material-icons">attach_money</i>
+              </div>
+              <input type="text" name="nuevoPrecioCompra" value="" class="textbox2 money">
+            </div>
+          </div>
+          <div class="col-xs-12" style="margin-top:15px">
+            <div class="switch-container-red switch-center" id="venta-publico-to-edit" active="0" style="background-color:rgba(0,0,0,.1)">
+              <span style="color:#f53;padding-left:2px">Venta al público</span>
+              <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.08);border-color:rgba(0,0,0,.15)">
+                <div class="switch-btn inactive" style=""></div>
+              </div>
+            </div>
+          </div>
+          <div class="col-xs-12" id="precio-venta-container">
+            <label for="" style="color:#555">Precio venta</label>
+            <div class="textbox2-group-container">
+              <div class="icon-red">
+                <i class="material-icons" style="">attach_money</i>
+              </div>
+              <input type="text" name="nuevoPrecioVenta" value="" class="textbox2 money">
+            </div>
+          </div>
+          <div class="col-xs-12" style="margin-top:15px">
+            <label for="" style="color:#555">Contenido</label>
+          </div>
+          <div class="col-xs-12">
+            <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
+            <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
+              <select class="textbox2-auto" name="nuevaUnidadMedida" style="width:100%;height:34px">
+                <option value="">Unidad de medida...</option>
+                <option value="gr">gramos</option>
+                <option value="ml">mililitros</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="modal-footer">
       <button type="button" name="button" id="editar-producto-btn"><i class="material-icons">check</i>Aceptar</button>
@@ -869,6 +938,20 @@ Inventario
     </div>
     <div class="msg-footer">
       <button type="button" name="button" id="delete-sub-btn" sub="">Eliminar</button>
+      <button type="button" name="button" id="close-btn">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="msg-container" id="eliminar-producto-msg-dialog">
+  <div class="msg-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <h3></h3>
+    </div>
+    <div class="body">
+    </div>
+    <div class="msg-footer">
+      <button type="button" name="button" id="delete-producto-btn" sub="">Eliminar</button>
       <button type="button" name="button" id="close-btn">Cerrar</button>
     </div>
   </div>
@@ -1258,6 +1341,33 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
+  $('#editar-producto-btn').click(function () {
+    //mostrar msg error cuando active la venta al publico,
+    //y el producto no tenga precio_venta en bd y no se mande nada en el campo nuevo precio venta
+    $('form#form-editar-producto').submit()
+  })
+
+  $('#delete-producto-btn').click(function () {
+    var id = $(this).attr('id')
+    $.ajax({
+      url:"/admin/inventario/productos/descontinuarById",
+      type:"post",
+      dataType:"json",
+      data:{
+        _token:"{{csrf_token()}}",
+        id: id
+      }
+    }).done(function(response){
+      if(response.result)
+      {
+        showProductsTable(response.producto.subcategoria.id)
+      }
+      else {
+        showMsg('Ups!',['Ha ocurrido un error. Intentelo de nuevo.'])
+      }
+    })
+  })
+
   $('#agregar-producto-btn').click(function () {
     if ($('select[name=catForProduct]').val() == '' || $('select[name=marcaForProduct]').val() == ''
     || $('select[name=subForProduct]').val() == '' || $('input[name=productoCover]').val() == ''
@@ -1339,44 +1449,109 @@ $(document).ready(function () {
     if($(this).val() != '')
     {
       var id = $(this).val()
-      $.ajax({
-        url:"/admin/inventario/marcas/get-productos-table",
-        type:"post",
-        dataType:"html",
-        data:{
-          _token:"{{csrf_token()}}",
-          id: id
-        }
-      }).done(function(html){
-        $('#productos-container').children().remove()
-        $('#productos-container').append(html)
-        $('.editar-producto-toggle').click(function () {
-          ////////////////////// modal editar
-          var productoId = $(this).attr('id')
-          $.ajax({
-            url:"/admin/inventario/productos/get-by-id",
-            type:"post",
-            dataType:"json",
-            data:{
-              _token:"{{csrf_token()}}",
-              id: productoId
-            }
-          }).done(function(producto){
-            $('input[type=hidden][name=productoToEdit]').val(producto.id)
-            $('#producto-a-modificar').text(producto.nombre)
-            $('#marca-producto-a-modificar').text(producto.subcategoria.categoria.marca.nombre)
-            showModal('#editar-producto-modal-back')
-          })
-        })
-        $('.detalles-producto-toggle').click(function () {
-          ////////////////////// mostrar modal y estadisticas
-        })
-      })
+      showProductsTable(id)
     }
     else {
       $('#productos-container').children().remove()
     }
   })
+
+  function showProductsTable(id) {
+    $.ajax({
+      url:"/admin/inventario/marcas/get-productos-table",
+      type:"post",
+      dataType:"html",
+      data:{
+        _token:"{{csrf_token()}}",
+        id: id
+      }
+    }).done(function(html){
+      $('#productos-container').children().remove()
+      $('#productos-container').append(html)
+      $('.editar-producto-toggle').click(function () {
+        ////////////////////// modal editar
+        var productoId = $(this).attr('id')
+        $.ajax({
+          url:"/admin/inventario/productos/get-by-id",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: productoId
+          }
+        }).done(function(producto){
+          $('select[name=nuevaUnidadMedida]').children('').attr('selected',false)
+          $('select[name=nuevaUnidadMedida]').children('option[value=""]').attr('selected',true)
+          $('#producto-summary-img').attr('src', producto.fotografia)
+          if(producto.venta_publico)
+          {
+            $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').removeClass('inactive');
+            $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('active');
+            $('#venta-publico-to-edit').attr('active', '1')
+            $('input[name=nuevoSeVendeAlPublico]').val('1')
+            $('#precio-venta-container').slideDown(300)
+
+          }
+          else {
+            $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').removeClass('active');
+            $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('inactive');
+            $('#venta-publico-to-edit').attr('active', '0')
+            $('input[name=nuevoSeVendeAlPublico]').val('0')
+            $('#precio-venta-container').slideUp(300)
+          }
+          $('input[type=hidden][name=productoToEdit]').val(producto.id)
+          $('#producto-a-modificar').text(producto.nombre)
+          $('#marca-producto-a-modificar').text(producto.subcategoria.categoria.marca.nombre)
+          $('#codigo-producto-a-modificar').text(producto.codigo)
+          $('#descripcion-producto-a-modificar').text(producto.descripcion)
+          $('#precio-compra-producto-a-modificar').text(producto.precio_compra)
+          if(producto.venta_publico)
+          {
+            $('#venta-publico-producto-a-modificar').text('Si')
+            $('#precio-venta-producto-a-modificar').text(producto.precio_venta)
+          }
+          else{
+            $('#venta-publico-producto-a-modificar').text('No')
+            $('#precio-venta-producto-a-modificar').text('-')
+          }
+
+          $('#contenido-producto-a-modificar').text(producto.contenido+" "+producto.u_medida)
+          showModal('#editar-producto-modal-back')
+        })
+      })
+      $('.detalles-producto-toggle').click(function () {
+        ///////////////////////////////////////////////////
+        ////////////////////// mostrar modal y estadisticas
+        ///////////////////////////////////////////////////
+      })
+      $('.descontinuar-producto-toggle').click(function () {
+        $('#delete-producto-btn').attr('id', $(this).attr('id'))
+        showMsgDialog('Confirmar acción',
+        ['¿Descontinuar producto?','Ya no podrán realizarse ventas con este producto hasta que lo restaure'],
+        '#eliminar-producto-msg-dialog')
+      })
+      $('.restore-producto-toggle').click(function () {
+        var pid = $(this).attr('id')
+        $.ajax({
+          url:"/admin/inventario/productos/restaurarById",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: pid
+          }
+        }).done(function(response){
+          if(response.result)
+          {
+            showProductsTable(response.producto.subcategoria.id)
+          }
+          else {
+            showMsg('Ups!',['Ha ocurrido un error. Intentelo de nuevo.'])
+          }
+        })
+      })
+    })
+  }
 
   $('select[name=catFilter]').change(function () {
     $('select[name=subFilter]').children('.sub').remove()
