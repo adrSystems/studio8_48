@@ -49,6 +49,6 @@ Gestion Videos
       @endforeach
     </tbody>
   </table>
-</div><br><br><br><br><br><br>
+</div><br><br><br><br><br><br><br><br><br><br><br><br>
 @endsection
 @section('js')

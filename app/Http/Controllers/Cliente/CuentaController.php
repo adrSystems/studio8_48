@@ -155,7 +155,7 @@ class CuentaController extends Controller
           $registro->cuentable()->associate($registro_cliente);
       	  $registro->save();
           Mail::to($request->email)->send(new CodigoVerificacion($codigo));
-          return redirect('/login');
+            return redirect("/login")->with("msg",['title' => 'Aviso.',"body" =>"Revisa tu correo para activar tu cuenta."]);
         }
     }
 

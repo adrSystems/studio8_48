@@ -66,7 +66,7 @@ ul.fotos img {
   <div class="row">
     @foreach(App\Imagen::where('src','!=','null')->get() as $imagen)
     <ul class="fotos">
-      <div class="col-md-3">
+      <div class="col-xs-12 col-md-3">
         <li><a href="#" data-toggle="modal" data-target="#id_modal{{$imagen->id}}"><img src="storage/{{$imagen->src}}" alt="" border="0"></a></li>
         <li></li>
       </div>
