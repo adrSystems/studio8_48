@@ -635,14 +635,13 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="" class="nav-item"><p>Nosotros</p></a>
+            <a href="/" class="nav-item"><p>Nosotros</p></a>
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="" class="nav-item"><p>Productos</p></a>
             <a href="" class="nav-item"><p>Servicios</p></a>
             <a href="/" class="nav-item" id="brand">
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
             </a>
-            <a href="" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="" class="nav-item"><p>Tips</p></a>
             <a href="" class="nav-item"><p>Portafolio</p></a>
