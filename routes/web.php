@@ -95,6 +95,26 @@ Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agreg
 Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
 Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
 Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+Route::post('/admin/inventario/marcas/get','Admin\InventarioController@getMarcas');
+Route::post('/admin/inventario/categorias/is-repeated','Admin\InventarioController@categoriaEsRepetida');
+Route::post('/admin/inventario/subcategorias/is-repeated','Admin\InventarioController@subcategoriaEsRepetida');
+Route::post('/admin/inventario/agregar-categoria','Admin\InventarioController@agregarCategoria');
+Route::post('/admin/inventario/marcas/get-categories','Admin\InventarioController@getCategories');
+Route::post('/admin/inventario/marcas/get-subcategories','Admin\InventarioController@getSubcategories');
+Route::post('/admin/inventario/categorias/cambiar-nombre','Admin\InventarioController@cambiarNombreCategoria');
+Route::post('/admin/inventario/subcategorias/cambiar-nombre','Admin\InventarioController@cambiarNombreSubcategoria');
+Route::post('/admin/inventario/categorias/get-tabla-categorias','Admin\InventarioController@getTablaCategorias');
+Route::post('/admin/inventario/subcategorias/eliminar','Admin\InventarioController@eliminarSubcategoria');
+Route::post('/admin/inventario/subcategorias/agregar','Admin\InventarioController@agregarSubcategoria');
+Route::post('/admin/inventario/subcategorias/restaurar','Admin\InventarioController@restaurarSubcategoria');
+Route::post('/admin/inventario/productos/is-repeated','Admin\InventarioController@productoEsRepetido');
+Route::post('/admin/inventario/productos/agregar','Admin\InventarioController@agregarProducto');
+Route::post('/admin/inventario/marcas/get-productos-table','Admin\InventarioController@getProductsTable');
+Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
+Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
+Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
+Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
+
 /////////////////////////////
 
 //cuenta
