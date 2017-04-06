@@ -88,4 +88,5 @@ Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMe
 Route::get('/admin/forum','Admin\ForumController@getAll');
 Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
 Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
+Route::get('/cancelarcita/{id?}','Cliente\ClienteController@cancelarcita');
 //

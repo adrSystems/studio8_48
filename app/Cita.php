@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
 {
+  public $timestamps= false;
     public function empleado(){
       return $this->belongsTo('App\Empleado');
     }

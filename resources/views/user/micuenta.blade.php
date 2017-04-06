@@ -13,7 +13,7 @@ Mi cuenta
     margin-top: 100px;
   }
   .footer{
-    margin-top: 40%;
+    margin-top: 50px;
   }
   .nav{
     background-color: #1F1F1F;
@@ -205,7 +205,9 @@ Mi cuenta
   .mensaje-cliente{
     padding: 10px 20px;
     border-bottom: 2px solid #1F1F1F;
-    color: black;
+    color: white;
+    font-family: 'Lobster Two';
+    font-size: 18px;
     text-align: left;
     letter-spacing: 2px;
   }
@@ -213,6 +215,8 @@ Mi cuenta
     padding: 10px 20px;
     border-bottom: 2px solid #1F1F1F;
     color: #ed5;
+    font-size: 18px;
+    font-family: 'Lobster Two';
     text-align: right;
     letter-spacing: 2px;
   }
@@ -224,6 +228,21 @@ Mi cuenta
 
   }
   .ancla{
+    color: #1F1F1F;
+  }
+  .body-gris{
+    background-color: #3F3F3F;
+  }
+  .td-pausada{
+    background-color: blue;
+    color: #1F1F1F;
+  }
+  .td-finalizada{
+    background-color: green;
+    color: #1F1F1F;
+  }
+  .td-cancelada{
+    background-color: red;
     color: #1F1F1F;
   }
 </style>
@@ -420,7 +439,7 @@ Mi cuenta
           <div class="panel-heading heading-dark">
             <h3 class="panel-title">Mensajes</h3>
           </div>
-          <div class="panel-body scroll">
+          <div class="panel-body scroll body-gris">
             @foreach($mensajes as $mensaje)
               @if($mensaje->by_cliente==1)
                 <div class="mensaje-cliente">
@@ -486,6 +505,7 @@ Mi cuenta
                     <th>Servicio</th>
                     <th>Fecha y hora</th>
                     <th>Estado</th>
+                    <th>Cancelar</th>
                   </thead>
                   <tbody>
 
@@ -495,10 +515,18 @@ Mi cuenta
                       <td>{{$servicios->nombre}}</td>
                       <td>{{$cit->fecha_hora}}</td>
                       @if($cit->estado==0)
-                        <td class="td-pendiente">Pendiente</td>
+                        <td class="td-pendiente">En espera</td>
                         @elseif($cit->estado==1)
-                        <td class="td-realizada">Realizada</td>
+                        <td class="td-realizada">En curso</td>
+                        @elseif($cit->estado==2)
+                        <td class="td-pausada">En pausa</td>
+                        @elseif($cit->estado==3)
+                        <td class="td-finalizada">Realizada</td>
+                        @elseif($cit->estado==4)
+                        <td class="td-cancelada">Cancelada</td>
                       @endif
+                      <td><a class="btn btn-danger" href="/cancelarcita/{{$cit->id}}" style="height: 25px;">
+                        <i class="material-icons" style="margin-top: -5px;">remove</i></a></td>
                       @endforeach
                     </tr>
                     @endforeach
@@ -550,6 +578,7 @@ Mi cuenta
 @section('js')
 <script type="text/javascript">
   $(document).ready(function(){
+
     $(".item-perfil").focus();
     $(".historial").hide();
     $(".ancla-mensajes").hide();
@@ -607,6 +636,7 @@ Mi cuenta
       $(".ancla-mensajes").show(500);
       $(".ancla-mensajes").show("slow");
     });
+
   });
 </script>
 @endsection

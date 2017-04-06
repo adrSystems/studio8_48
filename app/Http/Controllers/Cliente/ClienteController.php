@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Cliente;
 use App\User;
 use App\Empleado;
+use App\Cita;
 use Storage;
 use Validator;
 use Illuminate\Http\Request;
@@ -236,4 +237,13 @@ class ClienteController extends Controller
       }
       return view ('user.micuenta',['citas'=>$citas]);
     }
+    public function cancelarcita($id = null)
+    {
+      $cita = Cita::find($id);
+      $cita->estado = 4;
+
+      $cita->update();
+      return redirect ('/micuenta');
+    }
+
 }
