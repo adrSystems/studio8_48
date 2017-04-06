@@ -12,8 +12,9 @@ use Redirect;
 use Session;
 use Socialite;
 use Validator;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Cliente\CodigoVerificacion;
+use App\Mail\CodigoVerificacion;
 
 class CuentaController extends Controller
 {
@@ -131,6 +132,8 @@ class CuentaController extends Controller
           $registro_cliente->nombre=$request['nombre'];
           $registro_cliente->apellido=$request['apellidos'];
           $registro_cliente->fecha_nacimiento=$request['fecha'];
+          $registro_cliente->telefono=$request['telefono'];
+          $registro_cliente->fecha_registro=carbon::now();
           $registro_cliente->save();
         	$registro->email=$request['email'];
         	$registro->password= hash::make($request['pass']);
@@ -152,7 +155,7 @@ class CuentaController extends Controller
           $registro->cuentable()->associate($registro_cliente);
       	  $registro->save();
           Mail::to($request->email)->send(new CodigoVerificacion($codigo));
-          return redirect('/login')->with("msg",['title' => 'Error.',"body" =>"Esta cuenta ya está registrada con facebook"]);
+          return redirect('/login');
         }
     }
 
