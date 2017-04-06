@@ -710,7 +710,13 @@
         @if(Auth::check())
         <div class="" id="user-menu">
           <p>{{Auth::user()->cuentable->nombre}}<br>{{Auth::user()->email}}</p>
-          <a href="/micuenta">Mi cuenta</a>
+          @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
+          <a href="/micuenta/{{Auth::user()->id}}">Mi cuenta</a>
+          @else
+
+          <a href="/micuentaE/{{Auth::user()->id}}">Mi cuenta</a>
+          @endif
+
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
           <a href="#">Mi historial</a>
           @endif

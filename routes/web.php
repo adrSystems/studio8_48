@@ -30,6 +30,7 @@ Route::get('/',function (){
     return view('admin.primer-uso');
   }
   return view('welcome');
+
 });
 //first use sign up
 Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
@@ -126,8 +127,6 @@ Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modi
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta', function(){
-  $cuenta = App\User::find(3);
-  Auth::login($cuenta);
   return view('user.micuenta');
 });
 ////servicios_admin/////////////
@@ -201,3 +200,11 @@ Route::get('/concurso/eliminar/{id?}',function($id=null){
 Route::get('/promociones_concursos',function(){
   return view ('cliente.promociones_concursos');
 });
+Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
+Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
+Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');
+Route::get('/admin/forum','Admin\ForumController@getAll');
+Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
+Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
+Route::get('/cancelarcita/{id?}','Cliente\ClienteController@cancelarcita');
+//
