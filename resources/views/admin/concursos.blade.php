@@ -1,6 +1,6 @@
 @extends('layouts.master')
 @section('title')
-Promociones
+Concursos
 @endsection
 @section('css')
 <style media="screen">
@@ -29,7 +29,7 @@ Promociones
     outline: 1px solid slategrey;
   }
   .concurso{
-    height: 120px;
+    height: 150px;
     display: inline-block;
     border-radius: 2px;
     padding: 10px;
@@ -123,6 +123,11 @@ Promociones
             <div class="col-xs-8" style="margin-top: 25px;">
               <p>Fecha inicio: <i class="material-icons icono">date_range</i>{{$concurso->fecha_inicio}}</p>
               <p>Fecha termino: <i class="material-icons icono">date_range</i>{{$concurso->fecha_termino}}</p>
+              @if($concurso->fecha_termino < Carbon\Carbon::now())
+              <p style=""><i class="material-icons icono">delete</i> Terminado</p>
+              @elseif($concurso->fecha_termino >= Carbon\Carbon::now())
+              <p style=""><i class="material-icons icono">done</i> Disponible</p>
+              @endif
             </div>
             <div class="col-xs-1">
               <div class="dropdown">

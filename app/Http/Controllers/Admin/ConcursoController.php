@@ -41,7 +41,7 @@ class ConcursoController extends Controller
       {
         return view ('admin.concursos');
       }
-      $concurso = new Concurso;
+      $concurso = Concurso::find($request->id);
       if($request->file('iamgen'))
       {
         $file = $request->file('imagen');
@@ -50,7 +50,7 @@ class ConcursoController extends Controller
       }
       $concurso->fecha_inicio = $request->fecha_inicio;
       $concurso->fecha_termino = $request->fecha_fin;
-      $concurso->save();
+      $concurso->update();
       return redirect ('/admin/concursos');
     }
 }

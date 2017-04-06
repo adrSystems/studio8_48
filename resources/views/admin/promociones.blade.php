@@ -29,7 +29,7 @@ Promociones
     outline: 1px solid slategrey;
   }
   .promocion{
-    height: 140px;
+    height: 170px;
     display: inline-block;
   }
   .panel{
@@ -123,6 +123,11 @@ Promociones
             <div class="col-xs-8">
               <p>Fecha inicio: <i class="material-icons icono">date_range</i>{{$promocion->fecha_inicio}}</p>
               <p>Fecha termino: <i class="material-icons icono">date_range</i>{{$promocion->fecha_termino}}</p>
+              @if($promocion->fecha_termino < Carbon\Carbon::now())
+              <p style=""><i class="material-icons icono">delete</i> Terminado</p>
+              @elseif($promocion->fecha_termino >= Carbon\Carbon::now())
+              <p style=""><i class="material-icons icono">done</i> Disponible</p>
+              @endif
               <p>Descuento: {{$promocion->descuento}}</p>
               <p>{{$promocion->servicio->nombre}}</p>
             </div>
