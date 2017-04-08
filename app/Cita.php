@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Cita extends Model
 {
-  public $timestamps= false;
+    public $timestamps = false;
     public function empleado(){
       return $this->belongsTo('App\Empleado');
     }
@@ -14,7 +14,7 @@ class Cita extends Model
       return $this->belongsTo('App\Cliente');
     }
     public function productos(){
-      return $this->belongsToMany('App\Producto');
+      return $this->belongsToMany('App\Producto')->withPivot('cantidad');
     }
     public function servicios(){
       return $this->belongsToMany('App\Servicio')->withPivot('descuento');

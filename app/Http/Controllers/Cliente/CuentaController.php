@@ -13,7 +13,7 @@ use Session;
 use Socialite;
 use Validator;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\Cliente\CodigoVerificacion;
+use App\Mail\CodigoVerificacion;
 
 class CuentaController extends Controller
 {

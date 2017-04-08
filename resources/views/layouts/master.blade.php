@@ -179,8 +179,8 @@
               color: white;
             }
             #nav-login{
-              float: right;
-              position: relative;
+              position: absolute;
+              right: 0;
               color: #ddd;
               padding: 0 20px 0 20px;
               border-left: 1px solid #333;
@@ -222,7 +222,9 @@
               text-shadow: 0px 0px 5px #fff;
             }
             #nav-user-info{
-              float: right;
+              position: absolute;
+              top: 0;
+              right: 0;
               height: 100%;
               padding: 10px 10px 10px 15px;
               border-left: 1px solid rgba(255,255,255,.1);
@@ -425,6 +427,206 @@
             .msg-container>.msg-card>.msg-footer>button:hover{
               box-shadow: 0 1px 2px #aaa;
             }
+            .switch-container{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container>hover{
+              color:#fff;
+            }
+            .switch-container>span{
+              float: left;
+            }
+            .switch-container>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid #fff;
+              position: absolute;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container>.switch-bar>.active{
+              left: 50%;
+              background-color: dodgerblue;
+            }
+            .switch-container-red{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container-red>hover{
+              color:#fff;
+            }
+            .switch-container-red>span{
+              float: left;
+            }
+            .switch-container-red>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border: 1px solid rgba(255, 0, 0, 0.5);
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container-red>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid rgba(0, 0, 0, 0.3);
+              position: absolute;
+              top: -1px;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container-red>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container-red>.switch-bar>.active{
+              left: 50%;
+              background-color: #f53;
+            }
+            .main-container{
+              float: left;
+              color: #bbb;
+              width: 100%;
+              margin-top: 100px;
+              margin-bottom: 40px;
+            }
+            .main-title{
+              font-family: 'Lobster Two';
+              color: #aaa;
+            }
+            .card{
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+              border-radius: 3px;
+              border: 1px solid rgba(0, 0, 0, .09);
+              background-color: rgba(0, 0, 0, 0.5);
+              padding: 0;
+              padding-bottom: 15px;
+              overflow: hidden;
+            }
+            .card>.header>h4{
+              color: #fff;
+              font-family: 'Lobster Two';
+              padding: 15px;
+              margin: 0;
+            }
+            .card>.header{
+              background: linear-gradient(to bottom,rgba(255, 255, 255, 0.08),rgba(255, 255, 255, 0.04));
+              margin:0;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 15px;
+              width: 110%;
+              margin-left: -5%;
+            }
+            .btn3{
+              background: linear-gradient(to bottom, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
+              border: 1px solid #111;
+              color: #ddd;
+              text-shadow: 0 0 3px rgba(0, 0, 0, .8);
+              padding: 3px 15px 5px 15px;
+              font-size: 16px;
+              border-radius: 3px;
+              -webkit-transition: box-shadow .3s, color .4s, border .4s;
+            }
+            .btn3:hover{
+              box-shadow: 0 1px 3px #000;
+              color: gold;
+              border-color: goldenrod;
+            }
+            .textbox1{
+              background-color: rgba(0,0,0,.05);
+              box-shadow:inset 0 0 5px #000;
+              border: 1px solid rgba(255, 255, 255, 0.4);
+              color: #aaa;
+              border-radius: 5px;
+              padding: 4px 8px 4px 8px;
+              margin-bottom: 10px;
+              -webkit-transition: color .4s, background-color .3s, box-shadow .4s;
+            }
+            .textbox1-xs{
+              height: 35px;
+              padding-bottom: 7px;
+            }
+            .textbox1:hover{
+              background-color: rgba(255,255,255,.03);
+              border-color: rgba(255, 255, 255, 0.5);
+              color: #ccc;
+            }
+            .textbox1:focus{
+              background-color: rgba(0,0,0,.1);
+              box-shadow:inset 0 0 10px #000;
+              color: #fff;
+              text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+              outline: none;
+            }
+            ::-webkit-clear-button {
+              font-size: 14px;
+              height: 28px;
+              position: relative;
+              right: 5px;
+              margin-right: 4px;
+            }
+            ::-webkit-inner-spin-button {
+              height: 10px;
+              opacity: 0;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator {
+              font-size: 12px;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator:hover{
+              color:#fff;
+            }
+            ::-webkit-datetime-edit-month-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-day-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-year-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            .nav-item>img{
+              float: left;
+              margin-top: 8px;
+              width: 100px;
+            }
+            #brand{
+              padding: 0;
+            }
         </style>
         @yield('css')
     </head>
@@ -433,11 +635,14 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="" class="nav-item"><p>Nosotros</p></a>
+            <a href="/" class="nav-item"><p>Nosotros</p></a>
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="" class="nav-item"><p>Productos</p></a>
             <a href="" class="nav-item"><p>Servicios</p></a>
-            <a href="" class="nav-item"><p>Promociones y concursos</p></a>
+            <a href="/" class="nav-item" id="brand">
+              <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
+            </a>
+            <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="" class="nav-item"><p>Tips</p></a>
             <a href="" class="nav-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
@@ -462,14 +667,15 @@
 
         @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
         <div class="nav-dropdown-child" id="1">
-          <a href="#">Inventario</a>
+          <a href="/admin/inventario">Inventario</a>
           <a href="#">Citas</a>
           <a href="#">Gestion de productos</a>
-          <a href="#">Gestion de servicios</a>
+          <a href="/admin/servicios">Gestion de servicios</a>
           <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
           <a href="#">Gestión de Tips</a>
-          <a href="#">Promociones y concursos</a>
+          <a href="/admin/promociones">Promociones</a>
+          <a href="/admin/concursos">Concursos</a>
           <a href="#">Portafolio</a>
         </div>
         @endif
@@ -487,14 +693,15 @@
             <a href="" class="menu-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
-            <a href="#" class="menu-item-children" id="1">Inventario</a>
+            <a href="/admin/inventario" class="menu-item-children" id="1">Inventario</a>
             <a href="#" class="menu-item-children" id="1">Citas</a>
             <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
             <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
             <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
             <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
-            <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>
+            <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
+            <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
             <a href="#" class="menu-item-children" id="1">Portafolio</a>
             @endif
           </div>
@@ -548,6 +755,32 @@
             $(document).ready(function(){
                 $('.main-cover').width('100%');
 
+                $('.switch-container').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
+
+                $('.switch-container-red').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
+
                 function showMsg(title, body) {
                   $('#general-msg').show(0);
                   $('#general-msg>.msg-card').css('opacity',1);
@@ -560,9 +793,10 @@
                   });
                 }
 
-                if($(this).width() < 576){
+                if($(this).width() < 1196){
                   $('.menu-btn').css('display','initial');
                   $('.nav-item').hide();
+                  $('#brand').show();
                 }
                 else{
                   $('.menu-btn').css('display','none');
@@ -574,9 +808,10 @@
                 $('.user-photo').slideDown("slow");
 
                 $(window).resize(function () {
-                  if($(this).width() < 576){
+                  if($(this).width() < 1196){
                     $('.menu-btn').css('display','initial');
                     $('.nav-item').hide();
+                    $('#brand').show();
                   }
                   else{
                     $('.menu').css('left','-200px');

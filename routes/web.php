@@ -65,14 +65,58 @@ Route::post('/emailIsRepeted','Admin\EmpleadosController@emailIsRepeted');
 Route::get('/admin/clientes','Admin\ClienteController@getDetailsForMainView');
 Route::match(['GET','POST'], '/clientes/agregar', 'Admin\ClienteController@add');
 Route::post('/admin/clientes/filter','Admin\ClienteController@filter');
-Route::get('/admin/clientes/info/{id?}','Admin\ClienteController@getDetailsForPersonalInfoView');
-Route::get('/admin/clientes/edit/{id?}', function ($id = null){
+Route::get('/admin/clientes/info/{id}','Admin\ClienteController@getDetailsForPersonalInfoView');
+Route::get('/admin/clientes/edit/{id}', function ($id = null){
   if(!$id) return redirect('/admin/clientes');
   if(!$cliente = \App\Cliente::find($id)) return redirect('/admin/clientes');
-  return view('admin.clientes.edit');
+  return view('admin.clientes.edit', ['cliente' => $cliente]);
 });
+Route::post('/clientes/editar','Admin\ClienteController@edit');
+Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
+Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
 //
-//////////////////////////////////////////////////////////////////////////
+
+//citas
+Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
+Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
+Route::post('/changeStylistFromAppointment','Admin\CitaController@changeStylistFromAppointment');
+Route::post('/admin/pay','Admin\CitaController@payByAdmin');
+Route::post('/admin/liquidar-cita','Admin\CitaController@liquidar');
+Route::post('/admin/start-appointment','Admin\CitaController@iniciar');
+Route::post('/admin/end-appointment','Admin\CitaController@end');
+Route::post('/admin/cancel-appointment','Admin\CitaController@cancel');
+Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
+Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
+
+//inventario
+Route::get('/admin/inventario', function (){
+  return view('admin.inventario');
+});
+Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agregarMarca');
+Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
+Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
+Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+Route::post('/admin/inventario/marcas/get','Admin\InventarioController@getMarcas');
+Route::post('/admin/inventario/categorias/is-repeated','Admin\InventarioController@categoriaEsRepetida');
+Route::post('/admin/inventario/subcategorias/is-repeated','Admin\InventarioController@subcategoriaEsRepetida');
+Route::post('/admin/inventario/agregar-categoria','Admin\InventarioController@agregarCategoria');
+Route::post('/admin/inventario/marcas/get-categories','Admin\InventarioController@getCategories');
+Route::post('/admin/inventario/marcas/get-subcategories','Admin\InventarioController@getSubcategories');
+Route::post('/admin/inventario/categorias/cambiar-nombre','Admin\InventarioController@cambiarNombreCategoria');
+Route::post('/admin/inventario/subcategorias/cambiar-nombre','Admin\InventarioController@cambiarNombreSubcategoria');
+Route::post('/admin/inventario/categorias/get-tabla-categorias','Admin\InventarioController@getTablaCategorias');
+Route::post('/admin/inventario/subcategorias/eliminar','Admin\InventarioController@eliminarSubcategoria');
+Route::post('/admin/inventario/subcategorias/agregar','Admin\InventarioController@agregarSubcategoria');
+Route::post('/admin/inventario/subcategorias/restaurar','Admin\InventarioController@restaurarSubcategoria');
+Route::post('/admin/inventario/productos/is-repeated','Admin\InventarioController@productoEsRepetido');
+Route::post('/admin/inventario/productos/agregar','Admin\InventarioController@agregarProducto');
+Route::post('/admin/inventario/marcas/get-productos-table','Admin\InventarioController@getProductsTable');
+Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
+Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
+Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
+Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
+
+/////////////////////////////
 
 //cuenta
 Route::match(["GET","POST"],'/modificarnombre',"Cliente\ClienteController@modificarNombre");
@@ -82,6 +126,80 @@ Route::match(["GET","POST"],'/modificarcorreo',"Cliente\ClienteController@modifi
 Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modificarTelefono");
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
+Route::get('/micuenta', function(){
+  return view('user.micuenta');
+});
+////servicios_admin/////////////
+Route::get('/admin/servicios',function(){
+  return view ('admin.servicios');
+});
+Route::match(['GET','POST'],'/servicio/agregar','Admin\ServiciosController@agregar');
+Route::get('/servicio/editar/{id?}',function($id=null){
+  $servicio = \App\Servicio::find($id);
+  if(!$id)
+  return redirect ('/admin/servicios');
+  if(!$servicio = \App\Servicio::find($id))
+  return redirect ('/admin/servicios');
+  return view ('admin.servicio.editar',['servicio'=>$servicio]);
+});
+Route::match(['GET','POST'], '/servicio/editar','Admin\ServiciosController@editar');
+Route::get('/servicio/eliminar/{id?}',function($id = null){
+  $servicio = \App\Servicio::find($id);
+  if(!$id)
+  return redirect ('/admin/servicios');
+  if(!$servicio = \App\Servicio::find($id))
+  return redirect ('/admin/servicios');
+  $servicio->delete();
+  return redirect ('/admin/servicios');
+});
+////promociones-admin-clientes//
+Route::get('admin/promociones',function(){
+  return view ('admin.promociones');
+});
+Route::match(['GET','POST'],'/promocion/agregar','Admin\PromocionController@agregar');
+Route::get('/promocion/editar/{id?}',function($id = null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  return view ('admin.promociones.edit',['promocion'=>$promocion]);
+});
+Route::match(['GET','POST'],'/promocion/editar','Admin\PromocionController@editar');
+Route::get('/promocion/eliminar/{id?}',function($id= null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  $promocion->delete();
+  return redirect ('/admin/promociones');
+});
+Route::get('/admin/concursos',function(){
+  return view ('admin.concursos');
+});
+Route::match(['GET','POST'],'/concurso/agregar','Admin\ConcursoController@agregar');
+Route::get('/concurso/editar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  return view ('admin.concursos.edit',['concurso'=>$concurso]);
+});
+Route::match(['GET','POST'],'/concurso/editar','Admin\ConcursoController@editar');
+Route::get('/concurso/eliminar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  $concurso->delete();
+  return redirect ('/admin/concursos');
+});
+Route::get('/promociones_concursos',function(){
+  return view ('cliente.promociones_concursos');
+});
 Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
 Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
 Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');

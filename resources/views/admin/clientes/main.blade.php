@@ -6,26 +6,42 @@ Gestión de clientes
 
 @section('css')
 <style media="screen">
+  body{
+    background-image: url('{{asset("img/walls/3.jpg")}}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  .nav-bar{
+      box-shadow: none;
+      border-bottom: none;
+      background-color: rgba(0, 0, 0, 0.5);
+  }
+  .footer{
+    box-shadow: none;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
   .main-title{
     color: goldenrod;
     font-family: 'Lobster Two';
   }
   #list{
     box-shadow:  0 0 3px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.6);
     padding: 0;
     border-radius: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
   #list>.header{
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(0, 0, 0, 0.8);
     padding: 15px;
   }
   #searcher{
     border-radius: 15px;
-    border: 1px solid #333;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     min-width: 200px;
     color: #aaa;
-    background-color: #111;
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 3px 26px 3px 13px;
   }
   #searcher:focus{
@@ -51,26 +67,27 @@ Gestión de clientes
   .cliente-item{
     background-color: #222;
   }
-  #list>.body{
-  }
   tbody, thead{
     text-align: center;
   }
   tbody{
-    color: #bbb;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5),0 0 3px rgba(0, 0, 0, 0.5);
+    color: #fff;
   }
   thead{
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
     color:#ccc;
   }
   th{
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 0, 0, 0.5);
     font-weight: 100;
+    color: #fff;
     padding-top: 20px;
     padding-bottom: 20px;
   }
   td{
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding-top: 7px;
+    padding-bottom: 7px;
   }
   tr.cliente:hover{
     background-color: rgba(255, 255, 255, .02);
@@ -78,9 +95,10 @@ Gestión de clientes
   .icon-btn{
     color: #ccc;
     display: block;
-    padding: 0;
+    padding: 3px;
+    padding-top: 5px;
+    padding-bottom: 0;
     margin: 0;
-    height: 3.2vh;
     cursor: pointer;
   }
   .icon-btn:link{
@@ -93,16 +111,14 @@ Gestión de clientes
     color: #fff;
     box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.7);
     border-radius: 3px;
-    margin: 0;
-    padding: 0;
   }
   .icon-btn>i{
     margin: 0;
     padding: 0;
   }
   .icon-square{
-    width: 2.6vh;
-    height: 2.6vh;
+    width: 3.6vh;
+    height: 3.6vh;
   }
   .icon-square>i{
     font-size: 18px;
@@ -130,6 +146,13 @@ Gestión de clientes
     background-color: rgba(255, 255, 255, .08);
     color: #fff;
   }
+  #filter-selected{
+    margin-top:  60px;
+    line-height: 26px;
+  }
+  .option-icon{
+    margin-top: -3px;
+  }
 </style>
 @endsection
 
@@ -138,10 +161,10 @@ Gestión de clientes
   <h3 class="main-title col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">Clientes</h3>
   <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="list">
     <div class="header">
-      <div class="pull-right">
-        <span class="hidden-xs" style="margin-right:8px;color:#999" id="filter-selected">Todos</span>
+      <div class="pull-right" style="position:relative;">
+        <span class="hidden-xs" style="margin-right:12px;color:#bbb;" id="filter-selected">Todos</span>
         <abbr title="Filtrar">
-          <div class="icon-btn pull-right" id="filter-btn">
+          <div class="icon-btn option-icon pull-right" id="filter-btn">
             <i class="material-icons">filter_list</i>
           </div>
         </abbr>
@@ -156,7 +179,7 @@ Gestión de clientes
         <div class="item" id="sin-credito">Crédito desactivado</div>
       </div>
       <abbr title="Nuevo cliente">
-        <a href="/clientes/agregar" class="pull-left icon-btn" id="add-btn">
+        <a href="/clientes/agregar" class="pull-left icon-btn option-icon" id="add-btn">
           <i class="material-icons">add</i>
         </a>
       </abbr>
@@ -214,7 +237,7 @@ Gestión de clientes
     @endif
     </div>
   </div>
-  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;">
+  <p class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0;margin-top:10px;margin-bottom:10px;color:#fff;text-shadow: 0 0 3px rgba(0,0,0,1), 0 0 10px rgba(0,0,0,1)">
     {{count($clientes)}} encontrado(s).
   </p>
 </div>
