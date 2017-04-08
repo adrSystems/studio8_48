@@ -18,7 +18,7 @@ class Producto extends Model
 
   public function compras()
   {
-    return $this->belongsToMany('App\Compra');
+    return $this->belongsToMany('App\Compra')->withPivot('precio_venta');
   }
 
   public function subcategoria()

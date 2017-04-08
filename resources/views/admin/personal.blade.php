@@ -69,7 +69,7 @@ Studio8 48 - Personal
   .empleado-item>i:hover{
     color:#777;
   }
-  #add-container{
+  .card1{
     padding: 0;
     overflow:hidden;
     color: #578;
@@ -79,13 +79,13 @@ Studio8 48 - Personal
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
     margin-bottom: 15px;
   }
-  #add-container>.header>h4{
+  .card1>.header>h4{
     color: #777;
     font-family: 'Lobster Two';
     padding: 15px;
     margin: 0;
   }
-  #add-container>.header{
+  .card1>.header{
     background-color: #ddd;
     margin:0;
     box-shadow: inset 0 -1px 2px #aaa;
@@ -759,7 +759,7 @@ Studio8 48 - Personal
   </div>
 
   <div class="col-xs-12 col-md-offset-1 col-md-4 second-container">
-    <div id="add-container" class="col-xs-12">
+    <div id="add-container" class="col-xs-12 card1">
       <div class="header">
         <h4>Añadir nuevo personal</h4>
       </div>

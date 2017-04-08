@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Marca;
 use App\Subcategoria;
+use App\Surticion;
 use App\Categoria;
 use App\Producto;
 use Validator;
@@ -393,6 +394,8 @@ class InventarioController extends Controller
     public function getProductById(Request $request)
     {
       $producto = Producto::find($request->id);
+      $meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+      $producto->mesEnCuestion = $meses[Carbon::now()->format('m')-1];
       $producto->subcategoria = $producto->subcategoria;
       $producto->subcategoria->categoria = $producto->subcategoria->categoria;
       $producto->subcategoria->categoria->marca = $producto->subcategoria->categoria->marca;
@@ -400,29 +403,35 @@ class InventarioController extends Controller
       ->whereMonth('fecha_hora', Carbon::now()->format('m'))->get();
       $paraVenta = 0;
       $paraAplicacion = 0;
+      $montoGastado = 0;
+      $inversionVentas = 0;
+      $expectativaGanancias = 0;
       foreach ($surticionesMensuales as $surticion) {
-        if($surticion->venta) $paraVenta += $surticion->cantidad;
-        else $paraAplicacion += $surticion->cantidad;
+        $paraVenta += $surticion->cantidad_venta;
+        $expectativaGanancias += $surticion->cantidad_venta * $surticion->precio_venta;
+        $paraAplicacion += $surticion->cantidad_ap_servicios;
+        $montoGastado += ($surticion->cantidad_venta + $surticion->cantidad_ap_servicios) * $surticion->precio_compra;
+        $inversionVentas += $surticion->cantidad_venta * $surticion->precio_compra;
       }
+      $producto->inversionMensual = $montoGastado;
+      $producto->inversionParaVenta = $inversionVentas;
       $producto->paraAplicacion = $paraAplicacion;
-      $producto->fotografia = asset('storage/'.$producto->fotografia);
       $producto->paraVenta = $paraVenta;
-      $producto->agregadosEsteMes = $surticionesMensuales->count();
-      $producto->inversionMensual = $surticionesMensuales->count() * $producto->precio_compra;
-      if($producto->venta_publico)
-      {
-        $producto->compras = $producto->compras;
-        $producto->comprasMensuales =  $producto->compras()->whereYear('fecha_hora', Carbon::now()->format('Y'))
-        ->whereMonth('fecha_hora', Carbon::now()->format('m'))->get();
-        $gananciaMensual = 0;
-        foreach ($producto->comprasMensuales as $compraMensual) {
-          foreach ($compraMensual->productos as $producto) {
-            $gananciaMensual += $producto->precio_venta;
-          }
+      $producto->expectativaGanancias = $expectativaGanancias;
+      $producto->utilidad = $producto->gananciaMensual - $producto->inversionParaVenta;
+      $producto->fotografia = asset('storage/'.$producto->fotografia);
+      $producto->agregadosEsteMes = $paraVenta + $paraAplicacion;
+      $producto->compras = $producto->compras;
+      $producto->comprasMensuales =  $producto->compras()->whereYear('fecha_hora', Carbon::now()->format('Y'))
+      ->whereMonth('fecha_hora', Carbon::now()->format('m'))->get();
+      $gananciaMensual = 0;
+      foreach ($producto->comprasMensuales as $compraMensual) {
+        foreach ($compraMensual->productos as $producto) {
+          $gananciaMensual += $producto->pivot->precio_venta;
         }
-        $producto->gananciaMensual = $gananciaMensual;
-        $producto->diferencia = $gananciaMensual - $producto->inversionMensual;
       }
+      $producto->gananciaMensual = $gananciaMensual;
+      $producto->diferencia = $producto->expectativaGanancias - $gananciaMensual;
       //determinar utilizacion en citas
       $utilizacion = 0;
       foreach ($producto->citas()->whereYear('fecha_hora', Carbon::now()->format('Y'))
@@ -479,6 +488,8 @@ class InventarioController extends Controller
     public function descontinuarById(Request $request)
     {
       $producto = Producto::find($request->id);
+
+      //if($)
       $producto->delete();
       $producto->subcategoria = $producto->subcategoria;
 
@@ -498,5 +509,37 @@ class InventarioController extends Controller
         'result' => true,
         'producto' => $producto
       ];
+    }
+
+    public function surtir(Request $request)
+    {
+      $producto = Producto::find($request->id);
+
+      $surticion = new Surticion;
+      $surticion->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+      $surticion->cantidad_venta = $request->cantidadVenta;
+      $surticion->cantidad_ap_servicios = $request->cantidadAplicacion;
+      $surticion->producto_id = $producto->id;
+      if($request->precioVenta and $request->precioVenta > 0)
+      {
+        $surticion->precio_venta = $request->precioVenta;
+        $producto->precio_venta = $request->precioVenta;
+        $producto->save();
+      }
+      else {
+        $surticion->precio_venta = $producto->precio_venta;
+      }
+      if($request->precioCompra and $request->precioCompra > 0)
+      {
+        $surticion->precio_compra = $request->precioCompra;
+        $producto->precio_compra = $request->precioCompra;
+        $producto->save();
+      }
+      else {
+        $surticion->precio_compra = $producto->precio_compra;
+      }
+      $surticion->save();
+
+      return ['result' => true];
     }
 }

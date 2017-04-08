@@ -120,5 +120,6 @@ Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@
 Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
 Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
 Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
+Route::post('/admin/inventario/productos/surtir','Admin\InventarioController@surtir');
 
 /////////////////////////////

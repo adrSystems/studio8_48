@@ -1,6 +1,6 @@
 @if(\App\Subcategoria::find($id)->productos()->count() == 0)
 <div class="col-xs-12" style="padding:0">
-  <p style="padding:20px;padding-bottom:10px;color:#ddd">No se encontraron productos activos registrados en el sistema.</p>
+  <p style="padding:20px;padding-bottom:10px;color:#777">No se encontraron productos activos registrados en el sistema.</p>
 </div>
 @else
 <div class="col-xs-12" style="padding:0">
@@ -12,6 +12,7 @@
         <div class="shadow"></div>
         <i class="material-icons item-btn descontinuar-producto-toggle" id="{{$producto->id}}">delete</i>
         <i class="material-icons item-btn editar-producto-toggle" id="{{$producto->id}}">edit</i>
+        <i class="material-icons item-btn surtir-producto-toggle" id="{{$producto->id}}">add_circle</i>
       </div>
       <div class="info">
         <div class="col-xs-12">

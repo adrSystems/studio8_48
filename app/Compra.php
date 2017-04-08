@@ -8,7 +8,7 @@ class Compra extends Model
 {
     public function productos()
     {
-      return $this->belongsToMany('App\Producto');
+      return $this->belongsToMany('App\Producto')->withPivot('precio_venta');
     }
 
     public function cliente()

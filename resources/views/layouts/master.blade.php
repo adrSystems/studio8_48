@@ -626,6 +626,33 @@
             #brand{
               padding: 0;
             }
+            .card1{
+              padding: 0;
+              overflow:hidden;
+              color: #578;
+              background-color: #fff;
+              border-radius: 5px;
+              border: 1px solid #bbb;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+              margin-bottom: 15px;
+            }
+            .card1>.header>h4{
+              color: #777;
+              font-family: 'Lobster Two';
+              padding: 15px;
+              margin: 0;
+            }
+            .card1>.header{
+              background-color: #ddd;
+              margin:0;
+              box-shadow: inset 0 -1px 2px #aaa;
+              padding: 15px;
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 15px;
+              width: 110%;
+              margin-left: -5%;
+            }
         </style>
         @yield('css')
     </head>

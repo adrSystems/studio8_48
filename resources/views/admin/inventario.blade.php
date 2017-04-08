@@ -23,15 +23,22 @@ Inventario
   .side-menu{
     width: 100%;
     display: table;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    border-radius: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    background-color: #fff;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    overflow: hidden;
+    overflow: hidden;
     text-align: center;
     box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
     margin-bottom: 10px;
   }
   .side-menu>.header{
-    background-color: rgba(255, 255, 255, 0.1);
-    color: #fff;
+    background: linear-gradient(to bottom, #ddd, #ccc);
+    border-top: 1px solid #fff;
+    color: #777;
+    font-weight: 600;
+    box-shadow: inset 0 -1px 3px rgba(0, 0, 0, 0.2);
     padding-top: 10px;
     padding-bottom: 10px;
   }
@@ -39,56 +46,33 @@ Inventario
     width: 100%;
     float: left;
     padding: 3px;
-    color: #ddd;
+    color: #f76;
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, .11);
     -webkit-transition: background-color .4s, color .4s, text-shadow .6s;
   }
   .side-menu>.body>.item-active{
-    border-left: 2px solid #fff;
+    background-color: rgba(255, 0, 0, 0.5);
     color: #fff;
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
-  }
-  .side-menu>.body>.item:hover{
-    background-color: rgba(255, 255, 255, .05);
   }
   .side-menu>.body>.last-item{
     border-bottom: none;
   }
-  .main-card{
-    width: 100%;
-    position: relative;
-    float: left;
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 2px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
-  }
-  .main-card>.header{
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    font-family: 'Lobster Two';
-    text-align: center;
-    text-shadow: 0 0 15px rgba(0, 0, 0, 0.9), 0 0 1px rgba(0, 0, 0, 0.9);
-    padding: 10px;
-  }
-  .main-card>.body{
-    background-color: rgba(0, 0, 0, 0.5);
-    color: #777;
-  }
   .list-container{
     border-radius: 3px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.03);
     margin-bottom: 5px;
-    border: 1px solid rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(0, 0, 0, 0.08);
     float: left;
     position: relative;
   }
   .list-container>p{
-    color:#fff;
+    color: goldenrod;
     margin-top: 5px;
   }
   .list-container>h5{
-    color:#fff;
+    color: goldenrod;
   }
   .list-container>.list-item{
 
@@ -116,20 +100,20 @@ Inventario
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
   .btn1{
-    background-color: transparent;
-    border: 1px solid #fff;
+    background: linear-gradient(to bottom, #eee, #ddd);
+    border: 1px solid skyblue;
+    color: #555;
+    padding: 3px 15px 5px 15px;
+    font-size: 16px;
     border-radius: 3px;
-    color: #ddd;
-    font-size: 18px;
-    padding: 4px 18px 7px 18px;
-    -webkit-transition: background-color .4s, color .4s, text-shadow .6s;
+    -webkit-transition: box-shadow .3s;
+  }
+  .btn1:hover{
+    box-shadow: 0 1px 3px #aaa;
   }
   .btn-center{
     display: block;
     margin: auto;
-  }
-  .btn1:hover{
-    background-color: rgba(0, 0, 0, .2);
   }
   .img-file-selector{
     padding-top: 10px;
@@ -161,7 +145,11 @@ Inventario
     position: relative;
     background-color: #fff;
     overflow: hidden;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
     padding: 0;
+  }
+  .list-item>.img-container:hover{
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0);
   }
   .list-item>.img-container:hover .shadow{
     opacity: 1;
@@ -315,17 +303,20 @@ Inventario
     color: #999;
   }
   .subcontainer{
-    border: 1px solid rgba(255, 255, 255, .1);
+    border: 1px solid rgba(255, 255, 255, .03);
   }
   .square-btn{
-    background-color: rgba(255, 255, 255, 0.05);
-    border: 1px solid #fff;
+    background-color: #f75;
+    border: 1px solid #f53;
     width: 25px;
     cursor: pointer;
     height: 25px;
+    border-radius: 2px;
+    -webkit-transition: border-radius .4s;
   }
   .square-btn:hover{
-    background-color: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    border-radius: 100%;
   }
   .square-btn>i{
     font-size: 23px;
@@ -372,6 +363,7 @@ Inventario
     top: 3px;
   }
   .categorias-subcontainer{
+    border: 1px solid rgba(0, 0, 0, .13);
     padding: 0;
     overflow: auto;
     max-height: 600px;
@@ -435,6 +427,7 @@ Inventario
     width: 100%;
     padding-top: 5px;
     color:#bbb;
+    background: #111;
     padding-bottom: 5px;
     cursor: pointer;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
@@ -457,7 +450,7 @@ Inventario
   .action-item-btn{
     border-radius: 5px;
     border: 1px solid red;
-    background: #f43;
+    background: #f76;
   }
   .action-item-btn:hover{
     background: #f65;
@@ -480,8 +473,8 @@ Inventario
     border-radius: 3px;
   }
   .btn2{
-    background: linear-gradient(to bottom, #e42, #d31);
-    border: 1px solid rgba(0, 0, 0, 0.5);
+    background: linear-gradient(to bottom, #f75, #d53);
+    border: 1px solid rgba(0, 0, 0, 0.1);
     border-radius: 2px;
     color: #ddd;
     box-shadow: inset 0 1px 1px rgba(255, 255, 255, .5);
@@ -504,7 +497,7 @@ Inventario
     cursor: pointer;
     right: 6px;
     font-size: 18px;
-    color: #e43;
+    color: #f76;
   }
   .add-sub-tb-container>.add-sub-tb{
     width: 100%;
@@ -536,13 +529,29 @@ Inventario
   .marca-item{
     padding: 0;
     width: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
     float: left;
     color: #ddd;
     text-align: center;
   }
   .marca-item>.info{
-    margin-bottom: 10px;
+    position: relative;
+    padding: 0;
+    overflow: hidden;
+  }
+  .marca-item>.info>span{
+    color: #555;
+    z-index: 5;
+  }
+  .marca-item>.info>.img-container-container{
+    -webkit-filter: blur(7px) brightness(30%);
+    width: 120%;
+    height: 120%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    top: -10%;
+    left: -10%;
+    position: absolute;
   }
   .marca-item>.info>.img-container{
     position: relative;
@@ -554,6 +563,7 @@ Inventario
   }
   .marca-item>.info>.img-container>img{
     width: 100%;
+    box-shadow: 0 0 55px rgba(0, 0, 0, 0.8);
   }
   #marcas-container{
     overflow: auto;
@@ -580,19 +590,20 @@ Inventario
   .textbox2-group-container>.icon-red{
     display: table-cell;
     width: 40px;
-    background-color: #f53;
-    border: 1px solid #f31;
+    background-color: #f75;
+    border: 1px solid #f86;
     border-top-left-radius: 3px;
     border-bottom-left-radius: 3px;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
-    height: 30px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    height: 100%;
   }
   .textbox2-group-container>.icon>i, .textbox2-group-container>.icon-red>i{
     color: #fff;
     position: absolute;
     top: 5px;
-    left: 9px;
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    font-weight: 100;
+    left: 8px;
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.2);
   }
   .textbox2-group-container>.textbox2{
     display: table-cell;
@@ -607,6 +618,7 @@ Inventario
     background-color: rgba(0, 0, 0, 0.5);
     width: 100%;
     position: relative;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
     float: left;
   }
   .producto-item>.img-container{
@@ -642,6 +654,10 @@ Inventario
     top: 0px;
     right: 0px;
   }
+  .producto-item>.img-container>.surtir-producto-toggle{
+    bottom: 0px;
+    right: 0px;
+  }
   .producto-item>.img-container>i:hover{
     color: #fda;
   }
@@ -671,7 +687,7 @@ Inventario
     background-color: rgba(255, 255, 255, 0.1);
   }
   .list-container>.header{
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.1);
     width: 100%;
     position: relative;
     float: left;
@@ -705,9 +721,71 @@ Inventario
   #producto-summary>div>p{
     float: left;
   }
+  #producto-details-subcontainer{
+    float: left;
+    position: relative;
+  }
+  #producto-details-subcontainer>.img-container{
+    position: relative;
+    width: 100px;
+    margin: auto;
+    display: block;
+    overflow: hidden;
+    border-radius: 3px;
+    border: 1px solid skyblue;
+    margin-bottom: 15px;
+  }
+  #producto-details-subcontainer>.img-container>img{
+    width: 100%;
+  }
+  #producto-details-subcontainer>div>p{
+    margin-top: 10px;
+    margin-bottom: 5px;
+  }
+  #producto-details-subcontainer>div>span{
+    padding: 3px;
+    background-color: rgba(0, 0, 0, .08);
+  }
+  #producto-statistics-subcontainer>div>p{
+    margin-bottom: 5px;
+  }
+  #producto-statistics-subcontainer>div>span{
+    padding: 3px;
+    border-radius: 2px;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+  #producto-statistics-subcontainer>div.info-group{
+    padding: 3px;
+    border-radius: 2px;
+    border: 1px dashed rgba(0, 0, 0, .1);
+    margin-bottom: 10px;
+  }
   .restore-producto-toggle{
     top: 0;
     left: 0;
+  }
+  .card1>.body{
+    color: #888;
+  }
+  .grey{
+    color: #888;
+  }
+  label{
+    color: #888;
+  }
+  .existencia-msg{
+    width: 100%;
+    margin: 10px 0 10px 0;
+  }
+  .existencia-msg>span{
+    padding: 3px;
+    font-size: 18px;
+    text-align: center;
+    border-radius: 3px;
+    font-weight: 600;
+    background-color: rgba(0, 0, 0, 0.1);
+    display: block;
+    margin: auto;
   }
 </style>
 @endsection
@@ -721,6 +799,165 @@ Inventario
   <input type="hidden" name="marcaToRestore" value="">
   <input type="hidden" name="_token" value="{{csrf_token()}}">
 </form>
+
+<div class="modal-back" id="surtir-modal-back">
+  <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Entrada de productos</h4>
+    </div>
+    <div class="body">
+      <div class="col-xs-12" id="venta-publico-desactivada-msg">
+        <div class="alert alert-warning">
+          <p>No está activada la venta al público de este producto... Para activarla, vaya a editar producto</p>
+        </div>
+      </div>
+      <div class="col-xs-12">
+        <label for="" class="dark">Cantidad de productos destinados a aplicación de servicios</label>
+      </div>
+      <div class="col-xs-12">
+        <input type="number" name="cantidadProductosApServicios" value="0" class="textbox2" style="width:100%" min="0" max="500">
+      </div>
+      <div class="col-xs-12" style="margin-top:10px">
+        <label for="" class="dark">Cantidad de productos destinados a venta</label>
+      </div>
+      <div class="col-xs-12">
+        <input type="number" name="cantidadProductosVenta" value="0" class="textbox2" style="width:100%" min="0" max="500">
+      </div>
+      <div class="col-xs-12" style="margin-top:10px">
+        <label for="" class="dark">Precio de compra actual:</label>
+        <span id="precio-compra-actual" style="font-weight:600"></span>
+      </div>
+      <div class="switch-container switch-center" id="switch-cambiar-precio-compra" active="0" style="background-color:rgba(0,0,0,.1)">
+        <span style="color:#f53;padding-left:2px">Cambiar precio compra</span>
+        <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.08);border-color:rgba(0,0,0,.2)">
+          <div class="switch-btn inactive" style=""></div>
+        </div>
+      </div>
+      <div class="col-xs-12" style="margin-top:10px">
+        <input type="text" name="nuevoPrecioCompraSurticion" value="" class="textbox2 money" placeholder="nuevo precio de compra...">
+      </div>
+      <div class="col-xs-12" style="margin-top:10px" id="precio-venta-label">
+        <label for="" class="dark">Precio de venta actual:</label>
+        <span id="precio-venta-actual" style="font-weight:600"></span>
+      </div>
+      <div class="switch-container switch-center" id="switch-cambiar-precio-venta" active="0" style="background-color:rgba(0,0,0,.1)">
+        <span style="color:#f53;padding-left:2px">Cambiar precio venta</span>
+        <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.08);border-color:rgba(0,0,0,.2)">
+          <div class="switch-btn inactive" style=""></div>
+        </div>
+      </div>
+      <div class="col-xs-12" style="margin-top:10px">
+        <input type="text" name="nuevoPrecioVentaSurticion" value="" class="textbox2 money" placeholder="nuevo precio de venta...">
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" id="surtir-btn" producto=""><i class="material-icons">check</i>Aceptar</button>
+      <button type="button" name="button" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="producto-details-modal-back">
+  <div class="modal-black-card col-xs-12 col-md-8 col-md-offset-2">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Detalles del producto</h4>
+    </div>
+    <div class="body">
+      <div class="col-xs-12 col-md-6">
+          <div class="alert alert-info" id="producto-details-subcontainer">
+            <div class="col-xs-12">
+              <h5 style="text-align:center">Sobre el producto</h5>
+            </div>
+            <div class="img-container">
+              <img src="" alt="" id="producto-details-img">
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Código:</p><span id="codigo-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Nombre:</p><span id="producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>De la marca:</p><span id="marca-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Categoria:</p><span id="categoria-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Subcategoria:</p><span id="subcategoria-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Precio Compra:</p><span id="precio-compra-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Venta al público:</p><span id="venta-publico-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Precio venta:</p><span id="precio-venta-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Contenido:</p><span id="contenido-producto-details"></span>
+            </div>
+            <div class="col-xs-12" style="padding:'0">
+              <p>Descripción:</p><span id="descripcion-producto-details"></span>
+            </div>
+          </div>
+      </div>
+      <div class="col-xs-12 col-md-6">
+          <div class="alert alert-warning col-xs-12" id="producto-statistics-subcontainer">
+            <div class="col-xs-12">
+              <h5 style="text-align:center">Estadísticas mensuales (<span style="font-weight:600" id="mes-cuestion"></span>)</h5>
+            </div>
+            <div class="existencia-msg" style="float:left">
+              <span id="existencia-msg"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Unidades agregadas este mes:</p>
+              <span id="u-added-mes"></span>
+              <p><span id="u-added-venta-mes"></span> para venta</p>
+              <p><span id="u-added-serv-mes"></span> para la aplicación de servicios</p>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Sé invirtió en total en este producto:</p>
+              <span id="inversion-mensual"></span>
+              <p>Sé invirtió solo para venta en este producto:</p>
+              <span id="inversion-mensual-venta"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Número de ventas:</p>
+              <span id="ventas-mensuales-count"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Ganancias esperadas: </p>
+              <span id="ventas-esperadas"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Ganancias totales:</p>
+              <span id="ventas-mensuales"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Faltante para alcanzar ganancias esperadas:</p>
+              <span id="diferencia"></span>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Utilidad:</p>
+              <span id="utilidad-mensual"></span>
+              <p>* Tomando en cuenta solamente los productos destinados para venta al público.</p>
+            </div>
+            <div class="col-xs-12 info-group">
+              <p>Cantidad de productos utilizados este mes para aplicación de servicios:</p>
+              <span id="aplicacion-servicios-mensuales"></span>
+            </div>
+          </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal-back" id="editar-producto-modal-back">
   <div class="modal-black-card col-xs-12 col-md-8 col-md-offset-2">
@@ -990,178 +1227,189 @@ Inventario
 <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
 
   <div class="main-card" for="marcas-card">
-    <div class="header">
-      <h4>Gestión de marcas</h4>
-    </div>
-    <div class="body col-xs-12" style="padding:0">
-      <div class="col-xs-12 col-md-4" style="padding:15px">
-        <div class="list-container col-xs-12" style="padding:0">
-          @if(\App\Marca::count() == 0)
-          <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
-          @else
-          <h5 style="text-align:center">Activas</h5>
-          @foreach(\App\Marca::get() as $marca)
-          <div class="list-item col-xs-12 col-sm-12 col-md-12 col-lg-6" style="padding:15px">
-            <div class="img-container col-xs-12">
-              <div class="shadow"></div>
-              <div class="options">
-                <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
-                <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
-              </div>
-              <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-              <div class="info">
-                <span class="">{{$marca->nombre}}</span>
-              </div>
-            </div>
+    <div class="col-xs-12" style="padding:0">
+      <div class="col-xs-12 col-md-4">
+        <div class="card1">
+          <div class="header">
+            <h4>Lista marcas</h4>
           </div>
-          @endforeach
-          @endif
-        </div>
-
-        <div class="list-container col-xs-12" style="padding:0">
-          @if(\App\Marca::onlyTrashed()->count() == 0)
-          <p style="padding:0 10px 0 10px">No se encontraron marcas descontinuadas en el sistema.</p>
-          @else
-          <h5 style="text-align:center">Descontinuadas</h5>
-          @foreach(\App\Marca::onlyTrashed()->get() as $marca)
-          <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
-            <div class="img-container col-xs-12">
-              <div class="shadow"></div>
-              <div class="options">
-                <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
-              </div>
-              <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-              <div class="info">
-                <span class="">{{$marca->nombre}}</span>
-              </div>
-            </div>
-          </div>
-          @endforeach
-          @endif
-        </div>
-      </div>
-      <div class="col-xs-12 col-md-8" style="padding: 15px;">
-        <div class="sub-card">
-          <h4 style="text-align:center;color:#fff">Agregar nueva marca</h4>
-          <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <div class="col-xs-12">
-              <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                <label for="">Nombre</label>
-              </div>
-              <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
-              </div>
-            </div>
-            <div class="col-xs-12" style="margin-top:15px;">
-              <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                <label for="">Logo</label>
-              </div>
-              <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
-                <p>Haz click o arrastra un archivo...</p>
-                <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
-              </div>
-              <div class="col-xs-12 col-md-8 col-md-offset-2">
-                <hr>
-              </div>
-              <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
-                <label for="" class="pull-left">Agregue las categorias que maneja</label>
-                <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
-                  <i class="material-icons">add</i>
+          <div class="body col-xs-12">
+            <div class="list-container col-xs-12" style="padding:0">
+              @if(\App\Marca::count() == 0)
+              <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
+              @else
+              <h5 style="text-align:center">Activas</h5>
+              @foreach(\App\Marca::get() as $marca)
+              <div class="list-item col-xs-12 col-sm-12 col-md-12 col-lg-6" style="padding:15px">
+                <div class="img-container col-xs-12">
+                  <div class="shadow"></div>
+                  <div class="options">
+                    <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
+                    <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
+                  </div>
+                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                  <div class="info">
+                    <span class="">{{$marca->nombre}}</span>
+                  </div>
                 </div>
               </div>
-              <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
-              <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
-              </div>
-              <div class="col-xs-12 col-md-8 col-md-offset-2">
-                <hr>
-              </div>
+              @endforeach
+              @endif
             </div>
-            <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
-              <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="main-card" for="categorias-card" style="display:none">
-    <div class="header">
-      <h4>Gestión de categorias</h4>
-    </div>
-    <div class="body">
-      <div class="col-xs-12 col-md-4" style="padding:15px">
-        <div class="list-container" style="padding:5px" id="marcas-container">
-          <h5 style="text-align:center;padding-bottom:5px;text-shadow:0 0 3px rgba(0,0,0,.8),0 0 15px rgba(0,0,0,1)">Seleccione una categoria para modificar</h5>
-          @if(\App\Marca::count() == 0)
-          <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
-          @else
-          @foreach(\App\Marca::get() as $marca)
-          <div class="marca-item" id="{{$marca->id}}">
-            <div class="info">
-              <div class="img-container">
-                <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-              </div>
-              <span>{{$marca->nombre}}</span>
-            </div>
-            <div class="categorias-marca-container">
-              @if($marca->categorias()->count() == 0)
-              <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
+            <div class="list-container col-xs-12" style="padding:0">
+              @if(\App\Marca::onlyTrashed()->count() == 0)
+              <p style="padding:0 10px 0 10px">No se encontraron marcas descontinuadas en el sistema.</p>
               @else
-              @foreach($marca->categorias()->get() as $categoria)
-              <div class="item2 cat-item" id="{{$categoria->id}}">
-                <div class="info">
-                  <span>{{$categoria->nombre}}</span>
+              <h5 style="text-align:center">Descontinuadas</h5>
+              @foreach(\App\Marca::onlyTrashed()->get() as $marca)
+              <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
+                <div class="img-container col-xs-12">
+                  <div class="shadow"></div>
+                  <div class="options">
+                    <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
+                  </div>
+                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                  <div class="info">
+                    <span class="">{{$marca->nombre}}</span>
+                  </div>
                 </div>
               </div>
               @endforeach
               @endif
             </div>
           </div>
-          @endforeach
-          @endif
+        </div>
+      </div>
+      <div class="col-xs-12 col-md-8">
+        <div class="card1">
+          <div class="header">
+            <h4 style="text-align:center">Agregar nueva marca</h4>
+          </div>
+          <div class="body">
+            <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
+              <input type="hidden" name="_token" value="{{csrf_token()}}">
+              <div class="col-xs-12">
+                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                  <label for="">Nombre</label>
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                  <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
+                </div>
+              </div>
+              <div class="col-xs-12" style="margin-top:15px;">
+                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                  <label for="">Logo</label>
+                </div>
+                <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
+                  <p>Haz click o arrastra un archivo...</p>
+                  <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                  <hr>
+                </div>
+                <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
+                  <label for="" class="pull-left">Agregue las categorias que maneja</label>
+                  <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
+                    <i class="material-icons">add</i>
+                  </div>
+                </div>
+                <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
+                <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
+                </div>
+                <div class="col-xs-12 col-md-8 col-md-offset-2">
+                  <hr>
+                </div>
+              </div>
+              <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
+                <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-card" for="categorias-card" style="display:none">
+    <div class="col-xs-12" style="padding:0">
+      <div class="col-xs-12 col-md-4">
+        <div class="card1" style="max-height:600px">
+          <div class="header" style="margin:0">
+            <h4>Lista de categorias por marca</h4>
+          </div>
+          <div class="body col-xs-12" style="padding:0px">
+            @if(\App\Marca::count() == 0)
+            <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
+            @else
+            @foreach(\App\Marca::get() as $marca)
+            <div class="marca-item" id="{{$marca->id}}">
+              <div class="info">
+                <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
+                <div class="img-container">
+                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                </div>
+                <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
+              </div>
+              <div class="categorias-marca-container">
+                @if($marca->categorias()->count() == 0)
+                <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
+                @else
+                @foreach($marca->categorias()->get() as $categoria)
+                <div class="item2 cat-item" id="{{$categoria->id}}">
+                  <div class="info">
+                    <span>{{$categoria->nombre}}</span>
+                  </div>
+                </div>
+                @endforeach
+                @endif
+              </div>
+            </div>
+            @endforeach
+            @endif
+          </div>
         </div>
       </div>
       <div class="col-xs-12 col-md-8" style="padding:15px">
-        <div class="list-container col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
-          <div class="col-xs-12">
-            <h4 style="text-align:center;color:#fff">Modificar categoria</h4>
+        <div class="card1 col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
+          <div class="header">
+            <h4 style="text-align:center">Modificar categoria</h4>
           </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <div class="alert alert-warning" style="display:none">
-              <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
-            </div>
-          </div>
-          <input type="hidden" name="idCatAEditar" value="">
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <label for="">Nombre</label>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
-            <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <hr>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <label for="">Subcategorias</label>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <div class="subcontainer" id="subcategorias-cont-to-manage">
-              <div class="add-sub-tb-container">
-                <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
-                <i class="material-icons add-sub-btn" id="">add_circle</i>
+          <div class="body">
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <div class="alert alert-warning" style="display:none">
+                <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
-          </div>
-          <div class="col-xs-12 col-md-6 col-md-offset-3">
-            <div class="subcontainer" id="subcategorias-des-cont-to-manage">
+            <input type="hidden" name="idCatAEditar" value="">
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <label for="">Nombre</label>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
+              <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <hr>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <label for="">Subcategorias</label>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <div class="subcontainer" id="subcategorias-cont-to-manage">
+                <div class="add-sub-tb-container">
+                  <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
+                  <i class="material-icons add-sub-btn" id="">add_circle</i>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <div class="subcontainer" id="subcategorias-des-cont-to-manage">
+              </div>
             </div>
           </div>
         </div>
@@ -1170,135 +1418,142 @@ Inventario
   </div>
 
   <div class="main-card" for="productos-card" style="display:none">
-    <div class="header">
-      <h4>Gestión de productos</h4>
-    </div>
-    <div class="body">
-      <div class="col-xs-12 col-md-7" style="padding:15px">
-        <div class="list-container">
-          <div class="header">
-            <div class="col-xs-12">
-              <h5>Lista de productos</h5>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="col-xs-12" style="padding:0">
-                <label for="" style="text-align:center">Marca</label>
-              </div>
-              <select name="marcasFilter" class="textbox2">
-                <option value="">Seleccione una marca...</option>
-                @foreach(\App\Marca::get() as $marca)
-                <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="col-xs-12" style="padding:0">
-                <label for="" style="text-align:center">Categoria</label>
-              </div>
-              <select name="catFilter" class="textbox2">
-                <option value="">Seleccione una categoria...</option>
-              </select>
-            </div>
-            <div class="col-xs-12 col-sm-4">
-              <div class="col-xs-12" style="padding:0">
-                <label for="" style="text-align:center">Subcategoria</label>
-              </div>
-              <select name="subFilter" class="textbox2">
-                <option value="">Seleccione una subcategoria...</option>
-              </select>
-            </div>
+      <div class="col-xs-12 col-md-7">
+        <div class="card1">
+          <div class="header" style="margin-bottom:0">
+            <h4>Explora los productos</h4>
           </div>
-          <div class="body col-xs-12" style="padding:0" id="productos-container">
+          <div class="body">
+            <div class="list-container">
+              <div class="header">
+                <div class="col-xs-12">
+                  <h5 style="color:#f76">Lista de productos</h5>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                  <div class="col-xs-12" style="padding:0">
+                    <label for="" style="text-align:center">Marca</label>
+                  </div>
+                  <select name="marcasFilter" class="textbox2">
+                    <option value="">Seleccione una marca...</option>
+                    @foreach(\App\Marca::get() as $marca)
+                    <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                  <div class="col-xs-12" style="padding:0">
+                    <label for="" style="text-align:center">Categoria</label>
+                  </div>
+                  <select name="catFilter" class="textbox2">
+                    <option value="">Seleccione una categoria...</option>
+                  </select>
+                </div>
+                <div class="col-xs-12 col-sm-4">
+                  <div class="col-xs-12" style="padding:0">
+                    <label for="" style="text-align:center">Subcategoria</label>
+                  </div>
+                  <select name="subFilter" class="textbox2">
+                    <option value="">Seleccione una subcategoria...</option>
+                  </select>
+                </div>
+              </div>
+              <div class="body col-xs-12" style="padding:0" id="productos-container">
 
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="col-xs-12 col-md-5" style="padding:15px">
-        <div class="sub-card">
-          <h4 style="color:#fff; text-align:center">Nuevo producto</h4>
-          <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
-            <input type="hidden" name="_token" value="{{csrf_token()}}">
-            <input type="hidden" name="seVendeAlPublico" value="0">
-            <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
-              <select class="textbox2" name="marcaForProduct">
-                <option value="">Seleccione una marca...</option>
-                @foreach(\App\Marca::get() as $marca)
-                <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
-                @endforeach
-              </select>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-              <select class="textbox2" name="catForProduct">
-                <option value="">Seleccione una categoria...</option>
-              </select>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-              <select class="textbox2" name="subForProduct">
-                <option value="">Seleccione una subcategoria...</option>
-              </select>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <label for="">Nombre</label>
-              <input type="text" name="nombreProducto" value="" class="textbox2">
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <label for="">Código identificador (Opcional)</label>
-              <input type="text" name="codigoProducto" value="" class="textbox2">
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <label for="">Descripción</label>
-              <textarea name="descripcion" class="textbox2"></textarea>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <label for="">Precio compra</label>
-              <div class="textbox2-group-container">
-                <div class="icon">
-                  <i class="material-icons">attach_money</i>
-                </div>
-                <input type="text" name="precioCompra" value="" class="textbox2 money">
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.6)">
-                <span style="color:#eee;padding-left:2px">Venta al público</span>
-                <div class="switch-bar switch-center">
-                  <div class="switch-btn inactive"></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
-              <label for="">Precio venta</label>
-              <div class="textbox2-group-container">
-                <div class="icon">
-                  <i class="material-icons">attach_money</i>
-                </div>
-                <input type="text" name="precioVenta" value="" class="textbox2 money">
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-              <label for="">Fotografía</label>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-              <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
-                <p>Haz click o arrastra un archivo...</p>
-                <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-              <label for="">Contenido</label>
-            </div>
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-              <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
-              <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
-                <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
-                  <option value="gr">gramos</option>
-                  <option value="ml">mililitros</option>
+      <div class="col-xs-12 col-md-5">
+        <div class="card1">
+          <div class="header">
+            <h4 style="text-align:center">Nuevo producto</h4>
+          </div>
+          <div class="body">
+            <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
+              <input type="hidden" name="_token" value="{{csrf_token()}}">
+              <input type="hidden" name="seVendeAlPublico" value="0">
+              <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+                <select class="textbox2" name="marcaForProduct">
+                  <option value="">Seleccione una marca...</option>
+                  @foreach(\App\Marca::get() as $marca)
+                  <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                  @endforeach
                 </select>
               </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                <select class="textbox2" name="catForProduct">
+                  <option value="">Seleccione una categoria...</option>
+                </select>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                <select class="textbox2" name="subForProduct">
+                  <option value="">Seleccione una subcategoria...</option>
+                </select>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <label for="">Nombre</label>
+                <input type="text" name="nombreProducto" value="" class="textbox2">
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <label for="">Código identificador (Opcional)</label>
+                <input type="text" name="codigoProducto" value="" class="textbox2">
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <label for="">Descripción</label>
+                <textarea name="descripcion" class="textbox2"></textarea>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <label for="">Precio compra</label>
+                <div class="textbox2-group-container">
+                  <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                  </div>
+                  <input type="text" name="precioCompra" value="" class="textbox2 money">
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.1)">
+                  <span style="color:#555;padding-left:2px">Venta al público</span>
+                  <div class="switch-bar switch-center">
+                    <div class="switch-btn inactive"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
+                <label for="">Precio venta</label>
+                <div class="textbox2-group-container">
+                  <div class="icon">
+                    <i class="material-icons">attach_money</i>
+                  </div>
+                  <input type="text" name="precioVenta" value="" class="textbox2 money">
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <label for="">Fotografía</label>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
+                  <p>Haz click o arrastra un archivo...</p>
+                  <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                <label for="">Contenido</label>
+              </div>
+              <div class="col-xs-12 col-md-10 col-md-offset-1">
+                <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
+                <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
+                  <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
+                    <option value="gr">gramos</option>
+                    <option value="ml">mililitros</option>
+                  </select>
+                </div>
+              </div>
+            </form>
+            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
+              <button id="agregar-producto-btn" class="btn1" style="margin:auto;display:block">Agregar</button>
             </div>
-          </form>
-          <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
-            <button id="agregar-producto-btn" class="btn2" style="margin:auto;display:block">Agregar</button>
           </div>
         </div>
       </div>
@@ -1341,9 +1596,74 @@ $(window).resize(function () {
 
 $(document).ready(function () {
 
+  $('#switch-cambiar-precio-compra').click(function () {
+    if($(this).attr('active') == '0'){
+      $('input[name=nuevoPrecioCompraSurticion]').hide()
+      $('input[name=nuevoPrecioCompraSurticion]').val('')
+    }
+    else {
+      $('input[name=nuevoPrecioCompraSurticion]').show()
+      $('input[name=nuevoPrecioCompraSurticion]').val('')
+    }
+  })
+
+  $('#switch-cambiar-precio-venta').click(function () {
+    if($(this).attr('active') == '0'){
+      $('input[name=nuevoPrecioVentaSurticion]').hide()
+      $('input[name=nuevoPrecioVentaSurticion]').val('')
+    }
+    else {
+      $('input[name=nuevoPrecioVentaSurticion]').show()
+      $('input[name=nuevoPrecioVentaSurticion]').val('')
+    }
+  })
+
+  $('#surtir-btn').click(function () {
+    if($('input[name=cantidadProductosApServicios]').val() < 1 && $('input[name=cantidadProductosVenta]').val() < 1){
+      showMsg('Ups!',['La cantidad a ingresar debe ser en algún caso mayor a cero.'])
+    }
+    else if($('input[name=nuevoPrecioVentaSurticion]').val().length > 7 || $('input[name=nuevoPrecioCompraSurticion]').val().length > 7){
+      showMsg('Ups!',['Una de las cantidades es demasiado grande. Ingrese un valor accesible'])
+    }
+    else if ($('#switch-cambiar-precio-venta').attr('active') == '1' && $('input[name=nuevoPrecioVentaSurticion]').val() == '') {
+      showMsg('Ups!',['Ha seleccionado cambiar el precio de venta y debe proporcionar un valor.'])
+    }
+    else if ($('#switch-cambiar-precio-compra').attr('active') == '1' && $('input[name=nuevoPrecioCompraSurticion]').val() == '') {
+      showMsg('Ups!',['Ha seleccionado cambiar el precio de compra y debe proporcionar un valor.'])
+    }
+    else {
+      var id = $(this).attr('producto')
+      $.ajax({
+        url:"/admin/inventario/productos/surtir",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token:"{{csrf_token()}}",
+          id: id,
+          cantidadVenta: $('input[name=cantidadProductosVenta]').val(),
+          cantidadAplicacion: $('input[name=cantidadProductosApServicios]').val(),
+          precioVenta: $('input[name=nuevoPrecioVentaSurticion]').val(),
+          precioCompra: $('input[name=nuevoPrecioCompraSurticion]').val()
+        }
+      }).done(function(response){
+        if(!response.result)
+        {
+          showMsg('Ups!',['Ha ocurrido un error, Intentelo de nuevo.'])
+        }
+        else
+        {
+          closeModal('#surtir-modal-back')
+          showMsg('Ok!',['Operación exitosa!'])
+        }
+      })
+    }
+  })
+
   $('#editar-producto-btn').click(function () {
     //mostrar msg error cuando active la venta al publico,
     //y el producto no tenga precio_venta en bd y no se mande nada en el campo nuevo precio venta
+
+    //validar campos de dinero, longitud
     $('form#form-editar-producto').submit()
   })
 
@@ -1504,11 +1824,11 @@ $(document).ready(function () {
           $('#marca-producto-a-modificar').text(producto.subcategoria.categoria.marca.nombre)
           $('#codigo-producto-a-modificar').text(producto.codigo)
           $('#descripcion-producto-a-modificar').text(producto.descripcion)
-          $('#precio-compra-producto-a-modificar').text(producto.precio_compra)
+          $('#precio-compra-producto-a-modificar').text("$"+producto.precio_compra)
           if(producto.venta_publico)
           {
             $('#venta-publico-producto-a-modificar').text('Si')
-            $('#precio-venta-producto-a-modificar').text(producto.precio_venta)
+            $('#precio-venta-producto-a-modificar').text("$"+producto.precio_venta)
           }
           else{
             $('#venta-publico-producto-a-modificar').text('No')
@@ -1520,9 +1840,57 @@ $(document).ready(function () {
         })
       })
       $('.detalles-producto-toggle').click(function () {
-        ///////////////////////////////////////////////////
-        ////////////////////// mostrar modal y estadisticas
-        ///////////////////////////////////////////////////
+        var productoId = $(this).attr('id')
+        $.ajax({
+          url:"/admin/inventario/productos/get-by-id",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: productoId
+          }
+        }).done(function(producto){
+          //info basica
+          $('#producto-details-img').attr('src', producto.fotografia)
+          $('#producto-details').text(producto.nombre)
+          $('#marca-producto-details').text(producto.subcategoria.categoria.marca.nombre)
+          $('#categoria-producto-details').text(producto.subcategoria.categoria.nombre)
+          $('#subcategoria-producto-details').text(producto.subcategoria.nombre)
+          $('#codigo-producto-details').text(producto.codigo)
+          $('#descripcion-producto-details').text(producto.descripcion)
+          $('#precio-compra-producto-details').text("$"+producto.precio_compra)
+          if(producto.venta_publico)
+          {
+            $('#venta-publico-producto-details').text('Si')
+            $('#precio-venta-producto-details').text("$"+producto.precio_venta)
+          }
+          else{
+            $('#venta-publico-producto-details').text('No')
+            $('#precio-venta-producto-details').text('-')
+          }
+          $('#contenido-producto-details').text(producto.contenido+" "+producto.u_medida)
+          //estadisticas
+          $('#mes-cuestion').text(producto.mesEnCuestion)
+          $('#u-added-mes').text(producto.agregadosEsteMes)
+          if(producto.agregadosEsteMes < 1) $('#existencia-msg').text('AGOTADO')
+          else $('#existencia-msg').text('EN EXISTENCIA')
+          $('#u-added-venta-mes').text(producto.paraVenta)
+          $('#u-added-serv-mes').text(producto.paraAplicacion)
+          $('#inversion-mensual').text("$"+producto.inversionMensual)
+          $('#inversion-mensual-venta').text("$"+producto.inversionParaVenta)
+          $('#ventas-mensuales-count').text(producto.comprasMensuales.length)
+          $('#ventas-esperadas').text("$"+producto.expectativaGanancias)
+          $('#ventas-mensuales').text("$"+producto.gananciaMensual)
+          $('#diferencia').text("$"+producto.diferencia)
+          $('#aplicacion-servicios-mensuales').text(producto.utilizacion)
+          if(producto.utilidad < 0)
+            $('#utilidad-mensual').text("- $"+Math.abs(producto.utilidad)+" (perdida)")
+          else if(producto.utilidad == 0)
+            $('#utilidad-mensual').text("$"+producto.utilidad+" (sin perdida)")
+          else
+            $('#utilidad-mensual').text("$"+producto.utilidad+" (ganancia)")
+          showModal('#producto-details-modal-back')
+        })
       })
       $('.descontinuar-producto-toggle').click(function () {
         $('#delete-producto-btn').attr('id', $(this).attr('id'))
@@ -1548,6 +1916,46 @@ $(document).ready(function () {
           else {
             showMsg('Ups!',['Ha ocurrido un error. Intentelo de nuevo.'])
           }
+        })
+      })
+      $('.surtir-producto-toggle').click(function () {
+        var pid = $(this).attr('id')
+        $.ajax({
+          url:"/admin/inventario/productos/get-by-id",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: pid
+          }
+        }).done(function(producto){
+          $('#surtir-btn').attr('producto',producto.id)
+          $('#precio-compra-actual').text("$"+producto.precio_compra)
+          $('#precio-venta-actual').text("$"+producto.precio_venta)
+          $('input[name=cantidadProductosVenta]').val('0')
+          $('input[name=cantidadProductosApServicios]').val('0')
+          $('input[name=nuevoPrecioCompraSurticion]').val('')
+          $('input[name=nuevoPrecioVentaSurticion]').val('')
+          $('input[name=nuevoPrecioCompraSurticion]').hide()
+          $('input[name=nuevoPrecioVentaSurticion]').hide()
+          $('#switch-cambiar-precio-venta').children('.switch-bar').children('.switch-btn').removeClass('active');
+          $('#switch-cambiar-precio-venta').children('.switch-bar').children('.switch-btn').addClass('inactive');
+          $('#switch-cambiar-precio-venta').attr('active','0');
+          $('#switch-cambiar-precio-compra').children('.switch-bar').children('.switch-btn').removeClass('active');
+          $('#switch-cambiar-precio-compra').children('.switch-bar').children('.switch-btn').addClass('inactive');
+          $('#switch-cambiar-precio-compra').attr('active','0');
+          if(producto.venta_publico)
+          {
+            $('#switch-cambiar-precio-venta').show()
+            $('#venta-publico-desactivada-msg').hide()
+            $('#precio-venta-label').show()
+          }
+          else {
+            $('#switch-cambiar-precio-venta').hide()
+            $('#venta-publico-desactivada-msg').show()
+            $('#precio-venta-label').hide()
+          }
+          showModal('#surtir-modal-back')
         })
       })
     })
@@ -1716,7 +2124,7 @@ $(document).ready(function () {
           $item.css({
             'width':'100%',
             padding:'3px',
-            'background-color':'rgba(255,255,255,.5)',
+            'background-color':'rgba(0,0,0,.1)',
             'border-radius':'3px',
             'margin-top':'5px',
             position:'relative'
@@ -1752,7 +2160,7 @@ $(document).ready(function () {
             'position':'absolute',
             right:'2px',
             top:'6px',
-            color:'red',
+            color:'#f76',
             'font-size':'18px',
             cursor:'pointer'
           })
@@ -1774,7 +2182,7 @@ $(document).ready(function () {
             top:'6px',
             'font-size':'18px',
             right:'55px',
-            color:'#f65',
+            color:'#f76',
             cursor:'pointer',
             display:'none'
           })
@@ -1783,7 +2191,7 @@ $(document).ready(function () {
             top:'6px',
             'font-size':'18px',
             right:'75px',
-            color:'#f65',
+            color:'#f76',
             cursor:'pointer',
             display:'none'
           })
@@ -1962,7 +2370,7 @@ $(document).ready(function () {
         $item.css({
           'width':'100%',
           padding:'3px',
-          'background-color':'rgba(255,255,255,.5)',
+          'background-color':'rgba(0,0,0,.1)',
           'border-radius':'3px',
           'margin-top':'5px',
           position:'relative'
@@ -1985,7 +2393,7 @@ $(document).ready(function () {
         $options.attr('id',sub.id)
         $options.css({
           background:'#fff',
-          border:'1px solid #888',
+          border:'1px solid #CCC',
           padding:'0',
           position:'absolute',
           top:'0px',
@@ -1998,7 +2406,7 @@ $(document).ready(function () {
           'position':'absolute',
           right:'2px',
           top:'6px',
-          color:'red',
+          color:'#f76',
           'font-size':'18px',
           cursor:'pointer'
         })
