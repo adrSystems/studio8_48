@@ -30,6 +30,7 @@ Route::get('/',function (){
     return view('admin.primer-uso');
   }
   return view('welcome');
+
 });
 //first use sign up
 Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
@@ -170,8 +171,6 @@ Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modi
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta', function(){
-  $cuenta = App\User::find(3);
-  Auth::login($cuenta);
   return view('user.micuenta');
 });
 ////servicios_admin/////////////
@@ -201,3 +200,55 @@ Route::get('/servicio/eliminar/{id?}',function($id = null){
 Route::get('admin/promociones',function(){
   return view ('admin.promociones');
 });
+Route::match(['GET','POST'],'/promocion/agregar','Admin\PromocionController@agregar');
+Route::get('/promocion/editar/{id?}',function($id = null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  return view ('admin.promociones.edit',['promocion'=>$promocion]);
+});
+Route::match(['GET','POST'],'/promocion/editar','Admin\PromocionController@editar');
+Route::get('/promocion/eliminar/{id?}',function($id= null){
+  $promocion = \App\Promocion::find($id);
+  if(!$id)
+  return redirect ('/admin/promociones');
+  if(!$promocion)
+  return redirect ('/admin/promociones');
+  $promocion->delete();
+  return redirect ('/admin/promociones');
+});
+Route::get('/admin/concursos',function(){
+  return view ('admin.concursos');
+});
+Route::match(['GET','POST'],'/concurso/agregar','Admin\ConcursoController@agregar');
+Route::get('/concurso/editar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  return view ('admin.concursos.edit',['concurso'=>$concurso]);
+});
+Route::match(['GET','POST'],'/concurso/editar','Admin\ConcursoController@editar');
+Route::get('/concurso/eliminar/{id?}',function($id=null){
+  $concurso = \App\Concurso::find($id);
+  if(!$id)
+  return redirect ('/admin/concursos');
+  if(!$concurso)
+  return redirect ('/admin/concursos');
+  $concurso->delete();
+  return redirect ('/admin/concursos');
+});
+Route::get('/promociones_concursos',function(){
+  return view ('cliente.promociones_concursos');
+});
+Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
+Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
+Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');
+Route::get('/admin/forum','Admin\ForumController@getAll');
+Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
+Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
+Route::get('/cancelarcita/{id?}','Cliente\ClienteController@cancelarcita');
+//

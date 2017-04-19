@@ -97,6 +97,15 @@ Studio8 48 - Servicios
 @section('body')
 <div class="col-md-12">
   <div class="gestion-servicios">
+    @if(Session::has('error'))
+
+
+        <div class="alert alert-warning" role="alert">
+            <h4>{{session('error')['titulo']}}</h4>
+            <p>{{session('error')['cuerpo']}}</p>
+        </div>
+
+    @endif
     <div class=" col-xs-offset-1 col-xs-5">
       <h3 class="title-servicios"><p> Servicios disponibles</p></h3>
       <div class="servicios">
