@@ -140,7 +140,7 @@ class CitaController extends Controller
       $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$cita->fecha_hora);
       $dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado'];
       $meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
-      $cita->fecha = $dias[$fecha->format('w')].", ".$fecha->format('d \d\e')." ".$meses[$fecha->format('w')]." ".$fecha->format('\d\e\l Y');
+      $cita->fecha = $dias[$fecha->format('w')].", ".$fecha->format('d \d\e')." ".$meses[$fecha->format('m')-1]." ".$fecha->format('\d\e\l Y');
       $cita->hora = $fecha->format('g:i a');
       $estados = ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada'];
       $cita->estado = $estados[$cita->estado];

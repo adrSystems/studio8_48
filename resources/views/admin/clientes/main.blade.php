@@ -7,7 +7,7 @@ Gestión de clientes
 @section('css')
 <style media="screen">
   body{
-    background-image: url('{{asset("img/walls/3.jpg")}}');
+    background-image: url('{{asset("img/walls/5.jpg")}}');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
@@ -24,6 +24,7 @@ Gestión de clientes
   .main-title{
     color: goldenrod;
     font-family: 'Lobster Two';
+    text-shadow: 0 0 1px rgba(0, 0, 0, 1);
   }
   #list{
     box-shadow:  0 0 3px rgba(0, 0, 0, 0.7);
@@ -230,6 +231,11 @@ Gestión de clientes
               <i class="material-icons">date_range</i>
             </a>
           </td>
+          <td>
+            <a href="/admin/ventas/agregar/{{$cliente->id}}" class="icon-btn icon-square">
+              <i class="material-icons">shopping_cart</i>
+            </a>
+          </td>
         </tr>
         @endforeach
       </tbody>
@@ -325,6 +331,7 @@ Gestión de clientes
           $td = $('<td>');
           $td.append($a);
           $tr.append($td);
+
           $a1 = $('<a>');
           $a1.attr('href',"/admin/citas/agregar/"+cliente.id);
           $a1.addClass('icon-btn icon-square');
@@ -332,6 +339,15 @@ Gestión de clientes
           $td1 = $('<td>');
           $td1.append($a1);
           $tr.append($td1);
+
+          $a2 = $('<a>');
+          $a2.attr('href',"/admin/ventas/agregar/"+cliente.id);
+          $a2.addClass('icon-btn icon-square');
+          $a2.append($('<i class="material-icons">shopping_cart</i>'));
+          $td2 = $('<td>');
+          $td2.append($a2);
+          $tr.append($td2);
+
           $('tbody#clientes').append($tr);
         });
       });

@@ -73,6 +73,12 @@ Route::get('/admin/clientes/edit/{id}', function ($id = null){
 Route::post('/clientes/editar','Admin\ClienteController@edit');
 Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
 Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
+Route::get('/admin/ventas/agregar/{cliente}', function ($clienteId=null){
+  if(!$clienteId) return redirect('/admin/clientes');
+  if(!$cliente = \App\Cliente::find($clienteId)) return redirect('/admin/clientes');
+  return view('admin.clientes.venta',['cliente' => $cliente]);
+});
+Route::post('/admin/ventas/agregar', 'Admin\ClienteController@registrarVenta');
 //
 
 //citas
@@ -95,6 +101,64 @@ Route::post('/admin/inventario/marcas/agregar','Admin\InventarioController@agreg
 Route::post('/admin/inventario/marcas/delete','Admin\InventarioController@deleteMarca');
 Route::post('/admin/inventario/marcas/restore','Admin\InventarioController@restoreMarca');
 Route::post('/admin/inventario/marcas/editar','Admin\InventarioController@editarMarca');
+Route::post('/admin/inventario/marcas/get','Admin\InventarioController@getMarcas');
+Route::post('/admin/inventario/categorias/is-repeated','Admin\InventarioController@categoriaEsRepetida');
+Route::post('/admin/inventario/subcategorias/is-repeated','Admin\InventarioController@subcategoriaEsRepetida');
+Route::post('/admin/inventario/agregar-categoria','Admin\InventarioController@agregarCategoria');
+Route::post('/admin/inventario/marcas/get-categories','Admin\InventarioController@getCategories');
+Route::post('/admin/inventario/marcas/get-subcategories','Admin\InventarioController@getSubcategories');
+Route::post('/admin/inventario/categorias/cambiar-nombre','Admin\InventarioController@cambiarNombreCategoria');
+Route::post('/admin/inventario/subcategorias/cambiar-nombre','Admin\InventarioController@cambiarNombreSubcategoria');
+Route::post('/admin/inventario/categorias/get-tabla-categorias','Admin\InventarioController@getTablaCategorias');
+Route::post('/admin/inventario/subcategorias/eliminar','Admin\InventarioController@eliminarSubcategoria');
+Route::post('/admin/inventario/subcategorias/agregar','Admin\InventarioController@agregarSubcategoria');
+Route::post('/admin/inventario/subcategorias/restaurar','Admin\InventarioController@restaurarSubcategoria');
+Route::post('/admin/inventario/productos/is-repeated','Admin\InventarioController@productoEsRepetido');
+Route::post('/admin/inventario/productos/agregar','Admin\InventarioController@agregarProducto');
+Route::post('/admin/inventario/marcas/get-productos-table','Admin\InventarioController@getProductsTable');
+Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
+Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
+Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
+Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
+Route::post('/admin/inventario/productos/surtir','Admin\InventarioController@surtir');
+Route::post('/admin/inventario/productos/check-changes','Admin\InventarioController@checkChanges');
+Route::post('/admin/inventario/productos/search','Admin\InventarioController@searchProducts');
+
+//compras
+Route::get('/productos',function () {
+  $categorias = [];
+  foreach(\App\Categoria::get() as $cat)
+  {
+    $found = false;
+    foreach ($categorias as $c) {
+      if(strtolower($cat->nombre) == strtolower($c->nombre))
+      $found = true;
+    }
+    if(!$found) $categorias[] = $cat;
+  }
+  $subcategorias = [];
+  foreach(\App\Subcategoria::get() as $sub)
+  {
+    $found = false;
+    foreach ($subcategorias as $s) {
+      if(strtolower($sub->nombre) == strtolower($s->nombre))
+      $found = true;
+    }
+    if(!$found) $subcategorias[] = $sub;
+  }
+  return view('productos.catalogo', ['categorias' => $categorias, 'subcategorias' => $subcategorias]);
+});
+Route::post('/admin/compras/get-by-id','Admin\CompraController@getById');
+Route::post('/admin/compras/abonar','Admin\CompraController@abonar');
+Route::post('/admin/compras/liquidar','Admin\CompraController@liquidar');
+Route::post('/productos/catalogo/filtrar','Admin\CompraController@filterProducts');
+Route::post('/productos/add-to-cart', 'Admin\CompraController@addToCart');
+Route::post('/productos/remove-from-cart', 'Admin\CompraController@removeFromCart');
+Route::post('/productos/update-cart-html-items', 'Admin\CompraController@getCartHtmlItems');
+Route::post('/productos/update-cart-products-items', 'Admin\CompraController@getCartProductsHtmlItems');
+Route::post('/productos/descartar-cart', 'Admin\CompraController@descartarCart');
+Route::post('/productos/confirmarCompra', 'Admin\CompraController@confirmarCompra');
+
 /////////////////////////////
 
 //cuenta
