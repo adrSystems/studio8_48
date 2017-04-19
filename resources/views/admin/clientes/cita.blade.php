@@ -313,7 +313,7 @@ Nueva cita
           <div class="col-xs-12">
             <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding-top:15px">
               @if(\App\Servicio::count() < 1)
-              <p style="margin-top: 10px;">No se encontraron servicios. Agrega servicios para poder agregar una cita.</p>
+              <p style="">No se encontraron servicios. Agrega servicios para poder agregar una cita.</p>
               @else
               @foreach(\App\Servicio::get() as $servicio)
               <div class="item col-xs-12 col-sm-6" style="padding:0">
@@ -379,17 +379,6 @@ Nueva cita
 
 @section('js')
 <script type="text/javascript">
-if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-  $('.footer').css({
-    position:'absolute',
-    bottom:'0'
-  });
-}
-else{
-  $('.footer').css({
-    position:'relative'
-  });
-}
 
 $('.estilista-item>.img-container').css('height',$('.estilista-item>.img-container').width());
 $('.estilista-item>.img-container>.shadow>i').css('font-size',($('.estilista-item>.img-container>.shadow').width()*.40)+'px');
@@ -550,19 +539,7 @@ $(document).ready(function () {
   $(window).resize(function () {
     $('.estilista-item>.img-container').css('height',$('.estilista-item>.img-container').width());
     $('.estilista-item>.img-container>.shadow>i').css('font-size',($('.estilista-item>.img-container>.shadow').width()*.40)+'px');
-
-    if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-      $('.footer').css({
-        position:'absolute',
-        bottom:'0'
-      });
-    }
-    else{
-      $('.footer').css({
-        position:'relative'
-      });
-    }
-})
+  })
 
 function showMsg(title, body) {
   $('#general-msg').show(0);

@@ -1,10 +1,10 @@
-@if(\App\Subcategoria::find($id)->productos()->count() == 0)
+@if(count($productos) == 0)
 <div class="col-xs-12" style="padding:0">
   <p style="padding:20px;padding-bottom:10px;color:#777">No se encontraron productos activos registrados en el sistema.</p>
 </div>
 @else
 <div class="col-xs-12" style="padding:0">
-  @foreach(\App\Subcategoria::find($id)->productos as $producto)
+  @foreach($productos as $producto)
   <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
     <div class="producto-item">
       <div class="img-container">
@@ -27,13 +27,13 @@
   @endforeach
 </div>
 @endif
-@if(\App\Subcategoria::find($id)->productos()->onlyTrashed()->count() > 0)
+@if(count($productosDescontinuados) > 0)
 <div class="col-xs-12">
   <hr>
   <h5 style="color:#777">Descontinuados</h5>
 </div>
 <div class="col-xs-12" style="padding:0">
-  @foreach(\App\Subcategoria::find($id)->productos()->onlyTrashed()->get() as $producto)
+  @foreach($productosDescontinuados as $producto)
   <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
     <div class="producto-item">
       <div class="img-container">

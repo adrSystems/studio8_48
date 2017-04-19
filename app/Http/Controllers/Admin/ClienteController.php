@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Cliente;
+use App\Pago;
+use App\Compra;
+use App\Producto;
 use App\User;
 use Carbon\Carbon;
 
@@ -60,7 +63,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+          if($compra->pagos()->sum('cantidad') < $compra->monto()){
             $deudor=true;
           }
         }
@@ -93,7 +96,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+          if($compra->pagos()->sum('cantidad') < $compra->monto()){
             $deudor=true;
           }
         }
@@ -194,7 +197,7 @@ class ClienteController extends Controller
         else $cita->pagada = true;
       }
       foreach ($cliente->compras as $compra) {
-        if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+        if($compra->pagos()->sum('cantidad') < $compra->monto()){
           $deudor=true;
         }
       }
@@ -299,6 +302,60 @@ class ClienteController extends Controller
       return redirect('/admin/clientes/info/'.$cliente->id)->with('msg', [
         'title' => 'Operación realizada correctamente!',
         'body' => 'Cambios realizados en: '.$cambiosStr]);
+    }
+
+    public function registrarVenta(Request $request)
+    {
+      if(!$request->productos || !$request->clienteId)
+        return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+
+      if(!$cliente = Cliente::find($request->clienteId))
+        return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+
+      foreach ($request->productos as $key => $pJSON) {
+        $p = json_decode($pJSON);
+        $producto = Producto::find($p->id);
+        if($p->cantidad > $producto->existencia())
+          return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+      }
+
+      $compra = new Compra;
+      $compra->cliente_id = $cliente->id;
+      $compra->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+      $compra->save();
+
+      foreach ($request->productos as $key => $pJSON) {
+        $p = json_decode($pJSON);
+        $producto = Producto::find($p->id);
+        $compra->productos()->attach($producto->id, ['precio_venta' => $producto->precio_venta, 'cantidad' => $p->cantidad]);
+      }
+      if($cliente->credito)
+      {
+        if($request->abono and $request->abono > 0)
+        {
+          $abono = new Pago;
+          $abono->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+          $abono->cantidad = $request->abono;
+          $abono->pagable_id = $compra->id;
+          $abono->pagable_type = Compra::class;
+          $abono->save();
+        }
+      }
+      else
+      {
+        $abono = new Pago;
+        $abono->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+        $abono->cantidad = $compra->monto();
+        $abono->pagable_id = $compra->id;
+        $abono->pagable_type = Compra::class;
+        $abono->save();
+      }
+
+      return redirect('/admin/clientes/info/'.$cliente->id)->with(
+        'msg', [
+          'title' => 'Ok!',
+          'body' => 'Compra registrada con exito.'
+        ]);
     }
 
 }

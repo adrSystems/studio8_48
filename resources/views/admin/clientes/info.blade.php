@@ -473,10 +473,136 @@ Información cliente
     margin: auto;
     width: auto;
   }
+  #productos-compra-tbody>tr>td{
+    padding: 4px;
+  }
+  #compra-liquidada-msg{
+    border-radius: 3px;
+    font-weight: 700;
+    background-color: #eee;
+    padding: 4px;
+    color: #e76;
+  }
+  .textbox3{
+    border-radius: 3px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding-left: 5px;
+    color: #ccc;
+  }
+  .textbox3-with-btn{
+    padding-right: 25px;
+    width: 100%;
+  }
+  .textbox3-btn{
+    position: absolute;
+    right: 5px;
+    top: 3px;
+  }
+  #abonar-compra-modal-back, #liquidar-compra-modal-back{
+    z-index: 3;
+  }
 </style>
 @endsection
 
 @section('body')
+<div class="modal-back" id="liquidar-compra-modal-back">
+  <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Liquidar compra</h4>
+    </div>
+    <div class="body">
+      <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="text-align:center">Liquidar deuda de: </label>
+      <div class="col-xs-12">
+        <p class="col-xs-12 col-md-6 col-md-offset-3" style="text-align:center">$<span id="por-liquidar-compra"></span></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" class="success-btn" id="liquidar-compra-btn" compra=""><i class="material-icons">check</i>Aceptar</button>
+      <button type="button" name="button" class="cancel-btn close-abonar-compra-btn" id="close-btn"><i class="material-icons">block</i>Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="abonar-compra-modal-back">
+  <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Abonar a compra</h4>
+    </div>
+    <div class="body">
+      <label for="" class="col-xs-12 col-md-6 col-md-offset-3" style="text-align:center">Cantidad a abonar: </label>
+      <div class="col-xs-12">
+        <input type="text" name="cantidadAbonarCompra" value="" class="textbox3 money col-xs-12 col-md-6 col-md-offset-3">
+      </div>
+      <div class="col-xs-12">
+        <p class="col-xs-12 col-md-6 col-md-offset-3" style="text-align:center">Restante por pagar: <span id="por-pagar-compra"></span></p>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" class="success-btn" id="abonar-compra-btn" compra=""><i class="material-icons">check</i>Aceptar</button>
+      <button type="button" name="button" class="cancel-btn close-abonar-compra-btn" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-back" id="detalles-compra-modal-back">
+  <div class="modal-black-card col-xs-12 col-md-6 col-md-offset-3">
+    <div class="header">
+      <i class="close-btn material-icons">close</i>
+      <h4>Detalles de compra</h4>
+    </div>
+    <div class="body">
+      <div class="col-xs-12">
+        <p>Fecha: <span id="fecha-compra"></span></p>
+        <p>Hora: <span id="hora-compra"></span></p>
+        <p>Pagado: <span id="pagado-compra"></span></p>
+        <p>Monto: <span id="monto-compra"></span></p>
+        <p>Restante: <span id="restante-compra"></span></p>
+        <hr>
+        <h5>Productos</h5>
+        <div class="subcontainer">
+          <table>
+            <thead>
+              <th>Imagen</th>
+              <th>Nombre</th>
+              <th>Código</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+            </thead>
+            <tbody id="productos-compra-tbody" style="text-align:center">
+
+            </tbody>
+          </table>
+        </div>
+        <hr>
+        <h5>Pagos</h5>
+        <div class="subcontainer">
+          <table>
+            <thead>
+              <th>Fecha</th>
+              <th>Hora</th>
+              <th>Cantidad</th>
+            </thead>
+            <tbody id="pagos-compra-tbody" style="text-align:center">
+
+            </tbody>
+          </table>
+          <p id="compra-no-pagos-msg" style="padding:5px;text-align:center;margin:0">No se han realizado pagos.</p>
+        </div>
+        <div class="" style="margin-top:15px">
+          <span id="compra-liquidada-msg"></span>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" name="button" class="success-btn" id="liquidar-compra-toggle" compra=""><i class="material-icons">attach_money</i>Liquidar</button>
+      <button type="button" name="button" class="success-btn" id="abonar-compra-toggle" compra=""><i class="material-icons">attach_money</i>Abonar</button>
+      <button type="button" name="button" class="cancel-btn" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
+    </div>
+  </div>
+</div>
 
 <div class="modal-back" id="cancelar-cita-modal-back">
   <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
@@ -823,19 +949,19 @@ Información cliente
           <th>Pagada</th>
           <th></th>
         </thead>
-        <tbody>
-          @foreach($cliente->compras()->orderBy('fecha_hora','desc') as $compra)
+        <tbody style="text-align:center">
+          @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
           <tr>
-            <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
             <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
-            <td>${{$compra->productos()->sum('precio_venta')}}</td>
-            @if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta'))
+            <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
+            <td>${{$compra->monto()}}</td>
+            @if($compra->pagos()->sum('cantidad') < $compra->monto())
             <td>No</td>
             @else
             <td>Si</td>
             @endif
             <td>
-              <div class="btn btn-xs btn-warning">Detalles</div>
+              <div class="btn btn-xs btn-warning detalles-venta-toggle" id="{{$compra->id}}">Detalles</div>
             </td>
           </tr>
           @endforeach
@@ -863,6 +989,184 @@ Información cliente
   }
 
   $(document).ready(function () {
+
+    $('#liquidar-compra-btn').click(function () {
+      var id = $(this).attr('compra')
+      $.ajax({
+        url:"/admin/compras/liquidar",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token:"{{csrf_token()}}",
+          id: id
+        }
+      }).done(function(response){
+        if(!response.result) showMsg('ups!',['Ha ocurrido un error.'])
+        else
+        {
+          showMsg('Ok!',['Venta liquidada con exito.'])
+          $tr = $('<tr>')
+          $tr.append($('<td>'+response.pago.fecha+'</td>'))
+          $tr.append($('<td>'+response.pago.hora+'</td>'))
+          $tr.append($('<td>$'+parseFloat(response.pago.cantidad).toFixed(2)+'</td>'))
+          $('#pagos-compra-tbody').append($tr)
+          $('#pagado-compra').text("$"+response.compra.pagado);
+          $('#por-liquidar-compra').text(parseFloat(response.compra.monto - response.compra.pagado))
+          $('#compra-no-pagos-msg').hide()
+          $('#liquidar-compra-toggle').hide()
+          $('#abonar-compra-toggle').hide()
+          $('#compra-liquidada-msg').text('LIQUIDADA')
+          closeModal('#liquidar-compra-modal-back')
+        }
+      })
+    })
+
+    $('input.money').keypress(function (e) {
+      if((!$.isNumeric(e.key) && e.key != '.')
+      || ($(this).val().indexOf('.') > -1 && e.key == '.')
+      || ($(this).val().indexOf('.') > -1 && $(this).val().indexOf('.') + 2 == $(this).val().length -1))
+        e.preventDefault();
+      else if(e.key == '.' && $(this).val().length == 0)
+        $(this).val('0')
+      else if($(this).val().length > 1 && $(this).val().charAt($(this).val().length-1) == '.')
+      {
+        e.preventDefault();
+        $(this).val($(this).val()+e.key+"0")
+      }
+      else if($(this).val().length > 2 && $(this).val().charAt($(this).val().length-2) == '.')
+      {
+        e.preventDefault();
+        $(this).val($(this).val()+"0")
+      }
+    })
+
+    $('.close-abonar-compra-btn').click(function () {
+      $('input[name=cantidadAbonarCompra]').val('')
+    })
+
+    $('#abonar-compra-btn').click(function () {
+      if($('input[name=cantidadAbonarCompra]').val() == '' || $('input[name=cantidadAbonarCompra]').val() < '1')
+      {
+        showMsg('Ups!',['Proporcione una cantidad a abonar mayor a 0'])
+      }
+      else {
+        var id = $(this).attr('compra')
+        $.ajax({
+          url:"/admin/compras/abonar",
+          type:"post",
+          dataType:"json",
+          data:{
+            _token:"{{csrf_token()}}",
+            id: id,
+            cantidad: $('input[name=cantidadAbonarCompra]').val()
+          }
+        }).done(function(response){
+          if(response.result == '0') showMsg('Ups!',['Ha ocurrido un error. Intentelo de nuevo.'])
+          else if(response.result == '1')
+          {
+            showMsg('Ups!',['La cantidad ingresada es mayor a la cantidad faltante por pagar.'])
+          }
+          else {
+            $tr = $('<tr>')
+            $tr.append($('<td>'+response.pago.fecha+'</td>'))
+            $tr.append($('<td>'+response.pago.hora+'</td>'))
+            $tr.append($('<td>$'+parseFloat(response.pago.cantidad).toFixed(2)+'</td>'))
+            $('#pagos-compra-tbody').append($tr)
+            $('#pagado-compra').text("$"+response.compra.pagado);
+            $('#por-liquidar-compra').text(parseFloat(response.compra.monto - response.compra.pagado))
+            $('#compra-no-pagos-msg').hide()
+            if(response.compra.pagado < response.compra.monto)
+            {
+              $('#abonar-compra-toggle').show()
+              $('#abonar-compra-toggle').attr('compra', response.compra.id)
+              $('#compra-liquidada-msg').text('NO LIQUIDADA')
+            }
+            else {
+              $('#abonar-compra-toggle').hide()
+              $('#abonar-compra-toggle').attr('compra','')
+              $('#compra-liquidada-msg').text('LIQUIDADA')
+            }
+            closeModal('#abonar-compra-modal-back')
+          }
+        })
+      }
+    })
+
+    $('#abonar-compra-toggle').click(function () {
+      $('#abonar-compra-btn').attr('compra',$(this).attr('compra'))
+      showModal('#abonar-compra-modal-back', true)
+    })
+
+    $('#liquidar-compra-toggle').click(function () {
+      $('#liquidar-compra-btn').attr('compra',$(this).attr('compra'))
+      showModal('#liquidar-compra-modal-back', true)
+    })
+
+    $('.detalles-venta-toggle').click(function () {
+      var id = $(this).attr('id')
+      $.ajax({
+        url:"/admin/compras/get-by-id",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token:"{{csrf_token()}}",
+          id: id
+        }
+      }).done(function(compra){
+        $('#fecha-compra').text(compra.fecha);
+        $('#hora-compra').text(compra.hora);
+        $('#pagado-compra').text("$"+compra.pagado);
+        $('#monto-compra').text("$"+compra.monto);
+        $('#restante-compra').text("$"+(compra.monto-compra.pagado));
+        $('#por-pagar-compra').text("$"+parseFloat(compra.monto - compra.pagado))
+        $('#por-liquidar-compra').text(parseFloat(compra.monto - compra.pagado))
+        $('#productos-compra-tbody').children().remove()
+        $('#pagos-compra-tbody').children().remove()
+        if(compra.pagado < compra.monto)
+        {
+          if(compra.clientHasCredit)
+          {
+            $('#liquidar-compra-toggle').hide()
+            $('#abonar-compra-toggle').show()
+            $('#abonar-compra-toggle').attr('compra', compra.id)
+          }
+          else {
+            $('#abonar-compra-toggle').hide()
+            $('#liquidar-compra-toggle').show()
+            $('#liquidar-compra-toggle').attr('compra', compra.id)
+          }
+          $('#compra-liquidada-msg').text('NO LIQUIDADA')
+        }
+        else {
+          $('#abonar-compra-toggle').hide()
+          $('#liquidar-compra-toggle').hide()
+          $('#abonar-compra-toggle').attr('compra', '')
+          $('#compra-liquidada-msg').text('LIQUIDADA')
+        }
+        $.each(compra.productos, function (i, p) {
+          $tr = $('<tr>')
+          $img = $('<img width="40px" src="'+p.fotografia+'">')
+          $tdFoto = $('<td>')
+          $tdFoto.append($img)
+          $tr.append($tdFoto)
+          $tr.append($('<td>'+p.nombre+'</td>'))
+          $tr.append($('<td>'+p.codigo+'</td>'))
+          $tr.append($('<td>$'+p.pivot.precio_venta+'</td>'))
+          $tr.append($('<td>'+p.pivot.cantidad+'</td>'))
+          $('#productos-compra-tbody').append($tr)
+        })
+        if(compra.pagos.length < 1) $('#compra-no-pagos-msg').show()
+        else $('#compra-no-pagos-msg').hide()
+        $.each(compra.pagos, function (i, pago) {
+          $tr = $('<tr>')
+          $tr.append($('<td>'+pago.fecha+'</td>'))
+          $tr.append($('<td>'+pago.hora+'</td>'))
+          $tr.append($('<td>$'+pago.cantidad+'</td>'))
+          $('#pagos-compra-tbody').append($tr)
+        })
+      })
+      showModal('#detalles-compra-modal-back')
+    })
 
     $('#modificar-fecha-switcher').click(function () {
       $('input[type=date][name=date-to-change]').fadeToggle(300,function () {
@@ -1089,7 +1393,7 @@ Información cliente
     $('#abonar-toggle').click(function () {
       showModal('#abonar-modal-back',true);
     })
-    
+
     function showModal(id,table) {
       $modal = $(id)
       $modal.fadeIn();

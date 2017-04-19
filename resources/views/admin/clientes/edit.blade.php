@@ -259,7 +259,7 @@ Modificar cliente
             <div class="form-group">
               <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Celular/Telefono</label>
               <div class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">
-                <input type="tel" name="tel" value="@if(old('tel')){{old('tel')}}@else{{$cliente->telefono}}@endif" class="white-textbox col-xs-12" style="margin-right:5px;">
+                <input type="tel" name="tel" value="@if(old('tel')){{old('tel')}}@else{{$cliente->telefono}}@endif" class="phone white-textbox col-xs-12" style="margin-right:5px;">
                 <button type="button" name="tel" class="btn2 btn1-xs descartar" style="float:right;">Descartar</button>
               </div>
             </div>

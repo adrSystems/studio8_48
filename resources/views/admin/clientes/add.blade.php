@@ -222,7 +222,7 @@ body{
           </div>
           <div class="form-group">
             <label for="" class="col-xs-12 col-md-10 col-md-offset-1" style="padding:0">Celular o Telefono</label>
-            <input type="tel" name="tel" value="{{old('tel')}}" class="white-textbox col-xs-12 col-md-10 col-md-offset-1">
+            <input type="tel" name="tel" value="{{old('tel')}}" class="white-textbox col-xs-12 col-md-10 col-md-offset-1 phone">
           </div>
           <div class="form-group col-xs-12 col-md-10 col-md-offset-1 checkbox-container" style="padding:0; margin-bottom:0">
             @if(old('credito'))

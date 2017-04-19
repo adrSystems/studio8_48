@@ -18,7 +18,7 @@ class Producto extends Model
 
   public function compras()
   {
-    return $this->belongsToMany('App\Compra')->withPivot('precio_venta');
+    return $this->belongsToMany('App\Compra')->withPivot('precio_venta','cantidad');
   }
 
   public function subcategoria()
@@ -29,5 +29,10 @@ class Producto extends Model
   public function surticiones()
   {
     return $this->hasMany('App\Surticion');
+  }
+
+  public function existencia()
+  {
+    return $this->surticiones()->sum('cantidad_venta') - $this->compras()->sum('cantidad');
   }
 }

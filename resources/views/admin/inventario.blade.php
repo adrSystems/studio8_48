@@ -538,6 +538,16 @@ Inventario
     padding: 0;
     overflow: hidden;
   }
+  .marca-item>.info>.add-cat-toggle{
+    position: absolute;
+    z-index: 1;
+    top: 3px;
+    right: 3px;
+    cursor: pointer;
+    color: #eee;
+    padding: 0;
+    overflow: hidden;
+  }
   .marca-item>.info>span{
     color: #555;
     z-index: 5;
@@ -787,6 +797,19 @@ Inventario
     display: block;
     margin: auto;
   }
+  .center{
+    display: block;
+    margin: auto;
+  }
+  .searcher1{
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.35);
+    color: #555;
+    padding: 2px 5px 2px 5px;
+  }
+  .searcher1:hover{
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .15);
+  }
 </style>
 @endsection
 
@@ -819,7 +842,7 @@ Inventario
         <input type="number" name="cantidadProductosApServicios" value="0" class="textbox2" style="width:100%" min="0" max="500">
       </div>
       <div class="col-xs-12" style="margin-top:10px">
-        <label for="" class="dark">Cantidad de productos destinados a venta</label>
+        <label for="" class="dark" id="cant-pro-venta-label">Cantidad de productos destinados a venta</label>
       </div>
       <div class="col-xs-12">
         <input type="number" name="cantidadProductosVenta" value="0" class="textbox2" style="width:100%" min="0" max="500">
@@ -1004,6 +1027,7 @@ Inventario
         <form action="/admin/inventario/producto/editar" method="post" enctype="multipart/form-data" id="form-editar-producto">
           <input type="hidden" name="productoToEdit" value="">
           <input type="hidden" name="nuevoSeVendeAlPublico" value="0">
+          <input type="hidden" name="subcategoriaProductoAEditar" value="">
           <input type="hidden" name="_token" value="{{csrf_token()}}">
           <div class="col-xs-12">
             <div class="col-xs-12 alert alert-warning">
@@ -1049,7 +1073,7 @@ Inventario
               </div>
             </div>
           </div>
-          <div class="col-xs-12" id="precio-venta-container">
+          <div class="col-xs-12" id="precio-venta-container-edit">
             <label for="" style="color:#555">Precio venta</label>
             <div class="textbox2-group-container">
               <div class="icon-red">
@@ -1062,7 +1086,7 @@ Inventario
             <label for="" style="color:#555">Contenido</label>
           </div>
           <div class="col-xs-12">
-            <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
+            <input type="text" name="nuevoContenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
             <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
               <select class="textbox2-auto" name="nuevaUnidadMedida" style="width:100%;height:34px">
                 <option value="">Unidad de medida...</option>
@@ -1209,358 +1233,371 @@ Inventario
 </div>
 
 <div class="main-container">
-<div class="col-xs-12">
-  <h3 class="main-title">Inventario</h3>
-</div>
 
-<div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-  <div class="side-menu">
-    <div class="header">Menú</div>
-    <div class="body">
-      <div class="item item-active" for="marcas-card">Marcas</div>
-      <div class="item" for="categorias-card">Categorias</div>
-      <div class="item" for="productos-card">Productos</div>
-    </div>
+  <div class="col-xs-12">
+    <h3 class="main-title">Inventario</h3>
   </div>
-</div>
 
-<div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
-
-  <div class="main-card" for="marcas-card">
-    <div class="col-xs-12" style="padding:0">
-      <div class="col-xs-12 col-md-4">
-        <div class="card1">
-          <div class="header">
-            <h4>Lista marcas</h4>
-          </div>
-          <div class="body col-xs-12">
-            <div class="list-container col-xs-12" style="padding:0">
-              @if(\App\Marca::count() == 0)
-              <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
-              @else
-              <h5 style="text-align:center">Activas</h5>
-              @foreach(\App\Marca::get() as $marca)
-              <div class="list-item col-xs-12 col-sm-12 col-md-12 col-lg-6" style="padding:15px">
-                <div class="img-container col-xs-12">
-                  <div class="shadow"></div>
-                  <div class="options">
-                    <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
-                    <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
-                  </div>
-                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                  <div class="info">
-                    <span class="">{{$marca->nombre}}</span>
-                  </div>
-                </div>
-              </div>
-              @endforeach
-              @endif
-            </div>
-            <div class="list-container col-xs-12" style="padding:0">
-              @if(\App\Marca::onlyTrashed()->count() == 0)
-              <p style="padding:0 10px 0 10px">No se encontraron marcas descontinuadas en el sistema.</p>
-              @else
-              <h5 style="text-align:center">Descontinuadas</h5>
-              @foreach(\App\Marca::onlyTrashed()->get() as $marca)
-              <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
-                <div class="img-container col-xs-12">
-                  <div class="shadow"></div>
-                  <div class="options">
-                    <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
-                  </div>
-                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                  <div class="info">
-                    <span class="">{{$marca->nombre}}</span>
-                  </div>
-                </div>
-              </div>
-              @endforeach
-              @endif
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-md-8">
-        <div class="card1">
-          <div class="header">
-            <h4 style="text-align:center">Agregar nueva marca</h4>
-          </div>
-          <div class="body">
-            <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
-              <input type="hidden" name="_token" value="{{csrf_token()}}">
-              <div class="col-xs-12">
-                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                  <label for="">Nombre</label>
-                </div>
-                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                  <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
-                </div>
-              </div>
-              <div class="col-xs-12" style="margin-top:15px;">
-                <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                  <label for="">Logo</label>
-                </div>
-                <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
-                  <p>Haz click o arrastra un archivo...</p>
-                  <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
-                </div>
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
-                  <hr>
-                </div>
-                <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
-                  <label for="" class="pull-left">Agregue las categorias que maneja</label>
-                  <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
-                    <i class="material-icons">add</i>
-                  </div>
-                </div>
-                <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
-                <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
-                </div>
-                <div class="col-xs-12 col-md-8 col-md-offset-2">
-                  <hr>
-                </div>
-              </div>
-              <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
-                <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
-              </div>
-            </form>
-          </div>
-        </div>
+  <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
+    <div class="side-menu">
+      <div class="header">Menú</div>
+      <div class="body">
+        <div class="item item-active" for="marcas-card">Marcas</div>
+        <div class="item" for="categorias-card">Categorias</div>
+        <div class="item" for="productos-card">Productos</div>
       </div>
     </div>
   </div>
 
-  <div class="main-card" for="categorias-card" style="display:none">
-    <div class="col-xs-12" style="padding:0">
-      <div class="col-xs-12 col-md-4">
-        <div class="card1" style="max-height:600px">
-          <div class="header" style="margin:0">
-            <h4>Lista de categorias por marca</h4>
-          </div>
-          <div class="body col-xs-12" style="padding:0px">
-            @if(\App\Marca::count() == 0)
-            <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
-            @else
-            @foreach(\App\Marca::get() as $marca)
-            <div class="marca-item" id="{{$marca->id}}">
-              <div class="info">
-                <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
-                <div class="img-container">
-                  <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                </div>
-                <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
-              </div>
-              <div class="categorias-marca-container">
-                @if($marca->categorias()->count() == 0)
-                <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
-                @else
-                @foreach($marca->categorias()->get() as $categoria)
-                <div class="item2 cat-item" id="{{$categoria->id}}">
-                  <div class="info">
-                    <span>{{$categoria->nombre}}</span>
-                  </div>
-                </div>
-                @endforeach
-                @endif
-              </div>
-            </div>
-            @endforeach
-            @endif
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-md-8" style="padding:15px">
-        <div class="card1 col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
-          <div class="header">
-            <h4 style="text-align:center">Modificar categoria</h4>
-          </div>
-          <div class="body">
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <div class="alert alert-warning" style="display:none">
-                <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
-              </div>
-            </div>
-            <input type="hidden" name="idCatAEditar" value="">
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <label for="">Nombre</label>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
-              <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <hr>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <label for="">Subcategorias</label>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <div class="subcontainer" id="subcategorias-cont-to-manage">
-                <div class="add-sub-tb-container">
-                  <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
-                  <i class="material-icons add-sub-btn" id="">add_circle</i>
-                </div>
-              </div>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
-            </div>
-            <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <div class="subcontainer" id="subcategorias-des-cont-to-manage">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
 
-  <div class="main-card" for="productos-card" style="display:none">
-      <div class="col-xs-12 col-md-7">
-        <div class="card1">
-          <div class="header" style="margin-bottom:0">
-            <h4>Explora los productos</h4>
-          </div>
-          <div class="body">
-            <div class="list-container">
-              <div class="header">
-                <div class="col-xs-12">
-                  <h5 style="color:#f76">Lista de productos</h5>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                  <div class="col-xs-12" style="padding:0">
-                    <label for="" style="text-align:center">Marca</label>
+          <div class="main-card" for="marcas-card">
+            <div class="col-xs-12" style="padding:0">
+              <div class="col-xs-12 col-md-4">
+                <div class="card1">
+                  <div class="header">
+                    <h4>Lista marcas</h4>
                   </div>
-                  <select name="marcasFilter" class="textbox2">
-                    <option value="">Seleccione una marca...</option>
+                  <div class="body col-xs-12">
+                    <div class="list-container col-xs-12" style="padding:0">
+                      @if(\App\Marca::count() == 0)
+                      <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
+                      @else
+                      <h5 style="text-align:center">Activas</h5>
+                      @foreach(\App\Marca::get() as $marca)
+                      <div class="list-item col-xs-12 col-sm-12 col-md-12 col-lg-6" style="padding:15px">
+                        <div class="img-container col-xs-12">
+                          <div class="shadow"></div>
+                          <div class="options">
+                            <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
+                            <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
+                          </div>
+                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                          <div class="info">
+                            <span class="">{{$marca->nombre}}</span>
+                          </div>
+                        </div>
+                      </div>
+                      @endforeach
+                      @endif
+                    </div>
+                    <div class="list-container col-xs-12" style="padding:0">
+                      @if(\App\Marca::onlyTrashed()->count() == 0)
+                      <p style="padding:0 10px 0 10px">No se encontraron marcas descontinuadas en el sistema.</p>
+                      @else
+                      <h5 style="text-align:center">Descontinuadas</h5>
+                      @foreach(\App\Marca::onlyTrashed()->get() as $marca)
+                      <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
+                        <div class="img-container col-xs-12">
+                          <div class="shadow"></div>
+                          <div class="options">
+                            <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
+                          </div>
+                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                          <div class="info">
+                            <span class="">{{$marca->nombre}}</span>
+                          </div>
+                        </div>
+                      </div>
+                      @endforeach
+                      @endif
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-8">
+                <div class="card1">
+                  <div class="header">
+                    <h4 style="text-align:center">Agregar nueva marca</h4>
+                  </div>
+                  <div class="body">
+                    <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
+                      <input type="hidden" name="_token" value="{{csrf_token()}}">
+                      <div class="col-xs-12">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                          <label for="">Nombre</label>
+                        </div>
+                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                          <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
+                        </div>
+                      </div>
+                      <div class="col-xs-12" style="margin-top:15px;">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                          <label for="">Logo</label>
+                        </div>
+                        <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
+                          <p>Haz click o arrastra un archivo...</p>
+                          <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
+                        </div>
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
+                          <hr>
+                        </div>
+                        <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
+                          <label for="" class="pull-left">Agregue las categorias que maneja</label>
+                          <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
+                            <i class="material-icons">add</i>
+                          </div>
+                        </div>
+                        <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
+                        <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
+                        </div>
+                        <div class="col-xs-12 col-md-8 col-md-offset-2">
+                          <hr>
+                        </div>
+                      </div>
+                      <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
+                        <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="main-card" for="categorias-card" style="display:none">
+            <div class="col-xs-12" style="padding:0">
+              <div class="col-xs-12 col-md-4">
+                <div class="card1" style="max-height:600px">
+                  <div class="header" style="margin:0">
+                    <h4>Lista de categorias por marca</h4>
+                  </div>
+                  <div class="body col-xs-12" style="padding:0px">
+                    @if(\App\Marca::count() == 0)
+                    <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
+                    @else
                     @foreach(\App\Marca::get() as $marca)
-                    <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                    <div class="marca-item" id="{{$marca->id}}">
+                      <div class="info">
+                        <!--<i class="material-icons add-cat-toggle" id="{{$marca->id}}">add_circle</i>-->
+                        <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
+                        <div class="img-container">
+                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                        </div>
+                        <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
+                      </div>
+                      <div class="categorias-marca-container">
+                        @if($marca->categorias()->count() == 0)
+                        <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
+                        @else
+                        @foreach($marca->categorias()->get() as $categoria)
+                        <div class="item2 cat-item" id="{{$categoria->id}}">
+                          <div class="info">
+                            <span>{{$categoria->nombre}}</span>
+                          </div>
+                        </div>
+                        @endforeach
+                        @endif
+                      </div>
+                    </div>
                     @endforeach
-                  </select>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                  <div class="col-xs-12" style="padding:0">
-                    <label for="" style="text-align:center">Categoria</label>
+                    @endif
                   </div>
-                  <select name="catFilter" class="textbox2">
-                    <option value="">Seleccione una categoria...</option>
-                  </select>
-                </div>
-                <div class="col-xs-12 col-sm-4">
-                  <div class="col-xs-12" style="padding:0">
-                    <label for="" style="text-align:center">Subcategoria</label>
-                  </div>
-                  <select name="subFilter" class="textbox2">
-                    <option value="">Seleccione una subcategoria...</option>
-                  </select>
                 </div>
               </div>
-              <div class="body col-xs-12" style="padding:0" id="productos-container">
+              <div class="col-xs-12 col-md-8">
+                <div class="card1 col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
+                  <div class="header">
+                    <h4 style="text-align:center">Modificar categoria</h4>
+                  </div>
+                  <div class="body">
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <div class="alert alert-warning" style="display:none">
+                        <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
+                      </div>
+                    </div>
+                    <input type="hidden" name="idCatAEditar" value="">
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <label for="">Nombre</label>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
+                      <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <hr>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <label for="">Subcategorias</label>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <div class="subcontainer" id="subcategorias-cont-to-manage">
+                        <div class="add-sub-tb-container">
+                          <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
+                          <i class="material-icons add-sub-btn" id="">add_circle</i>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
+                    </div>
+                    <div class="col-xs-12 col-md-6 col-md-offset-3">
+                      <div class="subcontainer" id="subcategorias-des-cont-to-manage">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          <div class="main-card" for="productos-card" style="display:none">
+              <div class="col-xs-12 col-md-7">
+                <div class="card1">
+                  <div class="header" style="margin-bottom:0">
+                    <h4>Explora los productos</h4>
+                  </div>
+                  <div class="body">
+                    <div class="list-container">
+                      <div class="header">
+                        <div class="col-xs-12">
+                          <h5 style="color:#f76">Lista de productos</h5>
+                        </div>
+                        <div class="col-xs-12" style="padding:0">
+                          <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12" style="padding:0">
+                              <label for="" style="text-align:center">Marca</label>
+                            </div>
+                            <select name="marcasFilter" class="textbox2">
+                              <option value="">Seleccione una marca...</option>
+                              @foreach(\App\Marca::get() as $marca)
+                              <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                              @endforeach
+                            </select>
+                          </div>
+                          <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12" style="padding:0">
+                              <label for="" style="text-align:center">Categoria</label>
+                            </div>
+                            <select name="catFilter" class="textbox2">
+                              <option value="">Seleccione una categoria...</option>
+                            </select>
+                          </div>
+                          <div class="col-xs-12 col-sm-4">
+                            <div class="col-xs-12" style="padding:0">
+                              <label for="" style="text-align:center">Subcategoria</label>
+                            </div>
+                            <select name="subFilter" class="textbox2">
+                              <option value="">Seleccione una subcategoria...</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="col-xs-12">
+                          <hr>
+                          <h5 style="color:#888;text-align:center">O busca por nombre o código o subcategoria...</h5>
+                        </div>
+                        <div class="col-xs-12">
+                          <input type="text" name="searcher" value="" class="searcher1 col-xs-12 col-md-6 col-md-offset-3" placeholder="escribe aquí el termino de busqueda...">
+                        </div>
+                        <div class="col-xs-12">
+                          <button type="button" name="search-btn" class="btn2 center" style="font-weight:200;margin-top:15px">Buscar</button>
+                        </div>
+                      </div>
+                      <div class="body col-xs-12" style="padding:0" id="productos-container">
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xs-12 col-md-5">
+                <div class="card1">
+                  <div class="header">
+                    <h4 style="text-align:center">Nuevo producto</h4>
+                  </div>
+                  <div class="body">
+                    <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
+                      <input type="hidden" name="_token" value="{{csrf_token()}}">
+                      <input type="hidden" name="seVendeAlPublico" value="0">
+                      <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+                        <select class="textbox2" name="marcaForProduct">
+                          <option value="">Seleccione una marca...</option>
+                          @foreach(\App\Marca::get() as $marca)
+                          <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                        <select class="textbox2" name="catForProduct">
+                          <option value="">Seleccione una categoria...</option>
+                        </select>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                        <select class="textbox2" name="subForProduct">
+                          <option value="">Seleccione una subcategoria...</option>
+                        </select>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <label for="">Nombre</label>
+                        <input type="text" name="nombreProducto" value="" class="textbox2">
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <label for="">Código identificador (Opcional)</label>
+                        <input type="text" name="codigoProducto" value="" class="textbox2">
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <label for="">Descripción</label>
+                        <textarea name="descripcion" class="textbox2"></textarea>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <label for="">Precio compra</label>
+                        <div class="textbox2-group-container">
+                          <div class="icon">
+                            <i class="material-icons">attach_money</i>
+                          </div>
+                          <input type="text" name="precioCompra" value="" class="textbox2 money">
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.1)">
+                          <span style="color:#555;padding-left:2px">Venta al público</span>
+                          <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.15); box-shadow: inset 0 0 3px rgba(0,0,0,.2)">
+                            <div class="switch-btn inactive" style="border-color:#999"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
+                        <label for="">Precio venta</label>
+                        <div class="textbox2-group-container">
+                          <div class="icon">
+                            <i class="material-icons">attach_money</i>
+                          </div>
+                          <input type="text" name="precioVenta" value="" class="textbox2 money">
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <label for="">Fotografía</label>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
+                          <p>Haz click o arrastra un archivo...</p>
+                          <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                        <label for="">Contenido</label>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
+                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
+                          <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
+                            <option value="gr">gramos</option>
+                            <option value="ml">mililitros</option>
+                          </select>
+                        </div>
+                      </div>
+                    </form>
+                    <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
+                      <button id="agregar-producto-btn" class="btn1" style="margin:auto;display:block">Agregar</button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-xs-12 col-md-5">
-        <div class="card1">
-          <div class="header">
-            <h4 style="text-align:center">Nuevo producto</h4>
-          </div>
-          <div class="body">
-            <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
-              <input type="hidden" name="_token" value="{{csrf_token()}}">
-              <input type="hidden" name="seVendeAlPublico" value="0">
-              <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
-                <select class="textbox2" name="marcaForProduct">
-                  <option value="">Seleccione una marca...</option>
-                  @foreach(\App\Marca::get() as $marca)
-                  <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-                <select class="textbox2" name="catForProduct">
-                  <option value="">Seleccione una categoria...</option>
-                </select>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-                <select class="textbox2" name="subForProduct">
-                  <option value="">Seleccione una subcategoria...</option>
-                </select>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <label for="">Nombre</label>
-                <input type="text" name="nombreProducto" value="" class="textbox2">
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <label for="">Código identificador (Opcional)</label>
-                <input type="text" name="codigoProducto" value="" class="textbox2">
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <label for="">Descripción</label>
-                <textarea name="descripcion" class="textbox2"></textarea>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <label for="">Precio compra</label>
-                <div class="textbox2-group-container">
-                  <div class="icon">
-                    <i class="material-icons">attach_money</i>
-                  </div>
-                  <input type="text" name="precioCompra" value="" class="textbox2 money">
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.1)">
-                  <span style="color:#555;padding-left:2px">Venta al público</span>
-                  <div class="switch-bar switch-center">
-                    <div class="switch-btn inactive"></div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
-                <label for="">Precio venta</label>
-                <div class="textbox2-group-container">
-                  <div class="icon">
-                    <i class="material-icons">attach_money</i>
-                  </div>
-                  <input type="text" name="precioVenta" value="" class="textbox2 money">
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1">
-                <label for="">Fotografía</label>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1">
-                <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
-                  <p>Haz click o arrastra un archivo...</p>
-                  <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                <label for="">Contenido</label>
-              </div>
-              <div class="col-xs-12 col-md-10 col-md-offset-1">
-                <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
-                <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
-                  <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
-                    <option value="gr">gramos</option>
-                    <option value="ml">mililitros</option>
-                  </select>
-                </div>
-              </div>
-            </form>
-            <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
-              <button id="agregar-producto-btn" class="btn1" style="margin:auto;display:block">Agregar</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+
   </div>
-
-</div>
 
 </div>
 @endsection
@@ -1568,33 +1605,203 @@ Inventario
 @section('js')
 <script type="text/javascript">
 
-if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-  $('.footer').css({
-    position:'absolute',
-    bottom:'0'
-  });
-}
-else{
-  $('.footer').css({
-    position:'relative'
-  });
-}
 
-$(window).resize(function () {
-    if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-      $('.footer').css({
-        position:'absolute',
-        bottom:'0'
-      });
-    }
-    else{
-      $('.footer').css({
-        position:'relative'
-      });
-    }
-})
 
 $(document).ready(function () {
+
+  $('button[name=search-btn]').click(function () {
+    if($('input[name=searcher]').val() == '') showMsg('Atención!',['Debe proporcionar termino para efectuar la busqueda.'])
+    else {
+      $('select[name=subFilter]').children('option[value=""]').attr('selected',true)
+      $.ajax({
+        url:"/admin/inventario/productos/search",
+        type:"post",
+        dataType:"html",
+        data:{
+          _token:"{{csrf_token()}}",
+          word: $('input[name=searcher]').val()
+        }
+      }).done(function(html){
+        $('#productos-container').children().remove()
+        $('#productos-container').append(html)
+        $('.editar-producto-toggle').click(function () {
+          ////////////////////// modal editar
+          var productoId = $(this).attr('id')
+          $.ajax({
+            url:"/admin/inventario/productos/get-by-id",
+            type:"post",
+            dataType:"json",
+            data:{
+              _token:"{{csrf_token()}}",
+              id: productoId
+            }
+          }).done(function(producto){
+            $('select[name=nuevaUnidadMedida]').children('').attr('selected',false)
+            $('select[name=nuevaUnidadMedida]').children('option[value=""]').attr('selected',true)
+            $('#producto-summary-img').attr('src', producto.fotografia)
+            if(producto.venta_publico)
+            {
+              $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').removeClass('inactive');
+              $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('active');
+              $('#venta-publico-to-edit').attr('active', '1')
+              $('input[name=nuevoSeVendeAlPublico]').val('1')
+              $('#precio-venta-container-edit').slideDown(300)
+
+            }
+            else {
+              $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').removeClass('active');
+              $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('inactive');
+              $('#venta-publico-to-edit').attr('active', '0')
+              $('input[name=nuevoSeVendeAlPublico]').val('0')
+              $('#precio-venta-container-edit').slideUp(300)
+            }
+            $('input[type=hidden][name=productoToEdit]').val(producto.id)
+            $('#producto-a-modificar').text(producto.nombre)
+            $('input[type=hidden][name=subcategoriaProductoAEditar]').val(producto.subcategoria.id)
+            $('#marca-producto-a-modificar').text(producto.subcategoria.categoria.marca.nombre)
+            $('#codigo-producto-a-modificar').text(producto.codigo)
+            $('#descripcion-producto-a-modificar').text(producto.descripcion)
+            $('#precio-compra-producto-a-modificar').text("$"+producto.precio_compra)
+            if(producto.venta_publico)
+            {
+              $('#venta-publico-producto-a-modificar').text('Si')
+              $('#precio-venta-producto-a-modificar').text("$"+producto.precio_venta)
+            }
+            else{
+              $('#venta-publico-producto-a-modificar').text('No')
+              $('#precio-venta-producto-a-modificar').text('-')
+            }
+
+            $('#contenido-producto-a-modificar').text(producto.contenido+" "+producto.u_medida)
+            showModal('#editar-producto-modal-back')
+          })
+        })
+        $('.detalles-producto-toggle').click(function () {
+          var productoId = $(this).attr('id')
+          $.ajax({
+            url:"/admin/inventario/productos/get-by-id",
+            type:"post",
+            dataType:"json",
+            data:{
+              _token:"{{csrf_token()}}",
+              id: productoId
+            }
+          }).done(function(producto){
+            //info basica
+            $('#producto-details-img').attr('src', producto.fotografia)
+            $('#producto-details').text(producto.nombre)
+            $('#marca-producto-details').text(producto.subcategoria.categoria.marca.nombre)
+            $('#categoria-producto-details').text(producto.subcategoria.categoria.nombre)
+            $('#subcategoria-producto-details').text(producto.subcategoria.nombre)
+            $('#codigo-producto-details').text(producto.codigo)
+            $('#descripcion-producto-details').text(producto.descripcion)
+            $('#precio-compra-producto-details').text("$"+producto.precio_compra)
+            if(producto.venta_publico)
+            {
+              $('#venta-publico-producto-details').text('Si')
+              $('#precio-venta-producto-details').text("$"+producto.precio_venta)
+            }
+            else{
+              $('#venta-publico-producto-details').text('No')
+              $('#precio-venta-producto-details').text('-')
+            }
+            $('#contenido-producto-details').text(producto.contenido+" "+producto.u_medida)
+            //estadisticas
+            $('#mes-cuestion').text(producto.mesEnCuestion)
+            $('#u-added-mes').text(producto.agregadosEsteMes)
+            if(producto.agregadosEsteMes < 1) $('#existencia-msg').text('AGOTADO')
+            else $('#existencia-msg').text('EN EXISTENCIA')
+            $('#u-added-venta-mes').text(producto.paraVenta)
+            $('#u-added-serv-mes').text(producto.paraAplicacion)
+            $('#inversion-mensual').text("$"+producto.inversionMensual)
+            $('#inversion-mensual-venta').text("$"+producto.inversionParaVenta)
+            $('#ventas-mensuales-count').text(producto.repeticionEnVentas)
+            $('#ventas-esperadas').text("$"+producto.expectativaGanancias)
+            $('#ventas-mensuales').text("$"+producto.gananciaMensual)
+            $('#diferencia').text("$"+producto.diferencia)
+            $('#aplicacion-servicios-mensuales').text(producto.utilizacion)
+            if(producto.utilidad < 0)
+              $('#utilidad-mensual').text("- $"+Math.abs(producto.utilidad)+" (perdida)")
+            else if(producto.utilidad == 0)
+              $('#utilidad-mensual').text("$"+producto.utilidad+" (sin perdida)")
+            else
+              $('#utilidad-mensual').text("$"+producto.utilidad+" (ganancia)")
+            showModal('#producto-details-modal-back')
+          })
+        })
+        $('.descontinuar-producto-toggle').click(function () {
+          $('#delete-producto-btn').attr('id', $(this).attr('id'))
+          showMsgDialog('Confirmar acción',
+          ['¿Descontinuar producto?','Ya no podrán realizarse ventas con este producto hasta que lo restaure'],
+          '#eliminar-producto-msg-dialog')
+        })
+        $('.restore-producto-toggle').click(function () {
+          var pid = $(this).attr('id')
+          $.ajax({
+            url:"/admin/inventario/productos/restaurarById",
+            type:"post",
+            dataType:"json",
+            data:{
+              _token:"{{csrf_token()}}",
+              id: pid
+            }
+          }).done(function(response){
+            if(response.result)
+            {
+              showProductsTable(response.producto.subcategoria.id)
+            }
+            else {
+              showMsg('Ups!',['Ha ocurrido un error. Intentelo de nuevo.'])
+            }
+          })
+        })
+        $('.surtir-producto-toggle').click(function () {
+          var pid = $(this).attr('id')
+          $.ajax({
+            url:"/admin/inventario/productos/get-by-id",
+            type:"post",
+            dataType:"json",
+            data:{
+              _token:"{{csrf_token()}}",
+              id: pid
+            }
+          }).done(function(producto){
+            $('#surtir-btn').attr('producto',producto.id)
+            $('#precio-compra-actual').text("$"+producto.precio_compra)
+            $('#precio-venta-actual').text("$"+producto.precio_venta)
+            $('input[name=cantidadProductosVenta]').val('0')
+            $('input[name=cantidadProductosApServicios]').val('0')
+            $('input[name=nuevoPrecioCompraSurticion]').val('')
+            $('input[name=nuevoPrecioVentaSurticion]').val('')
+            $('input[name=nuevoPrecioCompraSurticion]').hide()
+            $('input[name=nuevoPrecioVentaSurticion]').hide()
+            $('#switch-cambiar-precio-venta').children('.switch-bar').children('.switch-btn').removeClass('active');
+            $('#switch-cambiar-precio-venta').children('.switch-bar').children('.switch-btn').addClass('inactive');
+            $('#switch-cambiar-precio-venta').attr('active','0');
+            $('#switch-cambiar-precio-compra').children('.switch-bar').children('.switch-btn').removeClass('active');
+            $('#switch-cambiar-precio-compra').children('.switch-bar').children('.switch-btn').addClass('inactive');
+            $('#switch-cambiar-precio-compra').attr('active','0');
+            if(producto.venta_publico)
+            {
+              $('#switch-cambiar-precio-venta').show()
+              $('#venta-publico-desactivada-msg').hide()
+              $('#precio-venta-label').show()
+              $('input[name=cantidadProductosVenta]').show()
+              $('#cant-pro-venta-label').show()
+            }
+            else {
+              $('#switch-cambiar-precio-venta').hide()
+              $('#venta-publico-desactivada-msg').show()
+              $('#precio-venta-label').hide()
+              $('input[name=cantidadProductosVenta]').hide()
+              $('#cant-pro-venta-label').hide()
+            }
+            showModal('#surtir-modal-back')
+          })
+        })
+      })
+    }
+  })
 
   $('#switch-cambiar-precio-compra').click(function () {
     if($(this).attr('active') == '0'){
@@ -1660,11 +1867,40 @@ $(document).ready(function () {
   })
 
   $('#editar-producto-btn').click(function () {
-    //mostrar msg error cuando active la venta al publico,
-    //y el producto no tenga precio_venta en bd y no se mande nada en el campo nuevo precio venta
+    $.ajax({
+      url:"/admin/inventario/productos/check-changes",
+      type:"post",
+      dataType:"json",
+      data:{
+        _token:"{{csrf_token()}}",
+        nombre: $('input[name=newProductoName]').val(),
+        contenido: $('input[name=nuevoContenido]').val(),
+        uMedida: $('select[name=nuevaUnidadMedida]').find('option:selected').val(),
+        subcategoria: $('input[type=hidden][name=subcategoriaProductoAEditar]').val(),
+        productoId: $('input[type=hidden][name=productoToEdit]').val()
+      }
+    }).done(function(response){
+      if($('input[name=nuevoPrecioVenta]').val().length > 8 || $('input[name=nuevoPrecioCompra]').val().length > 8)
+      {
+        showMsg('Ups!',
+        ['La cantidad monetaria es demasiado grande.'])
+      }
+      else if(response.result)
+        showMsg('Ups!',
+        ['Ya existe un producto con el mismo nombre y contenido (cantidad y unidad de medida) en esta subcategoria.'])
+      else
+      {
+        if($('input[name=nuevoSeVendeAlPublico]').val() == '1'
+        && response.producto.precio_venta == null && $('input[name=nuevoPrecioVenta]').val() == ''){
+          showMsg('Ups!',
+          ['Para activar la venta al público debe proporcionar un precio de venta.'])
+        }
+        else {
+          $('form#form-editar-producto').submit()
+        }
+      }
+    })
 
-    //validar campos de dinero, longitud
-    $('form#form-editar-producto').submit()
   })
 
   $('#delete-producto-btn').click(function () {
@@ -1696,6 +1932,11 @@ $(document).ready(function () {
     || $('textarea[name=descripcion]').val() == '' || $('select[name=uMedida]').val() == ''
     || $('input[name=contenido]').val() == '') {
         showMsg('Ups!',['Complete toda la información que se requiere.'])
+    }
+    else if($('input[name=precioVenta]').val().length > 8 || $('input[name=precioCompra]').val().length > 8)
+    {
+      showMsg('Ups!',
+      ['La cantidad monetaria es demasiado grande.'])
     }
     else {
       $.ajax({
@@ -1739,11 +1980,11 @@ $(document).ready(function () {
   $('#venta-publico-to-edit').click(function () {
     if($(this).attr('active') == '0'){
       $('input[name=nuevoSeVendeAlPublico]').val('0')
-      $('#precio-venta-container').slideUp(300)
+      $('#precio-venta-container-edit').slideUp(300)
     }
     else {
       $('input[name=nuevoSeVendeAlPublico]').val('1')
-      $('#precio-venta-container').slideDown(300)
+      $('#precio-venta-container-edit').slideDown(300)
     }
   })
 
@@ -1752,8 +1993,18 @@ $(document).ready(function () {
     || ($(this).val().indexOf('.') > -1 && e.key == '.')
     || ($(this).val().indexOf('.') > -1 && $(this).val().indexOf('.') + 2 == $(this).val().length -1))
       e.preventDefault();
-    if(e.key == '.' && $(this).val().length == 0)
+    else if(e.key == '.' && $(this).val().length == 0)
       $(this).val('0')
+    else if($(this).val().length > 1 && $(this).val().charAt($(this).val().length-1) == '.')
+    {
+      e.preventDefault();
+      $(this).val($(this).val()+e.key+"0")
+    }
+    else if($(this).val().length > 2 && $(this).val().charAt($(this).val().length-2) == '.')
+    {
+      e.preventDefault();
+      $(this).val($(this).val()+"0")
+    }
   })
 
   $('input.number').keypress(function (e) {
@@ -1809,7 +2060,7 @@ $(document).ready(function () {
             $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('active');
             $('#venta-publico-to-edit').attr('active', '1')
             $('input[name=nuevoSeVendeAlPublico]').val('1')
-            $('#precio-venta-container').slideDown(300)
+            $('#precio-venta-container-edit').slideDown(300)
 
           }
           else {
@@ -1817,10 +2068,11 @@ $(document).ready(function () {
             $('#venta-publico-to-edit').children('.switch-bar').children('.switch-btn').addClass('inactive');
             $('#venta-publico-to-edit').attr('active', '0')
             $('input[name=nuevoSeVendeAlPublico]').val('0')
-            $('#precio-venta-container').slideUp(300)
+            $('#precio-venta-container-edit').slideUp(300)
           }
           $('input[type=hidden][name=productoToEdit]').val(producto.id)
           $('#producto-a-modificar').text(producto.nombre)
+          $('input[type=hidden][name=subcategoriaProductoAEditar]').val(producto.subcategoria.id)
           $('#marca-producto-a-modificar').text(producto.subcategoria.categoria.marca.nombre)
           $('#codigo-producto-a-modificar').text(producto.codigo)
           $('#descripcion-producto-a-modificar').text(producto.descripcion)
@@ -1949,11 +2201,15 @@ $(document).ready(function () {
             $('#switch-cambiar-precio-venta').show()
             $('#venta-publico-desactivada-msg').hide()
             $('#precio-venta-label').show()
+            $('input[name=cantidadProductosVenta]').show()
+            $('#cant-pro-venta-label').show()
           }
           else {
             $('#switch-cambiar-precio-venta').hide()
             $('#venta-publico-desactivada-msg').show()
             $('#precio-venta-label').hide()
+            $('input[name=cantidadProductosVenta]').hide()
+            $('#cant-pro-venta-label').hide()
           }
           showModal('#surtir-modal-back')
         })
@@ -2349,17 +2605,17 @@ $(document).ready(function () {
         $('#nombre-categoria-a-editar').text($catItem.text())
         $('#manage-cat-panel').slideDown(400)
         $('#nombre-categoria-a-editar').parent().delay(400).slideDown(400, function () {
-        if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-          $('.footer').css({
-            position:'absolute',
-            bottom:'0'
-          });
-        }
-        else{
-          $('.footer').css({
-            position:'relative'
-          });
-        }
+          if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+            $('body').children('.footer').css({
+              position:'absolute',
+              bottom:'0'
+            });
+          }
+          else{
+            $('body').children('.footer').css({
+              position:'relative'
+            });
+          }
       })
       }
       $('#subcategorias-des-cont-to-manage').children('.subcategoria-item').remove()
@@ -2843,14 +3099,14 @@ $(document).ready(function () {
       if($(e).attr('for') == $toggle.attr('for'))
       {
         $(e).delay(400).slideDown(400,function () {
-          if($('.main-container').height() + $('.footer').outerHeight() + 150 <= $(window).height()){
-            $('.footer').css({
+          if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+            $('body').children('.footer').css({
               position:'absolute',
               bottom:'0'
             });
           }
           else{
-            $('.footer').css({
+            $('body').children('.footer').css({
               position:'relative'
             });
           }
@@ -2941,6 +3197,22 @@ $(document).ready(function () {
     $('.side-menu>.body').children('.item[for='+'{{session("options")["activeItem"]}}'+']').addClass('item-active')
     $('div.main-card').hide();
     $('div.main-card[for='+'{{session("options")["activeItem"]}}'+']').show();
+  @endif
+
+  @if(session('options') and isset(session('options')['subcategoria']) and $subcategoria = session('options')['subcategoria'])
+  $('select[name=marcasFilter]').children().attr('selected',false)
+  $('select[name=marcasFilter]').children('option[value='+'{{$subcategoria->categoria->marca->id}}'+']').attr('selected',true)
+  @foreach($subcategoria->categoria->marca->categorias as $cat)
+  $('select[name=catFilter]').append($('<option class="cat" value="'+'{{$cat->id}}'+'">'+'{{$cat->nombre}}'+'</option>'))
+  @endforeach
+  $('select[name=catFilter]').children().attr('selected',false)
+  $('select[name=catFilter]').children('option[value='+'{{$subcategoria->categoria->id}}'+']').attr('selected',true)
+  @foreach($subcategoria->categoria->subcategorias as $sub)
+  $('select[name=subFilter]').append($('<option class="sub" value="'+'{{$sub->id}}'+'">'+'{{$sub->nombre}}'+'</option>'))
+  @endforeach
+  $('select[name=subFilter]').children().attr('selected',false)
+  $('select[name=subFilter]').children('option[value='+'{{$subcategoria->id}}'+']').attr('selected',true)
+  showProductsTable('{{$subcategoria->id}}')
   @endif
 
 })

@@ -105,7 +105,7 @@ class InventarioController extends Controller
       $marca = Marca::onlyTrashed()->where('id',$request->marcaToRestore)->first();
       foreach ($marca->categorias as $categoria) {
         foreach ($categoria->subcategorias as $sub) {
-          foreach ($sub->productos as $producto) {
+          foreach ($sub->productos()->onlyTrashed()->get() as $producto) {
             $producto->restore();
           }
         }
@@ -331,13 +331,19 @@ class InventarioController extends Controller
       ->where('contenido', $request->contenido)->where('u_medida',$request->uMedida)->first())
         return back()->with('options', [
           'msg' => ['title' => 'Ups!', 'body' => 'El producto ya existe en el sistema.'],
-          'activeItem' => 'productos-card'
+          'activeItem' => 'productos-card',
+          'activeItem' => 'productos-card',
+          'subcategoria' => $producto->subcategoria,
+          'marcas' => Marca::get()
         ]);
 
       if(Categoria::find($request->codigoProducto))
         return back()->with('options', [
           'msg' => ['title' => 'Ups!', 'body' => 'El código ya pertenece a otro producto, intente con otro.'],
-          'activeItem' => 'productos-card'
+          'activeItem' => 'productos-card',
+          'activeItem' => 'productos-card',
+          'subcategoria' => $producto->subcategoria,
+          'marcas' => Marca::get()
         ]);
 
       $producto = new Producto;
@@ -382,7 +388,10 @@ class InventarioController extends Controller
 
       return back()->with('options', [
         'msg' => ['title' => 'OK!', 'body' => 'El productose registo con exito!'],
-        'activeItem' => 'productos-card'
+        'activeItem' => 'productos-card',
+        'activeItem' => 'productos-card',
+        'subcategoria' => $producto->subcategoria,
+        'marcas' => Marca::get()
       ]);
     }
 
@@ -393,7 +402,7 @@ class InventarioController extends Controller
 
     public function getProductById(Request $request)
     {
-      $producto = Producto::find($request->id);
+      $producto = Producto::withTrashed()->find($request->id);
       $meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
       $producto->mesEnCuestion = $meses[Carbon::now()->format('m')-1];
       $producto->subcategoria = $producto->subcategoria;
@@ -418,18 +427,22 @@ class InventarioController extends Controller
       $producto->paraAplicacion = $paraAplicacion;
       $producto->paraVenta = $paraVenta;
       $producto->expectativaGanancias = $expectativaGanancias;
-      $producto->utilidad = $producto->gananciaMensual - $producto->inversionParaVenta;
       $producto->fotografia = asset('storage/'.$producto->fotografia);
       $producto->agregadosEsteMes = $paraVenta + $paraAplicacion;
       $producto->compras = $producto->compras;
       $producto->comprasMensuales =  $producto->compras()->whereYear('fecha_hora', Carbon::now()->format('Y'))
       ->whereMonth('fecha_hora', Carbon::now()->format('m'))->get();
       $gananciaMensual = 0;
+      $repeticionEnVentas = 0;
       foreach ($producto->comprasMensuales as $compraMensual) {
-        foreach ($compraMensual->productos as $producto) {
-          $gananciaMensual += $producto->pivot->precio_venta;
+        foreach ($compraMensual->productos()->where('id',$producto->id)->get() as $prod) {
+          $gananciaMensual += $prod->pivot->precio_venta * $prod->pivot->cantidad;
+          $repeticionEnVentas += $prod->pivot->cantidad;
         }
       }
+      $producto->gananciaMensual = $gananciaMensual;
+      $producto->utilidad = $producto->gananciaMensual - $producto->inversionParaVenta;
+      $producto->repeticionEnVentas = $repeticionEnVentas;
       $producto->gananciaMensual = $gananciaMensual;
       $producto->diferencia = $producto->expectativaGanancias - $gananciaMensual;
       //determinar utilizacion en citas
@@ -438,6 +451,7 @@ class InventarioController extends Controller
       ->whereMonth('fecha_hora', Carbon::now()->format('m'))->get() as $cita) {
         $utilizacion += $cita->pivot->cantidad;
       }
+
       $producto->utilizacion = $utilizacion;
       return $producto;
     }
@@ -446,42 +460,78 @@ class InventarioController extends Controller
     {
       $producto = Producto::find($request->productoToEdit);
 
+      $subcategoria = $producto->subcategoria;
+      $subcategoria->categoria = $producto->subcategoria->categoria;
+      $subcategoria->categoria->marca = $producto->subcategoria->categoria->marca;
+      $subcategoria->categoria->marca->subcategorias = $producto->subcategoria->categoria->marca->subcategorias;
+
+      $changes = false;
+
       if($request->newProductoName)
       {
+        if(strtolower($producto->nombre) != strtolower($request->newProductoName)) $changes = true;
         $producto->nombre = $request->newProductoName;
       }
       if($request->nuevaDescripcion)
       {
+        if(strtolower($producto->descripcion) != strtolower($request->nuevaDescripcion)) $changes = true;
         $producto->descripcion = $request->nuevaDescripcion;
       }
       if($request->nuevoPrecioCompra)
       {
+        if(strtolower($producto->precio_compra) != strtolower($request->nuevoPrecioCompra)) $changes = true;
         $producto->precio_compra = $request->nuevoPrecioCompra;
       }
-      if($request->contenido)
+      if($request->nuevoContenido)
       {
-        $producto->contenido = $request->contenido;
+        if(strtolower($producto->contenido) != strtolower($request->nuevoContenido)) $changes = true;
+        $producto->contenido = $request->nuevoContenido;
       }
       if($request->nuevaFoto)
       {
         $producto->fotografia = $request->nuevaFoto->store('img/productos','public');
+        $changes = true;
       }
-      if($request->nuevoSeVendeAlPublico == '1' and $producto->precio_venta == null && !$request->nuevoSeVendeAlPublico)
-      return back()->with('options', [
-        'msg' => ['title' => 'Ups!', 'body' => 'No puede activar la venta al publico si no especifica el precio de venta.'],
-        'activeItem' => 'productos-card'
-      ]);
+
+      if($request->nuevoSeVendeAlPublico == '1' and $producto->precio_venta == null && !$request->nuevoPrecioVenta)
+        return back()->with('options', [
+          'msg' => ['title' => 'Ups!', 'body' => 'No puede activar la venta al publico si no especifica el precio de venta.'],
+          'activeItem' => 'productos-card',
+          'subcategoria' => $producto->subcategoria,
+          'marcas' => Marca::get()
+        ]);
+
       if($request->nuevoPrecioVenta)
       {
+        if(strtolower($producto->precio_venta) != strtolower($request->nuevoPrecioVenta)) $changes = true;
         $producto->precio_venta = $request->nuevoPrecioVenta;
       }
+      if(strtolower($producto->venta_publico) != strtolower($request->nuevoSeVendeAlPublico)){
+        $changes = true;
+      }
       $producto->venta_publico = $request->nuevoSeVendeAlPublico;
-      if($request->nuevaUnidadMedida) $producto->u_medida = $request->nuevaUnidadMedida;
+      if($request->nuevaUnidadMedida)
+      {
+        if(strtolower($producto->u_medida) != strtolower($request->nuevaUnidadMedida)) $changes = true;
+        $producto->u_medida = $request->nuevaUnidadMedida;
+      }
       $producto->save();
+
+      $producto->subcategoria = $subcategoria;
+
+      if(!$changes)
+        return back()->with('options', [
+          'msg' => ['title' => 'OK!', 'body' => 'No se realizó ningún cambio.'],
+          'activeItem' => 'productos-card',
+          'subcategoria' => $producto->subcategoria,
+          'marcas' => Marca::get()
+        ]);
 
       return back()->with('options', [
         'msg' => ['title' => 'OK!', 'body' => 'Cambios efectuados con exito!'],
-        'activeItem' => 'productos-card'
+        'activeItem' => 'productos-card',
+        'subcategoria' => $producto->subcategoria,
+        'marcas' => Marca::get()
       ]);
     }
 
@@ -489,7 +539,7 @@ class InventarioController extends Controller
     {
       $producto = Producto::find($request->id);
 
-      //if($)
+      //eliminar si no esta en citas, ni en ventas
       $producto->delete();
       $producto->subcategoria = $producto->subcategoria;
 
@@ -515,6 +565,9 @@ class InventarioController extends Controller
     {
       $producto = Producto::find($request->id);
 
+      if((!$request->cantidadVenta && !$request->cantidadAplicacion) || ($request->cantidadVenta == 0 && $request->cantidadAplicacion == 0))
+      return ['result' => false];
+
       $surticion = new Surticion;
       $surticion->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
       $surticion->cantidad_venta = $request->cantidadVenta;
@@ -527,7 +580,7 @@ class InventarioController extends Controller
         $producto->save();
       }
       else {
-        $surticion->precio_venta = $producto->precio_venta;
+        if($producto->precio_venta) $surticion->precio_venta = $producto->precio_venta;
       }
       if($request->precioCompra and $request->precioCompra > 0)
       {
@@ -541,5 +594,44 @@ class InventarioController extends Controller
       $surticion->save();
 
       return ['result' => true];
+    }
+
+    public function checkChanges(Request $request)
+    {
+      $subcategoria = Subcategoria::find($request->subcategoria);
+
+      if($subcategoria->productos()->where('nombre',$request->nombre)->where('contenido',$request->contenido)
+      ->where('u_medida',$request->uMedida)->where('id','!=',$request->productoId)->first())
+        return ['result' => true];
+
+      $producto = Producto::find($request->productoId);
+      return [
+        'result' => false,
+        'producto' => $producto
+      ];
+    }
+
+    public function searchProducts(Request $request)
+    {
+      $productos = [];
+      foreach (Producto::with('subcategoria')->get() as $key => $producto) {
+        if(strpos(strtolower($producto->nombre), strtolower($request->word)) !== false
+        || strpos(strtolower($producto->codigo), strtolower($request->word)) !== false
+        || strpos(strtolower($producto->subcategoria->nombre), strtolower($request->word)) !== false)
+        $productos[] = $producto;
+      }
+
+      $productosDescontinuados = [];
+      foreach (Producto::onlyTrashed()->with('subcategoria')->get() as $key => $producto) {
+        if(strpos(strtolower($producto->nombre), strtolower($request->word)) !== false
+        || strpos(strtolower($producto->codigo), strtolower($request->word)) !== false
+        || strpos(strtolower($producto->subcategoria->nombre), strtolower($request->word)) !== false)
+        $productosDescontinuados[] = $producto;
+      }
+
+      return view('admin.productos-table-searched', [
+        'productos' => $productos,
+        'productosDescontinuados' => $productosDescontinuados
+      ]);
     }
 }
