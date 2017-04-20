@@ -812,9 +812,9 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('storage/perfil/'.Auth::user()->photo)}}" alt="">
+              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
               @else
-              <img class="user-photo" src="{{asset('storage/perfil/default.gif')}}" alt="">
+              <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
               @endif
               <i class="material-icons down" id="user-options">keyboard_arrow_down</i>
             </div>
