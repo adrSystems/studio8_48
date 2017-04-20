@@ -5,7 +5,7 @@ Gestion Imagenes
 @section('css')
 <style media="screen">
   body{
-    background: url('{{asset("img/covers/1.jpg")}}');
+    background: url('{{asset("img/covers/4.jpg")}}');
 
   }
   th{
@@ -38,9 +38,9 @@ Gestion Imagenes
       </tr>
     </thead>
     <tbody>
-    @foreach(App\Imagen::where("src","!=","null")->get() as $imagen)
+    @foreach(App\Portafolio::where("imagen","!=","null")->get() as $imagen)
       <tr>
-        <td><a href=""><img src="storage/{{$imagen->src}}" alt="" height="100px" width="80px"></a></td>
+        <td><a href=""><img src="storage/{{$imagen->imagen}}" alt="" height="100px" width="80px"></a></td>
         <td>{{$imagen->created_at}}</td>
         <td><a href="/borrar_imagen/{{$imagen->id}}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>

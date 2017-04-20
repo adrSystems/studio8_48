@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Imagen;
+use App\Portafolio;
 use Redirect;
 use Validator;
+use Carbon\Carbon;
 
 class PortafolioController extends Controller
 {
@@ -14,34 +15,27 @@ class PortafolioController extends Controller
     if($request->method()=='GET'){
       return view('admin.portafolio.subir_contenido');
     }
-    $imagen = new Imagen;
+    $imagen = new Portafolio;
     if($request->hasfile('imagen'))
     {
       $archivo = $request->imagen;
       $temp = $archivo->store('portafolio','public');
-      $imagen->src = $temp;
+      $imagen->imagen = $temp;
     }
     else{
-      $imagen->src = null;
+      $imagen->imagen = null;
     }
-    $imagen->link=$request['url'];
-    $imagen->descripcion_video=$request['des'];
+    $imagen->created_at=carbon::now();
     $imagen->save();
     return back()->with('msg','Archivo agregado al portafolio');
 
   }
   Public function Eliminar_imagen($id=null)
   {
-    $imagen = Imagen::find($id);
+    $imagen = Portafolio::find($id);
     $imagen->delete();
     return back()->with('msg','Archivo Eliminado');
   }
 
-  public function Eliminar_video($id=null)
-  {
-    $imagen = Imagen::find($id);
-    $imagen->delete();
-    return back()->with('msg','Archivo Eliminado');
-  }
 
 }

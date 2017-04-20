@@ -5,7 +5,7 @@ Subir Contenido
 @section('css')
 <style media="screen">
 body {
-	background: url('{{asset("img/covers/1.jpg")}}');
+	background: url('{{asset("img/covers/4.jpg")}}');
 }
 .panel-login {
 	border-color: #ccc;
@@ -124,10 +124,7 @@ body {
 					<div class="panel-heading">
 						<div class="row">
 							<div class="col-xs-6">
-								<a href="#" class="active" id="login-form-link">Subir Foto</a>
-							</div>
-							<div class="col-xs-6">
-								<a href="#" id="register-form-link">Subir Video</a>
+								<h4 style="align:center;">Subir Foto</h4>
 							</div>
 						</div>
 						<hr>
@@ -149,36 +146,6 @@ body {
 										</div>
 									</div>
 								</form>
-								<form id="register-form" action="/subir_contenido" method="post" role="form" style="display: none;">
-                  <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
-									<div class="form-group">
-                    <label for="">Introduce la URL del video de Youtube</label>  <button type="button" data-toggle="modal" data-target="#id_modal" name="button"><span class="glyphicon glyphicon-exclamation-sign"></span></button>
-										<input type="text" name="url" id="username" tabindex="1" class="form-control" placeholder="URL" value="">
-									</div>
-									<div class="form-group">
-                    <label for="">Agrega una descripcion del video</label>
-										<input type="text" name="des" tabindex="1" class="form-control" placeholder="Descripcion del video" value="">
-									</div>
-									<div class="form-group">
-										<div class="row">
-											<div class="col-sm-6 col-sm-offset-3">
-												<input type="submit" name="register-submit" id="register-submit" tabindex="4" class="form-control btn btn-register" value="Subir video">
-											</div>
-										</div>
-									</div>
-								</form>
-								<div class="modal fade" id="id_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-					        <div class="modal-dialog" role="document">
-					          <div class="modal-content">
-					              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					                <span aria-hidden="true">&times;</span>
-					              </button>
-					            <div class="modal-body">
-					              <img id="mod_img" src="{{asset('img/covers/ayuda.png')}}" alt="">
-					            </div>
-					          </div>
-					        </div>
-					      </div>
 							</div>
 						</div>
 					</div>
@@ -190,24 +157,6 @@ body {
 @endsection
 @section('js')
 <script type="text/javascript">
-$(function() {
-
-  $('#login-form-link').click(function(e) {
-  $("#login-form").delay(100).fadeIn(100);
-  $("#register-form").fadeOut(100);
-  $('#register-form-link').removeClass('active');
-  $(this).addClass('active');
-  e.preventDefault();
-});
-$('#register-form-link').click(function(e) {
-  $("#register-form").delay(100).fadeIn(100);
-  $("#login-form").fadeOut(100);
-  $('#login-form-link').removeClass('active');
-  $(this).addClass('active');
-  e.preventDefault();
-});
-
-});
 var $formulario = $('#login-form');
 var $evento = $('#login-submit');
 var result = $formulario.validate({
@@ -235,41 +184,6 @@ $('#login-submit').click(function(event){
 	}
 });
 
-var $formulario2 = $('#register-form');
-var $evento2 = $('#register-submit');
-var result = $formulario2.validate({
-	rules:
-	{
-		url:
-		{
-			required:true
-		},
-		des:
-		{
-			required:true
-		}
-	},
-	messages:
-	{
-		url:
-		{
-			required:"Este campo es requerido"
-		},
-		des:
-		{
-			required:"Este campo es requerido"
-		}
 
-	}
-});
-$('#register-submit').click(function(event){
-	event.stopPropagation();
-	event.preventDefault();
-	if($formulario2.valid())
-	{
-		$formulario2.submit();
-	}
-
-});
 </script>
 @endsection

@@ -27,8 +27,9 @@ h4{
   color:#c5b358;
   font-family: 'Lato';
 }
-.modal-backdrop.in {
-    opacity: 0.9;
+.modal-content{
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
 }
 </style>
 @endsection
@@ -40,7 +41,7 @@ h4{
   @foreach(App\Empleado::get() as $empleado)
 
   <div class="col-md-3">
-    <div class="thumbnail" style="height:410px">
+    <div class="thumbnail" style="height:400px">
 
         <a href="#" data-toggle="modal" data-target="#id_modal{{$empleado->id}}"> <img id="img" src="storage/{{$empleado->fotografia}}" alt="Lights" style="width:250px;height:250px"></a>
         <div class="caption">

@@ -34,6 +34,10 @@ class CuentaController extends Controller
       $cuenta=new User;
       $cliente=new Cliente;
       $cliente->nombre=$usuario['name'];
+      $cliente->apellido=$usuario['name'];
+      $cliente->telefono=0;
+      $cliente->fecha_registro=carbon::now();
+      $cliente->credito=0;
       $cliente->save();
       $cuenta->email=$usuario['email'];
       $cuenta->password= Hash::make($usuario['id']);
@@ -43,7 +47,7 @@ class CuentaController extends Controller
       $cuenta->codigo_registro=null;
       $cuenta->cuentable()->associate($cliente);
       $cuenta->save();
-      Auth::login($user);
+      Auth::login($cuenta);
       return redirect ('/');
     }
     else{
@@ -87,6 +91,15 @@ class CuentaController extends Controller
                     "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
                   ]
                 );
+            }
+            if(!$user->active)
+            {
+              return back()->with("msg",
+                [
+                  'title' => 'Error.',
+                  "body" =>"El email ingresdo no esta activado."
+                ]
+              );
             }
         }
       }

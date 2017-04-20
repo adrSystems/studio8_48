@@ -10,17 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 Route::get('/tips',function(){
   return view('cliente.vertips');
   });
 Route::get('/gestion_portafolio',function(){
   return view('admin.portafolio.gestion_portafolio');
-});
-Route::get('/gestion_video',function(){
-  return view('admin.portafolio.gestion_video');
-});
-Route::get('/portafolio_video',function(){
-  return view('admin.portafolio.portafolio_video');
 });
 Route::get('/tip/{id}','TipsController@Ver_tip');
 

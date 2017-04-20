@@ -602,8 +602,7 @@
             </a>
             <a href="" class="nav-item"><p>Promociones y concursos</p></a>
             <a href="/tips" class="nav-item"><p>Tips</p></a>
-            <a href="/portafolio" class="nav-item nav-dropdown" id="3"><p>Portafolio</p>
-                <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
+            <a href="/portafolio" class="nav-item"><p>Portafolio</p>
             </a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a href="#" class="nav-item nav-dropdown" id="1">
@@ -638,7 +637,6 @@
           <a href="/gestionartips">Gestión de Tips</a>
           <a href="#">Promociones y concursos</a>
           <a href="/gestion_portafolio">Portafolio</a>
-          <a href="/gestion_video">Portafolio video</a>
         </div>
         @endif
         <div class="nav-dropdown-child" id="2">
@@ -646,11 +644,7 @@
           <a href="/profesionales">Profesionales</a>
 
         </div>
-        <div class="nav-dropdown-child" id="3">
-          <a href="/portafolio">Imagenes</a>
-          <a href="/portafolio_video">Videos</a>
 
-        </div>
 
         <div class="menu">
           <h4 id="menu-title">Menú</h4>

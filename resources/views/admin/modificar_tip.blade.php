@@ -177,7 +177,10 @@ h3{
       <input placeholder="" type="file" tabindex="3" required accept="image/jpeg" name="imagen">
     </fieldset>
     <fieldset>
-      <textarea placeholder="Escribe el contenido del tip" tabindex="5" required name="contenido">{{$tip->cuerpo}}</textarea>
+      <textarea placeholder="Escribe el contenido del tip" tabindex="5" required name="contenido">{{$tip->contenido}}</textarea>
+    </fieldset>
+    <fieldset>
+      <input placeholder="Escribe la nueva categoria"  type="text" tabindex="1" required autofocus name="titulo" value="{{$tip->tipo}}">
     </fieldset>
     <fieldset>
       <button type="submit" id="contact-submit" data-submit="...Sending">Modificar Tip</button>

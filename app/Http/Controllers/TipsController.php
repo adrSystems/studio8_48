@@ -15,17 +15,17 @@ class TipsController extends Controller
     	}
         $tip = new Tip;
         $tip ->titulo=$request['titulo'];
-        $tip->cuerpo=$request['contenido'];
+        $tip->contenido=$request['contenido'];
         if($request->hasfile('imagen'))
         {
           $archivo=$request->imagen;
           $temp = $archivo->store('tips','public');
-          $tip->portada=$temp;
+          $tip->src=$temp;
         }
         else {
-          $tip->portada=null;
+          $tip->src=null;
         }
-        $tip->video=$request['video'];
+        $tip->tipo=$request['categoria'];
         $tip->save();
         return redirect('/tips');
 
@@ -54,19 +54,19 @@ class TipsController extends Controller
     	}
       $tip= Tip::find($request->id);
       $tip->titulo=$request->titulo;
-      $tip->cuerpo=$request->contenido;
+      $tip->contenido=$request->contenido;
       if($request->hasfile('imagen'))
       {
         $archivo=$request->imagen;
         $temp = $archivo->store('tips','public');
-        $tip->portada=$temp;
+        $tip->src=$temp;
       }
       else {
-        $tip->portada=null;
+        $tip->src=null;
       }
-      $tip->video=$request->video;
+      $tip->tipo=$request['categoria'];
       $tip->update();
-      return redirect('/gestionartips')->with('msg','Tip Modificado');
+      return redirect('/gestionartips')->with('msg2','Tip Modificado');
     }
 
 }

@@ -51,11 +51,11 @@ ul.fotos img {
 }
 
 .modal-content{
-  width: 700px;
+  width: 460px;
   background-color: rgba(0, 0, 0, 0.5);
 }
 #mod_img{
-  width: 580px;
+  width: 440px;
   height: 500px;
 }
 </style>
@@ -64,20 +64,20 @@ ul.fotos img {
 <br><br><br>
 <div class="container">
   <div class="row">
-    @foreach(App\Imagen::where('src','!=','null')->get() as $imagen)
+    @foreach(App\Portafolio::where('imagen','!=','null')->get() as $imagen)
     <ul class="fotos">
       <div class="col-xs-12 col-md-3">
-        <li><a href="#" data-toggle="modal" data-target="#id_modal{{$imagen->id}}"><img src="storage/{{$imagen->src}}" alt="" border="0"></a></li>
+        <li><a href="#" data-toggle="modal" data-target="#id_modal{{$imagen->id}}"><img src="storage/{{$imagen->imagen}}" alt="" border="0"></a></li>
         <li></li>
       </div>
       <div class="modal fade" id="id_modal{{$imagen->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
+                
               </button>
             <div class="modal-body">
-              <img id="mod_img" src="storage/{{$imagen->src}}" alt="">
+              <img id="mod_img" src="storage/{{$imagen->imagen}}" alt="">
             </div>
           </div>
         </div>

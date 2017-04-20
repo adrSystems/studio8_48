@@ -22,7 +22,7 @@ font-family: "Roboto", Helvetica, Arial, sans-serif;
 font-weight: 100;
 font-size: 12px;
 line-height: 30px;
-background: url('{{asset("img/covers/1.jpg")}}');
+background: url('{{asset("img/covers/4.jpg")}}');
 background-color: rgba(0, 0, 0, 0.5);
 
 
@@ -182,6 +182,9 @@ h3{
       <textarea placeholder="Escribe el contenido del tip" tabindex="5" required name="contenido"></textarea>
     </fieldset>
     <fieldset>
+      <input placeholder="Escribe la categoria del tip" type="text" tabindex="1" required autofocus name="categoria">
+    </fieldset>
+    <fieldset>
       <button type="submit" id="contact-submit" data-submit="...Sending">Subir Tip</button>
     </fieldset>
   </form>
@@ -205,6 +208,10 @@ h3{
       imagen:
       {
         required:true
+      },
+      categoria:
+      {
+        required:true
       }
     },
     messages:
@@ -220,7 +227,8 @@ h3{
       imagen:
       {
         required:"Debes subir una imagen"
-      }
+      },
+      categoria:"Debes completar este campo"
     }
   });
   $('#contact-submit').click(function(event){
