@@ -150,39 +150,41 @@ Studio8 48 -Login
 </style>
 @endsection
 @section('body')
-<div class="container" id="contenedor">
+<div class="main-container">
+  <div class="container" id="contenedor">
 
-  <div class="col-xs-12 col-md-6 login-container">
-    <h2 class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Iniciar Sesion</h2>
-    <form class="form-horizontal" id="form" method="post">
-      <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
-      <div class="input-container col-xs-11 col-xs-offset-1">
-         <label for="inputName" class="col-xs-12" style="padding:0">Email:</label>
-         <div class="col-xs-12" style="padding:0;">
-             <input type="email" class="input-login" placeholder="Escribe tu email" name="email">
-         </div>
-      </div>
-      <div class="input-container col-xs-11 col-xs-offset-1">
-         <label for="inputName" class="col-xs-12" style="padding:0">Contraseña:</label>
-         <div class="col-xs-12" style="padding:0;">
-             <input type="password" class="input-login" placeholder="Escribe tu contraseña" name="password">
-         </div>
-      </div>
-      <div class="input-container">
-        <div class="col-xs-offset-1 col-xs-11" style="padding:0">
-           <button type="submit" class="white-btn1" id="subir" style="margin:auto;">Iniciar Sesion</button>
+    <div class="col-xs-12 col-md-6 login-container">
+      <h2 class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Iniciar Sesion</h2>
+      <form class="form-horizontal" id="form" method="post">
+        <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
+        <div class="input-container col-xs-11 col-xs-offset-1">
+           <label for="inputName" class="col-xs-12" style="padding:0">Email:</label>
+           <div class="col-xs-12" style="padding:0;">
+               <input type="email" class="input-login" placeholder="Escribe tu email" name="email">
+           </div>
         </div>
-      </div>
-    </form>
-  </div>
-  <div class="col-xs-12 registro-container col-md-6">
-    <h4>¿No tienes una cuenta?</h4>
-    <a href="/registro" id="registro-btn">Registrate!</a>
-    <p class="" style="margin: 15px 0 15px 0;">o</p>
-    <a href="/social/facebook" class="facebook-btn" style="margin:auto;">
-      <img src="{{asset('img/facebook_logos/FB-f-Logo__white_29.png')}}" alt="">
-      Iniciar Sesión
-    </a>
+        <div class="input-container col-xs-11 col-xs-offset-1">
+           <label for="inputName" class="col-xs-12" style="padding:0">Contraseña:</label>
+           <div class="col-xs-12" style="padding:0;">
+               <input type="password" class="input-login" placeholder="Escribe tu contraseña" name="password">
+           </div>
+        </div>
+        <div class="input-container">
+          <div class="col-xs-offset-1 col-xs-11" style="padding:0">
+             <button type="submit" class="white-btn1" id="subir" style="margin:auto;">Iniciar Sesion</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="col-xs-12 registro-container col-md-6">
+      <h4>¿No tienes una cuenta?</h4>
+      <a href="/registro" id="registro-btn">Registrate!</a>
+      <p class="" style="margin: 15px 0 15px 0;">o</p>
+      <a href="/social/facebook" class="facebook-btn" style="margin:auto;">
+        <img src="{{asset('img/facebook_logos/FB-f-Logo__white_29.png')}}" alt="">
+        Iniciar Sesión
+      </a>
+    </div>
   </div>
 </div>
 @endsection

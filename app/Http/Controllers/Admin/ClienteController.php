@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Validator;
 use App\Cliente;
+use App\Pago;
+use App\Compra;
+use App\Producto;
 use App\User;
 use Carbon\Carbon;
 
@@ -43,7 +46,7 @@ class ClienteController extends Controller
       else $cliente->credito = 0;
       $cliente->save();
 
-      return back()->with('msg', ['title' => 'Acción satisfactoria!', 'body' => 'Cliente registrado correctamente.']);
+      return redirect('/admin/clientes/info/'.$cliente->id)->with('msg', ['title' => 'Acción satisfactoria!', 'body' => 'Cliente registrado correctamente.']);
     }
 
     public function getDetailsForMainView()
@@ -60,7 +63,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+          if($compra->pagos()->sum('cantidad') < $compra->monto()){
             $deudor=true;
           }
         }
@@ -93,7 +96,7 @@ class ClienteController extends Controller
             $deudor=true;
         }
         foreach ($cliente->compras as $compra) {
-          if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+          if($compra->pagos()->sum('cantidad') < $compra->monto()){
             $deudor=true;
           }
         }
@@ -175,13 +178,18 @@ class ClienteController extends Controller
 
       //determinar si es deudor
       $deudor = false;
+      $cliente->citas = $cliente->citas()->orderBy('fecha_hora','desc')->get();
+      $cliente->compras = $cliente->compras()->orderBy('fecha_hora','desc')->get();
       foreach ($cliente->citas as $cita) {
         $aPagar=0;
-        foreach ($cita->servicios() as $servicio) {
+        foreach ($cita->servicios as $servicio) {
           $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;
-        if($cita->pagos()->sum('cantidad') < $aPagar)
+        if($cita->estado == 5){
+          $cita->pagada = false;
+        }
+        elseif($cita->pagos()->sum('cantidad') < $aPagar)
         {
           $deudor=true;
           $cita->pagada = false;
@@ -189,17 +197,165 @@ class ClienteController extends Controller
         else $cita->pagada = true;
       }
       foreach ($cliente->compras as $compra) {
-        if($compra->pagos()->sum('cantidad') < $compra->productos()->sum('precio_venta')){
+        if($compra->pagos()->sum('cantidad') < $compra->monto()){
           $deudor=true;
         }
       }
 
       $cliente->esDeudor = $deudor;
-      $cliente->citas = $cliente->citas;
-      $cliente->compras = $cliente->compras;
-
       //por cada compra determinar monto y si fue pagada
 
-      return view('admin.clientes.info', ['cliente' => $cliente]);
+      return view('admin.clientes.info', [
+        'cliente' => $cliente,
+        'estados' => ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada']
+      ]);
     }
+
+    public function updateCredit(Request $request)
+    {
+      $cliente = Cliente::find($request->id);
+      if($cliente->credito) $cliente->credito = 0;
+      else $cliente->credito = 1;
+      $cliente->save();
+    }
+
+    public function edit(Request $request)
+    {
+      if(!$request->name){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el nombre. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->lastName){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el apellido. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->birthday){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar la fecha de nacimiento. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if($request->credito == null){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar si el cliente tendrá derecho a pagar a plazos y no hacerlo necesariamente en el momento. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+      if(!$request->tel){
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Debes especificar el celular o teléfono. Si no deseas hacer cambios de este campo haz click en descartar.'])
+        ->withInput();
+      }
+
+      $cliente = Cliente::find($request->id);
+
+      if(!$cliente)
+        return back()->with('msg', [
+          'title' => 'Ups!',
+          'body' => 'Ha ocurrido un error. Intente de nuevo.'])
+        ->withInput();
+
+      $cambios = [];
+      if($request->name == $cliente->nombre
+      and $request->lastName == $cliente->apellido
+      and $request->birthday == $cliente->fecha_nacimiento
+      and $request->tel == $cliente->telefono
+      and $request->credito == $cliente->credito)
+        return back()->with('msg', [
+          'title' => 'Nada ha pasado!',
+          'body' => 'No se detectaron cambios.'])
+        ->withInput();
+      if($request->name != $cliente->nombre){
+        $cliente->nombre = $request->name;
+        $cambios[] = "nombre";
+      }
+      if($request->lastName != $cliente->apellido){
+        $cliente->apellido = $request->lastName;
+        $cambios[] = "apellido";
+      }
+      if($request->birthday != $cliente->fecha_nacimiento){
+        $cliente->fecha_nacimiento = $request->birthday;
+        $cambios[] = "fecha de nacimiento";
+      }
+      if($request->tel != $cliente->telefono){
+        $cliente->telefono = $request->tel;
+        $cambios[] = "teléfono";
+      }
+      if($request->credito != $cliente->credito){
+        $cliente->credito = intval(boolval($request->credito));
+        $cambios[] = "credito";
+      }
+      $cliente->save();
+      $cambios[0] = ucfirst($cambios[0]);
+      $cambiosStr = "";
+      for ($i=0; $i < count($cambios); $i++)
+      {
+        if($i == count($cambios) - 1) $cambiosStr .= $cambios[$i].".";
+        else $cambiosStr .= $cambios[$i].", ";
+      }
+
+      return redirect('/admin/clientes/info/'.$cliente->id)->with('msg', [
+        'title' => 'Operación realizada correctamente!',
+        'body' => 'Cambios realizados en: '.$cambiosStr]);
+    }
+
+    public function registrarVenta(Request $request)
+    {
+      if(!$request->productos || !$request->clienteId)
+        return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+
+      if(!$cliente = Cliente::find($request->clienteId))
+        return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+
+      foreach ($request->productos as $key => $pJSON) {
+        $p = json_decode($pJSON);
+        $producto = Producto::find($p->id);
+        if($p->cantidad > $producto->existencia())
+          return back()->with('msg', ['title' => 'Ups!', 'body' => 'Ha ocurrido un error intente de nuevo.']);
+      }
+
+      $compra = new Compra;
+      $compra->cliente_id = $cliente->id;
+      $compra->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+      $compra->save();
+
+      foreach ($request->productos as $key => $pJSON) {
+        $p = json_decode($pJSON);
+        $producto = Producto::find($p->id);
+        $compra->productos()->attach($producto->id, ['precio_venta' => $producto->precio_venta, 'cantidad' => $p->cantidad]);
+      }
+      if($cliente->credito)
+      {
+        if($request->abono and $request->abono > 0)
+        {
+          $abono = new Pago;
+          $abono->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+          $abono->cantidad = $request->abono;
+          $abono->pagable_id = $compra->id;
+          $abono->pagable_type = Compra::class;
+          $abono->save();
+        }
+      }
+      else
+      {
+        $abono = new Pago;
+        $abono->fecha_hora = Carbon::now()->format('Y-m-d H:i:s');
+        $abono->cantidad = $compra->monto();
+        $abono->pagable_id = $compra->id;
+        $abono->pagable_type = Compra::class;
+        $abono->save();
+      }
+
+      return redirect('/admin/clientes/info/'.$cliente->id)->with(
+        'msg', [
+          'title' => 'Ok!',
+          'body' => 'Compra registrada con exito.'
+        ]);
+    }
+
 }

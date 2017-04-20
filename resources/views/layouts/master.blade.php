@@ -15,7 +15,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{{elixir('css/bootstrap.css')}}">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
-
         <!-- Styles -->
         <style>
             body{
@@ -66,7 +65,7 @@
             a.nav-item:link{
                 text-decoration: none;
             }
-            .footer{
+            body>.footer{
               background-color: #111;
               text-align: center;
               box-shadow: 0 0 10px 0 #000;
@@ -178,8 +177,8 @@
               color: white;
             }
             #nav-login{
-              float: right;
-              position: relative;
+              position: absolute;
+              right: 0;
               color: #ddd;
               padding: 0 20px 0 20px;
               border-left: 1px solid #333;
@@ -221,7 +220,9 @@
               text-shadow: 0px 0px 5px #fff;
             }
             #nav-user-info{
-              float: right;
+              position: absolute;
+              top: 0;
+              right: 0;
               height: 100%;
               padding: 10px 10px 10px 15px;
               border-left: 1px solid rgba(255,255,255,.1);
@@ -424,21 +425,382 @@
             .msg-container>.msg-card>.msg-footer>button:hover{
               box-shadow: 0 1px 2px #aaa;
             }
+            .switch-container{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container>hover{
+              color:#fff;
+            }
+            .switch-container>span{
+              float: left;
+            }
+            .switch-container>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid #fff;
+              position: absolute;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container>.switch-bar>.active{
+              left: 50%;
+              background-color: dodgerblue;
+            }
+            .switch-container-red{
+              background-color: #333;
+              float: right;
+              cursor: pointer;
+              text-align: center;
+              padding: 5px;
+              border-radius: 3px;
+            }
+            .switch-container-red>hover{
+              color:#fff;
+            }
+            .switch-container-red>span{
+              float: left;
+            }
+            .switch-container-red>.switch-bar{
+              background: #666;
+              margin-top: 3px;
+              margin-left: 6px;
+              float: left;
+              border: 1px solid rgba(255, 0, 0, 0.5);
+              border-radius: 10px;
+              position: relative;
+              width: 30px;
+              height: 15px;
+            }
+            .switch-container-red>.switch-bar>.switch-btn{
+              border-radius: 100%;
+              border: 1px solid rgba(0, 0, 0, 0.3);
+              position: absolute;
+              top: -1px;
+              height: 15px;
+              width: 15px;
+              -webkit-transition: left .4s, background-color .5s;
+            }
+            .switch-container-red>.switch-bar>.inactive{
+              left: 0;
+              background-color: transparent;
+            }
+            .switch-container-red>.switch-bar>.active{
+              left: 50%;
+              background-color: #f53;
+            }
+            .main-container{
+              float: left;
+              color: #bbb;
+              width: 100%;
+              margin-top: 100px;
+              margin-bottom: 40px;
+            }
+            .main-title{
+              font-family: 'Lobster Two';
+              color: #aaa;
+            }
+            .card{
+              box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+              border-radius: 3px;
+              border: 1px solid rgba(0, 0, 0, .09);
+              background-color: rgba(0, 0, 0, 0.5);
+              padding: 0;
+              padding-bottom: 15px;
+              overflow: hidden;
+            }
+            .card>.header>h4{
+              color: #fff;
+              font-family: 'Lobster Two';
+              padding: 15px;
+              margin: 0;
+            }
+            .card>.header{
+              background: linear-gradient(to bottom,rgba(255, 255, 255, 0.08),rgba(255, 255, 255, 0.04));
+              margin:0;
+              border-bottom: 1px solid rgba(0, 0, 0, 0.35);
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+              padding: 15px;
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 15px;
+              width: 110%;
+              margin-left: -5%;
+            }
+            .btn3{
+              background: linear-gradient(to bottom, rgba(255, 255, 255, .09), rgba(255, 255, 255, .04));
+              border: 1px solid #111;
+              color: #ddd;
+              text-shadow: 0 0 3px rgba(0, 0, 0, .8);
+              padding: 3px 15px 5px 15px;
+              font-size: 16px;
+              border-radius: 3px;
+              -webkit-transition: box-shadow .3s, color .4s, border .4s;
+            }
+            .btn3:hover{
+              box-shadow: 0 1px 3px #000;
+              color: gold;
+              border-color: goldenrod;
+            }
+            .textbox1{
+              background-color: rgba(0,0,0,.05);
+              box-shadow:inset 0 0 5px #000;
+              border: 1px solid rgba(255, 255, 255, 0.4);
+              color: #aaa;
+              border-radius: 5px;
+              padding: 4px 8px 4px 8px;
+              margin-bottom: 10px;
+              -webkit-transition: color .4s, background-color .3s, box-shadow .4s;
+            }
+            .textbox1-xs{
+              height: 35px;
+              padding-bottom: 7px;
+            }
+            .textbox1:hover{
+              background-color: rgba(255,255,255,.03);
+              border-color: rgba(255, 255, 255, 0.5);
+              color: #ccc;
+            }
+            .textbox1:focus{
+              background-color: rgba(0,0,0,.1);
+              box-shadow:inset 0 0 10px #000;
+              color: #fff;
+              text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+              outline: none;
+            }
+            ::-webkit-clear-button {
+              font-size: 14px;
+              height: 28px;
+              position: relative;
+              right: 5px;
+              margin-right: 4px;
+            }
+            ::-webkit-inner-spin-button {
+              height: 10px;
+              opacity: 0;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator {
+              font-size: 12px;
+              background-color: transparent;
+            }
+            ::-webkit-calendar-picker-indicator:hover{
+              color:#fff;
+            }
+            ::-webkit-datetime-edit-month-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-day-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            ::-webkit-datetime-edit-year-field:focus {
+              background-color: transparent;
+              color: goldenrod;
+            }
+            .nav-item>img{
+              float: left;
+              margin-top: 8px;
+              width: 100px;
+            }
+            #brand{
+              padding: 0;
+            }
+            .card1{
+              padding: 0;
+              overflow:hidden;
+              color: #578;
+              background-color: #fff;
+              border-radius: 5px;
+              border: 1px solid #bbb;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+              margin-bottom: 15px;
+            }
+            .card1>.header>h4{
+              color: #777;
+              font-family: 'Lobster Two';
+              padding: 15px;
+              margin: 0;
+            }
+            .card1>.header{
+              background-color: #ddd;
+              margin:0;
+              box-shadow: inset 0 -1px 2px #aaa;
+              padding: 15px;
+              padding-left: 5%;
+              padding-right: 5%;
+              margin-bottom: 15px;
+              width: 110%;
+              margin-left: -5%;
+            }
+            .cart-toggle{
+              position: fixed;
+              top: 60px;
+              right: 0;
+              z-index: 1;
+              cursor: pointer;
+              background-color: #eee;
+              border-left: 1px solid rgba(0, 0, 0, 0.2);
+              border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+              border-bottom-left-radius: 20px;
+              box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+              padding: 5px;
+              padding-left: 15px;
+            }
+            .cart-toggle>i{
+              float: left;
+              font-size: 21px;
+            }
+            .cart-toggle>span{
+              float: left;
+              border-radius: 3px;
+              background-color: dodgerblue;
+              color: white;
+              padding-left: 4px;
+              padding-right: 4px;
+            }
+            .cart-items{
+              position: fixed;
+              background-color: #eee;
+              border: 1px solid rgba(0, 0, 0, 0.2);
+              box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+              z-index: 1;
+              top: 100px;
+              right: 0;
+              width: 200px;
+              border-bottom-left-radius: 4px;
+              border-top-left-radius: 4px;
+              overflow: hidden;
+              -webkit-transition: right .6s;
+              right: -400px;
+            }
+            .cart-items>.items-body>.item{
+              float: left;
+              position: relative;
+              width: 100%;
+              margin-bottom: 5px;
+              padding: 5px;
+            }
+            .cart-items>.items-body>.item>.img-container{
+              width: 50px;
+              overflow: hidden;
+              border-radius: 3px;
+              float: left;
+            }
+            .cart-items>.items-body>.item>.img-container>img{
+
+            }
+            .cart-items>.items-body>.item>.info{
+              float: left;
+              padding: 0;
+              padding-left: 5px;
+            }
+            .cart-items>.header{
+              padding: 5px;
+              border-bottom: 1px solid rgba(0, 0, 0, .2);
+              box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+              margin-bottom: 10px;
+              background-color: rgba(0, 0, 0, .05);
+            }
+            .cart-items>.footer-cart{
+              padding: 10px;
+              border-top: 1px solid rgba(0, 0, 0, .2);
+              box-shadow: 0 -1px 1px rgba(0, 0, 0, .1);
+              margin-top: 10px;
+              background-color: rgba(0, 0, 0, .05);
+            }
+            #btn-cart-comprar{
+              background-color: dodgerblue;
+              color: #fff;
+            }
+            .remove-p{
+              font-size: 18px;
+              float: right;
+              margin-top: 3px;
+              cursor: pointer;
+            }
+            .center{
+              display: table;
+              text-align: center;
+              margin: auto;
+              width: auto;
+            }
+            #btn-cart-comprar{
+              cursor: pointer;
+              display: table;
+              border-radius: 5px;
+              padding-left: 8px;
+              padding-right: 8px;
+              -webkit-transition: box-shadow .5s;
+            }
+            #btn-cart-comprar:hover{
+              box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+            }
+            .modal-back{
+              display: none;
+            }
         </style>
         @yield('css')
     </head>
     <body>
+        <form class="" action="/productos/confirmarCompra" method="post" id="confirmar-compra">
+          <input type="hidden" name="_token" value="{{csrf_token()}}">
+        </form>
+
+        <div class="modal-back" id="confirmar-compra-modal-back">
+          <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
+            <div class="header">
+              <i class="close-btn material-icons">close</i>
+              <h4>Confirmar acción</h4>
+            </div>
+            <div class="body">
+              <p>Monto total: <b><span id="monto-cart-confirm"></span></b></p>
+              <p>¿Confirmar compra?</p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" name="button" id="comprar-btn"><i class="material-icons">attach_money</i>Confirmar</button>
+              <button type="button" name="button" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
+            </div>
+          </div>
+        </div>
+
         <nav class="nav-bar">
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="" class="nav-item"><p>Nosotros</p></a>
-            <a href="" class="nav-item"><p>Contacto</p></a>
-            <a href="" class="nav-item"><p>Productos</p></a>
-            <a href="" class="nav-item"><p>Servicios</p></a>
-            <a href="" class="nav-item"><p>Promociones y concursos</p></a>
-            <a href="" class="nav-item"><p>Tips</p></a>
-            <a href="" class="nav-item"><p>Portafolio</p></a>
+            <a href="/contacto" class="nav-item"><p>Contacto</p></a>
+            <a href="/productos" class="nav-item"><p>Productos</p></a>
+            <a href="/nosotros" class="nav-item nav-dropdown" id="2">
+              <p>Nosotros</p>
+              <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
+            </a>
+            <a href="/" class="nav-item"><p>Servicios</p></a>
+            <a href="/" class="nav-item" id="brand">
+              <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
+            </a>
+            <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
+            <a href="/tips" class="nav-item"><p>Tips</p></a>
+            <a href="/portafolio" class="nav-item"><p>Portafolio</p>
+            </a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a href="#" class="nav-item nav-dropdown" id="1">
               <p>Administración</p>
@@ -450,7 +812,7 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('img/profile_photos/'.Auth::user()->photo)}}" alt="">
+              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
               @else
               <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
               @endif
@@ -459,42 +821,83 @@
             @endif
         </nav>
 
-        @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
-        <div class="nav-dropdown-child" id="1">
-          <a href="#">Inventario</a>
-          <a href="#">Citas</a>
-          <a href="#">Gestion de productos</a>
-          <a href="#">Gestion de servicios</a>
-          <a href="/admin/clientes">Clientes</a>
-          <a href="/personal">Personal</a>
-          <a href="#">Gestión de Tips</a>
-          <a href="#">Promociones y concursos</a>
-          <a href="#">Portafolio</a>
+        @if($cart = session('cart'))
+        <div class="cart-toggle">
+          <i class="material-icons">shopping_cart</i>
+          <span>{{count($cart['productos'])}}</span>
+        </div>
+        <div class="cart-items">
+          <div class="col-xs-12 header">
+            <span class="btn-xs btn pull-right btn-danger descartar-cart">Descartar todo</span>
+          </div>
+          <div class="items-body">
+            @foreach($cart['productos'] as $i => $p)
+            <div class="item" style="@if($i%2 == 0){{'background-color:#fff'}}@endif">
+              <div class="img-container">
+                <img src="{{$p['foto']}}" alt="" width="100%">
+              </div>
+              <div class="info">
+                <p style="">
+                  {{$p['nombre']}}<br><span class="cant">({{$p['cantidad']}})</span>
+                  <span>
+                    <i class="material-icons remove-p" id="{{$p['id']}}">remove_circle</i>
+                  </span>
+                </p>
+              </div>
+            </div>
+            @endforeach
+          </div>
+          <div class="col-xs-12 footer-cart">
+            <div class="col-xs-12">
+              <p id="monto-cart" style="text-align:center">${{$cart['monto']}}</p>
+            </div>
+            <div class="center" id="btn-cart-comprar">Comprar</div>
+          </div>
         </div>
         @endif
+
+        @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
+        <div class="nav-dropdown-child" id="1">
+          <a href="/admin/inventario">Inventario</a>
+          <a href="/admin/servicios">Gestion de servicios</a>
+          <a href="/admin/clientes">Clientes</a>
+          <a href="/personal">Personal</a>
+          <a href="/admin/promociones">Promociones</a>
+          <a href="/admin/concursos">Concursos</a>
+          <a href="/portafolio">Portafolio</a>
+          <a href="/subir_contenido">Subir contenido</a>
+          <a href="/subirtip">Subir Tip</a>
+          <a href="/gestionartips">Gestión de Tips</a>
+          <a href="/gestion_portafolio">Portafolio</a>
+        </div>
+        @endif
+        <div class="nav-dropdown-child" id="2">
+          <a href="/contacto">Contacto</a>
+          <a href="/profesionales">Profesionales</a>
+        </div>
+
 
         <div class="menu">
           <h4 id="menu-title">Menú</h4>
           <i class="material-icons" id="hide-menu-btn">keyboard_arrow_left</i>
           <div class="">
-            <a href="" class="menu-item"><p>Nosotros</p></a>
-            <a href="" class="menu-item"><p>Contacto</p></a>
-            <a href="" class="menu-item"><p>Productos</p></a>
+            <a href="/nosotros" class="menu-item"><p>Nosotros</p></a>
+            <a href="/contacto" class="menu-item"><p>Contacto</p></a>
+            <a href="/productos" class="menu-item"><p>Productos</p></a>
             <a href="" class="menu-item"><p>Servicios</p></a>
-            <a href="" class="menu-item"><p>Promociones y concursos</p></a>
-            <a href="" class="menu-item"><p>Tips</p></a>
-            <a href="" class="menu-item"><p>Portafolio</p></a>
+            <a href="/promociones_concursos" class="menu-item"><p>Promociones y concursos</p></a>
+            <a href="/tips" class="menu-item"><p>Tips</p></a>
+            <a href="/portafolio" class="menu-item"><p>Portafolio</p></a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
-            <a href="#" class="menu-item-children" id="1">Inventario</a>
-            <a href="#" class="menu-item-children" id="1">Citas</a>
-            <a href="#" class="menu-item-children" id="1">Gestión de productos</a>
-            <a href="#" class="menu-item-children" id="1">Gestion de servicios</a>
+            <a href="/admin/inventario" class="menu-item-children" id="1">Inventario</a>
+            <a href="/admin/servicios" class="menu-item-children" id="1">Gestion de servicios</a>
             <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
-            <a href="#" class="menu-item-children" id="1">Gestión de Tips</a>
-            <a href="#" class="menu-item-children" id="1">Promociones y concursos</a>
-            <a href="#" class="menu-item-children" id="1">Portafolio</a>
+            <a href="/gestionartips" class="menu-item-children" id="1">Gestión de Tips</a>
+            <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
+            <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
+            <a href="/gestion_portafolio" class="menu-item-children" id="1">Portafolio</a>
             @endif
           </div>
         </div>
@@ -502,9 +905,14 @@
         @if(Auth::check())
         <div class="" id="user-menu">
           <p>{{Auth::user()->cuentable->nombre}}<br>{{Auth::user()->email}}</p>
-          <a href="#">Mi cuenta</a>
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
-          <a href="#">Mi historial</a>
+          <a href="/micuenta/{{Auth::user()->id}}">Mi cuenta</a>
+          @else
+
+          <a href="/micuentaE/{{Auth::user()->id}}">Mi cuenta</a>
+          @endif
+
+          @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
           @endif
           <a href="/logout" id="logout-btn">Salir</a>
         </div>
@@ -534,12 +942,131 @@
             <p>?</p>
           </a>
         </div>
-
+        <script src="{{elixir('js/app.js')}}"></script>
         <script src="{{elixir('js/jquery-3.1.1.min.js')}}"></script>
+        <script type="text/javascript" src="{{elixir ('js/jquery.validate.js') }}"></script>
+        <script type="text/javascript" src="{{elixir('js/bootstrap.js')}}"></script>
 
+
+        </script>
         <script>
+            if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+              $('body').children('.footer').css({
+                position:'absolute',
+                bottom:'0'
+              });
+            }
+            else{
+              $('body').children('.footer').css({
+                position:'relative'
+              });
+            }
+
             $(document).ready(function(){
+
+              function showModal(id) {
+                $modal = $(id)
+                $modal.fadeIn();
+                $children = $modal.children('.modal-black-card');
+                $children.fadeIn(400);
+                $children.css('-webkit-transform','scale(1)');
+              }
+
+              function closeModal(modalId){
+                $parent = $(modalId).children('.modal-black-card')
+                $parent.css('-webkit-transform','scale(.7)');
+                $parent.fadeOut(400, function () {
+                  $parent.parent().fadeOut();
+                });
+              }
+
+              $('#comprar-btn').click(function () {
+                $('form#confirmar-compra').submit()
+              })
+
+              $('#btn-cart-comprar').click(function () {
+                $('#monto-cart-confirm').text($('#monto-cart').text())
+                showModal('#confirmar-compra-modal-back')
+              })
+
+              $('.descartar-cart').click(function () {
+                $.ajax({
+                  url:"/productos/descartar-cart",
+                  type:"post",
+                  data:{
+                    _token:"{{csrf_token()}}"
+                  }
+                }).done(function(){
+                  $('.cart-toggle').remove()
+                  $('.cart-items').remove()
+                })
+              })
+
+              $('.cart-toggle').click(function () {
+                if($('.cart-items').css('right') == '0px')
+                  $('.cart-items').css('right','-400px')
+                else $('.cart-items').css('right','0px')
+              })
+
+              $('.remove-p').click(function () {
+                var $this = $(this)
+                $.ajax({
+                  url:"/productos/remove-from-cart",
+                  type:"post",
+                  dataType:"json",
+                  data:{
+                    _token:"{{csrf_token()}}",
+                    id: $this.attr('id')
+                  }
+                }).done(function (response){
+                  if(response.totalCount < 1)
+                  {
+                    $('.cart-toggle').hide()
+                    $('.cart-items').hide()
+                    $('.cart-items').children('.item').remove()
+                  }
+                  else {
+                    if(response.count < 1)
+                      $this.parent().parent().parent().parent().remove()
+                    else $this.parent().parent().children('.cant').text('('+response.count+')')
+                    $('#monto-cart').text('$'+response.monto)
+                  }
+                })
+              })
+
+                $('input.phone').keypress(function (e) {
+                   if(!$.isNumeric(e.key) || $(this).val().length > 20){
+                     e.preventDefault();
+                   }
+                })
+
                 $('.main-cover').width('100%');
+
+                $('.switch-container').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
+
+                $('.switch-container-red').click(function () {
+                  if($(this).children('.switch-bar').children('.switch-btn').css('left') != '0px'){
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('active');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('inactive');
+                    $(this).attr('active','0');
+                  }
+                  else{
+                    $(this).children('.switch-bar').children('.switch-btn').removeClass('inactive');
+                    $(this).children('.switch-bar').children('.switch-btn').addClass('active');
+                    $(this).attr('active','1');
+                  }
+                });
 
                 function showMsg(title, body) {
                   $('#general-msg').show(0);
@@ -553,9 +1080,10 @@
                   });
                 }
 
-                if($(this).width() < 576){
+                if($(this).width() < 1196){
                   $('.menu-btn').css('display','initial');
                   $('.nav-item').hide();
+                  $('#brand').show();
                 }
                 else{
                   $('.menu-btn').css('display','none');
@@ -567,14 +1095,26 @@
                 $('.user-photo').slideDown("slow");
 
                 $(window).resize(function () {
-                  if($(this).width() < 576){
+                  if($(this).width() < 1196){
                     $('.menu-btn').css('display','initial');
                     $('.nav-item').hide();
+                    $('#brand').show();
                   }
                   else{
                     $('.menu').css('left','-200px');
                     $('.menu-btn').css('display','none');
                     $('.nav-item').show();
+                  }
+                  if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+                    $('body').children('.footer').css({
+                      position:'absolute',
+                      bottom:'0'
+                    });
+                  }
+                  else{
+                    $('body').children('.footer').css({
+                      position:'relative'
+                    });
                   }
                 });
 
@@ -634,6 +1174,7 @@
                 });
             });
         </script>
+
         @yield('js')
     </body>
 </html>
