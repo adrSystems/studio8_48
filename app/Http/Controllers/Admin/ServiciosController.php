@@ -14,11 +14,25 @@ class ServiciosController extends Controller
       if ($request->isMethod('GET')) {
         return view ('admin.servicios');
       }
-      $rules=['icono'=>'required|mimes:jpeg,bmp,png,jpg','nombre'=>'required','precion'=>'required|numeric','duracion'=>'required|numeric'];
-      $validacion = Validator::make($request->all(),$rules);
+      $rules=[
+        'icono'=>'required|mimes:jpeg,bmp,png,jpg',
+        'nombre'=>'required',
+        'precio'=>'required|numeric|between:0,100000000000000',
+        'duracion'=>'required'
+      ];
+      $messages=[
+        'icono.required'=>'El icono del servicio es requerido',
+        'icono.mimes'=>'El icono del servicio debe tener estos formatos: jpeg,bmp,png,jpg',
+        'nombre.required'=>'El nombre del servicio es requerido.',
+        'precio.required'=>'El precio del servicio es requerido.',
+        'precio.numeric'=>'El campo precio no acepta letras.',
+        'precio.between'=>'El campo precio no acepta numeros negativos.',
+        'duracion.required'=>'La duracion de un servicio es requerido.'
+      ];
+      $validacion = Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
       {
-        return back()->with('error',['titulo'=>'Error','cuerpo'=>'Error'])->withInput();
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $file = $request->file('icono');
       $temp = $file->store('IconosServicios','public');
@@ -35,6 +49,25 @@ class ServiciosController extends Controller
       if($request->isMethod('GET'))
       {
         return view ('admin.servicios');
+      }
+      $rules=[
+        'icono'=>'mimes:jpeg,bmp,png,jpg',
+        'nombre'=>'required',
+        'precio'=>'required|numeric|between:0,100000000000000',
+        'duracion'=>'required'
+      ];
+      $messages=[
+        'icono.mimes'=>'El icono del servicio debe tener estos formatos: jpeg,bmp,png,jpg',
+        'nombre.required'=>'El nombre del servicio es requerido.',
+        'precio.required'=>'El precio del servicio es requerido.',
+        'precio.numeric'=>'El campo precio no acepta letras.',
+        'precio.between'=>'El campo precio no acepta numeros negativos.',
+        'duracion.required'=>'La duracion de un servicio es requerido.'
+      ];
+      $validacion = Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails())
+      {
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $servicio = Servicio::find($request->id);
       if($request->file('icono'))

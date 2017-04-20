@@ -11,7 +11,7 @@ Editar
     margin-top: 40%;
   }
   .servicio{
-    margin-top: 100px;
+    margin-top: 80px;
   }
   .panel{
     border: 0px;
@@ -19,27 +19,27 @@ Editar
   }
   .panel-heading{
     background-color: #1F1F1F;
-    color: #ed5;
     font-family: 'Lobster Two';
+    color: white;
+    height: 100px;
+    text-align: left;
+    margin: 0;
   }
   img{
     width: 25%;
   }
-  i{
+  .icono{
     float: left;
   }
-  .volver{
-    margin-top: -20px;
-    text-decoration: none;
-    color: white;
-    background-color: #3F3F3F;
-    font-size: 16px;
-    padding: 10px;
-    border-radius: 2px;
+  .panel-title{
+    font-size: 20px;
+    margin-top: 30px;
   }
-  .volver:hover{
-    box-shadow: 5px 5px 2px #888888;
-    color: white;
+  .panel-body{
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+  .footer{
+    margin-top: 80px;
   }
 </style>
 @endsection
@@ -47,10 +47,8 @@ Editar
 {{$servicio}}
 <div class="container">
   <div class="col-md-12 servicio">
-    <div class="col-xs-offset-7 col-xs-4">
-      <a href="/admin/servicios" class="volver"><i class="material-icons">arrow_back</i>Volver a Servicios</a>
-    </div>
     <div class="col-xs-offset-3 col-xs-6">
+      <a href="/admin/servicios" class="btn btn-back pull-right" style="margin-top: 20px;"><i class="material-icons" style="float: left;">arrow_back</i>Volver a servicios</a>
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">Editar el servicio: <b>{{$servicio->nombre}}</b></h3>
@@ -91,7 +89,7 @@ Editar
               </select>
             </div>
             <div class="pull-right">
-              <button type="submit" name="button" class="btn"><i class="material-icons">save</i>Guardar</button>
+              <button type="submit" name="button" class="btn"><i class="material-icons icono">save</i>Guardar</button>
             </div>
           </form>
         </div>
