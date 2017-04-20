@@ -203,11 +203,17 @@
               text-decoration: none;
             }
             .user-photo{
-              height: 75%;
-              border-radius: 100%;
-              width: auto;
-              margin-top: -19px;
-              display: none;
+                float: left;
+                height: 30px;
+                border-radius: 100%;
+                margin-top: 5px;
+                width: 30px;
+                display: none;
+                overflow: hidden;
+                margin-right: 5px;
+            }
+            .user-photo>img{
+              width: 100%;
             }
             #user-options{
               cursor: pointer;
@@ -812,9 +818,13 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+              <div class="user-photo">
+                <img src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+              </div>
               @else
-              <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              <div class="user-photo">
+                <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              </div>
               @endif
               <i class="material-icons down" id="user-options">keyboard_arrow_down</i>
             </div>
