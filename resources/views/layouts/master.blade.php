@@ -638,7 +638,7 @@
             <a href="/" class="nav-item"><p>Nosotros</p></a>
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="" class="nav-item"><p>Productos</p></a>
-            <a href="" class="nav-item"><p>Servicios</p></a>
+            <a href="/servicios" class="nav-item"><p>Servicios</p></a>
             <a href="/" class="nav-item" id="brand">
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
             </a>
@@ -687,7 +687,7 @@
             <a href="" class="menu-item"><p>Nosotros</p></a>
             <a href="" class="menu-item"><p>Contacto</p></a>
             <a href="" class="menu-item"><p>Productos</p></a>
-            <a href="" class="menu-item"><p>Servicios</p></a>
+            <a href="/servicios" class="menu-item"><p>Servicios</p></a>
             <a href="" class="menu-item"><p>Promociones y concursos</p></a>
             <a href="" class="menu-item"><p>Tips</p></a>
             <a href="" class="menu-item"><p>Portafolio</p></a>

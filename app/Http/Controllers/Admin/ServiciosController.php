@@ -25,8 +25,8 @@ class ServiciosController extends Controller
         'icono.mimes'=>'El icono del servicio debe tener estos formatos: jpeg,bmp,png,jpg',
         'nombre.required'=>'El nombre del servicio es requerido.',
         'precio.required'=>'El precio del servicio es requerido.',
-        'precio.numeric'=>'El precio deben ser puros numeros.',
-        'precio.between'=>'No puede haber precios negativos.',
+        'precio.numeric'=>'El campo precio no acepta letras.',
+        'precio.between'=>'El campo precio no acepta numeros negativos.',
         'duracion.required'=>'La duracion de un servicio es requerido.'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
@@ -60,8 +60,8 @@ class ServiciosController extends Controller
         'icono.mimes'=>'El icono del servicio debe tener estos formatos: jpeg,bmp,png,jpg',
         'nombre.required'=>'El nombre del servicio es requerido.',
         'precio.required'=>'El precio del servicio es requerido.',
-        'precio.numeric'=>'El precio deben ser puros numeros.',
-        'precio.between'=>'No puede haber precios negativos.',
+        'precio.numeric'=>'El campo precio no acepta letras.',
+        'precio.between'=>'El campo precio no acepta numeros negativos.',
         'duracion.required'=>'La duracion de un servicio es requerido.'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);

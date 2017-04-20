@@ -146,7 +146,10 @@ Route::get('/servicio/editar/{id?}',function($id=null){
   return redirect ('/admin/servicios');
   if(!$servicio = \App\Servicio::find($id))
   return redirect ('/admin/servicios');
-  return view ('admin.servicio.editar',['servicio'=>$servicio]);
+  return view ('admin.servicio.edit',['servicio'=>$servicio]);
+});
+Route::get('/servicios',function(){
+  return view ('cliente.servicios');
 });
 Route::match(['GET','POST'], '/servicio/editar','Admin\ServiciosController@editar');
 Route::get('/servicio/eliminar/{id?}',function($id = null){
