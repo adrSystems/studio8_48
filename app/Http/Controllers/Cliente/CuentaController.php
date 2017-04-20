@@ -12,6 +12,7 @@ use Redirect;
 use Session;
 use Socialite;
 use Validator;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\CodigoVerificacion;
 
@@ -33,7 +34,10 @@ class CuentaController extends Controller
       $cuenta=new User;
       $cliente=new Cliente;
       $cliente->nombre=$usuario['name'];
-      $cliente->telefono=839114442;
+      $cliente->apellido=$usuario['name'];
+      $cliente->telefono=0;
+      $cliente->fecha_registro=carbon::now();
+      $cliente->credito=0;
       $cliente->save();
       $cuenta->email=$usuario['email'];
       $cuenta->password= Hash::make($usuario['id']);
@@ -43,7 +47,7 @@ class CuentaController extends Controller
       $cuenta->codigo_registro=null;
       $cuenta->cuentable()->associate($cliente);
       $cuenta->save();
-      Auth::login($user);
+      Auth::login($cuenta);
       return redirect ('/');
     }
     else{
@@ -87,6 +91,15 @@ class CuentaController extends Controller
                     "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
                   ]
                 );
+            }
+            if(!$user->active)
+            {
+              return back()->with("msg",
+                [
+                  'title' => 'Error.',
+                  "body" =>"El email ingresdo no esta activado."
+                ]
+              );
             }
         }
       }
@@ -132,6 +145,9 @@ class CuentaController extends Controller
           $registro_cliente->nombre=$request['nombre'];
           $registro_cliente->apellido=$request['apellidos'];
           $registro_cliente->fecha_nacimiento=$request['fecha'];
+          $registro_cliente->telefono=$request['telefono'];
+          $registro_cliente->fecha_registro=carbon::now();
+          $registro_cliente->credito=0;
           $registro_cliente->save();
         	$registro->email=$request['email'];
         	$registro->password= hash::make($request['pass']);
@@ -153,7 +169,7 @@ class CuentaController extends Controller
           $registro->cuentable()->associate($registro_cliente);
       	  $registro->save();
           Mail::to($request->email)->send(new CodigoVerificacion($codigo));
-          return redirect('/login')->with("msg",['title' => 'Error.',"body" =>"Esta cuenta ya está registrada con facebook"]);
+            return redirect("/login")->with("msg",['title' => 'Aviso.',"body" =>"Revisa tu correo para activar tu cuenta."]);
         }
     }
 

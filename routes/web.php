@@ -11,6 +11,46 @@
 |
 */
 
+Route::get('/tips',function(){
+  return view('cliente.vertips');
+  });
+Route::get('/gestion_portafolio',function(){
+  return view('admin.portafolio.gestion_portafolio');
+});
+Route::get('/tip/{id}','TipsController@Ver_tip');
+
+Route::get('/gestionartips',function(){
+  return view('admin.gestion_tip');
+});
+
+Route::match(['GET','POST'],'/subir_contenido','PortafolioController@Subir_contenido');
+
+Route::get('/portafolio',function(){
+  return view('admin.portafolio.ver_portafolio');
+});
+Route::get('/borrar_imagen/{id}','PortafolioController@Eliminar_imagen');
+Route::get('/borrar_video/{id}','PortafolioController@Eliminar_video');
+
+Route::get('/borrartip/{id}','TipsController@Eliminar');
+
+Route::get('/modificartip/{id}','TipsController@Modificar');
+Route::match(['GET','POST'],'/modificartip','TipsController@Modificar_tip');
+
+Route::match(['GET','POST'],'/subirtip','TipsController@Subir_tip');
+Route::get('/nosotros',function(){
+    return view ('cliente.nosotros');
+});
+Route::get('/contacto',function(){
+    return view ('cliente.contacto');
+});
+route::get('/profesionales',function(){
+    return view('cliente.profesionales');
+});
+
+Route::get('/p',function(){
+  return view('cliente.prueba');
+});
+
 Route::get('/',function (){
   if(\App\Empleado::count() < 1){
     if(\App\Rol::count() < 1){

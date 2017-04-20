@@ -15,8 +15,6 @@
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="{{elixir('css/bootstrap.css')}}">
         <link href="{{elixir('css/app.css')}}" type="text/css" rel="stylesheet">
-
-
         <!-- Styles -->
         <style>
             body{
@@ -789,16 +787,21 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="/" class="nav-item"><p>Nosotros</p></a>
             <a href="" class="nav-item"><p>Contacto</p></a>
             <a href="/productos" class="nav-item"><p>Productos</p></a>
+            <a href="/nosotros" class="nav-item nav-dropdown" id="2">
+              <p>Nosotros</p>
+              <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
+            </a>
+            <a href="" class="nav-item"><p>Productos</p></a>
             <a href="" class="nav-item"><p>Servicios</p></a>
             <a href="/" class="nav-item" id="brand">
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
             </a>
             <a href="/promociones_concursos" class="nav-item"><p>Promociones y concursos</p></a>
-            <a href="" class="nav-item"><p>Tips</p></a>
-            <a href="" class="nav-item"><p>Portafolio</p></a>
+            <a href="/tips" class="nav-item"><p>Tips</p></a>
+            <a href="/portafolio" class="nav-item"><p>Portafolio</p>
+            </a>
             @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
             <a href="#" class="nav-item nav-dropdown" id="1">
               <p>Administración</p>
@@ -810,9 +813,9 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+              <img class="user-photo" src="{{asset('storage/perfil/'.Auth::user()->photo)}}" alt="">
               @else
-              <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              <img class="user-photo" src="{{asset('storage/perfil/default.gif')}}" alt="">
               @endif
               <i class="material-icons down" id="user-options">keyboard_arrow_down</i>
             </div>
@@ -861,18 +864,27 @@
           <a href="/admin/servicios">Gestion de servicios</a>
           <a href="/admin/clientes">Clientes</a>
           <a href="/personal">Personal</a>
-          <a href="#">Gestión de Tips</a>
           <a href="/admin/promociones">Promociones</a>
           <a href="/admin/concursos">Concursos</a>
           <a href="#">Portafolio</a>
+          <a href="/subir_contenido">Subir contenido</a>
+          <a href="/subirtip">Subir Tip</a>
+          <a href="/gestionartips">Gestión de Tips</a>
+          <a href="/gestion_portafolio">Portafolio</a>
         </div>
         @endif
+        <div class="nav-dropdown-child" id="2">
+          <a href="/contacto">Contacto</a>
+          <a href="/profesionales">Profesionales</a>
+
+        </div>
+
 
         <div class="menu">
           <h4 id="menu-title">Menú</h4>
           <i class="material-icons" id="hide-menu-btn">keyboard_arrow_left</i>
           <div class="">
-            <a href="" class="menu-item"><p>Nosotros</p></a>
+            <a href="/nosotros" class="menu-item"><p>Nosotros</p></a>
             <a href="" class="menu-item"><p>Contacto</p></a>
             <a href="/productos" class="menu-item"><p>Productos</p></a>
             <a href="" class="menu-item"><p>Servicios</p></a>
@@ -937,7 +949,11 @@
         </div>
         <script src="{{elixir('js/app.js')}}"></script>
         <script src="{{elixir('js/jquery-3.1.1.min.js')}}"></script>
+        <script type="text/javascript" src="{{elixir ('js/jquery.validate.js') }}"></script>
+        <script type="text/javascript" src="{{elixir('js/bootstrap.js')}}"></script>
 
+
+        </script>
         <script>
             if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
               $('body').children('.footer').css({
@@ -1163,6 +1179,7 @@
                 });
             });
         </script>
+
         @yield('js')
     </body>
 </html>

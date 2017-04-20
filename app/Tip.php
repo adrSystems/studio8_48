@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tip extends Model
 {
-    //
+    public $timestamps = false;
 }
