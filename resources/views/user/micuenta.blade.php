@@ -222,6 +222,7 @@ Mi cuenta
       <a href="#"><img class="a-image" src="{{asset('storage/'.Auth::user()->photo)}}" alt=""></a>
       <form class="horizontal" action="/subirfoto" method="post" enctype="multipart/form-data">
         <div class="form-group">
+          {{csrf_field()}}
           <input type="file" id="file" class="inputfile form-control" name="foto" value="">
           <label for="file">Cambiar foto de perfil</label>
           <button type="submit" name="button" class="btn"><i class="material-icons icons">camera</i>Subir foto de perfil</button>
@@ -256,6 +257,13 @@ Mi cuenta
 
       <div class="detalles-cuenta">
       <div class="perfil">
+        @if(Session::has('error'))
+          @foreach(Session::get('error') as  $error)
+            <div class="alert alert-danger" role="alert" style="text-align: center;">
+              {{$error}}
+            </div>
+          @endforeach
+        @endif
         <div class="panel-group" id="accordion">
 
           <div class="panel">
@@ -311,7 +319,7 @@ Mi cuenta
               </div>
             </div>
           </div>
-
+          @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
           <div class="panel">
             <div class="panel-heading">
               <h3 class="panel-title">Teléfono: {{Auth::user()->cuentable->telefono}} <a href="#telefono" class="pull-right" data-toggle="collapse" data-parent="#accordion"><i class="material-icons icons">edit</i></a></h3>
@@ -328,7 +336,7 @@ Mi cuenta
                       Teléfono:
                     </div>
                     <div class="col-xs-offset-1 col-md-offset-1 col-xs-7 col-md-7">
-                      <input type="text" name="telefono" value="{{Auth::user()->cuentable->telefono}}" class="form-control">
+                      <input type="text" name="telefono" value="{{Auth::user()->cuentable->telefono}}" class="form-control" maxlength="10">
                       <div class="pull-right">
                         <button type="submit" name="button" class="btn">Guardar cambios</button>
                       </div>
@@ -338,25 +346,36 @@ Mi cuenta
               </div>
             </div>
           </div>
+           @endif
 
           <div class="panel">
             <div class="panel-heading">
               <h3 class="panel-title">Fecha de nacimiento: {{Auth::user()->cuentable->fecha_nacimiento}} <b>({{\Carbon\Carbon::createFromFormat('Y-m-d',Auth::user()->cuentable->fecha_nacimiento)->diffInYears(\Carbon\Carbon::now())}}años)</b></h3>
             </div>
           </div>
-
+          @if(Auth::user()->cuentable_type==strval(App\Empleado::class))
+          <div class="panel">
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                Rol(es):
+                @foreach($roles as $rol)
+                <p><b>{{$rol}}</b></p>
+                @endforeach
+              </h3>
+            </div>
+          </div>
+          @endif
         </div>
       </div>
 
       @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
       <div class="mensajes">
         @if(Session::has('msg'))
-          <div class="alert alert-danger" role="alert">
-            <div class="error">
-              <h3>{{Session('msg')['title']}}</h3>
-              <p><b>{{Session('msg')['body']}}</b></p>
-            </div>
+        @foreach(Session::get('msg') as $error)
+          <div class="alert alert-danger" role="alert" style="text-align: center;">
+              <p><b>{{$error}}</b></p>
           </div>
+        @endforeach
         @endif
         <div class="panel">
           <div class="panel-heading heading-dark">

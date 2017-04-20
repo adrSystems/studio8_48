@@ -19,16 +19,14 @@ class ClienteController extends Controller
       {
         return view('user.micuenta');
       }
-      if(!$request->contenido){
-          return back()->with('msg',['title'=>'Error','body'=>'Debe enviar un mensaje.']);
-      }
-      $rules=['contenido'=>'required|min:3'];
+      $rules=['contenido'=>'required|digits:3'];
       $messages=[
-        'contenido.required'=>'El campo de mensaje no puede estar vacio.'
+        'contenido.required'=>'El campo de mensaje no puede estar vacio.',
+        'contenido.digits'=>'El mensaje al menos debe contener 3 digitos'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
       if($validacion->fails()){
-        return back ()->with('msg', ['title' => 'Error', 'body' => 'Debe ']);
+        return back ()->with('msg',$validacion->messages()->all())->withInput();
       }
       $datetim= Carbon::now();
       $mensaje = new Mensaje;
@@ -46,14 +44,15 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
-      $rules= ['nombre'=>'required'];
-      $validacion= Validator::make($request->all(),$rules);
+      $rules= [
+        'nombre'=>'required'
+      ];
+      $messages=[
+        'nombre.required'=>'No puede dejar el campo de nombre vacio.'];
+      $validacion= Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
       {
-        return back()->with('error',[
-          'titulo'=>'Error!',
-          'cuerpo'=>'El campo nombre es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo'
-        ]);
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -75,14 +74,15 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
-      $rules= ['apellido'=>'required'];
-      $validacion= Validator::make($request->all(),$rules);
+      $rules= [
+        'apellido'=>'required'
+      ];
+      $messages=[
+        'apellido.required'=>'No puede dejar el campo de apellido vacio.'];
+      $validacion= Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
       {
-        return back()->with('error',[
-          'titulo'=>'Error!',
-          'cuerpo'=>'El campo apellido es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
-        ]);
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -105,14 +105,18 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
-      $rules= ['telefono'=>'required'];
-      $validacion= Validator::make($request->all(),$rules);
+      $rules= [
+        'telefono'=>'required|numeric|digits_between:7,10'
+      ];
+      $messages=[
+        'telefono.required'=>'No puede dejar el campo de teléfono vacio',
+        'telefono.numeric'=>'No puede agregar un numero de telefono con letras o caracteres especiales.',
+        'telefono.digits_between'=>'El numero de telefono debe tener al menos 7 digitos o maximo 10.'
+      ];
+      $validacion= Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
       {
-        return back()->with('error',[
-          'titulo'=>'Error!',
-          'cuerpo'=>'El campo telefono es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
-        ]);
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $cliente = Cliente::find(\Auth::user()->id);
       $cliente->telefono=$request->telefono;
@@ -228,10 +232,14 @@ class ClienteController extends Controller
         return redirect ('/');
       }
       $citas = [];
+      $roles = [];
       foreach ($empleado->citas as $cita) {
         array_push($citas,$cita);
       }
-      return view ('user.micuenta',['citas'=>$citas]);
+      foreach ($empleado->roles as $rol){
+        array_push($roles,$rol->nombre);
+      }
+      return view ('user.micuenta',['citas'=>$citas,'roles'=>$roles]);
     }
     public function cancelarCita(Request $request)
     {

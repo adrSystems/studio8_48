@@ -309,4 +309,8 @@ Route::get('/productos',function () {
   return view('productos.catalogo', ['categorias' => $categorias, 'subcategorias' => $subcategorias]);
 });
 Route::post('/productos/catalogo/filtrar','Admin\CompraController@filterProducts');
-//
+
+//servicios
+Route::get('/servicios',function(){
+  return view ('cliente.servicios');
+});
