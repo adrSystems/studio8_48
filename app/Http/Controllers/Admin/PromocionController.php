@@ -17,16 +17,24 @@ class PromocionController extends Controller
         return view ('admin.promociones');
       }
       $rules=[
-      'fecha_inicio'=>'required',
-      'fecha_fin'=>'required',
-      'descuento'=>'required|numeric'];
-      $validacion=Validator::make($request->all(),$rules);
-      if($validacion->fails())
-      {
-        return back()->with('error',[
-          'titulo'=>'Error',
-          'cuerpo'=>'Datos incorrectos'
-        ])->withInput();
+        'cover'=>'required|mimes:jpeg,bmp,png',
+        'fecha_inicio'=>'required|date|after:yesterday',
+        'fecha_fin'=>'required|date|after:fecha_inicio',
+        'servicio'=>'required',
+        'descuento'=>'numeric|between:0,1000'
+      ];
+      $messages=[
+        'cover.required'=>'La imagen de la promoción es requerida.',
+        'cover.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg.',
+        'fecha_inicio.after'=>'La fecha inicio debe ser hoy o despues de este día.',
+        'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'servicio.required'=>'Debe seleccionar un servicio para la promoción.',
+        'descuento.numeric'=>'En el campo de Descuento solo se pueden ingresar números.',
+        'descuento.between'=>'En el campo de Descuento no puede ingresar numeros negativos.'
+      ];
+      $validacion=Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails()){
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $file = $request->file('cover');
       $temp = $file->store('CoversPromocion','public');
@@ -45,17 +53,24 @@ class PromocionController extends Controller
       {
         return view ('admin.promociones');
       }
-      $rules=['cover'=>'required|mimes:jpeg,bmp,png,jpg',
-      'fecha_inicio'=>'required',
-      'fecha_fin'=>'required',
-      'descuento'=>'required|numeric'];
-      $validacion=Validator::make($request->all(),$rules);
-      if($validacion->fails())
-      {
-        return back()->with('error',[
-          'titulo'=>'Error',
-          'cuerpo'=>'Alguno de los datos esta incorrecto'
-        ])->withInput();
+      $rules=[
+        'cover'=>'mimes:jpeg,bmp,png',
+        'fecha_inicio'=>'required|date|after:yesterday',
+        'fecha_fin'=>'required|date|after:fecha_inicio',
+        'servicio'=>'required',
+        'descuento'=>'numeric|between:0,1000'
+      ];
+      $messages=[
+        'cover.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg.',
+        'fecha_inicio.after'=>'La fecha inicio debe ser hoy o despues de este día.',
+        'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'servicio.required'=>'Debe seleccionar un servicio para la promoción.',
+        'descuento.numeric'=>'En el campo de Descuento solo se pueden ingresar números.',
+        'descuento.between'=>'En el campo de Descuento no puede ingresar numeros negativos.'
+      ];
+      $validacion=Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails()){
+        return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $promocion = Promocion::find($request->id);
       if($request->file('cover'))

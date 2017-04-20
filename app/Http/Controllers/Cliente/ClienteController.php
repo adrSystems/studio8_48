@@ -19,12 +19,16 @@ class ClienteController extends Controller
       {
         return view('user.micuenta');
       }
-      $rules=['contenido'=>'required'];
-      $validacion = Validator::make($request->all(),$rules);
+      if(!$request->contenido){
+          return back()->with('msg',['title'=>'Error','body'=>'Debe enviar un mensaje.']);
+      }
+      $rules=['contenido'=>'required|min:3'];
+      $messages=[
+        'contenido.required'=>'El campo de mensaje no puede estar vacio.'
+      ];
+      $validacion = Validator::make($request->all(),$rules,$messages);
       if($validacion->fails()){
-        return back ()->with('error',
-        ['titulo'=>'Debe de enviar un mensaje.',
-        'cuerpo'=>'No puede enviar un mensaje en blanco.']);
+        return back ()->with('msg', ['title' => 'Error', 'body' => 'Debe ']);
       }
       $datetim= Carbon::now();
       $mensaje = new Mensaje;
@@ -87,7 +91,8 @@ class ClienteController extends Controller
         $usuario->update();
         return redirect('/micuentaE/'.\Auth::user()->id);
       }
-      else {
+      else
+       {
         $cliente = Cliente::find(\Auth::user()->id);
         $cliente->apellido = $request->apellido;
         $cliente->update();
@@ -100,7 +105,7 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
-      $rules= ['apellido'=>'required'];
+      $rules= ['telefono'=>'required'];
       $validacion= Validator::make($request->all(),$rules);
       if($validacion->fails())
       {
@@ -148,15 +153,6 @@ class ClienteController extends Controller
       if($request->isMethod('GET'))
       {
         return view ('user.micuenta');
-      }
-      $rules= ['foto'=>'required|mimes:jpeg,bmp,png,jpg'];
-      $validacion= Validator::make($request->all(),$rules);
-      if($validacion->fails())
-      {
-        return back()->with('error',[
-          'titulo'=>'Error!',
-          'cuerpo'=>'No se encontro ninguna imagen, intentelo de nuevo.'
-        ]);
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -237,13 +233,11 @@ class ClienteController extends Controller
       }
       return view ('user.micuenta',['citas'=>$citas]);
     }
-    public function cancelarcita($id = null)
+    public function cancelarCita(Request $request)
     {
-      $cita = Cita::find($id);
-      $cita->estado = 4;
-
+      $cita= Cita::find($request->id);
+      $cita->estado=4;
       $cita->update();
-      return redirect ('/micuenta');
     }
 
 }

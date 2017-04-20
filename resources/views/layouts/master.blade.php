@@ -913,7 +913,6 @@
           @endif
 
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
-          <a href="#">Mi historial</a>
           @endif
           <a href="/logout" id="logout-btn">Salir</a>
         </div>
