@@ -275,9 +275,11 @@
             }
             .nav-item-menu-btn{
               position: absolute;
+                text-align: center;
+                width: 100%;
               font-size: 14px;
               top:36px;
-              left: 58px;
+              left: 0;
             }
             .nav-dropdown-child{
               background-color: rgba(0,0,0,.8);
@@ -793,7 +795,6 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="/contacto" class="nav-item"><p>Contacto</p></a>
             <a href="/productos" class="nav-item"><p>Productos</p></a>
             <a href="/nosotros" class="nav-item nav-dropdown" id="2">
               <p>Nosotros</p>

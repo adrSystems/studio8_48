@@ -6,7 +6,7 @@
   <div class="p-item">
     <div class="img-container">
       <img src="{{asset('storage/'.$p->fotografia)}}" alt="" width="100%">
-      <i class="material-icons info-toggle" id="{{$p->id}}">info_circle</i>
+      <i class="material-icons info-toggle" id="{{$p->id}}">info</i>
       <span class="existencia">{{$p->existencia()}} en existencia</span>
       <span class="costo">${{$p->precio_venta}}</span>
     </div>
