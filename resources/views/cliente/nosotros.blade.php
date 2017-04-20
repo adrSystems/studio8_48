@@ -41,8 +41,8 @@ Nosotros
 </style>
 @endsection
 @section('body')
-<br><br><br>
-<div class="container" id="con">
+<div class="main-container">
+    <div class="container" id="con">
 	<h2>Sobre nosotros</h2>
 	<p>En Studio 8 48, te brindamos el mejor servicio con gente experta en la belleza y el cuidado personal de tu cabello, productos inovadores, marcando una tendencia, un nuevo concepto.</p><br>
 	<div class="row">
@@ -53,11 +53,11 @@ Nosotros
 		<div class="col-xs-12 col-md-6">
 			<h3>Vision</h3>
 			<p>Ser la corporación líder en la satisfacción de necesidades de belleza a nivel local.
-Incursionar en el mercado nacional.</p>
+            Incursionar en el mercado nacional.</p>
 		</div>
 	</div>
 </div>
-<br><br><br><br><br><br><br>
+</div>
 @endsection
 @section('js')
 @endsection

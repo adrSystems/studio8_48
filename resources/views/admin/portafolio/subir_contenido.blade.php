@@ -109,8 +109,8 @@ body {
 </style>
 @endsection
 @section('body')
-<br><br><br><br>
-<div class="container">
+<div class="main-container">
+    <div class="container">
     	<div class="row">
 			<div class="col-md-6 col-md-offset-3">
         @if(Session::has('msg'))
@@ -153,7 +153,7 @@ body {
 			</div>
 		</div>
 	</div>
-  <br><br><br><br><br><br><br><br><br>
+</div>
 @endsection
 @section('js')
 <script type="text/javascript">

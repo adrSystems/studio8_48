@@ -112,11 +112,12 @@ class CuentaController extends Controller
     	}
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
       Auth::logout();
       @session_start();
       session_destroy();
+      if(session('cart')) $request->session()->forget('cart');
       return redirect('/');
     }
 

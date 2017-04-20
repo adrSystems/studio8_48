@@ -1609,9 +1609,17 @@ Inventario
 
 $(document).ready(function () {
 
-  $('button[name=search-btn]').click(function () {
-    if($('input[name=searcher]').val() == '') showMsg('Atención!',['Debe proporcionar termino para efectuar la busqueda.'])
-    else {
+    $('button[name=search-btn]').click(function () {
+        search()
+    })
+    
+    $('input[name=searcher]').keypress(function (e){
+        if(e.keyCode == '13') search()
+    })
+    
+    function search(){
+        if($('input[name=searcher]').val() == '') showMsg('Atención!',['Debe proporcionar termino para efectuar la busqueda.'])
+        else {
       $('select[name=subFilter]').children('option[value=""]').attr('selected',true)
       $.ajax({
         url:"/admin/inventario/productos/search",
@@ -1801,7 +1809,7 @@ $(document).ready(function () {
         })
       })
     }
-  })
+    }
 
   $('#switch-cambiar-precio-compra').click(function () {
     if($(this).attr('active') == '0'){

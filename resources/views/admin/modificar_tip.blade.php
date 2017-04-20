@@ -163,29 +163,31 @@ h3{
 </style>
 @endsection
 @section('body')
-<div class="container">
-  <form id="contact" action="/modificartip" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
-    <input type="hidden" name="id" value="{{$tip->id}}">
-    <h3>Modificar Tip</h3>
-    <h4>Por favor completa los siguientes campos</h4>
-    <fieldset>
-      <input placeholder="Escribe el titulo de la nota"  type="text" tabindex="1" required autofocus name="titulo" value="{{$tip->titulo}}">
-    </fieldset>
-    <fieldset>
-      <label  for="" id="lab">Selecciona una imagen</label>
-      <input placeholder="" type="file" tabindex="3" required accept="image/jpeg" name="imagen">
-    </fieldset>
-    <fieldset>
-      <textarea placeholder="Escribe el contenido del tip" tabindex="5" required name="contenido">{{$tip->contenido}}</textarea>
-    </fieldset>
-    <fieldset>
-      <input placeholder="Escribe la nueva categoria"  type="text" tabindex="1" required autofocus name="titulo" value="{{$tip->tipo}}">
-    </fieldset>
-    <fieldset>
-      <button type="submit" id="contact-submit" data-submit="...Sending">Modificar Tip</button>
-    </fieldset>
-  </form>
+<div class="main-container">
+    <div class="container">
+      <form id="contact" action="/modificartip" method="post" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
+        <input type="hidden" name="id" value="{{$tip->id}}">
+        <h3>Modificar Tip</h3>
+        <h4>Por favor completa los siguientes campos</h4>
+        <fieldset>
+          <input placeholder="Escribe el titulo de la nota"  type="text" tabindex="1" required autofocus name="titulo" value="{{$tip->titulo}}">
+        </fieldset>
+        <fieldset>
+          <label  for="" id="lab">Selecciona una imagen</label>
+          <input placeholder="" type="file" tabindex="3" required accept="image/jpeg" name="imagen">
+        </fieldset>
+        <fieldset>
+          <textarea placeholder="Escribe el contenido del tip" tabindex="5" required name="contenido">{{$tip->contenido}}</textarea>
+        </fieldset>
+        <fieldset>
+          <input placeholder="Escribe la nueva categoria"  type="text" tabindex="1" required autofocus name="titulo" value="{{$tip->tipo}}">
+        </fieldset>
+        <fieldset>
+          <button type="submit" id="contact-submit" data-submit="...Sending">Modificar Tip</button>
+        </fieldset>
+      </form>
+    </div>
 </div>
 @endsection
 @section('js')

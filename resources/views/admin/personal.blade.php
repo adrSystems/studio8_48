@@ -470,6 +470,11 @@ Studio8 48 - Personal
     background-color: #888;
     border: 1px solid #666;
   }
+  .subcontainer{
+    background-color: rgba(0, 0, 255, .05);
+    border-radius: 5px;
+    border: 1px solid rgba(0, 0, 255, .1);
+  }
 </style>
 @endsection
 
@@ -498,20 +503,24 @@ Studio8 48 - Personal
     <div class="body col-xs-12" style="padding:0;">
       <div class="col-xs-12 col-sm-6 personal" style="padding:0; text-align:center">
         <h5 style="text-align: center;">Personal</h5>
-        <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
-          <span class="no-foto">Sin fotografía.</span>
-          <div class="img-container">
-            <img src="" alt="" class="foto">
+        <div class="col-xs-12">
+          <div class="subcontainer">
+            <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
+              <span class="no-foto">Sin fotografía.</span>
+              <div class="img-container">
+                <img src="" alt="" class="foto">
+              </div>
+            </div>
+            <p>Nombre: <br><span class="nombre"></span></p>
+            <p>Edad: <br><span class="fecha-nac"></span></p>
+            <p>Email: <br><span class="email"></span></p>
+            <p class="about-title">Acerca de mi</p>
+            <p>
+              <span class="about">
+              </span>
+            </p>
           </div>
         </div>
-        <p>Nombre: <br><span class="nombre"></span></p>
-        <p>Edad: <br><span class="fecha-nac"></span></p>
-        <p>Email: <br><span class="email"></span></p>
-        <p class="about-title">Acerca de mi</p>
-        <p>
-          <span class="about">
-          </span>
-        </p>
       </div>
       <div class="col-xs-12 col-sm-6 profesional" style="padding:0;">
         <h5 style="text-align: center;">Profesional</h5>

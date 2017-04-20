@@ -130,7 +130,8 @@ body{
     color: #fff;
   }
   .p-item>.img-container{
-    position: relative;
+      position: relative;
+      width: 100%;
   }
   .p-item>.info{
     background-color: rgba(255, 255, 255, 0.2);
@@ -154,13 +155,12 @@ body{
     left: 3px;
     top: 3px;
   }
-  .p-item>.img-container>i{
-    position: absolute;
-    right: 3px;
-    top: 3px;
-    color: dodgerblue;
-    width: 23px;
-    cursor: pointer;
+  .p-item>.img-container>.info-toggle{
+      position: absolute;
+      top:3px;
+      right: 3px;
+      cursor: pointer;
+      color: dodgerblue;
   }
   .modal-back{
     background-color: rgba(0, 0, 0, 0.4);
@@ -426,7 +426,7 @@ body{
           <div class="p-item">
             <div class="img-container">
               <img src="{{asset('storage/'.$p->fotografia)}}" alt="" width="100%">
-              <i class="material-icons info-toggle" id="{{$p->id}}">info_circle</i>
+              <i class="material-icons info-toggle" id="{{$p->id}}">info</i>
               <span class="existencia">{{$p->existencia()}} en existencia</span>
               <span class="costo">${{$p->precio_venta}}</span>
             </div>

@@ -203,11 +203,17 @@
               text-decoration: none;
             }
             .user-photo{
-              height: 75%;
-              border-radius: 100%;
-              width: auto;
-              margin-top: -19px;
-              display: none;
+                float: left;
+                height: 30px;
+                border-radius: 100%;
+                margin-top: 5px;
+                width: 30px;
+                display: none;
+                overflow: hidden;
+                margin-right: 5px;
+            }
+            .user-photo>img{
+              width: 100%;
             }
             #user-options{
               cursor: pointer;
@@ -269,9 +275,11 @@
             }
             .nav-item-menu-btn{
               position: absolute;
+                text-align: center;
+                width: 100%;
               font-size: 14px;
               top:36px;
-              left: 58px;
+              left: 0;
             }
             .nav-dropdown-child{
               background-color: rgba(0,0,0,.8);
@@ -787,7 +795,6 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="/contacto" class="nav-item"><p>Contacto</p></a>
             <a href="/productos" class="nav-item"><p>Productos</p></a>
             <a href="/nosotros" class="nav-item nav-dropdown" id="2">
               <p>Nosotros</p>
@@ -812,9 +819,13 @@
             @else
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
-              <img class="user-photo" src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+              <div class="user-photo">
+                <img src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+              </div>
               @else
-              <img class="user-photo" src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              <div class="user-photo">
+                <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
+              </div>
               @endif
               <i class="material-icons down" id="user-options">keyboard_arrow_down</i>
             </div>
