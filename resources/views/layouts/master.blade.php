@@ -800,7 +800,7 @@
               <p>Nosotros</p>
               <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
             </a>
-            <a href="/" class="nav-item"><p>Servicios</p></a>
+            <a href="/servicios" class="nav-item"><p>Servicios</p></a>
             <a href="/" class="nav-item" id="brand">
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
             </a>
@@ -895,7 +895,7 @@
             <a href="/nosotros" class="menu-item"><p>Nosotros</p></a>
             <a href="/contacto" class="menu-item"><p>Contacto</p></a>
             <a href="/productos" class="menu-item"><p>Productos</p></a>
-            <a href="" class="menu-item"><p>Servicios</p></a>
+            <a href="/servicios" class="menu-item"><p>Servicios</p></a>
             <a href="/promociones_concursos" class="menu-item"><p>Promociones y concursos</p></a>
             <a href="/tips" class="menu-item"><p>Tips</p></a>
             <a href="/portafolio" class="menu-item"><p>Portafolio</p></a>
