@@ -30,7 +30,7 @@ class PortafolioController extends Controller
     return back()->with('msg','Archivo agregado al portafolio');
 
   }
-  Public function Eliminar_imagen($id=null)
+  public function Eliminar_imagen($id=null)
   {
     $imagen = Portafolio::find($id);
     $imagen->delete();

@@ -61,30 +61,31 @@ ul.fotos img {
 </style>
 @endsection
 @section('body')
-<br><br><br>
-<div class="container">
-  <div class="row">
-    @foreach(App\Portafolio::where('imagen','!=','null')->get() as $imagen)
-    <ul class="fotos">
-      <div class="col-xs-12 col-md-3">
-        <li><a href="#" data-toggle="modal" data-target="#id_modal{{$imagen->id}}"><img src="storage/{{$imagen->imagen}}" alt="" border="0"></a></li>
-        <li></li>
-      </div>
-      <div class="modal fade" id="id_modal{{$imagen->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                
-              </button>
-            <div class="modal-body">
-              <img id="mod_img" src="storage/{{$imagen->imagen}}" alt="">
+<div class="main-container">
+    <div class="container">
+      <div class="row">
+        @foreach(App\Portafolio::where('imagen','!=','null')->get() as $imagen)
+        <ul class="fotos">
+          <div class="col-xs-12 col-md-3">
+            <li><a href="#" data-toggle="modal" data-target="#id_modal{{$imagen->id}}"><img src="storage/{{$imagen->imagen}}" alt="" border="0"></a></li>
+            <li></li>
+          </div>
+          <div class="modal fade" id="id_modal{{$imagen->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+
+                  </button>
+                <div class="modal-body">
+                  <img id="mod_img" src="storage/{{$imagen->imagen}}" alt="">
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </ul>
+        @endforeach
       </div>
-    </ul>
-    @endforeach
-  </div>
+    </div>
 </div>
 @endsection
 @section('js')
