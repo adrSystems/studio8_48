@@ -98,13 +98,11 @@ Studio8 48 - Servicios
 <div class="col-md-12">
   <div class="gestion-servicios">
     @if(Session::has('error'))
-
-
+    @foreach(Session::get('error') as $error)
         <div class="alert alert-warning" role="alert">
-            <h4>{{session('error')['titulo']}}</h4>
-            <p>{{session('error')['cuerpo']}}</p>
+          {{$error}}
         </div>
-
+    @endforeach
     @endif
     <div class=" col-xs-offset-1 col-xs-5">
       <h3 class="title-servicios"><p> Servicios disponibles</p></h3>
