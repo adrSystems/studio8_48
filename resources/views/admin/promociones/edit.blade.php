@@ -36,11 +36,13 @@ Editar promociones
   <div class="col-md-12">
     <div class="col-xs-offset-3 col-xs-6" style="margin-top: 100px;">
       @if(Session::has('error'))
+      @foreach(Session::get('error') as $error)
           <div class="alert alert-warning" role="alert">
-              <h4>{{session('error')['titulo']}}</h4>
-              <p>{{session('error')['cuerpo']}}</p>
+            {{$error}}
           </div>
+      @endforeach
       @endif
+      <a href="/admin/promociones" class="btn btn-back pull-right"><i class="material-icons" style="float: left;">arrow_back</i>Volver a concursos.</a>
       <div class="panel">
         <div class="panel-heading">
           <h3 class="panel-title">Editar promocion</h3>

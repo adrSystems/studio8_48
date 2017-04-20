@@ -105,12 +105,11 @@ Concursos
   <div class="col-md-12">
     <div class="gestion-concursos">
       @if(Session::has('error'))
-
+        @foreach(Session::get('error') as $error)
           <div class="alert alert-danger" role="alert" style="text-align: center;">
-              <h4>{{session('error')['titulo']}}</h4>
-              <p><b>{{session('error')['cuerpo']}}</b></p>
+            {{$error}}
           </div>
-
+        @endforeach
       @endif
       <div class="col-xs-6">
         <h3 class="title-concurso"> Concursos existente</h3>
@@ -162,10 +161,10 @@ Concursos
               </div>
               <div class="form-group">
                 <span>Fecha fin</span>
-                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control">
+                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control">
               </div>
               <div class="pull-right">
-                <button type="submit" name="button" class="form-control"><i class="material-icons">save</i>Guardar</button>
+                <button type="submit" name="button" class="form-control"><i class="material-icons icono">save</i>Guardar</button>
               </div>
             </form>
           </div>

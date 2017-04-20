@@ -105,12 +105,11 @@ Promociones
   <div class="col-md-12">
     <div class="gestion-promociones">
       @if(Session::has('error'))
-
-          <div class="alert alert-danger" role="alert" style="text-align: center;">
-              <h4>{{session('error')['titulo']}}</h4>
-              <p><b>{{session('error')['cuerpo']}}</b></p>
+          @foreach(Session::get('error') as $error)
+          <div class="alert alert-danger" role="alert" style="text-align: center;">  
+              <p><b>{{$error}}</b></p>
           </div>
-
+          @endforeach
       @endif
       <div class="col-xs-6">
         <h3 class="title-promociones">Promociones existentes</h3>
@@ -164,12 +163,12 @@ Promociones
               </div>
               <div class="form-group">
                 <span>Fecha fin</span>
-                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control">
+                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control">
               </div>
               <div class="form-group">
                 <span>Servicio</span>
                 <select class="form-control" name="servicio">
-                  <option value="null">Seleccione a que servicio aplica promoción</option>
+                  <option value="">Seleccione a que servicio aplica promoción</option>
                   @foreach(\App\Servicio::get() as $servicio)
                     <option value="{{$servicio->id}}">{{$servicio->nombre}}</option>
                   @endforeach

@@ -4,6 +4,11 @@ Foro Admin
 @endsection
 @section('css')
 <style media="screen">
+  body{
+    background-image: url("{{asset('img/walls/4.jpg')}}");
+    background-repeat: repeat;
+    background-attachment: fixed;
+  }
   .forum{
     margin-top: 100px;
   }
@@ -55,7 +60,7 @@ Foro Admin
     overflow-y: scroll;
     font-family: 'Lobster Two';
     font-size: 16px;
-    background-color: #3F3F3F;
+    background-color: white;
   }
   .panel-body::-webkit-scrollbar {
     width: 0.5em;
@@ -66,27 +71,46 @@ Foro Admin
   .panel-body::-webkit-scrollbar-thumb {
      outline: 1px solid slategrey;
   }
+  .panel-body::-webkit-scrollbar-thumb{
+    background: #3F3F3F;
+    outline: 1px solid black;
+  }
   .panel-heading{
     background-color: #1F1F1F;
     color: white;
   }
   .content-mensaje{
-    border-bottom: 2px solid #1F1F1F;
-    padding: 5px 10px;
+    font-family: 'Lobster Two';
     margin-top: 10px;
-    text-align: left;
-    color:white;
-    letter-spacing: 1px;
-
+    font-size: 16px;
+    padding: 5px 15px;
+    background-color: black;
+    text-align: right;
+    border-radius: 4px;
+    border-top: 0px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid white;
+    color: #ed5;
   }
   .content-mensaje-admin{
-    border-bottom: 2px solid #1F1F1F;
-    padding: 5px 10px;
+    font-family: 'Lobster Two';
+    color: white;
+    font-size: 16px;
+    padding: 5px 15px;
+    background-color: #3F3F3F;
+    box-shadow: 10px 10px 5px #888888;
+    border-radius: 4px;
+    text-align: left;
+    border-top: 0px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 15px solid white;
     margin-top: 10px;
-    color: #ed5;
-    text-align: right;
-    letter-spacing: 1px;
-    font-weight: 20px;
+  }
+  .remitente{
+    margin-top: -12px;
+    background-color: #1F1F1F;
+    padding: 4px;
+    border-radius: 4px;
   }
   .panel-title{
     font-family: 'Lobster Two';
@@ -120,7 +144,6 @@ Foro Admin
   </div>
   @endif
   <div class="col-xs-3">
-
     <ul class="nav nav-pills nav-stacked">
       <li role="presentation" class="active"><a href="#">Clientes</a></li>
       @foreach(App\Cliente::get() as $cliente)
@@ -148,11 +171,13 @@ Foro Admin
         <div class="panel-body">
           @foreach($mensaje as $m)
             @if($m->by_cliente==1)
-            <div class="content-mensaje">
+            <div class="content-mensaje-admin">
+              <p class="remitente">{{$m->cliente->nombre}}</p>
               <p>{{$m->contenido}}</p>
             </div>
               @else
-              <div class="content-mensaje-admin">
+              <div class="content-mensaje">
+                <p class="remitente">Tú</p>
                 <p>{{$m->contenido}}</p>
               </div>
             @endif
@@ -182,6 +207,9 @@ Foro Admin
 @endsection
 @section('js')
 <script type="text/javascript">
-  $
+  function reloadPage(){
+    location.reload(true)
+  }
+  setInterval('reloadPage()','60000')
 </script>
 @endsection

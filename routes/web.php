@@ -122,13 +122,19 @@ Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioControl
 Route::match(["GET","POST"],'/modificarnombre',"Cliente\ClienteController@modificarNombre");
 Route::match(["GET","POST"],'/modificarapellido',"Cliente\ClienteController@modificarApellido");
 Route::match(["GET","POST"],'/modificarfechanacimiento',"Cliente\ClienteController@modificarFechanacimiento");
-Route::match(["GET","POST"],'/modificarcorreo',"Cliente\ClienteController@modificarCorreo");
 Route::match(["GET","POST"],'/modificartelefono',"Cliente\ClienteController@modificarTelefono");
 Route::match(["GET","POST"],'/cambiarcontrasena',"Cliente\ClienteController@modificarContrasena");
 Route::match(["GET","POST"],'/subirfoto',"Cliente\ClienteController@subirFoto");
 Route::get('/micuenta', function(){
   return view('user.micuenta');
 });
+Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
+Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
+Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');
+Route::get('/admin/forum','Admin\ForumController@getAll');
+Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
+Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
+Route::post('/cancelarCita','Cliente\ClienteController@cancelarCita');
 ////servicios_admin/////////////
 Route::get('/admin/servicios',function(){
   return view ('admin.servicios');
@@ -200,11 +206,4 @@ Route::get('/concurso/eliminar/{id?}',function($id=null){
 Route::get('/promociones_concursos',function(){
   return view ('cliente.promociones_concursos');
 });
-Route::get('/micuenta/{id?}', 'Cliente\ClienteController@getDetailsCliente');
-Route::get('/micuentaE/{id?}', 'Cliente\ClienteController@getDetailsEmpleado');
-Route::match(['GET','POST'],'/enviarMensaje','Cliente\ClienteController@enviarMensaje');
-Route::get('/admin/forum','Admin\ForumController@getAll');
-Route::get('/forum/{id?}','Admin\ForumController@getMensajes');
-Route::match(['GET','POST'],'/admin/enviarMensaje','Admin\ForumController@enviarMensaje');
-Route::get('/cancelarcita/{id?}','Cliente\ClienteController@cancelarcita');
 //
