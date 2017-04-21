@@ -194,4 +194,6 @@ Studio8 48 - Servicios
 </div>
 @endsection
 @section('js')
+<script type="text/javascript">
+</script>
 @endsection

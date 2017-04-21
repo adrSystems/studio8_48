@@ -78,6 +78,10 @@ Catalogo de servicios
         </div>
       </div>
     @endforeach
+    @else
+    <div class="alert alert-success">
+      Por el momento no se encuentra ningún servicio disponible.
+    </div>
     @endif
   </div>
 </div>
