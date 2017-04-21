@@ -25,6 +25,8 @@ class ConcursoController extends Controller
         'imagen.mimes'=>'Debe de ingresar una imagen con los siguientes formatos: jpeg,bmp,png,jpg',
         'fecha_inicio.after'=>'La fecha inicio debe ser hoy o despues de este día.',
         'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'fecha_inicio.date'=>'La fecha de inicio no tiene el formato correcto.',
+        'fecha_fin.date'=>'La fecha de fin de fin no tiene el formato correcto.'
       ];
       $validacion=Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
@@ -49,13 +51,14 @@ class ConcursoController extends Controller
       }
       $rules = [
         'imagen'=>'mimes:jpeg,bmp,png,jpg',
-        'fecha_inicio'=>'required|date|after:yesterday',
+        'fecha_inicio'=>'required|date',
         'fecha_fin'=>'required|date|after:fecha_inicio',
       ];
       $messages= [
         'imagen.mimes'=>'Debe de ingresar una imagen con los siguientes formatos: jpeg,bmp,png,jpg',
-        'fecha_inicio.after'=>'La fecha inicio debe ser hoy o despues del día actual.',
+        'fecha_inicio.date'=>'La fecha de inicio no tiene el formato correcto.',
         'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'fecha_fin.date'=>'La fecha de fin de fin no tiene el formato correcto.'
       ];
       $validacion=Validator::make($request->all(),$rules,$messages);
       if($validacion->fails())
@@ -63,7 +66,7 @@ class ConcursoController extends Controller
         return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $concurso = Concurso::find($request->id);
-      if($request->file('iamgen'))
+      if($request->file('imagen'))
       {
         $file = $request->file('imagen');
         $temp = $file->store('ImagenConcurso','public');
@@ -72,6 +75,6 @@ class ConcursoController extends Controller
       $concurso->fecha_inicio = $request->fecha_inicio;
       $concurso->fecha_termino = $request->fecha_fin;
       $concurso->update();
-      return redirect ('/admin/concursos');
+      return redirect ('/admin/concursos')->with('exitoso',['cuerpo'=>'Concurso editado exitosamente.']);
     }
 }

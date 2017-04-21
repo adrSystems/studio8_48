@@ -38,6 +38,7 @@ Editar promociones
       @if(Session::has('error'))
       @foreach(Session::get('error') as $error)
           <div class="alert alert-warning" role="alert">
+            <button type="button" class="close" data-dismiss="alert" name="button">&times;</button>
             {{$error}}
           </div>
       @endforeach
@@ -57,24 +58,24 @@ Editar promociones
                 <img class="promo" src="{{asset('storage/'.$promocion->cover)}}" alt="">
               </div>
               <span>Cambiar imagen de la promocion</span>
-              <input type="file" name="cover" value="" class="form-control">
+              <input type="file" name="cover" value="" class="form-control" accept="image/*">
             </div>
             <div class="form-group">
               <span>Cambiar fecha de inicio</span>
-              <input type="date" name="fecha_inicio" value="{{$promocion->fecha_inicio}}" class="form-control">
+              <input type="date" name="fecha_inicio" value="{{$promocion->fecha_inicio}}" class="form-control" required>
             </div>
             <div class="form-group">
               <span>Cambiar fecha de fin</span>
-              <input type="date" name="fecha_termino" value="{{$promocion->fecha_termino}}" class="form-control">
+              <input type="date" name="fecha_termino" value="{{$promocion->fecha_termino}}" class="form-control" required>
             </div>
             <div class="form-group">
               <span>Descuento</span>
-              <input type="text" name="descuento" value="{{$promocion->descuento}}" class="form-control">
+              <input type="number" name="descuento" value="{{$promocion->descuento}}" class="form-control" required>
             </div>
             <div class="form-group">
               <span>Servicio</span>
-              <select class="form-control" name="servicio">
-                <option value="{{$promocion->servicio_id}}">Seleccione a que servicio aplica promoción</option>
+              <select class="form-control" name="servicio" required>
+                <option value="{{$promocion->servicio_id}}">{{$promocion->servicio->nombre}}</option>
                 @foreach(\App\Servicio::get() as $servicio)
                   <option value="{{$servicio->id}}">{{$servicio->nombre}}</option>
                 @endforeach

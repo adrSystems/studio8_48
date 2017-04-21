@@ -106,7 +106,7 @@ Promociones
     <div class="gestion-promociones">
       @if(Session::has('error'))
           @foreach(Session::get('error') as $error)
-          <div class="alert alert-danger" role="alert" style="text-align: center;">  
+          <div class="alert alert-danger" role="alert" style="text-align: center;">
               <p><b>{{$error}}</b></p>
           </div>
           @endforeach
@@ -155,19 +155,19 @@ Promociones
               {{csrf_field()}}
               <div class="form-group">
                 <span>Image de promocion</span>
-                <input type="file" name="cover" value="" class="form-control">
+                <input type="file" name="cover" value="" class="form-control" required accept="image/*">
               </div>
               <div class="form-group">
                 <span>Fecha inicio</span>
-                <input type="date" name="fecha_inicio" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control">
+                <input type="date" name="fecha_inicio" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control" required>
               </div>
               <div class="form-group">
                 <span>Fecha fin</span>
-                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control">
+                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control" required>
               </div>
               <div class="form-group">
                 <span>Servicio</span>
-                <select class="form-control" name="servicio">
+                <select class="form-control" name="servicio" required>
                   <option value="">Seleccione a que servicio aplica promoción</option>
                   @foreach(\App\Servicio::get() as $servicio)
                     <option value="{{$servicio->id}}">{{$servicio->nombre}}</option>
@@ -176,7 +176,7 @@ Promociones
               </div>
               <div class="form-group">
                 <span>Descuento:</span>
-                <input type="text" name="descuento" value="" class="form-control">
+                <input type="number" name="descuento" value="" class="form-control" required>
               </div>
               <div class="pull-right">
                 <button type="submit" name="button" class="form-control"><i class="material-icons icono">save</i>Guardar</button>

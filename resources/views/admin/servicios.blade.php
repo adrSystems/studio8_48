@@ -110,7 +110,8 @@ Studio8 48 - Servicios
     <div class="gestion-concursos">
       @if(Session::has('error'))
         @foreach(Session::get('error') as $error)
-          <div class="alert alert-danger" role="alert" style="text-align: center; margin-top: -15px;">
+          <div class="alert alert-danger" role="alert" style="text-align: center; margin-top: -10px;">
+            <button type="button" class="close" data-dismiss="alert" name="button">&times;</button>
             {{$error}}
           </div>
         @endforeach
@@ -153,22 +154,22 @@ Studio8 48 - Servicios
               {{csrf_field()}}
               <div class="form-group">
                 <span>Nombre del servicio:</span>
-                <input type="text" class="form-control" name="nombre" value="" placeholder="Ingrese el nombre del servicio">
+                <input type="text" class="form-control" name="nombre" value="" required placeholder="Ingrese el nombre del servicio">
               </div>
               <div class="form-group">
                 <span>Image de promocion</span>
-                <input type="file" name="icono" value="" class="form-control">
+                <input type="file" name="icono" value="" class="form-control" required accept="image/*">
               </div>
               <div class="form-group">
                 <span>Precio</span>
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">$</span>
-                  <input type="text" class="form-control" name="precio" placeholder="Ingrese el precio" aria-describedby="basic-addon1">
+                  <input type="number" class="form-control" name="precio" placeholder="Ingrese el precio" reuired aria-describedby="basic-addon1">
                 </div>
               </div>
               <div class="form-group">
                 <span>Tiempo del servico</span>
-                <select class="form-control" name="duracion">
+                <select class="form-control" name="duracion" required>
                   <option value="">Seleccione la duracion del servico</option>
                   <option value="00:30:00">30 min</option>
                   <option value="01:00:00">1:00 hr</option>
