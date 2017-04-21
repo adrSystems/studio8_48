@@ -795,11 +795,11 @@
             <div class="menu-btn">
               <i class="material-icons">apps</i>
             </div>
-            <a href="/productos" class="nav-item"><p>Productos</p></a>
             <a href="/nosotros" class="nav-item nav-dropdown" id="2">
               <p>Nosotros</p>
               <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
             </a>
+            <a href="/productos" class="nav-item"><p>Productos</p></a>
             <a href="/servicios" class="nav-item"><p>Servicios</p></a>
             <a href="/" class="nav-item" id="brand">
               <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="">
@@ -866,8 +866,8 @@
           </div>
         </div>
         @endif
-
-        @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
+        @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
+        and Auth::user()->cuentable->roles()->where('nombre','administrador')->first())
         <div class="nav-dropdown-child" id="1">
           <a href="/admin/inventario">Inventario</a>
           <a href="/admin/servicios">Gestion de servicios</a>
@@ -880,6 +880,13 @@
           <a href="/subirtip">Subir Tip</a>
           <a href="/gestionartips">Gestión de Tips</a>
           <a href="/gestion_portafolio">Portafolio</a>
+        </div>
+        @elseif(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
+        and Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
+        <div class="nav-dropdown-child" id="1">
+          <a href="/admin/inventario">Inventario</a>
+          <a href="/admin/servicios">Gestion de servicios</a>
+          <a href="/admin/clientes">Clientes</a>
         </div>
         @endif
         <div class="nav-dropdown-child" id="2">
@@ -899,7 +906,8 @@
             <a href="/promociones_concursos" class="menu-item"><p>Promociones y concursos</p></a>
             <a href="/tips" class="menu-item"><p>Tips</p></a>
             <a href="/portafolio" class="menu-item"><p>Portafolio</p></a>
-            @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
+            @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
+            and Auth::user()->cuentable->roles()->where('nombre','administrador')->first())
             <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
             <a href="/admin/inventario" class="menu-item-children" id="1">Inventario</a>
             <a href="/admin/servicios" class="menu-item-children" id="1">Gestion de servicios</a>
@@ -909,6 +917,12 @@
             <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
             <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
             <a href="/gestion_portafolio" class="menu-item-children" id="1">Portafolio</a>
+            @elseif(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
+            and Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
+            <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
+            <a href="/admin/inventario" class="menu-item-children" id="1">Inventario</a>
+            <a href="/admin/servicios" class="menu-item-children" id="1">Gestion de servicios</a>
+            <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             @endif
           </div>
         </div>

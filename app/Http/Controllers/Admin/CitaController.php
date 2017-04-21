@@ -150,7 +150,7 @@ class CitaController extends Controller
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
         //concatenar storage, imagenes se guardaran en otro lado despues
-        $servicio->icono = asset($servicio->icono);
+        $servicio->icono = asset('storage/'.$servicio->icono);
         $tiempo->addHours(date('H',strtotime($servicio->tiempo)));
         $tiempo->addMinutes(date('i',strtotime($servicio->tiempo)));
         $monto += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));

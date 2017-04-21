@@ -321,7 +321,7 @@ Nueva cita
                   <div class="shadow" id="{{$servicio->id}}">
                     <i class="material-icons">check</i>
                   </div>
-                  <img src="{{asset($servicio->icono)}}" alt="">
+                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="">
                 </div>
                 <div class="info">
                   <span style="color:#ddd;font-size:14px;">{{$servicio->nombre}}</span><br>
