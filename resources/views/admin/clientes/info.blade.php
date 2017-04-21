@@ -99,6 +99,7 @@ Información cliente
     padding: 4px;
   }
   .subcontainer{
+    background-color: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(255, 255, 255, .3);
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
     border-radius: 3px;
@@ -131,20 +132,19 @@ Información cliente
   table{
     width: 100%;
   }
-  th{
+  .white-back>tr>th{
     background-color: rgba(255, 255, 255, 0.05);
     font-weight: 100;
     text-align: center;
     padding-top: 8px;
     padding-bottom: 8px;
-    color: #fff;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);
+    color: #445;
   }
-  td{
+  .white-back>tr>td{
     padding-top: 5px;
     padding-bottom: 5px;
     color: #ddd;
-    text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);
+    color: #335;
   }
   .modal-back{
     background-color: rgba(0, 0, 0, 0.4);
@@ -338,7 +338,7 @@ Información cliente
     border: 4px solid #111;
     border-radius: 12px;
   }
-  table.center{
+  table.table-center{
     text-align: center;
   }
   .btn2{
@@ -564,14 +564,14 @@ Información cliente
         <h5>Productos</h5>
         <div class="subcontainer">
           <table>
-            <thead>
+            <thead class="white-back">
               <th>Imagen</th>
               <th>Nombre</th>
               <th>Código</th>
               <th>Precio</th>
               <th>Cantidad</th>
             </thead>
-            <tbody id="productos-compra-tbody" style="text-align:center">
+            <tbody id="productos-compra-tbody" style="text-align:center" class="white-back">
 
             </tbody>
           </table>
@@ -580,16 +580,16 @@ Información cliente
         <h5>Pagos</h5>
         <div class="subcontainer">
           <table>
-            <thead>
+            <thead class="white-back">
               <th>Fecha</th>
               <th>Hora</th>
               <th>Cantidad</th>
             </thead>
-            <tbody id="pagos-compra-tbody" style="text-align:center">
+            <tbody id="pagos-compra-tbody" style="text-align:center" class="white-back">
 
             </tbody>
           </table>
-          <p id="compra-no-pagos-msg" style="padding:5px;text-align:center;margin:0">No se han realizado pagos.</p>
+          <p id="compra-no-pagos-msg" style="padding:5px;text-align:center;margin:0;color:#333">No se han realizado pagos.</p>
         </div>
         <div class="" style="margin-top:15px">
           <span id="compra-liquidada-msg"></span>
@@ -781,7 +781,7 @@ Información cliente
         </div>
         <hr>
         <div class="citas-container" id="pagos-container" style="margin-top:10px">
-          <table class="center">
+          <table class="table-center">
             <thead>
               <th>Fecha</th>
               <th>Hora</th>
@@ -902,7 +902,7 @@ Información cliente
       <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha programado ninguna cita</p>
       @else
       <table>
-        <thead>
+        <thead class="white-back">
           <th style="padding-left:5px">Fecha</th>
           <th>Hora</th>
           <th>Estado</th>
@@ -910,7 +910,7 @@ Información cliente
           <th class="hidden-xs">Pagada</th>
           <th></th>
         </thead>
-        <tbody style="text-align:center" id="tbody-citas">
+        <tbody style="text-align:center" id="tbody-citas" class="white-back">
           @foreach($cliente->citas as $cita)
           <tr class="@if($cita->estado == 1){{'confirmada'}}@elseif($cita->estado == 2){{'en-curso'}}@elseif($cita->estado == 4){{'finalizada'}}@elseif($cita->estado == 5){{'cancelada'}}@endif" id="cita{{$cita->id}}">
             <td style="padding-left:5px">{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
@@ -942,14 +942,14 @@ Información cliente
       <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha realizado ninguna compra</p>
       @else
       <table>
-        <thead>
+        <thead class="white-back">
           <th>Fecha</th>
           <th>Hora</th>
           <th>Monto</th>
           <th>Pagada</th>
           <th></th>
         </thead>
-        <tbody style="text-align:center">
+        <tbody style="text-align:center" class="white-back">
           @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
           <tr>
             <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
@@ -1368,6 +1368,8 @@ Información cliente
         $tr.append('<td>'+response.pago.hora+'</td>')
         $tr.append('<td>$'+response.pago.cantidad+'</td>')
         $('#pagos-container').find('tbody').append($tr)
+        $('#pagos-container').find('table').css('width','100%')
+        $('#no-pagos-msg').hide()
         $('#pagos-container').show()
         $('#por-pagar').text('$'+response.cita.restante)
         $('#pagado').text('$'+response.cita.pagado)
@@ -1376,6 +1378,7 @@ Información cliente
         if(response.cita.restante == 0)
         {
           $('#abonar-toggle').hide()
+          $('#liquidada-advice').show()
           $('#table-cita-pagada').text('Si')
         }
       })

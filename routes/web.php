@@ -30,7 +30,7 @@ Route::group(['middleware' => ['auth', 'cliente']], function () {
   Route::post('/productos/confirmarCompra', 'Admin\CompraController@confirmarCompra');
 });
 
-Route::group(['middleware' => ['admin-recepcionista']], function () {
+Route::group(['middleware' => ['auth','admin-recepcionista']], function () {
   //inventario
   Route::get('/admin/inventario', function (){
     return view('admin.inventario');
@@ -54,7 +54,6 @@ Route::group(['middleware' => ['admin-recepcionista']], function () {
   Route::post('/admin/inventario/productos/is-repeated','Admin\InventarioController@productoEsRepetido');
   Route::post('/admin/inventario/productos/agregar','Admin\InventarioController@agregarProducto');
   Route::post('/admin/inventario/marcas/get-productos-table','Admin\InventarioController@getProductsTable');
-  Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
   Route::post('/admin/inventario/producto/editar','Admin\InventarioController@editarProducto');
   Route::post('/admin/inventario/productos/descontinuarById','Admin\InventarioController@descontinuarById');
   Route::post('/admin/inventario/productos/restaurarById','Admin\InventarioController@restaurarById');
@@ -124,6 +123,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
   Route::match(['GET','POST'],'/subirtip','TipsController@Subir_tip');
 
   //personal
+  Route::get('/personal',function (){
+    return view('admin.personal');
+  });
   Route::post('/add-personal','Admin\EmpleadosController@add');
   Route::post('/edit-personal','Admin\EmpleadosController@edit');
   Route::get('/kick-personal/{id}','Admin\EmpleadosController@kick');
@@ -194,9 +196,9 @@ Route::group(['middleware' => ['auth', 'recepcionista']], function () {
   Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
 
   //compras
-  Route::post('/admin/compras/get-by-id','Admin\CompraController@getById');
   Route::post('/admin/compras/abonar','Admin\CompraController@abonar');
   Route::post('/admin/compras/liquidar','Admin\CompraController@liquidar');
+  Route::post('/admin/compras/get-by-id','Admin\CompraController@getById');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -279,11 +281,6 @@ Route::get('/help',function (){
   return view('welcome');
 });
 
-//personal
-Route::get('/personal',function (){
-  return view('admin.personal');
-});
-
 //compras
 Route::get('/productos',function () {
   $categorias = [];
@@ -309,6 +306,9 @@ Route::get('/productos',function () {
   return view('productos.catalogo', ['categorias' => $categorias, 'subcategorias' => $subcategorias]);
 });
 Route::post('/productos/catalogo/filtrar','Admin\CompraController@filterProducts');
+
+//productos
+Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@getProductById');
 
 //servicios
 Route::get('/servicios',function(){
