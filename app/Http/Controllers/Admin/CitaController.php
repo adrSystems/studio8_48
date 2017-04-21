@@ -84,10 +84,10 @@ class CitaController extends Controller
       foreach (Servicio::find($request->servicios) as $servicio) {
         if($promocion= $servicio->promociones()->whereDate('fecha_inicio','<=',date('Y-m-d'))
         ->whereDate('fecha_termino','>=',date('Y-m-d'))->first()){
-          $cita->servicios()->attach($servicio->id, ['descuento' => $promocion->descuento]);
+          $cita->servicios()->attach($servicio->id, ['descuento' => $promocion->descuento, 'precio' => $servicio->precio]);
         }
         else{
-          $cita->servicios()->attach($servicio->id, ['descuento' => 0]);
+          $cita->servicios()->attach($servicio->id, ['descuento' => 0, 'precio' => $servicio->precio]);
         }
       }
       return back()->with('msg', ['title' => 'Ok', 'body' => 'Cita programada con exito.']);
@@ -150,10 +150,10 @@ class CitaController extends Controller
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
         //concatenar storage, imagenes se guardaran en otro lado despues
-        $servicio->icono = asset($servicio->icono);
+        $servicio->icono = asset('storage/'.$servicio->icono);
         $tiempo->addHours(date('H',strtotime($servicio->tiempo)));
         $tiempo->addMinutes(date('i',strtotime($servicio->tiempo)));
-        $monto += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+        $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
       }
       //tiempo total, horario aproximado
       $cita->tiempo = $tiempo->format('G')." horas, ".$tiempo->format('i')." minutos";
@@ -233,7 +233,7 @@ class CitaController extends Controller
       $cita = Cita::find($request->citaId);
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
-        $monto += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+        $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
       }
       $cita->pagado = $cita->pagos()->sum('cantidad');
       $cita->monto = $monto;
@@ -276,7 +276,7 @@ class CitaController extends Controller
       $cita = Cita::find($request->citaId);
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
-        $monto += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+        $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
       }
       $cita->pagado = $cita->pagos()->sum('cantidad');
       $cita->monto = $monto;
@@ -444,7 +444,7 @@ class CitaController extends Controller
       foreach ($cliente->citas as $cita) {
         $aPagar=0;
         foreach ($cita->servicios as $servicio) {
-          $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
+          $aPagar  += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;
         if($cita->estado == 5){

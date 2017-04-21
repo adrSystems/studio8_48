@@ -18,7 +18,7 @@ class Servicio extends Model
 
     public function citas()
     {
-      return $this->belongsToMany('App\Cita')->withPivot('descuento');
+      return $this->belongsToMany('App\Cita')->withPivot('descuento','precio');
     }
 
     public function promociones()

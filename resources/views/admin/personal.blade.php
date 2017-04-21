@@ -352,12 +352,25 @@ Studio8 48 - Personal
   .empleado-item>div>p{
     margin: 0;
   }
-  #servicios-container>.item>img{
+  #servicios-container>.item{
+    float: left;
+    width: 100%;
+  }
+  #servicios-container>.item>label{
+    margin-top: 13px;
+  }
+  #servicios-container>.item>.img-container{
+    float: left;
     width: 50px;
     height: 50px;
+    padding: 1px;
     margin-left: -2px;
+    margin-right: 5px;
+    overflow: hidden;
     border-radius: 2px;
-    image-resolution: snap;
+  }
+  #servicios-container>.item>.img-container>img{
+    width: 100%;
   }
   #servicios-container>.item>.select-icon{
     margin-top: 18px;
@@ -474,6 +487,31 @@ Studio8 48 - Personal
     background-color: rgba(0, 0, 255, .05);
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 255, .1);
+    padding: 15px;
+  }
+  #servicios-to-edit-container>.item{
+    float: left;
+    width: 100%;
+  }
+  #servicios-to-edit-container>.item>label{
+    margin-top: 4px;
+  }
+  #servicios-to-edit-container>.item>.img-container{
+    overflow: hidden;
+    width: 30px;
+    margin-right: 5px;
+    height: 30px;
+    float: left;
+  }
+  #img-container-est-foto{
+    width: 70%;
+    margin-left: 15%;
+    overflow: hidden;
+    border-radius: 100%;
+    -webkit-transition: height .4s, opacity .5s;
+  }
+  #img-container-est-foto>img{
+    width: 100%;
   }
 </style>
 @endsection
@@ -507,7 +545,7 @@ Studio8 48 - Personal
           <div class="subcontainer">
             <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
               <span class="no-foto">Sin fotografía.</span>
-              <div class="img-container">
+              <div class="img-container" id="img-container-est-foto">
                 <img src="" alt="" class="foto">
               </div>
             </div>
@@ -624,7 +662,9 @@ Studio8 48 - Personal
               @foreach(\App\Servicio::get() as $i => $servicio)
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
-                <img src="{{asset($servicio->icono)}}" alt="" style="height:4vh;width:4vh">
+                <div class="img-container">
+                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="" style="width:100%">
+                </div>
                 <label>{{ucfirst($servicio->nombre)}}</label>
                 <div class="select-icon rol-unselected" style="margin-top:8px">
                 </div>
@@ -836,7 +876,9 @@ Studio8 48 - Personal
               @foreach(\App\Servicio::get() as $i => $servicio)
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
-                <img src="{{asset($servicio->icono)}}" alt="">
+                <div class="img-container">
+                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="">
+                </div>
                 <label>{{ucfirst($servicio->nombre)}}</label>
                 <div class="select-icon rol-unselected">
                 </div>
@@ -956,8 +998,18 @@ Studio8 48 - Personal
     $('.empleado-options>.box>.info').click(function () {
       mostrarInfoEmp($(this).parent().parent().attr('id'));
       $(this).parent().parent().hide();
+      $('#img-container-est-foto').css({
+        opacity:'0',
+        height: '20px'
+      });
       setTimeout(function () {
         showModal('empleado-info');
+        setTimeout(function () {
+            $('#img-container-est-foto').css({
+              'height': $('#img-container-est-foto').width(),
+              opacity: 1
+            })
+        }, 700)
       } ,200);
     });
 

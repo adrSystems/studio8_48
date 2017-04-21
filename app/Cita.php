@@ -17,7 +17,7 @@ class Cita extends Model
       return $this->belongsToMany('App\Producto')->withPivot('cantidad');
     }
     public function servicios(){
-      return $this->belongsToMany('App\Servicio')->withPivot('descuento');
+      return $this->belongsToMany('App\Servicio')->withPivot('descuento','precio');
     }
     public function pagos()
     {
