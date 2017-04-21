@@ -130,7 +130,7 @@ Studio8 48 - Servicios
             </div>
             <div class="col-xs-1">
               <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                   <i class="material-icons">more_vert</i>
                 </button>
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
