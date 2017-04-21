@@ -2,6 +2,7 @@
 @section('title')
 Studio8 48 - Servicios
 @endsection
+
 @section('css')
 <style media="screen">
   body{
@@ -194,4 +195,5 @@ Studio8 48 - Servicios
 </div>
 @endsection
 @section('js')
+<script src="{{elixir('js\app.js')}}"></script>
 @endsection

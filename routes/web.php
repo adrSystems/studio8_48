@@ -123,6 +123,9 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
   Route::match(['GET','POST'],'/subirtip','TipsController@Subir_tip');
 
   //personal
+  Route::get('/personal',function (){
+    return view('admin.personal');
+  });
   Route::post('/add-personal','Admin\EmpleadosController@add');
   Route::post('/edit-personal','Admin\EmpleadosController@edit');
   Route::get('/kick-personal/{id}','Admin\EmpleadosController@kick');
@@ -276,11 +279,6 @@ Route::post('/signup-admin','Admin\EmpleadosController@addAdminOnFirstUse');
 //Ayuda
 Route::get('/help',function (){
   return view('welcome');
-});
-
-//personal
-Route::get('/personal',function (){
-  return view('admin.personal');
 });
 
 //compras

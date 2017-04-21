@@ -487,6 +487,7 @@ Studio8 48 - Personal
     background-color: rgba(0, 0, 255, .05);
     border-radius: 5px;
     border: 1px solid rgba(0, 0, 255, .1);
+    padding: 15px;
   }
   #servicios-to-edit-container>.item{
     float: left;
@@ -501,6 +502,16 @@ Studio8 48 - Personal
     margin-right: 5px;
     height: 30px;
     float: left;
+  }
+  #img-container-est-foto{
+    width: 70%;
+    margin-left: 15%;
+    overflow: hidden;
+    border-radius: 100%;
+    -webkit-transition: height .4s, opacity .5s;
+  }
+  #img-container-est-foto>img{
+    width: 100%;
   }
 </style>
 @endsection
@@ -534,7 +545,7 @@ Studio8 48 - Personal
           <div class="subcontainer">
             <div class="col-xs-12" style="padding: 0; margin: 15px 0 15px 0;">
               <span class="no-foto">Sin fotografía.</span>
-              <div class="img-container">
+              <div class="img-container" id="img-container-est-foto">
                 <img src="" alt="" class="foto">
               </div>
             </div>
@@ -987,8 +998,18 @@ Studio8 48 - Personal
     $('.empleado-options>.box>.info').click(function () {
       mostrarInfoEmp($(this).parent().parent().attr('id'));
       $(this).parent().parent().hide();
+      $('#img-container-est-foto').css({
+        opacity:'0',
+        height: '20px'
+      });
       setTimeout(function () {
         showModal('empleado-info');
+        setTimeout(function () {
+            $('#img-container-est-foto').css({
+              'height': $('#img-container-est-foto').width(),
+              opacity: 1
+            })
+        }, 700)
       } ,200);
     });
 
