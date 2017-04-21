@@ -218,6 +218,14 @@ Mi cuenta
   <div class="cuenta">
 
     <div class="col-xs-3 col-md3 foto">
+      @if(Session::has('errorfoto'))
+      @foreach(Session::get('errorfoto') as $error)
+        <div class="alert alert-danger" role="alert">
+          <button type="button" class="close" name="button" data-dismiss="alert">&times;</button>
+          {{$error}}
+        </div>
+      @endforeach
+      @endif
       @if(Auth::user()->photo)
       <a href="#"><img class="a-image" src="{{asset('storage/'.Auth::user()->photo)}}" alt=""></a>
       <form class="horizontal" action="/subirfoto" method="post" enctype="multipart/form-data">
@@ -260,6 +268,7 @@ Mi cuenta
         @if(Session::has('error'))
           @foreach(Session::get('error') as  $error)
             <div class="alert alert-danger" role="alert" style="text-align: center;">
+              <button type="button" class="close" name="button" data-dismiss="alert">&times;</button>
               {{$error}}
             </div>
           @endforeach
@@ -373,6 +382,7 @@ Mi cuenta
         @if(Session::has('msg'))
         @foreach(Session::get('msg') as $error)
           <div class="alert alert-danger" role="alert" style="text-align: center;">
+            <button type="button" class="close" name="button" data-dismiss="alert">&times;</button>
               <p><b>{{$error}}</b></p>
           </div>
         @endforeach

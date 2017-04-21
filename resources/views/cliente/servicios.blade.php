@@ -42,8 +42,8 @@ Catalogo de servicios
 @section('body')
 <div class="container">
   <div class="catalogo">
+    @if(App\servicio::get())
     @foreach(App\Servicio::get() as $servicio)
-    @if($servicio->count() > 0)
       <div class="col-sm-6 col-md-3">
         <div class="servicio">
           <img class="image" src="{{asset('storage/'.$servicio->icono)}}" alt="...">
@@ -77,8 +77,8 @@ Catalogo de servicios
           </div>
         </div>
       </div>
-    @endif
     @endforeach
+    @endif
   </div>
 </div>
 @endsection
