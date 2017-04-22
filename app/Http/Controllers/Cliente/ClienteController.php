@@ -36,7 +36,7 @@ class ClienteController extends Controller
       $mensaje->by_cliente=1;
       $mensaje->cliente_id=\Auth::user()->id;
       $mensaje->save();
-      return redirect ('/micuenta/'.\Auth::user()->id);
+      return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
     }
     public function modificarNombre(Request $request)
     {
@@ -56,16 +56,16 @@ class ClienteController extends Controller
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
-        $usuario = Empleado::find(\Auth::user()->id);
+        $usuario = Empleado::find(\Auth::user()->cuentable->id);
         $usuario->nombre = $request->nombre;
         $usuario->update();
         return redirect('/micuentaE/'.\Auth::user()->id);
       }
       else {
-        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente = Cliente::find(\Auth::user()->cuentable->id);
         $cliente->nombre = $request->nombre;
         $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarApellido(Request $request)
@@ -86,17 +86,17 @@ class ClienteController extends Controller
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
-        $usuario = Empleado::find(\Auth::user()->id);
+        $usuario = Empleado::find(\Auth::user()->cuentable->id);
         $usuario->apellido = $request->apellido;
         $usuario->update();
-        return redirect('/micuentaE/'.\Auth::user()->id);
+        return redirect('/micuentaE/'.\Auth::user()->cuentable->id);
       }
       else
        {
         $cliente = Cliente::find(\Auth::user()->id);
         $cliente->apellido = $request->apellido;
         $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarTelefono(Request $request)
@@ -118,39 +118,10 @@ class ClienteController extends Controller
       {
         return back()->with('error',$validacion->messages()->all())->withInput();
       }
-      $cliente = Cliente::find(\Auth::user()->id);
+      $cliente = Cliente::find(\Auth::user()->cuentable->id);
       $cliente->telefono=$request->telefono;
       $cliente->update();
-      return redirect ('/micuenta/'.\Auth::user()->id);
-    }
-    public function modificarFechanacimiento(Request $request)
-    {
-      if($request->isMethod('GET'))
-      {
-        return view ('user.micuenta');
-      }
-      $rules= ['fecha_nacimiento'=>'required'];
-      $validacion= Validator::make($request->all(),$rules);
-      if($validacion->fails())
-      {
-        return back()->with('error',[
-          'titulo'=>'Error!',
-          'cuerpo'=>'El campo fecha de nacimiento es requerido, no puede dejarlo vacio. Ya que para nosotros es necesarios saberlo.'
-        ]);
-      }
-      if(\Auth::user()->cuentable_type=='App\Empleado')
-      {
-        $usuario = Empleado::find(\Auth::user()->id);
-        $usuario->fecha_nacimiento=$request->fecha_nacimiento;
-        $usuario->update();
-        return redirect ('/micuentaE/'.\Auth::user()->id);
-      }
-      else {
-        $cliente = Cliente::find(\Auth::user()->id);
-        $cliente->fecha_nacimiento=$request->fecha_nacimiento;
-        $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
-      }
+      return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
     }
     public function subirFoto(Request $request)
     {
@@ -172,16 +143,16 @@ class ClienteController extends Controller
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
-        $usuario = Empleado::find(\Auth::user()->id);
+        $usuario = Empleado::find(\Auth::user()->cuentable->id);
         $file= $request->file('foto');
         $temp= $file->store('ProfilePhotos','public');
         $usuario->cuenta->photo = $temp;
         $usuario->cuenta->update();
-        return redirect ('/micuentaE/'.\Auth::user()->id);
+        return redirect ('/micuentaE/'.\Auth::user()->cuentable->id);
       }
       else if(\Auth::user()->cuentable_type=='App\Cliente')
       {
-        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente = Cliente::find(\Auth::user()->cuentable->id);
         $file= $request->file('foto');
         $temp= $file->store('ProfilePhotos','public');
         $cliente->cuenta->photo = $temp;
@@ -197,7 +168,7 @@ class ClienteController extends Controller
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
-        $usuario = Empleado::find(\Auth::user()->id);
+        $usuario = Empleado::find(\Auth::user()->cuentable->id);
 
         if($usuario->cuenta->password==$request->actualpassword)
         {
@@ -235,7 +206,7 @@ class ClienteController extends Controller
       foreach ($cliente->mensajes as $mensaje) {
         array_push($mensajes,$mensaje);
       }
-      return view ('user.micuenta',['citas'=>$citas,'compras'=>$compras,'mensajes'=>$mensajes]);
+      return view ('user.micuenta',['citas'=>$citas,'compras'=>$compras,'mensajes'=>$mensajes,'cliente'=>$cliente]);
     }
     public function getDetailsEmpleado($id = null)
     {

@@ -211,6 +211,9 @@ Mi cuenta
     margin-top: -15px;
     text-align: center;
   }
+  td{
+    text-align: center;
+  }
 </style>
 @endsection
 @section('body')
@@ -508,24 +511,59 @@ Mi cuenta
             <div class="col-xs-12">
             <table class="table table-hover">
               <thead>
-                <th>Producto</th>
-                <th>Fecha y hora</th>
+                <th>Fecha</th>
+                <th>Hora</th>
                 <th>Costo</th>
               </thead>
               <tbody>
               @if($compras)
-              @foreach($compras as $compra)
+              @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
                 <tr>
-                @foreach($compra->productos as $producto)
-                <td>{{$producto->nombre}}</td>
-                <td>{{$compra->fecha_hora}}</td>
-                <td>{{$producto->precio_venta}}</td>
-                @endforeach
+                <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
+                <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
+                <td>${{$compra->monto()}}</td>
+                <td><a class="btn btn-success" data-toggle="modal" data-target="#modal{{$compra->id}}" style="margin-top: -3px;">Detalle</a></td>
                 </tr>
+
               @endforeach
               @endif
               </tbody>
             </table>
+
+            @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
+            <div class="modal fade" tabindex="-1" id="modal{{$compra->id}}">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" name="button" aria-label="Close">&times;</button>
+                    <h4 class="modal-title">Detalle de compra</h4>
+                  </div>
+                </div>
+                <div class="modal-body" style="display: inline-block; width: 100%; border-radius: 4px; background-color: white;">
+                  <table class="table" style="">
+                    <thead>
+                      <th>Producto</th>
+                      <th>Cantidad</th>
+                      <th>Costo</th>
+                    </thead>
+                    <tbody>
+                      @foreach($compra->productos as $productos)
+                      <tr>
+                        <td>{{$productos->nombre}}</td>
+                        <td>{{$productos->pivot->cantidad}}</td>
+                        <td>${{$productos->precio_venta}}</td>
+                      </tr>
+                      @endforeach
+                      <tr>
+                        <td>Total:</td><td></td><td>${{$compra->monto()}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+            @endforeach
+
           </div>
           </div>
         </div>
