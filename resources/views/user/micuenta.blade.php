@@ -192,8 +192,13 @@ Mi cuenta
     border-radius: 4px;
     height: 5px;
   }
-  .td-realizada{
-
+  .td-curso{
+    background-color: #FF3390;
+    border-radius: 4px;
+  }
+  .td-confirmada{
+    background-color: #2ab27b;
+    border-radius: 4px;
   }
   .td-pausada{
     background-color: #191970;
@@ -213,6 +218,40 @@ Mi cuenta
   }
   td{
     text-align: center;
+  }
+  .modal-content{
+    background-color: #1F1f1f;
+    border-radius: 2px;
+    margin-top: 100px;
+  }
+  .modal-header{
+    color: #ed5;
+    font-family: 'Lobster Two';
+  }
+  .modal-body{
+    color: white;
+    height: 400px;
+    overflow-y: scroll;
+  }
+  .modal-body::-webkit-scrollbar{
+    width: 0.5em;
+  }
+  .modal-body::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  }
+  .modal-body::-webkit-scrollbar-thumb{
+    background: #3F3F3F;
+    outline: 1px solid black;
+  }
+  .modal-body::-webkit-scrollbar-thumb:window-inactive {
+    background: #bbb;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3) inset;
+  }
+  .table-detalle thead{
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    color: #1F1F1F;
   }
 </style>
 @endsection
@@ -437,8 +476,8 @@ Mi cuenta
             <div class="col-xs-12">
             <table class="table" style="text-align: center; color: black;">
               <tr>
-                  <th>Servicio</th>
-                  <th>Fecha y hora</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
                   <th>Estado</th>
                   @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
                   <th>Acción</th>
@@ -448,38 +487,75 @@ Mi cuenta
               <tbody style="color: black; ">
                 @foreach($citas as $cit)
                   <tr>
-                    @foreach($cit->servicios as $servicios)
-                    <td>{{$servicios->nombre}}</td>
-                    <td>{{$cit->fecha_hora}}</td>
+                    <td>{{date('d/m/Y',strtotime($cit->fecha_hora))}}</td>
+                    <td>{{date('g:i a',strtotime($cit->fecha_hora))}}</td>
                     @if($cit->estado==0)
                       <td class="td-pendiente">En espera</td>
                     @elseif($cit->estado==1)
-                      <td class="td-realizada">En curso</td>
+                      <td class="td-confirmada">Confirmada</td>
                     @elseif($cit->estado==2)
-                      <td class="td-pausada">En pausa</td>
+                      <td class="td-curso">En curso</td>
                     @elseif($cit->estado==3)
-                      <td class="td-finalizada">Realizada</td>
+                      <td class="td-pausada">Pausada</td>
                     @elseif($cit->estado==4)
+                      <td class="td-finalizada">Realizada</td>
+                    @elseif($cit->estado==5)
                       <td class="td-cancelada">Cancelada</td>
                     @endif
                     @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
                     <td>
-                      @if(!$cit->estado==4)
-                      <a class="btn btn-danger form-control" data-toggle="modal" data-target="#cancelar" style="margin-top: -3px;">
+                      @if($cit->estado==0 || $cit->estado==1)
+                      <a class="btn btn-danger form-control" data-toggle="modal" data-target="#cancelar{{$cit->id}}" style="margin-top: -3px;">
                         Cancelar
                       </a>
                       @else
-                      <a href="#" class="btn btn-success form-control" style="margin-top: -3px;">Nueva cita</a>
+                      <a href="#" class="btn btn-success form-control" style="margin-top: -3px;">No tienes ninguna acción</a>
                       @endif
                     </td>
-                    <div class="modal fade" id="cancelar" role="dialog" tabindex="-1">
+                    <td>
+                      <a data-toggle="modal" data-target="#cita{{$cit->id}}" class="btn btn-success form-control" style="margin-top: -3px;">Detalle</a>
+                      <div class="modal fade" tabindex="-1" id="cita{{$cit->id}}" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" name="button">&times;</button>
+                              <h4 class="modal-title">Detalle de cita</h4>
+                            </div>
+                            <div class="modal-body">
+                              <table class="table table-detalle">
+                                <thead>
+                                  <th>Servicio</th>
+                                  <th>Monto</th>
+                                </thead>
+                                <tbody style="color: #1F1F1F;">
+                                  @foreach($cit->servicios as $servicio)
+                                  <td>{{$servicio->nombre}}</td>
+                                  <td>{{$servicio->precio}}</td>
+                                  @endforeach
+                                </tbody>
+                              </table>
+                              <table class="table table-detalle">
+                                <thead>
+                                  <th>Estilista</th>
+                                  <th></th>
+                                </thead>
+                                <tbody style="color: #1F1F1F;">
+                                  <td>{{$cit->empleado->nombre}}</td>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <div class="modal fade" id="cancelar{{$cit->id}}" role="dialog" tabindex="-1">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" name="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Cancelar</h4>
                           </div>
-                          <div class="modal-body" style="text-align: center;">
+                          <div class="modal-body" style="text-align: center; height: 70px; font-size: 20px; font-family: 'Lobster Two'; overflow-y: none;">
                             ¿Desea cancelar su cita?
                           </div>
                           <div class="modal-footer">
@@ -490,7 +566,6 @@ Mi cuenta
                       </div>
                     </div>
                     @endif
-                    @endforeach
                   </tr>
                 @endforeach
               </tbody>
@@ -531,34 +606,39 @@ Mi cuenta
             </table>
 
             @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
-            <div class="modal fade" tabindex="-1" id="modal{{$compra->id}}">
+            <div class="modal fade" tabindex="-1" id="modal{{$compra->id}}" role="dialog" aria-labelledby="myModalLabel">
               <div class="modal-dialog" role="document">
                 <div class="modal-content">
                   <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" name="button" aria-label="Close">&times;</button>
-                    <h4 class="modal-title">Detalle de compra</h4>
+                    <h4 class="modal-title" id="myModalLabel">Detalle de compra</h4>
                   </div>
-                </div>
-                <div class="modal-body" style="display: inline-block; width: 100%; border-radius: 4px; background-color: white;">
-                  <table class="table" style="">
+                <div class="modal-body" style="width: 100%;">
+                  <table class="table table-detalle" style="">
                     <thead>
                       <th>Producto</th>
+                      <th>Imagen</th>
                       <th>Cantidad</th>
-                      <th>Costo</th>
+                      <th>Monto</th>
                     </thead>
                     <tbody>
                       @foreach($compra->productos as $productos)
                       <tr>
                         <td>{{$productos->nombre}}</td>
+                        <td><img style="width: 40%;" src="{{asset('storage/'.$productos->fotografia)}}" alt=""></td>
                         <td>{{$productos->pivot->cantidad}}</td>
                         <td>${{$productos->precio_venta}}</td>
                       </tr>
                       @endforeach
-                      <tr>
-                        <td>Total:</td><td></td><td>${{$compra->monto()}}</td>
+                      <tr style="leter-spacing: 2px; font-size:16px; ">
+                        <td><b>Total:</b></td><td></td><td></td><td><b>${{$compra->monto()}}</b></td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" name="button" data-dismiss="modal">Cerrar</button>
+                </div>
                 </div>
               </div>
             </div>
@@ -651,9 +731,9 @@ Mi cuenta
   })
 </script>
 <script type="text/javascript">
-  function reloadPage(){
-    location.reload(true)
-  }
-  setInterval('reloadPage()','60000')
+  //function reloadPage(){
+  //  location.reload(true)
+  //}
+  //setInterval('reloadPage()','60000')
 </script>
 @endsection

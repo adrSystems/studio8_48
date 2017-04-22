@@ -19,10 +19,10 @@ class ClienteController extends Controller
       {
         return view('user.micuenta');
       }
-      $rules=['contenido'=>'required|digits:3'];
+      $rules=['contenido'=>'required|min:3'];
       $messages=[
         'contenido.required'=>'El campo de mensaje no puede estar vacio.',
-        'contenido.digits'=>'El mensaje al menos debe contener 3 digitos'
+        'contenido.min'=>'El mensaje al menos debe contener 3 digitos'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
       if($validacion->fails()){
@@ -34,7 +34,7 @@ class ClienteController extends Controller
       $mensaje->fecha_hora=$datetim;
       $mensaje->visto=0;
       $mensaje->by_cliente=1;
-      $mensaje->cliente_id=\Auth::user()->id;
+      $mensaje->cliente_id=\Auth::user()->cuentable->id;
       $mensaje->save();
       return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
     }
@@ -93,7 +93,7 @@ class ClienteController extends Controller
       }
       else
        {
-        $cliente = Cliente::find(\Auth::user()->id);
+        $cliente = Cliente::find(\Auth::user()->cuentable->id);
         $cliente->apellido = $request->apellido;
         $cliente->update();
         return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
@@ -130,7 +130,7 @@ class ClienteController extends Controller
         return view ('user.micuenta');
       }
       $rules=[
-        'foto'=>'required|mimes: jpeg,bmp,png,jpg'
+        'foto'=>'required|mimes:jpeg,bmp,png'
       ];
       $messages=[
         'foto.required'=>'Debe seleccionar una imagen',
@@ -157,7 +157,7 @@ class ClienteController extends Controller
         $temp= $file->store('ProfilePhotos','public');
         $cliente->cuenta->photo = $temp;
         $cliente->cuenta->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarContrasena(Request $request)
@@ -227,7 +227,7 @@ class ClienteController extends Controller
     public function cancelarCita(Request $request)
     {
       $cita= Cita::find($request->id);
-      $cita->estado=4;
+      $cita->estado=5;
       $cita->update();
     }
 
