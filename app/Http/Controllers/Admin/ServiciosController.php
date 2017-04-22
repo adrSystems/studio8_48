@@ -30,9 +30,16 @@ class ServiciosController extends Controller
         'duracion.required'=>'La duracion de un servicio es requerido.'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
+      $datos=[
+        'nombre'=>$request->nombre,
+        'precio'=>$request->precio,
+        'tiempo'=>$request->duracion
+      ];
       if($validacion->fails())
       {
-        return back()->with('error',$validacion->messages()->all())->withInput();
+        return back()
+        ->with('error',$validacion->messages()->all())
+        ->withInput();
       }
       $file = $request->file('icono');
       $temp = $file->store('IconosServicios','public');
@@ -48,7 +55,7 @@ class ServiciosController extends Controller
     {
       if($request->isMethod('GET'))
       {
-        return view ('admin.servicios');
+        return view ('admin.servicios.edit');
       }
       $rules=[
         'icono'=>'mimes:jpeg,bmp,png,jpg',
@@ -65,6 +72,7 @@ class ServiciosController extends Controller
         'duracion.required'=>'La duracion de un servicio es requerido.'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
+
       if($validacion->fails())
       {
         return back()->with('error',$validacion->messages()->all())->withInput();

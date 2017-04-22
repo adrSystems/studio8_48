@@ -37,13 +37,34 @@ Catalogo de servicios
     display: inline-block;
     width: 100%;
   }
+  .vacia{
+    width: 100%;
+    padding: 50px;
+    color: #1F1F1F;
+    font-size: 26px;
+    background-color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 20%;
+  }
 </style>
 @endsection
 @section('body')
 <div class="container">
   <div class="catalogo">
+    @if(App\servicio::count() < 1 )
+    <div class="vacia">
+      <p>Por el momento no hay ningun servicio disponible.</p>
+      <p>¡Gracias por visitarnos!</p>
+      <i class="material-icons">mood</i>
+    </div>
+    <style media="screen">
+      .footer{
+        margin-top: 15%;
+      }
+    </style>
+    @else
     @foreach(App\Servicio::get() as $servicio)
-    @if($servicio->count() > 0)
       <div class="col-sm-6 col-md-3">
         <div class="servicio">
           <img class="image" src="{{asset('storage/'.$servicio->icono)}}" alt="...">
@@ -77,8 +98,8 @@ Catalogo de servicios
           </div>
         </div>
       </div>
-    @endif
     @endforeach
+    @endif
   </div>
 </div>
 @endsection

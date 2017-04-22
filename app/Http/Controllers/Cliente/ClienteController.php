@@ -158,6 +158,18 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
+      $rules=[
+        'foto'=>'required|mimes: jpeg,bmp,png,jpg'
+      ];
+      $messages=[
+        'foto.required'=>'Debe seleccionar una imagen',
+        'foto.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg'
+      ];
+      $validacion= Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails())
+      {
+        return back()->with('errorfoto',$validacion->messages()->all())->withInput();
+      }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
         $usuario = Empleado::find(\Auth::user()->id);

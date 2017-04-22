@@ -107,11 +107,20 @@ Concursos
       @if(Session::has('error'))
         @foreach(Session::get('error') as $error)
           <div class="alert alert-danger" role="alert" style="text-align: center;">
+            <button type="button" class="close" data-dismiss="alert" name="button">&times;</button>
             {{$error}}
           </div>
         @endforeach
       @endif
       <div class="col-xs-6">
+        @if(Session::has('exitoso'))
+        @foreach(Session::get('exitoso') as $exito)
+        <div class="alert alert-success" role="alert" style="text-align: center;">
+          <button type="button" class="close" data-dismiss="alert" name="button">&times;</button>
+          {{$exito}}
+        </div>
+        @endforeach
+        @endif
         <h3 class="title-concurso"> Concursos existente</h3>
         <div class="concursos">
           @foreach(\App\Concurso::get() as $concurso)
@@ -153,15 +162,15 @@ Concursos
               {{csrf_field()}}
               <div class="form-group">
                 <span>Image de promocion</span>
-                <input type="file" name="imagen" value="" class="form-control">
+                <input type="file" name="imagen" value="" class="form-control" required accept="image/*">
               </div>
               <div class="form-group">
                 <span>Fecha inicio</span>
-                <input type="date" name="fecha_inicio" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control">
+                <input type="date" required name="fecha_inicio" value="{{Carbon\Carbon::now()->toDateString()}}" class="form-control">
               </div>
               <div class="form-group">
                 <span>Fecha fin</span>
-                <input type="date" name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control">
+                <input type="date" required name="fecha_fin" value="{{Carbon\Carbon::now()->addDay()->toDateString()}}" class="form-control">
               </div>
               <div class="pull-right">
                 <button type="submit" name="button" class="form-control"><i class="material-icons icono">save</i>Guardar</button>
