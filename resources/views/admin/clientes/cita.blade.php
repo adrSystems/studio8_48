@@ -338,10 +338,12 @@ Nueva cita
             <h5 class="col-xs-12 col-md-10 col-md-offset-1">Estilista de preferencia</h5>
             <div class="col-xs-12">
               <div class="container col-xs-12 col-md-offset-1 col-md-10" style="padding: 0;padding-top: 15px;">
-                @if(\App\Rol::where('nombre','estilista')->first()->empleados()->count() < 1)
+                @if(count($rol = \App\Rol::with(['empleados.cuenta' => function($query){
+                  $query->where('active','1');
+                }])->where('nombre','estilista')->first()) < 1)
                 <p style="margin: 0px;padding:15px;padding-top:0">No se encontraron estilistas. Agrega estilistas para poder agregar una cita.</p>
                 @else
-                @foreach(\App\Rol::where('nombre','estilista')->first()->empleados as $estilista)
+                @foreach($rol->empleados as $estilista)
                 <div class="col-xs-12 col-md-4 col-sm-4 col-lg-3">
                   <div class="estilista-item">
                     <div class="img-container">

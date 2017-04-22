@@ -16,7 +16,10 @@ class AdminRecepcionista
      */
     public function handle($request, Closure $next)
     {
-      if(Auth::user()->cuentable_type != \App\Empleado::class or Auth::user()->cuentable->roles()->where('nombre','administrador')->orWhere('nombre','recepcionista')->count() < 1)
+      if(Auth::user()->cuentable_type != \App\Empleado::class
+      or !Auth::user()->cuentable->roles()
+      ->whereRaw("empleado_rol.empleado_id = ".Auth::user()->cuentable->id." and (nombre = 'administrador' or nombre = 'recepcionista')")
+      ->first())
         return redirect('/');
 
       return $next($request);

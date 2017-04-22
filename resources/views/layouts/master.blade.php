@@ -808,7 +808,8 @@
             <a href="/tips" class="nav-item"><p>Tips</p></a>
             <a href="/portafolio" class="nav-item"><p>Portafolio</p>
             </a>
-            @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado' and Auth::user()->cuentable->roles->where('nombre','administrador'))
+            @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
+            and Auth::user()->cuentable->roles()->whereRaw("empleado_rol.empleado_id = ".Auth::user()->cuentable->id." and (nombre = 'administrador' or nombre = 'recepcionista')")->first())
             <a href="#" class="nav-item nav-dropdown" id="1">
               <p>Administración</p>
               <i class="material-icons down nav-item-menu-btn">keyboard_arrow_down</i>
@@ -931,10 +932,10 @@
         <div class="" id="user-menu">
           <p>{{Auth::user()->cuentable->nombre}}<br>{{Auth::user()->email}}</p>
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
-          <a href="/micuenta/{{Auth::user()->id}}">Mi cuenta</a>
+          <a href="/micuenta/{{Auth::user()->cuentable->id}}">Mi cuenta</a>
           @else
 
-          <a href="/micuentaE/{{Auth::user()->id}}">Mi cuenta</a>
+          <a href="/micuentaE/{{Auth::user()->cuentable->id}}">Mi cuenta</a>
           @endif
 
           @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
@@ -975,19 +976,21 @@
 
         </script>
         <script>
-            if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
-              $('body').children('.footer').css({
-                position:'absolute',
-                bottom:'0'
-              });
-            }
-            else{
-              $('body').children('.footer').css({
-                position:'relative'
-              });
-            }
+
 
             $(document).ready(function(){
+
+              if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+                $('body').children('.footer').css({
+                  position:'absolute',
+                  bottom:'0'
+                });
+              }
+              else{
+                $('body').children('.footer').css({
+                  position:'relative'
+                });
+              }
 
               function showModal(id) {
                 $modal = $(id)
