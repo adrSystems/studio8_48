@@ -350,7 +350,7 @@ Studio8 48 - Personal
     padding: 10px;
   }
   .empleado-item>div>p{
-    margin: 0;
+    margin-bottom: 5px;
   }
   #servicios-container>.item{
     float: left;
@@ -512,6 +512,17 @@ Studio8 48 - Personal
   }
   #img-container-est-foto>img{
     width: 100%;
+  }
+  .danger-msg-span{
+    padding: 0px 3px 0 3px;
+    border-radius: 3px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+    color: #f76;
+    background-color: #fff;
+    width: auto;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    float: left;
   }
 </style>
 @endsection
@@ -704,7 +715,7 @@ Studio8 48 - Personal
       @if(App\Empleado::count() < 1)
       <strong style="color:#555;padding:5px">No se encontraron empleados en el sistema</strong>
       @else
-      @foreach(App\Empleado::get() as $empleado)
+      @foreach(App\Empleado::with('roles','cuenta')->get() as $empleado)
       <div class="empleado-item">
         <div class="options-menu empleado-options" id="{{$empleado->id}}">
           <div class="menu-triangle-shadow menu-triangle-shadow-left">
@@ -744,6 +755,9 @@ Studio8 48 - Personal
             @endif
             @endforeach
           </p>
+          @if($empleado->cuenta->active == '0')
+          <p class="danger-msg-span">Cuenta pendiente de activación</p>
+          @endif
         </div>
         <i class="material-icons more-btn" id="{{$empleado->id}}">more_vert</i>
       </div>

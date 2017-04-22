@@ -44,7 +44,6 @@ Editar
 </style>
 @endsection
 @section('body')
-{{$servicio}}
 <div class="container">
   <div class="col-md-12 servicio">
     <div class="col-xs-offset-3 col-xs-6">
@@ -59,23 +58,23 @@ Editar
             <input type="hidden" name="id" value="{{$servicio->id}}">
             <div class="form-group">
               <span>Nombre del servicio:</span>
-              <input type="text" name="nombre" value="{{$servicio->nombre}}" class="form-control">
+              <input type="text" name="nombre" value="{{$servicio->nombre}}" class="form-control" required>
             </div>
             <div class="form-group">
               <span>Costo:</span>
-              <input type="text" name="precio" value="{{$servicio->precio}}" class="form-control">
+              <input type="number" name="precio" value="{{$servicio->precio}}" class="form-control" required>
             </div>
             <div class="form-group">
               <span>Icono actual:</span><br>
               <img src="{{asset('storage/'.$servicio->icono)}}" alt=""><br>
               <span>Modificar icono:</span>
-              <input type="file" name="icono" value="" class="form-control">
+              <input type="file" name="icono" value="" class="form-control" accept="image/*">
             </div>
             <div class="form-group">
               <span>Tiempo actual <b>{{$servicio->tiempo}}</b></span> <br>
               <span>Tiempo:</span>
-              <select class="form-control" name="duracion">
-                <option value="{{$servicio->tiempo}}">Seleccione la duracion del servico</option>
+              <select class="form-control" name="duracion" required>
+                <option value="{{$servicio->tiempo}}">{{$servicio->tiempo}}</option>
                 <option value="00:30:00">30 min</option>
                 <option value="01:00:00">1:00 hr</option>
                 <option value="01:30:00">1:30 hrs</option>

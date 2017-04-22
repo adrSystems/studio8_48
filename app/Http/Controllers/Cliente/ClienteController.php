@@ -36,7 +36,7 @@ class ClienteController extends Controller
       $mensaje->by_cliente=1;
       $mensaje->cliente_id=\Auth::user()->id;
       $mensaje->save();
-      return redirect ('/micuenta/'.\Auth::user()->id);
+      return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
     }
     public function modificarNombre(Request $request)
     {
@@ -65,7 +65,7 @@ class ClienteController extends Controller
         $cliente = Cliente::find(\Auth::user()->id);
         $cliente->nombre = $request->nombre;
         $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarApellido(Request $request)
@@ -96,7 +96,7 @@ class ClienteController extends Controller
         $cliente = Cliente::find(\Auth::user()->id);
         $cliente->apellido = $request->apellido;
         $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarTelefono(Request $request)
@@ -121,7 +121,7 @@ class ClienteController extends Controller
       $cliente = Cliente::find(\Auth::user()->id);
       $cliente->telefono=$request->telefono;
       $cliente->update();
-      return redirect ('/micuenta/'.\Auth::user()->id);
+      return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
     }
     public function modificarFechanacimiento(Request $request)
     {
@@ -149,7 +149,7 @@ class ClienteController extends Controller
         $cliente = Cliente::find(\Auth::user()->id);
         $cliente->fecha_nacimiento=$request->fecha_nacimiento;
         $cliente->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function subirFoto(Request $request)
@@ -157,6 +157,18 @@ class ClienteController extends Controller
       if($request->isMethod('GET'))
       {
         return view ('user.micuenta');
+      }
+      $rules=[
+        'foto'=>'required|mimes: jpeg,bmp,png,jpg'
+      ];
+      $messages=[
+        'foto.required'=>'Debe seleccionar una imagen',
+        'foto.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg'
+      ];
+      $validacion= Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails())
+      {
+        return back()->with('errorfoto',$validacion->messages()->all())->withInput();
       }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
@@ -174,7 +186,7 @@ class ClienteController extends Controller
         $temp= $file->store('ProfilePhotos','public');
         $cliente->cuenta->photo = $temp;
         $cliente->cuenta->update();
-        return redirect ('/micuenta/'.\Auth::user()->id);
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id);
       }
     }
     public function modificarContrasena(Request $request)

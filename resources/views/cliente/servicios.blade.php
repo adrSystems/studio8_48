@@ -14,18 +14,21 @@ Catalogo de servicios
   }
   .servicio{
     margin-top: 10px;
-    height: 400px;
     background-color: white;
     border-radius: 4px;
     padding: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
   .servicio:hover{
-    border: 4px solid #1F1F1F;
   }
-  .image{
+  .img-container{
     width: 100%;
     height: 60%;
+    overflow: hidden;
     border-radius: 2px;
+  }
+  .img-container>img{
+    width: 100%;
   }
   .descripcion{
     text-align: center;
@@ -37,48 +40,74 @@ Catalogo de servicios
     display: inline-block;
     width: 100%;
   }
+  .vacia{
+    width: 100%;
+    padding: 50px;
+    color: #1F1F1F;
+    font-size: 26px;
+    background-color: rgba(255, 255, 255, 0.6);
+    text-align: center;
+    border-radius: 4px;
+    margin-top: 20%;
+  }
 </style>
 @endsection
 @section('body')
-<div class="container">
-  <div class="catalogo">
-    @foreach(App\Servicio::get() as $servicio)
-    @if($servicio->count() > 0)
-      <div class="col-sm-6 col-md-3">
-        <div class="servicio">
-          <img class="image" src="{{asset('storage/'.$servicio->icono)}}" alt="...">
-          <div class="descripcion">
-            <h3>{{$servicio->nombre}}</h3>
-            <p><a href="#" data-toggle="modal" data-target="#detalle{{$servicio->id}}" class="btn btn-default" role="button">Ver más</a></p>
-          </div>
-        </div>
+<div class="main-container">
+  <div class="container">
+    <h3 class="col-xs-12" style="font-family:Lobster Two;color:#fff">Servicios</h3>
+    <div class="catalogo">
+      @if(App\servicio::count() < 1 )
+      <div class="vacia">
+        <p>Por el momento no hay ningun servicio disponible.</p>
+        <p>¡Gracias por visitarnos!</p>
+        <i class="material-icons">mood</i>
       </div>
-      <div class="modal fade" id="detalle{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" name="button"><span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title" id="myModalLabel">{{$servicio->nombre}}</h4>
+      <style media="screen">
+        .footer{
+          margin-top: 15%;
+        }
+      </style>
+      @else
+      @foreach(App\Servicio::get() as $servicio)
+        <div class="col-sm-6 col-md-3">
+          <div class="servicio">
+            <div class="img-container">
+              <img src="{{asset('storage/'.$servicio->icono)}}" alt="...">
             </div>
-            <div class="modal-body">
-              <div class="col-xs-5 col-md-5" style="paddign: 10px;">
-                <img src="{{asset('storage/'.$servicio->icono)}}" alt="" style="width: 100%;">
-              </div>
-              <div class="col-xs-offset-1 col-md-offset-1 col-xs-6 col-md-6" style="color: #1F1F1F; text-align: center; border: 2px solid #1f1f1f; padding: 20px;">
-                <p>Duración</p>
-                <p style="font-size: 22px;"><i class="material-icons" style="margin-top: 10px;">timer</i>{{$servicio->tiempo}}</p>
-                <p>Precio</p>
-                <p style="font-size: 22px;"><b><span>$</span>{{$servicio->precio}} <span style="font-size: 10px;">MX</span></p></b>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-default" data-dismiss="modal" name="button">Cerrar</button>
+            <div class="descripcion">
+              <h5 style="color:#333">{{$servicio->nombre}}</h5>
+              <p><a href="#" data-toggle="modal" data-target="#detalle{{$servicio->id}}" class="btn btn-default" role="button">Ver más</a></p>
             </div>
           </div>
         </div>
-      </div>
-    @endif
-    @endforeach
+        <div class="modal fade" id="detalle{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" name="button"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">{{$servicio->nombre}}</h4>
+              </div>
+              <div class="modal-body">
+                <div class="col-xs-5 col-md-5" style="paddign: 10px;">
+                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="" style="width: 100%;">
+                </div>
+                <div class="col-xs-offset-1 col-md-offset-1 col-xs-6 col-md-6" style="color: #1F1F1F; text-align: center; border: 2px solid #1f1f1f; padding: 20px;">
+                  <p>Duración</p>
+                  <p style="font-size: 22px;"><i class="material-icons" style="margin-top: 10px;">timer</i>{{$servicio->tiempo}}</p>
+                  <p>Precio</p>
+                  <p style="font-size: 22px;"><b><span>$</span>{{$servicio->precio}} <span style="font-size: 10px;">MX</span></p></b>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" name="button">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      @endforeach
+      @endif
+    </div>
   </div>
 </div>
 @endsection
