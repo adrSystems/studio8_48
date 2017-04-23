@@ -25,4 +25,9 @@ class Servicio extends Model
     {
       return $this->hasMany('App\Promocion');
     }
+
+    public function portafolio()
+    {
+      return $this->hasMany('App\Imagen');
+    }
 }

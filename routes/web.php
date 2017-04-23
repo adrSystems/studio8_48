@@ -107,20 +107,25 @@ Route::group(['middleware' => ['auth','admin-recepcionista']], function () {
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
-  //portafolio, tips
-  Route::get('/gestion_portafolio',function(){
-    return view('admin.portafolio.gestion_portafolio');
+  //portafolio
+  Route::get('/admin/portafolio/gestion/{id?}',function($id = null){
+    if($id == null) return view('admin.portafolio.gestion');
+    if(!$servicio = \App\Servicio::find($id)) return redirect('/admin/portafolio/gestion');
+    else{
+      return view('admin.portafolio.gestion', ['servicio' => $servicio]);
+    }
   });
-  Route::get('/gestionartips',function(){
-    return view('admin.gestion_tip');
+  Route::match(['GET','POST'],'/admin/portafolio/nuevo','PortafolioController@subirContenido');
+  Route::post('/admin/portafolio/borrar-imagen','PortafolioController@eliminarImagen');
+  Route::get('/admin/portafolio/borrar-video/{id}','PortafolioController@eliminarVideo');
+
+  //tips
+  Route::get('/admin/tips/gestion',function(){
+    return view('admin.tips.gestion');
   });
-  Route::match(['GET','POST'],'/subir_contenido','PortafolioController@Subir_contenido');
-  Route::get('/borrar_imagen/{id}','PortafolioController@Eliminar_imagen');
-  Route::get('/borrar_video/{id}','PortafolioController@Eliminar_video');
-  Route::get('/borrartip/{id}','TipsController@Eliminar');
-  Route::get('/modificartip/{id}','TipsController@Modificar');
-  Route::match(['GET','POST'],'/modificartip','TipsController@Modificar_tip');
-  Route::match(['GET','POST'],'/subirtip','TipsController@Subir_tip');
+  Route::get('/admin/tips/borrar/{id}','TipsController@eliminar');
+  Route::match(['GET','POST'],'/admin/tips/modificar/{id}','TipsController@modificar');
+  Route::match(['GET','POST'],'/admin/tips/subir','TipsController@subir');
 
   //personal
   Route::get('/personal',function (){
@@ -229,26 +234,19 @@ Route::get('/promociones_concursos',function(){
 });
 
 Route::get('/tips',function(){
-  return view('cliente.vertips');
-});
-Route::get('/tip/{id}','TipsController@Ver_tip');
-
-Route::get('/portafolio',function(){
-  return view('admin.portafolio.ver_portafolio');
+  return view('cliente.tips');
 });
 
-Route::get('/nosotros',function(){
-    return view ('cliente.nosotros');
-});
-Route::get('/contacto',function(){
-    return view ('cliente.contacto');
-});
-route::get('/profesionales',function(){
-    return view('cliente.profesionales');
+Route::get('/portafolio/{id?}',function($id = null){
+  if($id == null) return view('portafolio');
+  if(!$servicio = \App\Servicio::find($id)) return redirect('/portafolio');
+  else{
+    return view('portafolio', ['servicio' => $servicio]);
+  }
 });
 
-Route::get('/p',function(){
-  return view('cliente.prueba');
+route::get('/nosotros',function(){
+    return view('cliente.nosotros');
 });
 
 Route::get('/',function (){

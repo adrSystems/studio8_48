@@ -7,7 +7,7 @@ Catálogo de productos
 @section('css')
 <style media="screen">
 body{
-  background-color: #222;
+  background-color: #fff;
 }
   h3{
     font-family: 'Lobster Two';
@@ -129,12 +129,17 @@ body{
     background-color: rgba(255, 255, 255, .09);
     color: #fff;
   }
+  .p-item{
+    border-radius: 3px;
+    overflow: hidden;
+    border: 1px solid rgba(0, 0, 0, .12);
+  }
   .p-item>.img-container{
       position: relative;
       width: 100%;
   }
   .p-item>.info{
-    background-color: rgba(255, 255, 255, 0.2);
+    background-color: rgba(0, 0, 0, 0.5);
     padding: 5px;
     padding-bottom: 10px;
   }
@@ -265,6 +270,23 @@ body{
     background-color: rgba(0, 0, 0, .08);
     padding: 2px;
   }
+  .card{
+    background-color: #333;
+  }
+  .card4{
+    background-color: rgba(0, 0, 0, 0.05);
+    float: left;
+    border-radius: 6px;
+  }
+  .main-container{
+    background-color: #fff;
+    z-index: 1;
+    margin-top: 100px;
+  }
+  .main-cover-fixed-container{
+    padding-top: 60px;
+    background-color: #222;
+  }
 </style>
 @endsection
 
@@ -315,9 +337,13 @@ body{
   </div>
 </div>
 
+<div class="main-cover-fixed-container">
+  <img class="main-cover-fixed" src="{{asset("img/covers/2.jpg")}}">
+</div>
+
 <div class="main-container">
   <div class="col-xs-12">
-    <h3>Catálogo de productos</h3>
+    <h3 class="dark-text1">Catálogo de productos</h3>
   </div>
   @if(\App\Marca::count() < 1)
   <div class="col-xs-12" style="padding:0;background-image:url('{{asset("img/walls/1.jpg")}}');background-size:cover;">
@@ -419,7 +445,7 @@ body{
       <p>Para realizar compras debes iniciar sesión...</p>
     </div>
     @endif
-    <div class="card">
+    <div class="card4">
       <div class="body" id="productos-container">
         @foreach(\App\Producto::where('venta_publico','1')->get() as $p)
         <div class="col-xs-12 col-sm-4 col-md-3" style="padding:15px">
@@ -451,7 +477,13 @@ body{
 
 @section('js')
 <script type="text/javascript">
+  $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
   $(document).ready(function () {
+
+    $(window).resize(function () {
+      $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+    })
 
     $('#quitar-filtros-btn').click(function () {
       $('select[name=categoria]').children().attr('selected',false)

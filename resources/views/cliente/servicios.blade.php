@@ -5,23 +5,16 @@ Catalogo de servicios
 @section('css')
 <style media="screen">
   body{
-    background-image: url("{{asset('img/walls/4.jpg')}}");
-    background-repeat: repeat;
-    background-attachment: fixed;
-  }
-  .catalogo{
-    margin-top: 70px;
+    background-color: #fff;
   }
   .servicio{
     margin-top: 10px;
     background-color: white;
     border-radius: 4px;
-    padding: 10px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
   }
-  .servicio:hover{
-  }
-  .img-container{
+  .servicio>.img-container{
+    position: relative;
     width: 100%;
     height: 60%;
     overflow: hidden;
@@ -32,9 +25,8 @@ Catalogo de servicios
   }
   .descripcion{
     text-align: center;
-  }
-  .footer{
-    margin-top: 50px;
+    padding: 10px;
+    width: 100%;
   }
   .modal-body{
     display: inline-block;
@@ -48,60 +40,90 @@ Catalogo de servicios
     background-color: rgba(255, 255, 255, 0.6);
     text-align: center;
     border-radius: 4px;
-    margin-top: 20%;
+  }
+  .main-container{
+    background-color: #fff;
+    z-index: 1;
+    margin-top: 100px;
+  }
+  .main-cover-fixed-container{
+    padding-top: 60px;
+    background-color: #222;
+  }
+  .main-cover-fixed-container>.info{
+    color: #fff;
+    position: absolute;
+    z-index: 1;
+    top: 25%;
+    left: 10%;
+  }
+  .main-cover-fixed-container>.info>.title{
+    font-size: 28px;
+    font-weight: 900;
+  }
+  .main-cover-fixed-container>.info>.caption{
+    font-size: 21px;
+  }
+  .servicio>.img-container>span{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    background-color: dodgerblue;
+    color: #fff;
+    border-radius: 3px;
+    padding: 0 3px 1px 3px;
   }
 </style>
 @endsection
 @section('body')
+<div class="main-cover-fixed-container">
+  <img class="main-cover-fixed" src="{{asset("img/covers/6.jpg")}}">
+  <div class="info">
+    <div class="title">
+      Catálogo de servicios
+    </div>
+    <div class="caption">
+      Explora los servicios de la mas alta calidad <br> que tenemos para ti.
+    </div>
+  </div>
+</div>
+
 <div class="main-container">
   <div class="container">
-    <h3 class="col-xs-12" style="font-family:Lobster Two;color:#fff">Servicios</h3>
-    <div class="catalogo">
+    <div class="col-xs-12">
+      <h3 class="col-xs-12" style="color:#333;margin-bottom:0">Servicios</h3>
+      <h4 class="col-xs-12" style="color:#888">Explora los servicios de la mas alta calidad que tenemos para ti.</h4>
+    </div>
+    <div class="catalogo col-xs-12">
       @if(App\servicio::count() < 1 )
       <div class="vacia">
         <p>Por el momento no hay ningun servicio disponible.</p>
         <p>¡Gracias por visitarnos!</p>
         <i class="material-icons">mood</i>
       </div>
-      <style media="screen">
-        .footer{
-          margin-top: 15%;
-        }
-      </style>
       @else
       @foreach(App\Servicio::get() as $servicio)
         <div class="col-sm-6 col-md-3">
           <div class="servicio">
             <div class="img-container">
+              <span>${{$servicio->precio}}</span>
               <img src="{{asset('storage/'.$servicio->icono)}}" alt="...">
             </div>
             <div class="descripcion">
               <h5 style="color:#333">{{$servicio->nombre}}</h5>
-              <p><a href="#" data-toggle="modal" data-target="#detalle{{$servicio->id}}" class="btn btn-default" role="button">Ver más</a></p>
-            </div>
-          </div>
-        </div>
-        <div class="modal fade" id="detalle{{$servicio->id}}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-          <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" name="button"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">{{$servicio->nombre}}</h4>
-              </div>
-              <div class="modal-body">
-                <div class="col-xs-5 col-md-5" style="paddign: 10px;">
-                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="" style="width: 100%;">
-                </div>
-                <div class="col-xs-offset-1 col-md-offset-1 col-xs-6 col-md-6" style="color: #1F1F1F; text-align: center; border: 2px solid #1f1f1f; padding: 20px;">
-                  <p>Duración</p>
-                  <p style="font-size: 22px;"><i class="material-icons" style="margin-top: 10px;">timer</i>{{$servicio->tiempo}}</p>
-                  <p>Precio</p>
-                  <p style="font-size: 22px;"><b><span>$</span>{{$servicio->precio}} <span style="font-size: 10px;">MX</span></p></b>
-                </div>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" name="button">Cerrar</button>
-              </div>
+              @if($promocion = $servicio->promociones()
+              ->whereDate('fecha_inicio','<=',\Carbon\Carbon::now()->format('Y-m-d'))
+              ->whereDate('fecha_termino','>=',\Carbon\Carbon::now()->format('Y-m-d'))->first())
+              <p>
+                <span style="color: #f87">Aprovecha la promocion del -{{$promocion->descuento}}%</span>
+                <br>
+                <span style="color:#aaa">
+                  Vigencia al {{date('d \d\e ',strtotime($promocion->fecha_termino)).
+                  ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"][date('n',strtotime($promocion->fecha_termino))-1]
+                  .date(' \d\e\l Y',strtotime($promocion->fecha_termino))}}
+                </span>
+              </p>
+              @endif
             </div>
           </div>
         </div>
@@ -112,4 +134,36 @@ Catalogo de servicios
 </div>
 @endsection
 @section('js')
+<script type="text/javascript">
+
+  $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
+  $(document).ready(function () {
+
+    if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+      $('body').children('.footer').css({
+        position:'absolute',
+        bottom:'0'
+      });
+    }
+    else{
+      $('body').children('.footer').css({
+        position:'relative'
+      });
+    }
+
+    $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
+    $(window).scroll(function () {
+      if($(this).scrollTop() > 200)
+        $('.main-cover-fixed-container>.info').fadeOut(300)
+      else $('.main-cover-fixed-container>.info').fadeIn(300)
+    })
+
+    $(window).resize(function () {
+      $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+    })
+
+  })
+</script>
 @endsection

@@ -3,39 +3,45 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Portafolio;
+use App\Imagen;
 use Redirect;
+use Storage;
 use Validator;
 use Carbon\Carbon;
 
 class PortafolioController extends Controller
 {
-  public function Subir_contenido(Request $request)
+
+  public function subirContenido(Request $request)
   {
     if($request->method()=='GET'){
-      return view('admin.portafolio.subir_contenido');
+      return view('admin.portafolio.subir-contenido');
     }
-    $imagen = new Portafolio;
-    if($request->hasfile('imagen'))
+
+    if(!$request->hasfile('imagen'))
     {
-      $archivo = $request->imagen;
-      $temp = $archivo->store('portafolio','public');
-      $imagen->imagen = $temp;
+      return back()->with('msg', ['title' => 'Ups!', 'type' => 'danger', 'body' => 'Debe seleccionar una imagen!']);
     }
-    else{
-      $imagen->imagen = null;
+    if(!$request->servicio)
+    {
+      return back()->with('msg', ['title' => 'Ups!', 'type' => 'danger', 'body' => 'Debe seleccionar un servicio!']);
     }
-    $imagen->created_at=carbon::now();
+
+    $imagen = new Imagen;
+    $imagen->src = $request->imagen->store('portafolio','public');
+    $imagen->created_at = carbon::now()->format('Y-m-d H:i:s');
+    $imagen->servicio_id = $request->servicio;
     $imagen->save();
-    return back()->with('msg','Archivo agregado al portafolio');
 
+    return back()->with('msg', ['title' => 'Ok!', 'type' => 'success', 'body' => 'Archivo agregado al portafolio!']);
   }
-  public function Eliminar_imagen($id=null)
+
+  public function eliminarImagen(Request $request)
   {
-    $imagen = Portafolio::find($id);
+    $imagen = Imagen::find($request->id);
     $imagen->delete();
-    return back()->with('msg','Archivo Eliminado');
+    Storage::delete("/public/".$imagen->src);
+    return back();
   }
-
 
 }

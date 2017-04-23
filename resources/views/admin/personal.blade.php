@@ -188,32 +188,7 @@ Studio8 48 - Personal
   #opciones-estilista, #opciones-estilista-to-edit{
     display: none;
   }
-  .img-file-selector{
-    padding-top: 10px;
-    position: relative;
-    border: 1px dashed #bbb;
-    border-radius: 2px;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-  }
-  .img-file-selector>p{
-    width: 100%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: block;
-    overflow: hidden;
-  }
-  .img-file-selector>input[type=file]{
-    background-color: red;
-    position: absolute;
-    top: -80%;
-    left: 0;
-    width: 100%;
-    height: 180%;
-    cursor: pointer;
-    opacity: 0;
-  }
+
   .footer{
     background-color: rgba(0,0,0,.5);
     box-shadow: none;
@@ -1285,15 +1260,6 @@ Studio8 48 - Personal
         $(this).children('.select-icon').removeClass('rol-selected');
         $(this).children('.select-icon').addClass('rol-unselected');
         $('form[id=edit-emp]').children('input[type=hidden][class=servicio][value='+$(this).attr('id')+']').remove();
-      }
-    });
-
-    $('.img-file-selector').children('input[type=file]').change(function () {
-      if($(this)[0].files.length > 0){
-        $(this).parent().children('p').text($(this)[0].files[0].name);
-      }
-      else{
-        $(this).parent().children('p').text('Haz click o arrastra un archivo...');
       }
     });
 

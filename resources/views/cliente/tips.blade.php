@@ -5,6 +5,7 @@ Tips
 @section('css')
 <style media="screen">
 body{
+  background-color: #fff;
   background: url('{{asset("img/walls/5.jpg")}}');
   background-repeat: no-repeat;
   background-size: cover;

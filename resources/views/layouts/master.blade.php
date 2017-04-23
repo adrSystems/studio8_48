@@ -520,7 +520,7 @@
               color: #bbb;
               width: 100%;
               margin-top: 100px;
-              margin-bottom: 40px;
+              padding-bottom: 40px;
             }
             .main-title{
               font-family: 'Lobster Two';
@@ -669,22 +669,23 @@
               background-color: #eee;
               border-left: 1px solid rgba(0, 0, 0, 0.2);
               border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-              border-bottom-left-radius: 20px;
+              border-bottom-left-radius: 10px;
               box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
               padding: 5px;
-              padding-left: 15px;
+              padding-left: 10px;
             }
             .cart-toggle>i{
               float: left;
               font-size: 21px;
+              margin-right: 5px;
             }
             .cart-toggle>span{
               float: left;
               border-radius: 3px;
               background-color: dodgerblue;
               color: white;
-              padding-left: 4px;
-              padding-right: 4px;
+              padding-left: 7px;
+              padding-right: 7px;
             }
             .cart-items{
               position: fixed;
@@ -766,13 +767,120 @@
             .modal-back{
               display: none;
             }
+            .main-cover-fixed-container{
+              position: fixed;
+              width: 100%;
+              z-index: -1 ;
+            }
+            .main-cover-fixed{
+              background-size: cover;
+              width: 100%;
+              -webkit-filter: blur(0px);
+              -webkit-transform: scale(1);
+              -webkit-transition: -webkit-transform .4s, -webkit-filter .5s;
+            }
+            .dark-text1{
+              color: #111;
+            }
+            .dark-text2{
+              color: #333;
+            }
+            .dark-text3{
+              color: #666;
+            }
+            .white-text{
+              color: #fff;
+            }
+            .gold-text{
+              color: #ed5;
+            }
+            .clear-text1{
+              color: #fff;
+            }
+            .clear-text2{
+              color: #eee;
+            }
+            .clear-text3{
+              color: #ddd;
+            }
+            .clear-text4{
+              color: #ccc;
+            }
+            .img-file-selector{
+              padding-top: 10px;
+              position: relative;
+              border: 1px dashed #bbb;
+              border-radius: 2px;
+              overflow: hidden;
+              text-align: center;
+              text-overflow: ellipsis;
+            }
+            .img-file-selector>p{
+              width: 100%;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              display: block;
+              overflow: hidden;
+              color: #333;
+            }
+            .img-file-selector>input[type=file]{
+              background-color: red;
+              position: absolute;
+              top: -80%;
+              left: 0;
+              width: 100%;
+              height: 180%;
+              cursor: pointer;
+              opacity: 0;
+            }
+            .textbox4{
+              padding: 10px;
+              border-radius: 3px;
+              border: 1px solid rgba(0, 0, 0, .2);
+              outline: none;
+              color: #777;
+              margin-bottom: 15px;
+            }
+            .textbox4:focus{
+              border: 1px solid rgba(0, 0, 0, .3);
+              color: #333;
+            }
+            .subtitle1{
+              font-weight: 400;
+              font-size: 19px;
+              margin-bottom: 5px;
+              margin-top: 15px;
+            }
+            .subtitle2{
+              font-weight: 400;
+              font-size: 18px;
+              margin-bottom: 5px;
+              margin-top: 15px;
+            }
+            .subtitle3{
+              font-weight: 400;
+              font-size: 16px;
+              margin-bottom: 5px;
+              margin-top: 15px;
+            }
+            .subtitle4{
+              font-weight: 400;
+              font-size: 14px;
+              margin-bottom: 5px;
+              margin-top: 10px;
+            }
+            .text-center{
+              text-align: center;
+            }
         </style>
         @yield('css')
     </head>
     <body>
+        @if(Auth::check() and Auth::user()->cuentable_type == \App\Cliente::class)
         <form class="" action="/productos/confirmarCompra" method="post" id="confirmar-compra">
           <input type="hidden" name="_token" value="{{csrf_token()}}">
         </form>
+        @endif
 
         <div class="modal-back" id="confirmar-compra-modal-back">
           <div class="modal-black-card col-xs-12 col-md-4 col-md-offset-4">
@@ -867,6 +975,7 @@
           </div>
         </div>
         @endif
+
         @if(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
         and Auth::user()->cuentable->roles()->where('nombre','administrador')->first())
         <div class="nav-dropdown-child" id="1">
@@ -876,11 +985,8 @@
           <a href="/personal">Personal</a>
           <a href="/admin/promociones">Promociones</a>
           <a href="/admin/concursos">Concursos</a>
-          <a href="/portafolio">Portafolio</a>
-          <a href="/subir_contenido">Subir contenido</a>
-          <a href="/subirtip">Subir Tip</a>
-          <a href="/gestionartips">Gestión de Tips</a>
-          <a href="/gestion_portafolio">Portafolio</a>
+          <a href="/admin/tips/gestion">Gestión de Tips</a>
+          <a href="/admin/portafolio/nuevo">Portafolio</a>
         </div>
         @elseif(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
         and Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
@@ -890,9 +996,10 @@
           <a href="/admin/clientes">Clientes</a>
         </div>
         @endif
+
         <div class="nav-dropdown-child" id="2">
-          <a href="/contacto">Contacto</a>
-          <a href="/profesionales">Profesionales</a>
+          <a href="/nosotros#contacto">Contacto</a>
+          <a href="/nosotros#profesionales">Profesionales</a>
         </div>
 
 
@@ -901,7 +1008,8 @@
           <i class="material-icons" id="hide-menu-btn">keyboard_arrow_left</i>
           <div class="">
             <a href="/nosotros" class="menu-item"><p>Nosotros</p></a>
-            <a href="/contacto" class="menu-item"><p>Contacto</p></a>
+            <a href="/nosotros#contacto" class="menu-item"><p>Contacto</p></a>
+            <a href="/nosotros#profesionales" class="menu-item"><p>Profesionales</p></a>
             <a href="/productos" class="menu-item"><p>Productos</p></a>
             <a href="/servicios" class="menu-item"><p>Servicios</p></a>
             <a href="/promociones_concursos" class="menu-item"><p>Promociones y concursos</p></a>
@@ -914,10 +1022,10 @@
             <a href="/admin/servicios" class="menu-item-children" id="1">Gestion de servicios</a>
             <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
-            <a href="/gestionartips" class="menu-item-children" id="1">Gestión de Tips</a>
+            <a href="/admin/tips/gestion" class="menu-item-children" id="1">Gestión de Tips</a>
             <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
             <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
-            <a href="/gestion_portafolio" class="menu-item-children" id="1">Portafolio</a>
+            <a href="/admin/portafolio/nuevo" class="menu-item-children" id="1">Portafolio</a>
             @elseif(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
             and Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
             <a class="menu-item menu-item-parent" id="1"><p>Administración</p><i class="material-icons down">keyboard_arrow_down</i></a>
@@ -976,9 +1084,56 @@
 
         </script>
         <script>
-
-
             $(document).ready(function(){
+
+              $('.img-file-selector').children('input[type=file]').change(function () {
+                if($(this)[0].files.length > 0){
+                  $(this).parent().children('p').text($(this)[0].files[0].name);
+                }
+                else{
+                  $(this).parent().children('p').text('Haz click o arrastra un archivo...');
+                }
+              });
+
+              $(window).scroll(function () {
+                var scroll = $(this).scrollTop();
+                if(scroll < 50){
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1)',
+                    '-webkit-filter':'blur(0px) brightness(100%)'
+                  })
+                }
+                else if(scroll < 100){
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1.05)',
+                    '-webkit-filter':'blur(1px) brightness(80%)'
+                  })
+                }
+                else if(scroll < 200){
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1.1)',
+                    '-webkit-filter':'blur(2px) brightness(60%)'
+                  })
+                }
+                else if (scroll < 300) {
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1.15)',
+                    '-webkit-filter':'blur(3px) brightness(50%)'
+                  })
+                }
+                else if (scroll < 500){
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1.18)',
+                    '-webkit-filter':'blur(4px) brightness(40%)'
+                  })
+                }
+                else {
+                  $('.main-cover-fixed').css({
+                    '-webkit-transform':'scale(1.2)',
+                    '-webkit-filter':'blur(5px) brightness(30%)'
+                  })
+                }
+              })
 
               if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
                 $('body').children('.footer').css({

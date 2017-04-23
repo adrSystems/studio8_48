@@ -7,10 +7,7 @@ Inventario
 @section('css')
 <style>
   body{
-    background-image: url('{{asset("img/walls/5.jpg")}}');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: #333;
     color: #555;
   }
   .footer{
@@ -1234,369 +1231,372 @@ Inventario
 
 <div class="main-container">
 
-  <div class="col-xs-12">
-    <h3 class="main-title">Inventario</h3>
-  </div>
+  <div class="container">
 
-  <div class="col-xs-12 col-sm-4 col-md-3 col-lg-2">
-    <div class="side-menu">
-      <div class="header">Menú</div>
-      <div class="body">
-        <div class="item item-active" for="marcas-card">Marcas</div>
-        <div class="item" for="categorias-card">Categorias</div>
-        <div class="item" for="productos-card">Productos</div>
+    <div class="col-xs-12">
+      <h3 class="main-title">Inventario</h3>
+    </div>
+
+    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+      <div class="side-menu">
+        <div class="header">Menú</div>
+        <div class="body">
+          <div class="item item-active" for="marcas-card">Marcas</div>
+          <div class="item" for="categorias-card">Categorias</div>
+          <div class="item" for="productos-card">Productos</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-9">
 
-          <div class="main-card" for="marcas-card">
-            <div class="col-xs-12" style="padding:0">
-              <div class="col-xs-12 col-md-4">
-                <div class="card1">
-                  <div class="header">
-                    <h4>Lista marcas</h4>
-                  </div>
-                  <div class="body col-xs-12">
-                    <div class="list-container col-xs-12" style="padding:0">
-                      @if(\App\Marca::count() == 0)
-                      <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
-                      @else
-                      <h5 style="text-align:center">Activas</h5>
-                      @foreach(\App\Marca::get() as $marca)
-                      <div class="list-item col-xs-12 col-sm-12 col-md-12 col-lg-6" style="padding:15px">
-                        <div class="img-container col-xs-12">
-                          <div class="shadow"></div>
-                          <div class="options">
-                            <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
-                            <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
-                          </div>
-                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                          <div class="info">
-                            <span class="">{{$marca->nombre}}</span>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      @endif
+            <div class="main-card" for="marcas-card">
+              <div class="col-xs-12" style="padding:0">
+                <div class="col-xs-12">
+                  <div class="card1" style="margin-bottom:40px">
+                    <div class="header">
+                      <h4>Lista marcas</h4>
                     </div>
-                    <div class="list-container col-xs-12" style="padding:0">
-                      @if(\App\Marca::onlyTrashed()->count() == 0)
-                      <p style="padding:0 10px 0 10px">No se encontraron marcas descontinuadas en el sistema.</p>
-                      @else
-                      <h5 style="text-align:center">Descontinuadas</h5>
-                      @foreach(\App\Marca::onlyTrashed()->get() as $marca)
-                      <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
-                        <div class="img-container col-xs-12">
-                          <div class="shadow"></div>
-                          <div class="options">
-                            <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
-                          </div>
-                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                          <div class="info">
-                            <span class="">{{$marca->nombre}}</span>
-                          </div>
-                        </div>
-                      </div>
-                      @endforeach
-                      @endif
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-xs-12 col-md-8">
-                <div class="card1">
-                  <div class="header">
-                    <h4 style="text-align:center">Agregar nueva marca</h4>
-                  </div>
-                  <div class="body">
-                    <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
-                      <input type="hidden" name="_token" value="{{csrf_token()}}">
-                      <div class="col-xs-12">
-                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                          <label for="">Nombre</label>
-                        </div>
-                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                          <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
-                        </div>
-                      </div>
-                      <div class="col-xs-12" style="margin-top:15px;">
-                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
-                          <label for="">Logo</label>
-                        </div>
-                        <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
-                          <p>Haz click o arrastra un archivo...</p>
-                          <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
-                        </div>
-                        <div class="col-xs-12 col-md-8 col-md-offset-2">
-                          <hr>
-                        </div>
-                        <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
-                          <label for="" class="pull-left">Agregue las categorias que maneja</label>
-                          <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
-                            <i class="material-icons">add</i>
-                          </div>
-                        </div>
-                        <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
-                        <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
-                        </div>
-                        <div class="col-xs-12 col-md-8 col-md-offset-2">
-                          <hr>
-                        </div>
-                      </div>
-                      <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
-                        <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
-                      </div>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="main-card" for="categorias-card" style="display:none">
-            <div class="col-xs-12" style="padding:0">
-              <div class="col-xs-12 col-md-4">
-                <div class="card1" style="max-height:600px">
-                  <div class="header" style="margin:0">
-                    <h4>Lista de categorias por marca</h4>
-                  </div>
-                  <div class="body col-xs-12" style="padding:0px">
-                    @if(\App\Marca::count() == 0)
-                    <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
-                    @else
-                    @foreach(\App\Marca::get() as $marca)
-                    <div class="marca-item" id="{{$marca->id}}">
-                      <div class="info">
-                        <!--<i class="material-icons add-cat-toggle" id="{{$marca->id}}">add_circle</i>-->
-                        <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
-                        <div class="img-container">
-                          <img src="{{asset('storage/'.$marca->logo)}}" alt="">
-                        </div>
-                        <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
-                      </div>
-                      <div class="categorias-marca-container">
-                        @if($marca->categorias()->count() == 0)
-                        <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
+                    <div class="body col-xs-12">
+                      <div class="list-container col-xs-12" style="padding:0">
+                        @if(\App\Marca::count() == 0)
+                        <p style="padding:0 10px 0 10px">No se encontraron marcas registradas en el sistema.</p>
                         @else
-                        @foreach($marca->categorias()->get() as $categoria)
-                        <div class="item2 cat-item" id="{{$categoria->id}}">
-                          <div class="info">
-                            <span>{{$categoria->nombre}}</span>
+                        <h5 style="text-align:center">Activas</h5>
+                        @foreach(\App\Marca::get() as $marca)
+                        <div class="list-item col-xs-12 col-sm-6 col-md-4 col-lg-3" style="padding:15px">
+                          <div class="img-container col-xs-12">
+                            <div class="shadow"></div>
+                            <div class="options">
+                              <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
+                              <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
+                            </div>
+                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                            <div class="info">
+                              <span class="">{{$marca->nombre}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        @endforeach
+                        @endif
+                      </div>
+                      <div class="list-container col-xs-12" style="padding:0">
+                        @if(\App\Marca::onlyTrashed()->count() == 0)
+                        <p style="padding:20px; margin:0">No se encontraron marcas descontinuadas en el sistema.</p>
+                        @else
+                        <h5 style="text-align:center">Descontinuadas</h5>
+                        @foreach(\App\Marca::onlyTrashed()->get() as $marca)
+                        <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
+                          <div class="img-container col-xs-12">
+                            <div class="shadow"></div>
+                            <div class="options">
+                              <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
+                            </div>
+                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                            <div class="info">
+                              <span class="">{{$marca->nombre}}</span>
+                            </div>
                           </div>
                         </div>
                         @endforeach
                         @endif
                       </div>
                     </div>
-                    @endforeach
-                    @endif
+                  </div>
+                </div>
+                <div class="col-xs-12">
+                  <div class="card1">
+                    <div class="header">
+                      <h4 style="text-align:center">Agregar nueva marca</h4>
+                    </div>
+                    <div class="body">
+                      <form class="" action="/admin/inventario/marcas/agregar" method="post" enctype="multipart/form-data" id="add-marca">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <div class="col-xs-12">
+                          <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                            <label for="">Nombre</label>
+                          </div>
+                          <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                            <input type="text" name="nombreMarca" value="{{old('nombreMarca')}}" class="textbox2">
+                          </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-top:15px;">
+                          <div class="col-xs-12 col-md-8 col-md-offset-2" style="padding:0">
+                            <label for="">Logo</label>
+                          </div>
+                          <div class="img-file-selector col-xs-12 col-md-8 col-md-offset-2" style="background-color:rgba(255,255,255,.8)">
+                            <p>Haz click o arrastra un archivo...</p>
+                            <input type="file" name="logo" value="" accept="image/jpeg,.png,.gif">
+                          </div>
+                          <div class="col-xs-12 col-md-8 col-md-offset-2">
+                            <hr>
+                          </div>
+                          <div class=" col-xs-12 col-md-8 col-md-offset-2" style="padding:0;margin-top:15px;">
+                            <label for="" class="pull-left">Agregue las categorias que maneja</label>
+                            <div class="square-btn pull-right" style="margin-bottom:5px" id="add-categoria-btn">
+                              <i class="material-icons">add</i>
+                            </div>
+                          </div>
+                          <div class=" col-xs-12 col-md-8 col-md-offset-2 subcontainer categorias-subcontainer" id="categorias-subcontainer">
+                          <p style="margin-top:10px;padding:0 10px 0 10px" id="no-cat-advice">No se encontraron categorias, añada una nueva para continuar.</p>
+                          </div>
+                          <div class="col-xs-12 col-md-8 col-md-offset-2">
+                            <hr>
+                          </div>
+                        </div>
+                        <div class="col-xs-12" style="margin-top:35px;margin-bottom:15px;">
+                          <button type="button" id="agregar-marca-btn" class="btn1 btn-center">Agregar</button>
+                        </div>
+                      </form>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div class="col-xs-12 col-md-8">
-                <div class="card1 col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
-                  <div class="header">
-                    <h4 style="text-align:center">Modificar categoria</h4>
-                  </div>
-                  <div class="body">
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <div class="alert alert-warning" style="display:none">
-                        <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
-                      </div>
+            </div>
+
+            <div class="main-card" for="categorias-card" style="display:none">
+              <div class="col-xs-12" style="padding:0">
+                <div class="col-xs-12 col-md-4">
+                  <div class="card1" style="max-height:600px">
+                    <div class="header" style="margin:0">
+                      <h4>Lista de categorias por marca</h4>
                     </div>
-                    <input type="hidden" name="idCatAEditar" value="">
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <label for="">Nombre</label>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3" style="margin-top:10px;margin-bottom:10px">
-                      <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <hr>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <label for="">Subcategorias</label>
-                    </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <div class="subcontainer" id="subcategorias-cont-to-manage">
-                        <div class="add-sub-tb-container">
-                          <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
-                          <i class="material-icons add-sub-btn" id="">add_circle</i>
+                    <div class="body col-xs-12" style="padding:0px">
+                      @if(\App\Marca::count() == 0)
+                      <p style="padding:0 10px 0 10px">No se marcas ni categorias registradas en el sistema.</p>
+                      @else
+                      @foreach(\App\Marca::get() as $marca)
+                      <div class="marca-item" id="{{$marca->id}}">
+                        <div class="info">
+                          <!--<i class="material-icons add-cat-toggle" id="{{$marca->id}}">add_circle</i>-->
+                          <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
+                          <div class="img-container">
+                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                          </div>
+                          <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
+                        </div>
+                        <div class="categorias-marca-container">
+                          @if($marca->categorias()->count() == 0)
+                          <p style="padding:10px;margin:0">No se encontraron categorias de esta marca.</p>
+                          @else
+                          @foreach($marca->categorias()->get() as $categoria)
+                          <div class="item2 cat-item" id="{{$categoria->id}}">
+                            <div class="info">
+                              <span>{{$categoria->nombre}}</span>
+                            </div>
+                          </div>
+                          @endforeach
+                          @endif
                         </div>
                       </div>
+                      @endforeach
+                      @endif
                     </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
+                  </div>
+                </div>
+                <div class="col-xs-12 col-md-8">
+                  <div class="card1 col-xs-12" style="padding-bottom:15px" id="manage-cat-panel">
+                    <div class="header">
+                      <h4 style="text-align:center">Modificar categoria</h4>
                     </div>
-                    <div class="col-xs-12 col-md-6 col-md-offset-3">
-                      <div class="subcontainer" id="subcategorias-des-cont-to-manage">
+                    <div class="body">
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <div class="alert alert-warning" style="display:none">
+                          <p style="text-align:center;font-size:18px" id="nombre-categoria-a-editar">Categoria</p>
+                        </div>
+                      </div>
+                      <input type="hidden" name="idCatAEditar" value="">
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <label for="">Nombre</label>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <input type="text" name="nuevoNombreCategoria" value="" class="textbox2">
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:10px;margin-bottom:10px">
+                        <button type="button" class="btn2 pull-right" id="cambiar-nombre-cat-btn">Cambiar</button>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <hr>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <label for="">Subcategorias</label>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <div class="subcontainer" id="subcategorias-cont-to-manage">
+                          <div class="add-sub-tb-container">
+                            <input type="text" value="" class="add-sub-tb" placeholder="nombre de la subcategoria a agregar...">
+                            <i class="material-icons add-sub-btn" id="">add_circle</i>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <label for="">Subcategorias descontinuadas (<span id="sub-des-count"></span>)</label>
+                      </div>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1">
+                        <div class="subcontainer" id="subcategorias-des-cont-to-manage">
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div class="main-card" for="productos-card" style="display:none">
-              <div class="col-xs-12 col-md-7">
-                <div class="card1">
-                  <div class="header" style="margin-bottom:0">
-                    <h4>Explora los productos</h4>
-                  </div>
-                  <div class="body">
-                    <div class="list-container">
-                      <div class="header">
-                        <div class="col-xs-12">
-                          <h5 style="color:#f76">Lista de productos</h5>
-                        </div>
-                        <div class="col-xs-12" style="padding:0">
-                          <div class="col-xs-12 col-sm-4">
-                            <div class="col-xs-12" style="padding:0">
-                              <label for="" style="text-align:center">Marca</label>
-                            </div>
-                            <select name="marcasFilter" class="textbox2">
-                              <option value="">Seleccione una marca...</option>
-                              @foreach(\App\Marca::get() as $marca)
-                              <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
-                              @endforeach
-                            </select>
+            <div class="main-card" for="productos-card" style="display:none">
+                <div class="col-xs-12">
+                  <div class="card1">
+                    <div class="header" style="margin-bottom:0">
+                      <h4>Explora los productos</h4>
+                    </div>
+                    <div class="body">
+                      <div class="list-container">
+                        <div class="header">
+                          <div class="col-xs-12">
+                            <h5 style="color:#f76">Lista de productos</h5>
                           </div>
-                          <div class="col-xs-12 col-sm-4">
-                            <div class="col-xs-12" style="padding:0">
-                              <label for="" style="text-align:center">Categoria</label>
+                          <div class="col-xs-12" style="padding:0">
+                            <div class="col-xs-12 col-sm-4">
+                              <div class="col-xs-12" style="padding:0">
+                                <label for="" style="text-align:center">Marca</label>
+                              </div>
+                              <select name="marcasFilter" class="textbox2">
+                                <option value="">Seleccione una marca...</option>
+                                @foreach(\App\Marca::get() as $marca)
+                                <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                                @endforeach
+                              </select>
                             </div>
-                            <select name="catFilter" class="textbox2">
-                              <option value="">Seleccione una categoria...</option>
-                            </select>
-                          </div>
-                          <div class="col-xs-12 col-sm-4">
-                            <div class="col-xs-12" style="padding:0">
-                              <label for="" style="text-align:center">Subcategoria</label>
+                            <div class="col-xs-12 col-sm-4">
+                              <div class="col-xs-12" style="padding:0">
+                                <label for="" style="text-align:center">Categoria</label>
+                              </div>
+                              <select name="catFilter" class="textbox2">
+                                <option value="">Seleccione una categoria...</option>
+                              </select>
                             </div>
-                            <select name="subFilter" class="textbox2">
-                              <option value="">Seleccione una subcategoria...</option>
-                            </select>
+                            <div class="col-xs-12 col-sm-4">
+                              <div class="col-xs-12" style="padding:0">
+                                <label for="" style="text-align:center">Subcategoria</label>
+                              </div>
+                              <select name="subFilter" class="textbox2">
+                                <option value="">Seleccione una subcategoria...</option>
+                              </select>
+                            </div>
+                          </div>
+                          <div class="col-xs-12">
+                            <hr>
+                            <h5 style="color:#888;text-align:center">O busca por nombre o código o subcategoria...</h5>
+                          </div>
+                          <div class="col-xs-12">
+                            <input type="text" name="searcher" value="" class="searcher1 col-xs-12 col-md-6 col-md-offset-3" placeholder="escribe aquí el termino de busqueda...">
+                          </div>
+                          <div class="col-xs-12">
+                            <button type="button" name="search-btn" class="btn2 center" style="font-weight:200;margin-top:15px">Buscar</button>
                           </div>
                         </div>
-                        <div class="col-xs-12">
-                          <hr>
-                          <h5 style="color:#888;text-align:center">O busca por nombre o código o subcategoria...</h5>
-                        </div>
-                        <div class="col-xs-12">
-                          <input type="text" name="searcher" value="" class="searcher1 col-xs-12 col-md-6 col-md-offset-3" placeholder="escribe aquí el termino de busqueda...">
-                        </div>
-                        <div class="col-xs-12">
-                          <button type="button" name="search-btn" class="btn2 center" style="font-weight:200;margin-top:15px">Buscar</button>
-                        </div>
-                      </div>
-                      <div class="body col-xs-12" style="padding:0" id="productos-container">
+                        <div class="body col-xs-12" style="padding:0" id="productos-container">
 
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-xs-12 col-md-5">
-                <div class="card1">
-                  <div class="header">
-                    <h4 style="text-align:center">Nuevo producto</h4>
-                  </div>
-                  <div class="body">
-                    <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
-                      <input type="hidden" name="_token" value="{{csrf_token()}}">
-                      <input type="hidden" name="seVendeAlPublico" value="0">
-                      <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
-                        <select class="textbox2" name="marcaForProduct">
-                          <option value="">Seleccione una marca...</option>
-                          @foreach(\App\Marca::get() as $marca)
-                          <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
-                          @endforeach
-                        </select>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-                        <select class="textbox2" name="catForProduct">
-                          <option value="">Seleccione una categoria...</option>
-                        </select>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
-                        <select class="textbox2" name="subForProduct">
-                          <option value="">Seleccione una subcategoria...</option>
-                        </select>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <label for="">Nombre</label>
-                        <input type="text" name="nombreProducto" value="" class="textbox2">
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <label for="">Código identificador (Opcional)</label>
-                        <input type="text" name="codigoProducto" value="" class="textbox2">
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <label for="">Descripción</label>
-                        <textarea name="descripcion" class="textbox2"></textarea>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <label for="">Precio compra</label>
-                        <div class="textbox2-group-container">
-                          <div class="icon">
-                            <i class="material-icons">attach_money</i>
-                          </div>
-                          <input type="text" name="precioCompra" value="" class="textbox2 money">
-                        </div>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.1)">
-                          <span style="color:#555;padding-left:2px">Venta al público</span>
-                          <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.15); box-shadow: inset 0 0 3px rgba(0,0,0,.2)">
-                            <div class="switch-btn inactive" style="border-color:#999"></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
-                        <label for="">Precio venta</label>
-                        <div class="textbox2-group-container">
-                          <div class="icon">
-                            <i class="material-icons">attach_money</i>
-                          </div>
-                          <input type="text" name="precioVenta" value="" class="textbox2 money">
-                        </div>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1">
-                        <label for="">Fotografía</label>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1">
-                        <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
-                          <p>Haz click o arrastra un archivo...</p>
-                          <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
-                        </div>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
-                        <label for="">Contenido</label>
-                      </div>
-                      <div class="col-xs-12 col-md-10 col-md-offset-1">
-                        <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
-                        <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
-                          <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
-                            <option value="gr">gramos</option>
-                            <option value="ml">mililitros</option>
+                <div class="col-xs-12">
+                  <div class="card1">
+                    <div class="header">
+                      <h4 style="text-align:center">Nuevo producto</h4>
+                    </div>
+                    <div class="body">
+                      <form class="" action="/admin/inventario/productos/agregar" method="post" enctype="multipart/form-data" id="add-product">
+                        <input type="hidden" name="_token" value="{{csrf_token()}}">
+                        <input type="hidden" name="seVendeAlPublico" value="0">
+                        <div class="col-xs-12 col-md-8 col-md-offset-2" style="margin-top:15px;margin-bottom:15px">
+                          <select class="textbox2" name="marcaForProduct">
+                            <option value="">Seleccione una marca...</option>
+                            @foreach(\App\Marca::get() as $marca)
+                            <option value="{{$marca->id}}" class="marca">{{$marca->nombre}}</option>
+                            @endforeach
                           </select>
                         </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                          <select class="textbox2" name="catForProduct">
+                            <option value="">Seleccione una categoria...</option>
+                          </select>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px;margin-bottom:15px">
+                          <select class="textbox2" name="subForProduct">
+                            <option value="">Seleccione una subcategoria...</option>
+                          </select>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <label for="">Nombre</label>
+                          <input type="text" name="nombreProducto" value="" class="textbox2">
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <label for="">Código identificador (Opcional)</label>
+                          <input type="text" name="codigoProducto" value="" class="textbox2">
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <label for="">Descripción</label>
+                          <textarea name="descripcion" class="textbox2"></textarea>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <label for="">Precio compra</label>
+                          <div class="textbox2-group-container">
+                            <div class="icon">
+                              <i class="material-icons">attach_money</i>
+                            </div>
+                            <input type="text" name="precioCompra" value="" class="textbox2 money">
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <div class="switch-container switch-center" id="venta-publico" active="0" style="background-color:rgba(0,0,0,.1)">
+                            <span style="color:#555;padding-left:2px">Venta al público</span>
+                            <div class="switch-bar switch-center" style="background-color:rgba(0,0,0,.15); box-shadow: inset 0 0 3px rgba(0,0,0,.2)">
+                              <div class="switch-btn inactive" style="border-color:#999"></div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" id="precio-venta-container">
+                          <label for="">Precio venta</label>
+                          <div class="textbox2-group-container">
+                            <div class="icon">
+                              <i class="material-icons">attach_money</i>
+                            </div>
+                            <input type="text" name="precioVenta" value="" class="textbox2 money">
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1">
+                          <label for="">Fotografía</label>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1">
+                          <div class="img-file-selector" style="background-color:rgba(255,255,255,.8)">
+                            <p>Haz click o arrastra un archivo...</p>
+                            <input type="file" name="productoCover" value="" accept="image/jpeg,.png,.gif">
+                          </div>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:15px">
+                          <label for="">Contenido</label>
+                        </div>
+                        <div class="col-xs-12 col-md-10 col-md-offset-1">
+                          <input type="text" name="contenido" value="" class="number col-xs-12 col-sm-8 col-md-6 col-lg-8 textbox2-auto">
+                          <div class="col-xs-12 col-sm-4 col-md-6 col-lg-4" style="padding-left:10px;padding-right:0">
+                            <select class="textbox2-auto" name="uMedida" style="width:100%;height:34px">
+                              <option value="gr">gramos</option>
+                              <option value="ml">mililitros</option>
+                            </select>
+                          </div>
+                        </div>
+                      </form>
+                      <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
+                        <button id="agregar-producto-btn" class="btn1" style="margin:auto;display:block">Agregar</button>
                       </div>
-                    </form>
-                    <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-top:30px; margin-bottom:30px">
-                      <button id="agregar-producto-btn" class="btn1" style="margin:auto;display:block">Agregar</button>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
+    </div>
   </div>
 
 </div>
@@ -1612,11 +1612,11 @@ $(document).ready(function () {
     $('button[name=search-btn]').click(function () {
         search()
     })
-    
+
     $('input[name=searcher]').keypress(function (e){
         if(e.keyCode == '13') search()
     })
-    
+
     function search(){
         if($('input[name=searcher]').val() == '') showMsg('Atención!',['Debe proporcionar termino para efectuar la busqueda.'])
         else {
