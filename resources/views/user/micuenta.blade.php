@@ -303,6 +303,7 @@ Mi cuenta
         @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
         <li role="presentation" class="item item-compras"><a>Compras</a></li>
         @endif
+        <li role="presentation" class="item item-seguridad"><a>Seguridad</a></li>
       </ul>
 
       <div class="detalles-cuenta">
@@ -513,36 +514,45 @@ Mi cuenta
                       @endif
                     </td>
                     <td>
-                      <a data-toggle="modal" data-target="#cita{{$cit->id}}" class="btn btn-success form-control" style="margin-top: -3px;">Detalle</a>
+                      <a data-toggle="modal" data-target="#cita{{$cit->id}}" class="btn btn-warning form-control" style="margin-top: -3px;">Detalle</a>
                       <div class="modal fade" tabindex="-1" id="cita{{$cit->id}}" role="dialog" tabindex="-1">
                         <div class="modal-dialog">
                           <div class="modal-content">
                             <div class="modal-header">
                               <button type="button" class="close" data-dismiss="modal" name="button">&times;</button>
-                              <h4 class="modal-title">Detalle de cita</h4>
+                              <h4 class="modal-title" style="text-align: left;">Detalle de cita</h4>
                             </div>
                             <div class="modal-body">
+                              <h3 style="text-align: left; font-family: 'Lobster Two';">Servicios aplicados en la cita.</h3>
                               <table class="table table-detalle">
                                 <thead>
                                   <th>Servicio</th>
+                                  <th>Duración</th>
                                   <th>Monto</th>
                                 </thead>
                                 <tbody style="color: #1F1F1F;">
                                   @foreach($cit->servicios as $servicio)
                                   <td>{{$servicio->nombre}}</td>
+                                  <td><i class="material-icons" style="font-size: 16px;">timer</i>{{$servicio->tiempo}}</td>
                                   <td>{{$servicio->precio}}</td>
                                   @endforeach
                                 </tbody>
                               </table>
+                              <h3 style="text-align: left; font-family: 'Lobster Two';">El servicio será aplicado por: </h3>
                               <table class="table table-detalle">
                                 <thead>
                                   <th>Estilista</th>
+                                  <th>Foto</th>
                                   <th></th>
                                 </thead>
                                 <tbody style="color: #1F1F1F;">
-                                  <td>{{$cit->empleado->nombre}}</td>
+                                  <td>{{$cit->empleado->nombre}} {{$cit->empleado->apellido}}</td>
+                                  <td style="text-align: center;"><img style="width: 25%;" src="{{asset('storage/'.$cit->empleado->cuenta->photo)}}" alt=""></td>
                                 </tbody>
                               </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal" name="button">Cerrar</button>
                             </div>
                           </div>
                         </div>
@@ -650,6 +660,40 @@ Mi cuenta
       </div>
       @endif
 
+      <div class="seguridad">
+        @if(Session::has('passError'))
+        @foreach(Session::get('passError') as $error)
+        <div class="alert alert-danger" role="alert">
+          <button type="button" name="button" class="close" data-dismiss="alert">&times;</button>
+          {{$error}}
+        </div>
+        @endforeach
+        @endif
+        <div class="panel">
+          <div class="panel-heading heading-dark">
+            <h3 class="panel-title" style="font-size: 20px;"><i class="material-icons" style="float: left;">lock</i>Seguridad</h3>
+          </div>
+          <div class="panel-body">
+            <form class="horizontal" action="/cambiarcontrasena" method="post">
+              {{csrf_field()}}
+              <div class="form-group">
+                <div class="col-md-6 col-xs-6">
+                  Escribir la nueva contraseña
+                  <input type="password" name="newpassword" value="" class="form-control" placeholder="Nueva contraseña">
+                </div>
+                <div class="col-md-6 col-xs-6">
+                  Confirmar la nueva contreseña
+                  <input type="password" name="newpassword2" value="" class="form-control" placeholder="Confirmar contraseña">
+                </div>
+                <div class="form-group">
+                  <button type="submit" name="button" class="btn btn-primary form-control">Guardar cambios</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
     </div>
     </div>
   </div>
@@ -660,10 +704,12 @@ Mi cuenta
   $(".mensajes").hide()
   $(".citas").hide()
   $(".compras").hide()
+  $(".seguridad").hide()
   $(".item-perfil").click(function(){
     $(".item-mensajes").removeClass("active")
     $(".item-citas").removeClass("active")
     $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
     $(this).addClass("active")
     $(".perfil").show(500)
     $(".perfil").show("slow")
@@ -673,23 +719,61 @@ Mi cuenta
     $(".citas").hide("slow")
     $(".compras").hide(500)
     $(".compras").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
   })
   $(".item-mensajes").click(function(){
     $(".item-perfil").removeClass("active")
     $(".item-citas").removeClass("active")
     $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
     $(this).addClass("active")
     $(".perfil").hide(500)
     $(".perfil").hide("slow")
-    $(".mensajes").show(500)
-    $(".mensajes").show("slow")
     $(".citas").hide(500)
     $(".citas").hide("slow")
     $(".compras").hide(500)
     $(".compras").hide("slow")
+    $(".mensajes").show(500)
+    $(".mensajes").show("slow")
   })
   $(".item-citas").click(function(){
     $(".item-mensajes").removeClass("active")
+    $(".item-perfil").removeClass("active")
+    $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
+    $(this).addClass("active")
+    $(".perfil").hide(500)
+    $(".perfil").hide("slow")
+    $(".mensajes").hide(500)
+    $(".mensajes").hide("slow")
+    $(".compras").hide(500)
+    $(".compras").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
+    $(".citas").show(500)
+    $(".citas").show("slow")
+  })
+  $(".item-compras").click(function(){
+    $(".item-mensajes").removeClass("active")
+    $(".item-citas").removeClass("active")
+    $(".item-perfil").removeClass("active")
+    $(".item-seguridad").removeClass("active")
+    $(this).addClass("active")
+    $(".perfil").hide(500)
+    $(".perfil").hide("slow")
+    $(".mensajes").hide(500)
+    $(".mensajes").hide("slow")
+    $(".citas").hide(500)
+    $(".citas").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
+    $(".compras").show(500)
+    $(".compras").show("slow")
+  })
+  $(".item-seguridad").click(function(){
+    $(".item-mensajes").removeClass("active")
+    $(".item-citas").removeClass("active")
     $(".item-perfil").removeClass("active")
     $(".item-compras").removeClass("active")
     $(this).addClass("active")
@@ -697,24 +781,12 @@ Mi cuenta
     $(".perfil").hide("slow")
     $(".mensajes").hide(500)
     $(".mensajes").hide("slow")
-    $(".citas").show(500)
-    $(".citas").show("slow")
-    $(".compras").hide(500)
-    $(".compras").hide("slow")
-  })
-  $(".item-compras").click(function(){
-    $(".item-mensajes").removeClass("active")
-    $(".item-citas").removeClass("active")
-    $(".item-perfil").removeClass("active")
-    $(this).addClass("active")
-    $(".perfil").hide(500)
-    $(".perfil").hide("slow")
-    $(".mensajes").hide(500)
-    $(".mensajes").hide("slow")
     $(".citas").hide(500)
     $(".citas").hide("slow")
-    $(".compras").show(500)
-    $(".compras").show("slow")
+    $(".compras").hide(500)
+    $(".compras").hide("slow")
+    $(".seguridad").show(500)
+    $(".seguridad").show("slow")
   })
   $(".aceptar").click(function(){
     var $btn = $(this);
@@ -731,9 +803,11 @@ Mi cuenta
   })
 </script>
 <script type="text/javascript">
-  //function reloadPage(){
-  //  location.reload(true)
-  //}
-  //setInterval('reloadPage()','60000')
+$(document).ready(function(){
+  @if(session('exito'))
+     alert('Su contraseña fue actualizada con exito')
+   @endif
+})
+
 </script>
 @endsection

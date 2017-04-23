@@ -166,18 +166,33 @@ class ClienteController extends Controller
       {
         return view ('user.micuenta');
       }
+      $rules=[
+        "newpassword"=>"required|min:5",
+        "newpassword2"=>"required|same:newpassword",
+      ];
+      $messages=[
+        "newpassword.required"=>"La nueva contraseña es requerida",
+        "newpassword.min"=>"La contraseña debe ser mayor a 5 digitos",
+        "newpassword2.required"=>"Debe confirmar la nueva contraseña",
+        "newpassword2.same"=>"Los campos no coinciden"
+      ];
+      $validacion=Validator::make($request->all(),$rules,$messages);
+      if($validacion->fails()){
+        return back()->with('passError',$validacion->messages()->all())->withInput();
+      }
       if(\Auth::user()->cuentable_type=='App\Empleado')
       {
         $usuario = Empleado::find(\Auth::user()->cuentable->id);
-
-        if($usuario->cuenta->password==$request->actualpassword)
-        {
-          $usuario->cuenta->password=Hash::make($request->nuevacontrasena);
-          return $usuario->cuenta->password;
-          $usuario->update();
-          return redirect ('/micuenta');
-        }
-        return redirect ('/');
+        $usuario->cuenta->password=\Hash::make($request->newpassword);
+        $usuario->cuenta->save();
+        return redirect ('/micuentaE/'.\Auth::user()->cuentable->id)->with('exito','exito')->withInput();
+      }
+      else if(\Auth::user()->cuentable_type=='App\Cliente')
+      {
+        $usuario = Cliente::find(\Auth::user()->cuentable->id);
+        $usuario->cuenta->password=\Hash::make($request->newpassword);
+        $usuario->cuenta->save();
+        return redirect ('/micuenta/'.\Auth::user()->cuentable->id)->with('exito','exito')->withInput();
       }
     }
     public function getDetailsCliente($id =null)
