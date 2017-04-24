@@ -192,8 +192,13 @@ Mi cuenta
     border-radius: 4px;
     height: 5px;
   }
-  .td-realizada{
-
+  .td-curso{
+    background-color: #FF3390;
+    border-radius: 4px;
+  }
+  .td-confirmada{
+    background-color: #2ab27b;
+    border-radius: 4px;
   }
   .td-pausada{
     background-color: #191970;
@@ -210,6 +215,43 @@ Mi cuenta
   .error{
     margin-top: -15px;
     text-align: center;
+  }
+  td{
+    text-align: center;
+  }
+  .modal-content{
+    background-color: #1F1f1f;
+    border-radius: 2px;
+    margin-top: 100px;
+  }
+  .modal-header{
+    color: #ed5;
+    font-family: 'Lobster Two';
+  }
+  .modal-body{
+    color: white;
+    height: 400px;
+    overflow-y: scroll;
+  }
+  .modal-body::-webkit-scrollbar{
+    width: 0.5em;
+  }
+  .modal-body::-webkit-scrollbar-track{
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+  }
+  .modal-body::-webkit-scrollbar-thumb{
+    background: #3F3F3F;
+    outline: 1px solid black;
+  }
+  .modal-body::-webkit-scrollbar-thumb:window-inactive {
+    background: #bbb;
+    box-shadow: 0 0 8px rgba(0,0,0,0.3) inset;
+  }
+  .table-detalle thead{
+    background-color: rgba(255, 255, 255, 0.6);
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    color: #1F1F1F;
   }
 </style>
 @endsection
@@ -261,6 +303,7 @@ Mi cuenta
         @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
         <li role="presentation" class="item item-compras"><a>Compras</a></li>
         @endif
+        <li role="presentation" class="item item-seguridad"><a>Seguridad</a></li>
       </ul>
 
       <div class="detalles-cuenta">
@@ -434,8 +477,8 @@ Mi cuenta
             <div class="col-xs-12">
             <table class="table" style="text-align: center; color: black;">
               <tr>
-                  <th>Servicio</th>
-                  <th>Fecha y hora</th>
+                  <th>Fecha</th>
+                  <th>Hora</th>
                   <th>Estado</th>
                   @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
                   <th>Acción</th>
@@ -445,38 +488,84 @@ Mi cuenta
               <tbody style="color: black; ">
                 @foreach($citas as $cit)
                   <tr>
-                    @foreach($cit->servicios as $servicios)
-                    <td>{{$servicios->nombre}}</td>
-                    <td>{{$cit->fecha_hora}}</td>
+                    <td>{{date('d/m/Y',strtotime($cit->fecha_hora))}}</td>
+                    <td>{{date('g:i a',strtotime($cit->fecha_hora))}}</td>
                     @if($cit->estado==0)
                       <td class="td-pendiente">En espera</td>
                     @elseif($cit->estado==1)
-                      <td class="td-realizada">En curso</td>
+                      <td class="td-confirmada">Confirmada</td>
                     @elseif($cit->estado==2)
-                      <td class="td-pausada">En pausa</td>
+                      <td class="td-curso">En curso</td>
                     @elseif($cit->estado==3)
-                      <td class="td-finalizada">Realizada</td>
+                      <td class="td-pausada">Pausada</td>
                     @elseif($cit->estado==4)
+                      <td class="td-finalizada">Realizada</td>
+                    @elseif($cit->estado==5)
                       <td class="td-cancelada">Cancelada</td>
                     @endif
                     @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
                     <td>
-                      @if(!$cit->estado==4)
-                      <a class="btn btn-danger form-control" data-toggle="modal" data-target="#cancelar" style="margin-top: -3px;">
+                      @if($cit->estado==0 || $cit->estado==1)
+                      <a class="btn btn-danger form-control" data-toggle="modal" data-target="#cancelar{{$cit->id}}" style="margin-top: -3px;">
                         Cancelar
                       </a>
                       @else
-                      <a href="#" class="btn btn-success form-control" style="margin-top: -3px;">Nueva cita</a>
+                      <a href="#" class="btn btn-success form-control" style="margin-top: -3px;">No tienes ninguna acción</a>
                       @endif
                     </td>
-                    <div class="modal fade" id="cancelar" role="dialog" tabindex="-1">
+                    <td>
+                      <a data-toggle="modal" data-target="#cita{{$cit->id}}" class="btn btn-warning form-control" style="margin-top: -3px;">Detalle</a>
+                      <div class="modal fade" tabindex="-1" id="cita{{$cit->id}}" role="dialog" tabindex="-1">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <button type="button" class="close" data-dismiss="modal" name="button">&times;</button>
+                              <h4 class="modal-title" style="text-align: left;">Detalle de cita</h4>
+                            </div>
+                            <div class="modal-body">
+                              <h3 style="text-align: left; font-family: 'Lobster Two';">Servicios aplicados en la cita.</h3>
+                              <table class="table table-detalle">
+                                <thead>
+                                  <th>Servicio</th>
+                                  <th>Duración</th>
+                                  <th>Monto</th>
+                                </thead>
+                                <tbody style="color: #1F1F1F;">
+                                  @foreach($cit->servicios as $servicio)
+                                  <td>{{$servicio->nombre}}</td>
+                                  <td><i class="material-icons" style="font-size: 16px;">timer</i>{{$servicio->tiempo}}</td>
+                                  <td>{{$servicio->precio}}</td>
+                                  @endforeach
+                                </tbody>
+                              </table>
+                              <h3 style="text-align: left; font-family: 'Lobster Two';">El servicio será aplicado por: </h3>
+                              <table class="table table-detalle">
+                                <thead>
+                                  <th>Estilista</th>
+                                  <th>Foto</th>
+                                  <th></th>
+                                </thead>
+                                <tbody style="color: #1F1F1F;">
+                                  <td>{{$cit->empleado->nombre}} {{$cit->empleado->apellido}}</td>
+                                  <td style="text-align: center;"><img style="width: 25%;" src="{{asset('storage/'.$cit->empleado->cuenta->photo)}}" alt=""></td>
+                                </tbody>
+                              </table>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-danger" data-dismiss="modal" name="button">Cerrar</button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </td>
+                    <div class="modal fade" id="cancelar{{$cit->id}}" role="dialog" tabindex="-1">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
                             <button type="button" class="close" name="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title">Cancelar</h4>
                           </div>
-                          <div class="modal-body" style="text-align: center;">
+                          <div class="modal-body" style="text-align: center; height: 70px; font-size: 20px; font-family: 'Lobster Two'; overflow-y: none;">
                             ¿Desea cancelar su cita?
                           </div>
                           <div class="modal-footer">
@@ -487,7 +576,6 @@ Mi cuenta
                       </div>
                     </div>
                     @endif
-                    @endforeach
                   </tr>
                 @endforeach
               </tbody>
@@ -508,29 +596,103 @@ Mi cuenta
             <div class="col-xs-12">
             <table class="table table-hover">
               <thead>
-                <th>Producto</th>
-                <th>Fecha y hora</th>
+                <th>Fecha</th>
+                <th>Hora</th>
                 <th>Costo</th>
               </thead>
               <tbody>
               @if($compras)
-              @foreach($compras as $compra)
+              @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
                 <tr>
-                @foreach($compra->productos as $producto)
-                <td>{{$producto->nombre}}</td>
-                <td>{{$compra->fecha_hora}}</td>
-                <td>{{$producto->precio_venta}}</td>
-                @endforeach
+                <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
+                <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
+                <td>${{$compra->monto()}}</td>
+                <td><a class="btn btn-success" data-toggle="modal" data-target="#modal{{$compra->id}}" style="margin-top: -3px;">Detalle</a></td>
                 </tr>
+
               @endforeach
               @endif
               </tbody>
             </table>
+
+            @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
+            <div class="modal fade" tabindex="-1" id="modal{{$compra->id}}" role="dialog" aria-labelledby="myModalLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" name="button" aria-label="Close">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Detalle de compra</h4>
+                  </div>
+                <div class="modal-body" style="width: 100%;">
+                  <table class="table table-detalle" style="">
+                    <thead>
+                      <th>Producto</th>
+                      <th>Imagen</th>
+                      <th>Cantidad</th>
+                      <th>Monto</th>
+                    </thead>
+                    <tbody>
+                      @foreach($compra->productos as $productos)
+                      <tr>
+                        <td>{{$productos->nombre}}</td>
+                        <td><img style="width: 40%;" src="{{asset('storage/'.$productos->fotografia)}}" alt=""></td>
+                        <td>{{$productos->pivot->cantidad}}</td>
+                        <td>${{$productos->precio_venta}}</td>
+                      </tr>
+                      @endforeach
+                      <tr style="leter-spacing: 2px; font-size:16px; ">
+                        <td><b>Total:</b></td><td></td><td></td><td><b>${{$compra->monto()}}</b></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-danger" name="button" data-dismiss="modal">Cerrar</button>
+                </div>
+                </div>
+              </div>
+            </div>
+            @endforeach
+
           </div>
           </div>
         </div>
       </div>
       @endif
+
+      <div class="seguridad">
+        @if(Session::has('passError'))
+        @foreach(Session::get('passError') as $error)
+        <div class="alert alert-danger" role="alert">
+          <button type="button" name="button" class="close" data-dismiss="alert">&times;</button>
+          {{$error}}
+        </div>
+        @endforeach
+        @endif
+        <div class="panel">
+          <div class="panel-heading heading-dark">
+            <h3 class="panel-title" style="font-size: 20px;"><i class="material-icons" style="float: left;">lock</i>Seguridad</h3>
+          </div>
+          <div class="panel-body">
+            <form class="horizontal" action="/cambiarcontrasena" method="post">
+              {{csrf_field()}}
+              <div class="form-group">
+                <div class="col-md-6 col-xs-6">
+                  Escribir la nueva contraseña
+                  <input type="password" name="newpassword" value="" class="form-control" placeholder="Nueva contraseña">
+                </div>
+                <div class="col-md-6 col-xs-6">
+                  Confirmar la nueva contreseña
+                  <input type="password" name="newpassword2" value="" class="form-control" placeholder="Confirmar contraseña">
+                </div>
+                <div class="form-group">
+                  <button type="submit" name="button" class="btn btn-primary form-control">Guardar cambios</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
 
     </div>
     </div>
@@ -542,10 +704,12 @@ Mi cuenta
   $(".mensajes").hide()
   $(".citas").hide()
   $(".compras").hide()
+  $(".seguridad").hide()
   $(".item-perfil").click(function(){
     $(".item-mensajes").removeClass("active")
     $(".item-citas").removeClass("active")
     $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
     $(this).addClass("active")
     $(".perfil").show(500)
     $(".perfil").show("slow")
@@ -555,23 +719,61 @@ Mi cuenta
     $(".citas").hide("slow")
     $(".compras").hide(500)
     $(".compras").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
   })
   $(".item-mensajes").click(function(){
     $(".item-perfil").removeClass("active")
     $(".item-citas").removeClass("active")
     $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
     $(this).addClass("active")
     $(".perfil").hide(500)
     $(".perfil").hide("slow")
-    $(".mensajes").show(500)
-    $(".mensajes").show("slow")
     $(".citas").hide(500)
     $(".citas").hide("slow")
     $(".compras").hide(500)
     $(".compras").hide("slow")
+    $(".mensajes").show(500)
+    $(".mensajes").show("slow")
   })
   $(".item-citas").click(function(){
     $(".item-mensajes").removeClass("active")
+    $(".item-perfil").removeClass("active")
+    $(".item-compras").removeClass("active")
+    $(".item-seguridad").removeClass("active")
+    $(this).addClass("active")
+    $(".perfil").hide(500)
+    $(".perfil").hide("slow")
+    $(".mensajes").hide(500)
+    $(".mensajes").hide("slow")
+    $(".compras").hide(500)
+    $(".compras").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
+    $(".citas").show(500)
+    $(".citas").show("slow")
+  })
+  $(".item-compras").click(function(){
+    $(".item-mensajes").removeClass("active")
+    $(".item-citas").removeClass("active")
+    $(".item-perfil").removeClass("active")
+    $(".item-seguridad").removeClass("active")
+    $(this).addClass("active")
+    $(".perfil").hide(500)
+    $(".perfil").hide("slow")
+    $(".mensajes").hide(500)
+    $(".mensajes").hide("slow")
+    $(".citas").hide(500)
+    $(".citas").hide("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
+    $(".compras").show(500)
+    $(".compras").show("slow")
+  })
+  $(".item-seguridad").click(function(){
+    $(".item-mensajes").removeClass("active")
+    $(".item-citas").removeClass("active")
     $(".item-perfil").removeClass("active")
     $(".item-compras").removeClass("active")
     $(this).addClass("active")
@@ -579,24 +781,12 @@ Mi cuenta
     $(".perfil").hide("slow")
     $(".mensajes").hide(500)
     $(".mensajes").hide("slow")
-    $(".citas").show(500)
-    $(".citas").show("slow")
-    $(".compras").hide(500)
-    $(".compras").hide("slow")
-  })
-  $(".item-compras").click(function(){
-    $(".item-mensajes").removeClass("active")
-    $(".item-citas").removeClass("active")
-    $(".item-perfil").removeClass("active")
-    $(this).addClass("active")
-    $(".perfil").hide(500)
-    $(".perfil").hide("slow")
-    $(".mensajes").hide(500)
-    $(".mensajes").hide("slow")
     $(".citas").hide(500)
     $(".citas").hide("slow")
-    $(".compras").show(500)
-    $(".compras").show("slow")
+    $(".compras").hide(500)
+    $(".compras").hide("slow")
+    $(".seguridad").show(500)
+    $(".seguridad").show("slow")
   })
   $(".aceptar").click(function(){
     var $btn = $(this);
@@ -613,9 +803,11 @@ Mi cuenta
   })
 </script>
 <script type="text/javascript">
-  function reloadPage(){
-    location.reload(true)
-  }
-  setInterval('reloadPage()','60000')
+$(document).ready(function(){
+  @if(session('exito'))
+     alert('Su contraseña fue actualizada con exito')
+   @endif
+})
+
 </script>
 @endsection
