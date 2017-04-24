@@ -133,7 +133,7 @@ Studio8 48 - Inicio
 
 </div>
 
-<img class="main-cover" src="{{asset("img/covers/15724731_1154770124618416_1360025351635700623_o.jpg")}}">
+<img class="main-cover" src="{{asset("img/covers/1.jpg")}}">
 
 <div class="col-md-10 col-md-offset-1" style="margin-top: 50px; margin-bottom: 35px; padding:0;">
     <a class="col-md-4" href="#">

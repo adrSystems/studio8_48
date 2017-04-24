@@ -7,10 +7,7 @@ Gestión de clientes
 @section('css')
 <style media="screen">
   body{
-    background-image: url('{{asset("img/walls/5.jpg")}}');
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
+    background: #333;
   }
   .nav-bar{
       box-shadow: none;
@@ -28,26 +25,27 @@ Gestión de clientes
   }
   #list{
     box-shadow:  0 0 3px rgba(0, 0, 0, 0.7);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: #fff;
     padding: 0;
-    border-radius: 1px;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
   }
   #list>.header{
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.2);
     padding: 15px;
   }
   #searcher{
     border-radius: 15px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.3);
     min-width: 200px;
-    color: #aaa;
-    background-color: rgba(0, 0, 0, 0.5);
+    color: #666;
+    background-color: rgba(255, 255, 255, 0.5);
     padding: 3px 26px 3px 13px;
   }
   #searcher:focus{
-    border: 1px solid #444;
+    border: 1px solid rgba(0, 0, 0, 0.45);
     outline: none;
+    color: #333;
   }
   .buscador-container{
     display: table;
@@ -59,7 +57,7 @@ Gestión de clientes
     position: relative;
   }
   .buscador-container>div>i{
-    color: #eee;
+    color: dodgerblue;
     position: absolute;
     right: 6px;
     top: 6px;
@@ -72,17 +70,16 @@ Gestión de clientes
     text-align: center;
   }
   tbody{
-    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5),0 0 3px rgba(0, 0, 0, 0.5);
-    color: #fff;
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+    color: #333;
   }
   thead{
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
-    color:#ccc;
   }
   th{
     text-shadow: 0 0 1px rgba(0, 0, 0, 0.5), 0 0 3px rgba(0, 0, 0, 0.5);
     font-weight: 100;
-    color: #fff;
+    color: #111;
     padding-top: 20px;
     padding-bottom: 20px;
   }
@@ -94,28 +91,28 @@ Gestión de clientes
     background-color: rgba(255, 255, 255, .02);
   }
   .icon-btn{
-    color: #ccc;
+    color: #fff;
     display: block;
     padding: 3px;
     padding-top: 5px;
-    padding-bottom: 0;
     margin: 0;
     cursor: pointer;
+  }
+  .icon-btn>i{
+    background-color: dodgerblue;
+    border-radius: 100%;
+    padding: 2px;
+  }
+  .icon-btn>i:hover{
+    background-color: #19e;
+    border-radius: 100%;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
   }
   .icon-btn:link{
     color: #fff;
   }
   .icon-btn:visited{
     color: #fff;
-  }
-  .icon-btn:hover{
-    color: #fff;
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.7);
-    border-radius: 3px;
-  }
-  .icon-btn>i{
-    margin: 0;
-    padding: 0;
   }
   .icon-square{
     width: 3.6vh;
@@ -152,18 +149,19 @@ Gestión de clientes
     line-height: 26px;
   }
   .option-icon{
-    margin-top: -3px;
+    margin-top: -6px;
   }
 </style>
 @endsection
 
 @section('body')
 <div class="col-xs-12 main-container" style="margin-top:100px;margin-bottom:50px">
-  <h3 class="main-title col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3">Clientes</h3>
+  <h3 class="clear-text1 col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0">Clientes</h3>
+  <h4 class="clear-text3 col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" style="padding:0">Explora los clientes, ve estadísticas, agenda citas y realiza ventas.</h4>
   <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3" id="list">
     <div class="header">
       <div class="pull-right" style="position:relative;">
-        <span class="hidden-xs" style="margin-right:12px;color:#bbb;" id="filter-selected">Todos</span>
+        <span class="hidden-xs" style="margin-right:12px;color:#555;" id="filter-selected">Todos</span>
         <abbr title="Filtrar">
           <div class="icon-btn option-icon pull-right" id="filter-btn">
             <i class="material-icons">filter_list</i>

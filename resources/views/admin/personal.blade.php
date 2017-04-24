@@ -7,10 +7,7 @@ Studio8 48 - Personal
 @section('css')
 <style>
   body{
-      background: #eee;
-      background-image: url('{{asset("img/walls/1.jpg")}}');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      background: #333;
   }
   .main-container{
     margin-top: 70px;
@@ -188,32 +185,7 @@ Studio8 48 - Personal
   #opciones-estilista, #opciones-estilista-to-edit{
     display: none;
   }
-  .img-file-selector{
-    padding-top: 10px;
-    position: relative;
-    border: 1px dashed #bbb;
-    border-radius: 2px;
-    overflow: hidden;
-    text-align: center;
-    text-overflow: ellipsis;
-  }
-  .img-file-selector>p{
-    width: 100%;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    display: block;
-    overflow: hidden;
-  }
-  .img-file-selector>input[type=file]{
-    background-color: red;
-    position: absolute;
-    top: -80%;
-    left: 0;
-    width: 100%;
-    height: 180%;
-    cursor: pointer;
-    opacity: 0;
-  }
+
   .footer{
     background-color: rgba(0,0,0,.5);
     box-shadow: none;
@@ -707,7 +679,8 @@ Studio8 48 - Personal
 <div class="main-container">
 
   <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-bottom:10px;">
-    <h3 class="main-title">Administración de personal</h3>
+    <h3 class="clear-text1">Administración de personal</h3>
+    <h4 class="clear-text4">Registra, modifica y elimina personal</h4>
   </div>
 
   <div class="col-xs-12 col-md-offset-1 col-md-5 second-container">
@@ -1285,15 +1258,6 @@ Studio8 48 - Personal
         $(this).children('.select-icon').removeClass('rol-selected');
         $(this).children('.select-icon').addClass('rol-unselected');
         $('form[id=edit-emp]').children('input[type=hidden][class=servicio][value='+$(this).attr('id')+']').remove();
-      }
-    });
-
-    $('.img-file-selector').children('input[type=file]').change(function () {
-      if($(this)[0].files.length > 0){
-        $(this).parent().children('p').text($(this)[0].files[0].name);
-      }
-      else{
-        $(this).parent().children('p').text('Haz click o arrastra un archivo...');
       }
     });
 

@@ -26,7 +26,7 @@ class Compra extends Model
     public function monto()
     {
       $monto = 0;
-      foreach ($this->productos as $i => $p) {
+      foreach ($this->productos()->withTrashed()->get() as $i => $p) {
         $monto += $p->pivot->precio_venta * $p->pivot->cantidad;
       }
       return $monto;
