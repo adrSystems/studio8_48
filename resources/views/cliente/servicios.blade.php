@@ -10,7 +10,7 @@ Catalogo de servicios
     background-attachment: fixed;
   }
   .catalogo{
-    margin-top: 70px;
+    margin-top: 50px;
   }
   .servicio{
     margin-top: 10px;

@@ -16,7 +16,7 @@ class ServiciosController extends Controller
       }
       $rules=[
         'icono'=>'required|mimes:jpeg,bmp,png,jpg',
-        'nombre'=>'required',
+        'nombre'=>'required|unique:servicios,nombre',
         'precio'=>'required|numeric|between:0,100000000000000',
         'duracion'=>'required'
       ];
@@ -24,17 +24,13 @@ class ServiciosController extends Controller
         'icono.required'=>'El icono del servicio es requerido',
         'icono.mimes'=>'El icono del servicio debe tener estos formatos: jpeg,bmp,png,jpg',
         'nombre.required'=>'El nombre del servicio es requerido.',
+        'nombre.unique'=>'El servicio ya existe en la base de datos.',
         'precio.required'=>'El precio del servicio es requerido.',
         'precio.numeric'=>'El campo precio no acepta letras.',
         'precio.between'=>'El campo precio no acepta numeros negativos.',
         'duracion.required'=>'La duracion de un servicio es requerido.'
       ];
       $validacion = Validator::make($request->all(),$rules,$messages);
-      $datos=[
-        'nombre'=>$request->nombre,
-        'precio'=>$request->precio,
-        'tiempo'=>$request->duracion
-      ];
       if($validacion->fails())
       {
         return back()
