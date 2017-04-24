@@ -8,7 +8,7 @@ Studio8 48 - Servicios
     background-image: url("{{asset('/img/walls/admin.jpg')}}");
   }
   .gestion-concursos{
-    margin-top: 70px;
+    margin-top: 60px;
   }
   .servicios{
     background: rgba(255, 255, 255, 0.8);
@@ -110,7 +110,7 @@ Studio8 48 - Servicios
     <div class="gestion-concursos">
       @if(Session::has('error'))
         @foreach(Session::get('error') as $error)
-          <div class="alert alert-danger" role="alert" style="text-align: center; margin-top: -10px;">
+          <div class="alert alert-danger" role="alert" style="text-align: center;">
             <button type="button" class="close" data-dismiss="alert" name="button">&times;</button>
             {{$error}}
           </div>

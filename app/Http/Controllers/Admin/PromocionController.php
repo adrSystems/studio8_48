@@ -19,7 +19,7 @@ class PromocionController extends Controller
       $rules=[
         'cover'=>'required|mimes:jpeg,bmp,png',
         'fecha_inicio'=>'required|date|after:yesterday',
-        'fecha_fin'=>'required|date|before:fecha_inicio',
+        'fecha_fin'=>'required|date|after:fecha_inicio',
         'servicio'=>'required',
         'descuento'=>'numeric|between:0,1000'
       ];
@@ -27,7 +27,7 @@ class PromocionController extends Controller
         'cover.required'=>'La imagen de la promoción es requerida.',
         'cover.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg.',
         'fecha_inicio.after'=>'La fecha inicio debe ser hoy o despues de este día.',
-        'fecha_fin.before'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
         'servicio.required'=>'Debe seleccionar un servicio para la promoción.',
         'descuento.numeric'=>'En el campo de Descuento solo se pueden ingresar números.',
         'descuento.between'=>'En el campo de Descuento no puede ingresar numeros negativos.'
@@ -56,14 +56,14 @@ class PromocionController extends Controller
       $rules=[
         'cover'=>'mimes:jpeg,bmp,png',
         'fecha_inicio'=>'required|date',
-        'fecha_fin'=>'date|before:fecha_inicio',
+        'fecha_fin'=>'date|after:fecha_inicio',
         'servicio'=>'required',
         'descuento'=>'numeric|between:0,1000'
       ];
       $messages=[
         'cover.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg.',
         'fecha_inicio.date'=>'Es incorrecto el formato de fecha inicio.',
-        'fecha_fin.before'=>'La fecha fin deber ser despues de la fecha de inicio.',
+        'fecha_fin.after'=>'La fecha fin deber ser despues de la fecha de inicio.',
         'servicio.required'=>'Debe seleccionar un servicio para la promoción.',
         'descuento.numeric'=>'En el campo de Descuento solo se pueden ingresar números.',
         'descuento.between'=>'En el campo de Descuento no puede ingresar numeros negativos.'
