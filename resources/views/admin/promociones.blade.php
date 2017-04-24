@@ -176,7 +176,7 @@ Promociones
               </div>
               <div class="form-group">
                 <span>Descuento:</span>
-                <input type="number" name="descuento" value="" class="form-control" required min="1" max="100">
+                <input type="number" name="descuento" value="" class="form-control" required min="1" max="99">
               </div>
               <div class="pull-right">
                 <button type="submit" name="button" class="form-control"><i class="material-icons icono">save</i>Guardar</button>

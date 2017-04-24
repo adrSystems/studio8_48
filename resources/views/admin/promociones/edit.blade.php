@@ -70,7 +70,7 @@ Editar promociones
             </div>
             <div class="form-group">
               <span>Descuento</span>
-              <input type="number" name="descuento" value="{{$promocion->descuento}}" class="form-control" required>
+              <input type="number" name="descuento" value="{{$promocion->descuento}}" class="form-control" required min="1" max="99">
             </div>
             <div class="form-group">
               <span>Servicio</span>
