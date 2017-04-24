@@ -283,6 +283,8 @@ class InventarioController extends Controller
       }
       $sub->restore();
 
+      //restaurar categoria y marca si se desactivo
+
       return ['result' => true];
     }
 
@@ -554,6 +556,26 @@ class InventarioController extends Controller
       $producto = Producto::onlyTrashed()->find($request->id);
       $producto->restore();
       $producto->subcategoria = $producto->subcategoria;
+
+      $sub = Subcategoria::withTrashed()->where('id',$producto->subcategoria_id)->first();
+      if($sub){
+        $cat = Categoria::withTrashed()->where('id',$sub->categoria_id)->first();
+      }
+      if($cat)
+        $marca = Marca::withTrashed()->where('id', $cat->marca_id)->first();
+
+      if($sub->trashed())
+      {
+        $sub->restore();
+      }
+      if($cat and $cat->trashed())
+      {
+        $cat->restore();
+      }
+      if($marca and $marca->trashed())
+      {
+        $marca->restore();
+      }
 
       return [
         'result' => true,

@@ -19,17 +19,17 @@ Profesionales
     color:#c5b358;
     font-family: 'Lato';
   }
-  .img-container{
+  .card2>.img-container{
     overflow: hidden;
     width: 100%;
   }
-  .img-container-circle{
+  .card2>.img-container-circle{
     border-radius: 100%;
   }
-  .img-container:hover img{
+  .card2>.img-container:hover img{
     -webkit-transform: scale(1.1);
   }
-  .img-container>img{
+  .card2>.img-container>img{
     width: 100%;
     -webkit-transition: -webkit-transform .5s;
   }
@@ -74,11 +74,42 @@ Profesionales
     background-color: #222;
     padding: 20px;
     padding-bottom: 30px;
+    margin-bottom: 20px;
   }
   .main-container{
     background-color: #fff;
     z-index: 1;
     margin-top: 100px;
+  }
+  .dark-modal-back{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 4;
+    box-shadow: inset 0 0 100px rgba(0, 0, 0, .9);
+    display: none;
+    padding: 42px;
+  }
+  .dark-modal-back>i{
+    font-size: 32px;
+    color: #eee;
+    position: absolute;
+    top: 13px;
+    right: 7px;
+    cursor: pointer;
+  }
+  .dark-modal-back>.img-container{
+    padding: 0;
+    position: relative;
+    border-radius: 100%;
+    overflow: hidden;
+  }
+  .dark-modal-back>.img-container{
+    text-align: center;
+  }
+  .dark-modal-back>.img-container>img{
+    width: 100%;
   }
 </style>
 @endsection
@@ -87,6 +118,36 @@ Profesionales
 <div class="main-cover-fixed-container">
   <img class="main-cover-fixed" src="{{asset("img/covers/team.jpg")}}">
 </div>
+
+@foreach(App\Empleado::with('roles')->get() as $empleado)
+@if($empleado->roles()->where('nombre','estilista')->first())
+<div class="dark-modal-back" id="{{$empleado->id}}">
+    <i class="material-icons">close</i>
+    <div class="img-container col-xs-12 col-md-4 col-sm-6 col-sm-offset-3 col-md-offset-4 col-lg-2 col-lg-offset-5">
+      <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+    </div>
+    <div class="info col-xs-12 col-md-6 col-md-offset-3 col-sm-4 col-sm-offset-4 col-lg-4 col-lg-offset-4" style="margin-top:20px">
+      <h3 class="clear-text1 text-center">{{$empleado->nombre." ".$empleado->apellido}}</h3>
+      <p class="clear-text4 text-center">{{$empleado->info}}</p>
+      <p class="clear-text4 text-center">{{$empleado->fecha_nacimiento}}</p>
+      <div class="col-xs-12" style="margin-top:20px">
+        <div class="col-xs-12 col-md-6">
+          <h5 class="clear-text2">Roles:</h5>
+          @foreach($empleado->roles as $rol)
+          <p class="clear-text4" style="font-size:13px">{{ucfirst($rol->nombre)}}</p>
+          @endforeach
+        </div>
+        <div class="col-xs-12 col-md-6">
+          <h5 class="clear-text2" style="text-align:right">Servicios:</h5>
+          @foreach($empleado->servicios as $ser)
+          <p class="clear-text4" style="font-size:13px;text-align:right">{{ucfirst($ser->nombre)}}</p>
+          @endforeach
+        </div>
+      </div>
+    </div>
+</div>
+@endif
+@endforeach
 
 <div class="main-container">
   <div class="container">
@@ -122,38 +183,7 @@ Profesionales
           @foreach($empleado->roles as $rol)
           <p align="center" style="color:#555">{{ucfirst($rol->nombre)}}</p>
           @endforeach
-          <span data-toggle="modal" data-target="#id_modal{{$empleado->id}}" class="btn1 center est-info-toggle">Ver mas información</span>
-          <div class="modal fade" id="id_modal{{$empleado->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                  <h4 class="modal-title" id="exampleModalLongTitle">{{$empleado->nombre}} {{$empleado->apellido}}</h4>
-                </div>
-                <div class="modal-body col-xs-12">
-                  <div class="col-xs-12 col-md-6">
-                  <div class="img-container img-container-circle">
-                    <img src="{{asset('storage/'.$empleado->fotografia)}}">
-                  </div>
-                  </div>
-                  <div class="col-xs-12 col-md-6" id="information-container">
-                    <h4>Informacion</h4>
-                    <p>{{$empleado->info}}</p>
-                    <h5>Fecha de nacimiento: {{$empleado->fecha_nacimiento}}</h5>
-                    <h5>Puesto:</h5>
-                    @foreach($empleado->roles as $rol)
-                    <h5>{{ucfirst($rol->nombre)}}</h5>
-                    @endforeach
-                  </div>
-                </div>
-                <div class="modal-footer">
-
-                </div>
-              </div>
-            </div>
-          </div>
+          <span class="btn1 center est-info-toggle" id="{{$empleado->id}}">Ver mas información</span>
         </div>
       </div>
     </div>
@@ -161,28 +191,28 @@ Profesionales
     @endforeach
     </div>
     <h2 style="font-weight:100;color:#222;margin-bottom:22px;padding-left:30px;padding-right:30px;margin-top:40px;float:left" id="contacto">Contacto</h2>
-    <div class="col-xs-12" style="padding-left:30px;padding-right:30px">
-      <div class="col-xs-12 black-container">
-        <h4 class="col-xs-12 white-text" style="margin-bottom:15px;">Horarios de atencion y ubicación</h4>
-        <div class="col-xs-12 col-md-4">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3600.7093263745246!2d-103.3973299853978!3d25.51473898374938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fdc82eca2a825%3A0x6556f4bfe829fdf9!2zTWlzacOzbiwgMjcyNzIgVG9ycmXDs24sIENvYWgu!5e0!3m2!1ses-419!2smx!4v1490672746278" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <h3 class="white-text">Studio 8 48</h3>
-            <p class="gold-text" style="font-weight:lighter;">Av. Misión Sta. Ma las misiones (a un costado de Intermall) Torreón Coahuila</p>
-            <p class="gold-text" style="font-weight:lighter;">Telefono:<br><span class="white-text">01 871 730 1803</span></p>
-            <p class="gold-text" style="font-weight:lighter;">Horario de atencion:<br> <span class="white-text">Lunes a Sabado de 10:00 am - 8:00 pm</span></p>
-        </div>
-        <div class="col-xs-12 col-md-4">
-            <h3 class="white-text">Siguenos:</h3><br>
-            <div class="col-xs-12 col-md-12">
-            <a href="https://twitter.com/Studio848" class="twitter-follow-button" data-show-count="false" data-lang="es" data-size="large">Seguir a @Studio848</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-            </div>
-            <div class="col-xs-12 col-md-12">
-              <div class="fb-like" data-href="https://www.facebook.com/Studio-8-48-358835230878580/" data-layout="box_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
-            </div>
-            <div id="fb-root"></div>
-        </div>
+  </div>
+  <div class="col-xs-12 black-container">
+    <div class="container">
+      <h4 class="white-text col-xs-12" style="margin-bottom:15px;">Horarios de atencion y ubicación</h4>
+      <div class="col-xs-12 col-md-4">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3600.7093263745246!2d-103.3973299853978!3d25.51473898374938!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x868fdc82eca2a825%3A0x6556f4bfe829fdf9!2zTWlzacOzbiwgMjcyNzIgVG9ycmXDs24sIENvYWgu!5e0!3m2!1ses-419!2smx!4v1490672746278" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe>
+      </div>
+      <div class="col-xs-12 col-md-4">
+          <h3 class="white-text">Studio 8 48</h3>
+          <p class="gold-text" style="font-weight:lighter;">Av. Misión Sta. Ma las misiones (a un costado de Intermall) Torreón Coahuila</p>
+          <p class="gold-text" style="font-weight:lighter;">Telefono:<br><span class="white-text">01 871 730 1803</span></p>
+          <p class="gold-text" style="font-weight:lighter;">Horario de atencion:<br> <span class="white-text">Lunes a Sabado de 10:00 am - 8:00 pm</span></p>
+      </div>
+      <div class="col-xs-12 col-md-4">
+          <h3 class="white-text">Siguenos:</h3><br>
+          <div class="col-xs-12 col-md-12">
+          <a href="https://twitter.com/Studio848" class="twitter-follow-button" data-show-count="false" data-lang="es" data-size="large">Seguir a @Studio848</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+          </div>
+          <div class="col-xs-12 col-md-12">
+            <div class="fb-like" data-href="https://www.facebook.com/Studio-8-48-358835230878580/" data-layout="box_count" data-action="like" data-size="large" data-show-faces="true" data-share="true"></div>
+          </div>
+          <div id="fb-root"></div>
       </div>
     </div>
   </div>
@@ -194,9 +224,16 @@ Profesionales
 
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
-  $.each($('.img-container') ,function (i, e) {
+  $.each($('.card2>.img-container') ,function (i, e) {
     $(e).height($(e).width());
   })
+
+  if($(window).width() < 768){
+    $('.main-cover-fixed-container').css('padding-top','60px')
+  }
+  else {
+    $('.main-cover-fixed-container').css('padding-top','0px')
+  }
 
   $(document).ready(function () {
 
@@ -210,19 +247,33 @@ Profesionales
 
     $('.est-info-toggle').click(function () {
       setTimeout(function () {
-        $.each($('.img-container') ,function (i, e) {
+        $.each($('.card2>.img-container') ,function (i, e) {
           $(e).height($(e).width());
         })
       }, 200)
     })
 
+    $('.est-info-toggle').click(function () {
+      $('.dark-modal-back[id='+$(this).attr('id')+"]").fadeIn(200, function () {
+        //width == height
+        $('.dark-modal-back>.img-container').height($('.dark-modal-back>.img-container').width())
+      })
+    })
+
+    $('.dark-modal-back>i').click(function () {
+      $(this).parent().fadeOut(200);
+    })
+
     $(window).resize(function () {
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
-      $.each($('.img-container') ,function (i, e) {
-        if($(e).hasClass('img-container-circle')){
-          $(e).height($(e).width());
-        }
-      })
+      $('.dark-modal-back>.img-container').height($('.dark-modal-back>.img-container').width())
+      $('.card2>.img-container').height($('.card2>.img-container').width())
+      if($(window).width() < 768){
+        $('.main-cover-fixed-container').css('padding-top','60px')
+      }
+      else {
+        $('.main-cover-fixed-container').css('padding-top','0px')
+      }
     })
 
   })

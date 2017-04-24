@@ -18,40 +18,36 @@ Inventario
     color: #eee;
   }
   .side-menu{
-    width: 100%;
-    display: table;
-    border: 1px solid rgba(0, 0, 0, 0.5);
-    background-color: #fff;
-    border-top-left-radius: 3px;
-    border-top-right-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, .2);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
     overflow: hidden;
-    overflow: hidden;
-    text-align: center;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
   }
   .side-menu>.header{
-    background: linear-gradient(to bottom, #ddd, #ccc);
-    border-top: 1px solid #fff;
-    color: #777;
-    font-weight: 600;
-    box-shadow: inset 0 -1px 3px rgba(0, 0, 0, 0.2);
-    padding-top: 10px;
-    padding-bottom: 10px;
+    background-color: #111;
+    padding: 20px;
+  }
+  .side-menu>.header>h4{
+    color: #fff;
+    margin: 0;
+    text-align: center;
   }
   .side-menu>.body>.item{
-    width: 100%;
-    float: left;
-    padding: 3px;
-    color: #f76;
+    padding: 5px;
+    text-align: center;
     cursor: pointer;
-    border-bottom: 1px solid rgba(255, 255, 255, .11);
-    -webkit-transition: background-color .4s, color .4s, text-shadow .6s;
+    float: left;
+    width: 100%;
+    color: #ddd;
+  }
+  .side-menu>.body>.item:hover{
+    background-color: rgba(255, 255, 255, .02);
+    color: #fff;
   }
   .side-menu>.body>.item-active{
-    background-color: rgba(255, 0, 0, 0.5);
+    font-weight: 900;
     color: #fff;
-    text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
   }
   .side-menu>.body>.last-item{
     border-bottom: none;
@@ -1233,17 +1229,24 @@ Inventario
 
   <div class="container">
 
-    <div class="col-xs-12">
-      <h3 class="main-title">Inventario</h3>
+    <div class="col-xs-12" style="margin-bottom:30px">
+      <div class="col-xs-12">
+        <h3 class="clear-text1">Inventario</h3>
+        <h4 class="clear-text3">Gestiona las marcas, categorias, subcategorias y productos tanto del catalogo.</h4>
+      </div>
     </div>
 
     <div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
-      <div class="side-menu">
-        <div class="header">Menú</div>
-        <div class="body">
-          <div class="item item-active" for="marcas-card">Marcas</div>
-          <div class="item" for="categorias-card">Categorias</div>
-          <div class="item" for="productos-card">Productos</div>
+      <div class="col-xs-12">
+        <div class="side-menu">
+          <div class="header">
+            <h4>Menú</h4>
+          </div>
+          <div class="body">
+            <div class="item item-active" for="marcas-card">Marcas</div>
+            <div class="item" for="categorias-card">Categorias</div>
+            <div class="item" for="productos-card">Productos</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1286,7 +1289,7 @@ Inventario
                         @else
                         <h5 style="text-align:center">Descontinuadas</h5>
                         @foreach(\App\Marca::onlyTrashed()->get() as $marca)
-                        <div class="list-item col-xs-12 col-sm-6" style="padding:15px">
+                        <div class="list-item col-xs-12 col-sm-6 col-md-4 col-lg-3" style="padding:15px">
                           <div class="img-container col-xs-12">
                             <div class="shadow"></div>
                             <div class="options">

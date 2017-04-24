@@ -123,8 +123,8 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
   Route::get('/admin/tips/gestion',function(){
     return view('admin.tips.gestion');
   });
-  Route::get('/admin/tips/borrar/{id}','TipsController@eliminar');
-  Route::match(['GET','POST'],'/admin/tips/modificar/{id}','TipsController@modificar');
+  Route::post('/admin/tips/borrar','TipsController@eliminar');
+  Route::match(['GET','POST'],'/admin/tips/modificar/{id?}','TipsController@modificar');
   Route::match(['GET','POST'],'/admin/tips/subir','TipsController@subir');
 
   //personal

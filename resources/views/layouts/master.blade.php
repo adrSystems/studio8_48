@@ -769,6 +769,7 @@
             }
             .main-cover-fixed-container{
               position: fixed;
+              background-color: #333;
               width: 100%;
               z-index: -1 ;
             }
@@ -869,8 +870,45 @@
               margin-bottom: 5px;
               margin-top: 10px;
             }
+            .title1{
+              font-weight: 800;
+              font-size: 21px;
+              margin-bottom: 15px;
+              margin-top: 15px;
+            }
+            .title2{
+              font-weight: 400;
+              font-size: 20px;
+              margin-bottom: 15px;
+              margin-top: 15px;
+            }
+            .title3{
+              font-weight: 400;
+              font-size: 18px;
+              margin-bottom: 15px;
+              margin-top: 15px;
+            }
+            .title4{
+              font-weight: 400;
+              font-size: 16px;
+              margin-bottom: 5px;
+              margin-top: 10px;
+            }
             .text-center{
               text-align: center;
+            }
+            .mybtn1{
+              border-radius: 5px;
+              border: 1px solid dodgerblue;
+              background-color: transparent;
+              padding: 5px 15px 5px 15px;
+              color: dodgerblue;
+              -webkit-transition: color .4s, background-color .4s;
+              outline: none;
+            }
+            .mybtn1:hover{
+              background-color: dodgerblue;
+              color: white;
             }
         </style>
         @yield('css')
@@ -985,7 +1023,7 @@
           <a href="/personal">Personal</a>
           <a href="/admin/promociones">Promociones</a>
           <a href="/admin/concursos">Concursos</a>
-          <a href="/admin/tips/gestion">Gestión de Tips</a>
+          <a href="/admin/tips/subir">Gestión de Tips</a>
           <a href="/admin/portafolio/nuevo">Portafolio</a>
         </div>
         @elseif(Auth::check() and Auth::user()->cuentable_type == 'App\Empleado'
@@ -1022,7 +1060,7 @@
             <a href="/admin/servicios" class="menu-item-children" id="1">Gestion de servicios</a>
             <a href="/admin/clientes" class="menu-item-children" id="1">Clientes</a>
             <a href="/personal" class="menu-item-children" id="1">Personal</a>
-            <a href="/admin/tips/gestion" class="menu-item-children" id="1">Gestión de Tips</a>
+            <a href="/admin/tips/subir" class="menu-item-children" id="1">Gestión de Tips</a>
             <a href="/admin/promociones" class="menu-item-children" id="1">Promociones</a>
             <a href="/admin/concursos" class="menu-item-children" id="1">Concursos</a>
             <a href="/admin/portafolio/nuevo" class="menu-item-children" id="1">Portafolio</a>

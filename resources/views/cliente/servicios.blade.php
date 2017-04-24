@@ -138,7 +138,13 @@ Catalogo de servicios
 
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
+  $('.img-container').height($('.img-container').width())
+
   $(document).ready(function () {
+
+    $('.img-container').height($('.img-container').width())
+
+    $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
     if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
       $('body').children('.footer').css({
@@ -152,8 +158,6 @@ Catalogo de servicios
       });
     }
 
-    $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
-
     $(window).scroll(function () {
       if($(this).scrollTop() > 200)
         $('.main-cover-fixed-container>.info').fadeOut(300)
@@ -162,6 +166,7 @@ Catalogo de servicios
 
     $(window).resize(function () {
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+      $('.img-container').height($('.img-container').width())
     })
 
   })

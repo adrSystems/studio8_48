@@ -447,7 +447,10 @@ body{
     @endif
     <div class="card4">
       <div class="body" id="productos-container">
-        @foreach(\App\Producto::where('venta_publico','1')->get() as $p)
+        @if(count($productos = \App\Producto::where('venta_publico','1')->get()) < 1)
+        <p style="padding:20px;text-align:center;color:#777">No se encontraron coincidencias.</p>
+        @endif
+        @foreach($productos as $p)
         <div class="col-xs-12 col-sm-4 col-md-3" style="padding:15px">
           <div class="p-item">
             <div class="img-container">
@@ -477,9 +480,12 @@ body{
 
 @section('js')
 <script type="text/javascript">
+
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
   $(document).ready(function () {
+
+    $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
     $(window).resize(function () {
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))

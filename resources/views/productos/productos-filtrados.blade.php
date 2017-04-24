@@ -1,5 +1,5 @@
 @if(count($productos) < 1)
-<p style="padding:20px;text-align:center">No se encontraron coincidencias.</p>
+<p style="padding:20px;text-align:center;color:#777">No se encontraron coincidencias.</p>
 @endif
 @foreach($productos as $p)
 <div class="col-xs-12 col-sm-4 col-md-3" style="padding:15px">

@@ -111,6 +111,8 @@ Gestion Imagenes
     z-index: 4;
     box-shadow: inset 0 0 100px rgba(0, 0, 0, .9);
     display: none;
+    padding-left: 39px;
+    padding-right: 39px;
   }
   .dark-modal-back>i{
     font-size: 32px;

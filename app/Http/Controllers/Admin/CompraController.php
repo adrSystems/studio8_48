@@ -15,7 +15,8 @@ class CompraController extends Controller
 {
     public function getById(Request $request)
     {
-      $compra = Compra::with('productos','cliente','pagos')->find($request->id);
+      $compra = Compra::with('cliente','pagos')->find($request->id);
+      $compra->productos = $compra->productos()->withTrashed()->get();
       $compra->monto = $compra->monto();
       $compra->fecha = Carbon::createFromFormat('Y-m-d H:i:s', $compra->fecha_hora)->format('d/m/Y');
       $compra->hora = Carbon::createFromFormat('Y-m-d H:i:s', $compra->fecha_hora)->format('g:i a');

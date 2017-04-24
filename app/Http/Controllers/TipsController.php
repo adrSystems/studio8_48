@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 Use App\Tip;
 Use Redirect;
+use Storage;
 
 use Illuminate\Http\Request;
 
@@ -13,51 +14,56 @@ class TipsController extends Controller
       if($request->method()=='GET'){
     		return view('admin.tips.nuevo');
     	}
+        if(!$request->hasfile('imagen'))
+          return back()->with('msg', ['title' => 'Ups!', 'type' => 'danger', 'body' => 'Debe seleccionar una imagen!']);
+        if(!$request->title)
+          return back()->with('msg', ['title' => 'Ups!', 'type' => 'danger', 'body' => 'Complete el título.']);
+
         $tip = new Tip;
-        $tip ->titulo = $request['titulo'];
-        $tip->contenido = $request['contenido'];
-        if($request->hasfile('imagen'))
-        {
-          $archivo=$request->imagen;
-          $temp = $archivo->store('tips','public');
-          $tip->src=$temp;
-        }
-        else {
-          $tip->src=null;
-        }
-        $tip->tipo = $request['categoria'];
+        $tip ->titulo = $request->title;
+        $tip->contenido = $request->contenido;
+        $tip->src = $request->imagen->store('tips','public');
         $tip->save();
-        return redirect('/tips');
 
+        return back()->with('msg', ['title' => 'OK!', 'type' => 'success', 'body' => 'Tip agregado con exito!']);
     }
 
-    public function eliminar($id = null)
+    public function eliminar(Request $request)
     {
-      $tip = Tip::find($id);
+      $tip = Tip::find($request->id);
       $tip->delete();
-      return redirect('/gestionartips')->with('msg','Tip Eliminado');
+      Storage::delete('/public/'.$tip->src);
+
+      return back();
     }
 
-    public function modificar(Request $request)
+    public function modificar(Request $request, $id = null)
     {
       if($request->method()=='GET'){
-    		return view('admin.gestion_tip');
+    		if(!$id) return redirect('/admin/tips/gestion');
+        if(!$tip = Tip::find($id)) return redirect('/admin/tips/gestion');
+        return view('admin.tips.modificar', ['tip' => $tip]);
     	}
-      $tip= Tip::find($request->id);
-      $tip->titulo=$request->titulo;
-      $tip->contenido=$request->contenido;
+
+      if(!$request->title)
+        return back()->with('msg', ['title' => 'Ups!', 'type' => 'danger', 'body' => 'Debe especificar el título.']);
+
+      $tip = Tip::find($request->id);
+      $tip->titulo = $request->title;
+
+      if($request->contenido and $request->contenido != '')
+        $tip->contenido = $request->contenido;
+      else if($request->contenido and $request->contenido == '')
+        $tip->contenido = null;
+
       if($request->hasfile('imagen'))
       {
-        $archivo=$request->imagen;
-        $temp = $archivo->store('tips','public');
-        $tip->src=$temp;
+        Storage::delete('/public/'.$tip->src);
+        $tip->src = $request->imagen->store('tips','public');
       }
-      else {
-        $tip->src=null;
-      }
-      $tip->tipo=$request['categoria'];
       $tip->update();
-      return redirect('/gestionartips')->with('msg2','Tip Modificado');
+
+      return back()->with('msg', ['title' => 'OK!', 'type' => 'success', 'body' => 'Cambios efectuados con exito!']);
     }
 
 }

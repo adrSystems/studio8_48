@@ -10,8 +10,7 @@ Información cliente
     height: 100%;
     margin: 0;
     padding: 0;
-    background-image: url('{{asset("img/walls/4.jpg")}}');
-    background-attachment: fixed;
+    background-color: #333;
   }
   .nav-bar{
     border-bottom-color: rgba(255, 255, 255, 0.2);
@@ -502,6 +501,9 @@ Información cliente
   #abonar-compra-modal-back, #liquidar-compra-modal-back{
     z-index: 3;
   }
+  .btn-blue{
+    background-color: dodgerblue;
+  }
 </style>
 @endsection
 
@@ -877,97 +879,99 @@ Información cliente
     </div>
   </div>
 
-  <div class="col-xs-12 col-md-6">
-    <h3 class="title">Citas</h3>
-    <div class="col-xs-12 acotacion-container">
-      <div class="col-xs-12" style="padding:0">
-        <div class="color-box confirmada"></div>
-        <span style="float:left">Confirmada</span>
+  <div class="container">
+    <div class="col-xs-12 col-md-7">
+      <h3 class="title">Citas</h3>
+      <div class="col-xs-12 acotacion-container">
+        <div class="col-xs-12" style="padding:0">
+          <div class="color-box confirmada"></div>
+          <span style="float:left">Confirmada</span>
+        </div>
+        <div class="col-xs-12" style="padding:0">
+          <div class="color-box en-curso"></div>
+          <span style="float:left">En curso</span>
+        </div>
+        <div class="col-xs-12" style="padding:0">
+          <div class="color-box finalizada"></div>
+          <span style="float:left">Finalizada</span>
+        </div>
+        <div class="col-xs-12" style="padding:0">
+          <div class="color-box cancelada"></div>
+          <span style="float:left">Cancelada</span>
+        </div>
       </div>
-      <div class="col-xs-12" style="padding:0">
-        <div class="color-box en-curso"></div>
-        <span style="float:left">En curso</span>
-      </div>
-      <div class="col-xs-12" style="padding:0">
-        <div class="color-box finalizada"></div>
-        <span style="float:left">Finalizada</span>
-      </div>
-      <div class="col-xs-12" style="padding:0">
-        <div class="color-box cancelada"></div>
-        <span style="float:left">Cancelada</span>
-      </div>
-    </div>
-    <div class="subcontainer" id="citas-container">
-      @if($cliente->citas()->count() < 1)
-      <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha programado ninguna cita</p>
-      @else
-      <table>
-        <thead class="white-back">
-          <th style="padding-left:5px">Fecha</th>
-          <th>Hora</th>
-          <th>Estado</th>
-          <th class="hidden-xs">Monto</th>
-          <th class="hidden-xs">Pagada</th>
-          <th></th>
-        </thead>
-        <tbody style="text-align:center" id="tbody-citas" class="white-back">
-          @foreach($cliente->citas as $cita)
-          <tr class="@if($cita->estado == 1){{'confirmada'}}@elseif($cita->estado == 2){{'en-curso'}}@elseif($cita->estado == 4){{'finalizada'}}@elseif($cita->estado == 5){{'cancelada'}}@endif" id="cita{{$cita->id}}">
-            <td style="padding-left:5px">{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
-            <td>{{date('g:i a',strtotime($cita->fecha_hora))}}</td>
-            <td>{{$estados[$cita->estado]}}</td>
-            <td class="hidden-xs">${{$cita->monto}}</td>
-            @if($cita->estado == 5)
-              <td class="hidden-xs" id="table-cita-pagada">-</td>
-            @else
-              @if($cita->pagada)
-              <td class="hidden-xs" id="table-cita-pagada">Si</td>
+      <div class="subcontainer" id="citas-container">
+        @if($cliente->citas()->count() < 1)
+        <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha programado ninguna cita</p>
+        @else
+        <table>
+          <thead class="white-back">
+            <th style="padding-left:5px">Fecha</th>
+            <th>Hora</th>
+            <th>Estado</th>
+            <th class="hidden-xs">Monto</th>
+            <th class="hidden-xs">Pagada</th>
+            <th></th>
+          </thead>
+          <tbody style="text-align:center" id="tbody-citas" class="white-back">
+            @foreach($cliente->citas as $cita)
+            <tr class="@if($cita->estado == 1){{'confirmada'}}@elseif($cita->estado == 2){{'en-curso'}}@elseif($cita->estado == 4){{'finalizada'}}@elseif($cita->estado == 5){{'cancelada'}}@endif" id="cita{{$cita->id}}">
+              <td style="padding-left:5px">{{date('d/m/Y',strtotime($cita->fecha_hora))}}</td>
+              <td>{{date('g:i a',strtotime($cita->fecha_hora))}}</td>
+              <td>{{$estados[$cita->estado]}}</td>
+              <td class="hidden-xs">${{$cita->monto}}</td>
+              @if($cita->estado == 5)
+                <td class="hidden-xs" id="table-cita-pagada">-</td>
               @else
-              <td class="hidden-xs" id="table-cita-pagada">No</td>
+                @if($cita->pagada)
+                <td class="hidden-xs" id="table-cita-pagada">Si</td>
+                @else
+                <td class="hidden-xs" id="table-cita-pagada">No</td>
+                @endif
               @endif
-            @endif
-            <td style="padding-right:5px"><div class="mybtn btn-xs success-btn details-toggle" style="width:100%" id="{{$cita->id}}">Detalles</div></td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-      @endif
+              <td style="padding-right:5px"><div class="mybtn btn-xs success-btn details-toggle" style="width:100%" id="{{$cita->id}}">Detalles</div></td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+        @endif
+      </div>
     </div>
-  </div>
 
-  <div class="col-xs-12 col-md-4">
-    <h3 class="title">Compras</h3>
-    <div class="subcontainer">
-      @if($cliente->compras()->count() < 1)
-      <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha realizado ninguna compra</p>
-      @else
-      <table>
-        <thead class="white-back">
-          <th>Fecha</th>
-          <th>Hora</th>
-          <th>Monto</th>
-          <th>Pagada</th>
-          <th></th>
-        </thead>
-        <tbody style="text-align:center" class="white-back">
-          @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
-          <tr>
-            <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
-            <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
-            <td>${{$compra->monto()}}</td>
-            @if($compra->pagos()->sum('cantidad') < $compra->monto())
-            <td>No</td>
-            @else
-            <td>Si</td>
-            @endif
-            <td>
-              <div class="btn btn-xs btn-warning detalles-venta-toggle" id="{{$compra->id}}">Detalles</div>
-            </td>
-          </tr>
-          @endforeach
-        </tbody>
-      </table>
-      @endif
+    <div class="col-xs-12 col-md-5">
+      <h3 class="title">Compras</h3>
+      <div class="subcontainer">
+        @if($cliente->compras()->count() < 1)
+        <p style="margin: 0; padding:5px;text-shadow: 0 0 2px rgba(0, 0, 0, 0.7), 0 0 10px rgba(0, 0, 0, 1);color:#eee;">El cliente no ha realizado ninguna compra</p>
+        @else
+        <table>
+          <thead class="white-back">
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Monto</th>
+            <th>Pagada</th>
+            <th></th>
+          </thead>
+          <tbody style="text-align:center" class="white-back">
+            @foreach($cliente->compras()->orderBy('fecha_hora','desc')->get() as $compra)
+            <tr>
+              <td>{{date('d/m/Y',strtotime($compra->fecha_hora))}}</td>
+              <td>{{date('g:i a',strtotime($compra->fecha_hora))}}</td>
+              <td>${{$compra->monto()}}</td>
+              @if($compra->pagos()->sum('cantidad') < $compra->monto())
+              <td>No</td>
+              @else
+              <td>Si</td>
+              @endif
+              <td>
+                <div class="btn btn-xs detalles-venta-toggle btn-blue" id="{{$compra->id}}">Detalles</div>
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
+        @endif
+      </div>
     </div>
   </div>
 

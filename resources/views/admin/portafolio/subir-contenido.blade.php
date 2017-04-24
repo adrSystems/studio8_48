@@ -53,19 +53,7 @@ Gestion Imagenes
 		position: relative;
 		padding-bottom: 15px;
 	}
-	.mybtn1{
-		border-radius: 5px;
-		border: 1px solid dodgerblue;
-		background-color: transparent;
-		padding: 5px 15px 5px 15px;
-		color: dodgerblue;
-		-webkit-transition: color .4s, background-color .4s;
-		outline: none;
-	}
-	.mybtn1:hover{
-		background-color: dodgerblue;
-		color: white;
-	}
+  
 </style>
 @endsection
 
@@ -95,6 +83,7 @@ Gestion Imagenes
 				<div class="white-card1">
 					<form class="" action="/admin/portafolio/nuevo" method="post" enctype="multipart/form-data">
 						<input type="hidden" name="_token" value="{{csrf_token()}}">
+            <p class="title2 text-center dark-text1">Nuevo elemento para el portafolio</p>
 						<p style="margin:0;padding:20px" class="dark-text1 text-center">Seleccione la fotografia del servicio aplicado</p>
 						<div class="col-xs-12">
 							<div class="img-file-selector col-xs-12 col-md-6 col-md-offset-3">
@@ -117,7 +106,7 @@ Gestion Imagenes
 			      <div class="col-xs-12">
  							 <div class="alert alert-{{$msg['type']}} col-xs-12 col-md-6 col-md-offset-3" role="alert">
    			         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-   			         <span class="sr-only">{{$msg['title']}}</span>
+   			         <span style="font-weight:600">{{$msg['title']}}</span>
    			         <span>{{$msg['body']}}</span>
    			       </div>
 			      </div>

@@ -7,10 +7,7 @@ Studio8 48 - Personal
 @section('css')
 <style>
   body{
-      background: #eee;
-      background-image: url('{{asset("img/walls/1.jpg")}}');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
+      background: #333;
   }
   .main-container{
     margin-top: 70px;
@@ -682,7 +679,8 @@ Studio8 48 - Personal
 <div class="main-container">
 
   <div class="col-xs-12 col-md-10 col-md-offset-1" style="margin-bottom:10px;">
-    <h3 class="main-title">Administración de personal</h3>
+    <h3 class="clear-text1">Administración de personal</h3>
+    <h4 class="clear-text4">Registra, modifica y elimina personal</h4>
   </div>
 
   <div class="col-xs-12 col-md-offset-1 col-md-5 second-container">

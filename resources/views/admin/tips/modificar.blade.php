@@ -54,6 +54,21 @@ Gestion Imagenes
     resize: none;
     height: 100px;
   }
+  .last-cover-container{
+    overflow: hidden;
+    border-radius: 6px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .2);
+  }
+  .last-cover-container>img{
+    width: 100%;
+  }
+  .restore-btn{
+    margin-top: 15px;
+    cursor: pointer;
+  }
+  .restore-btn:hover{
+    color: dodgerblue;
+  }
 </style>
 @endsection
 
@@ -86,8 +101,8 @@ Gestion Imagenes
 <div class="main-container">
     <div class="container">
       <div class="col-xs-12" style="margin-bottom:15px">
-        <h3 class="clear-text1">Tips</h3>
-        <h4 class="clear-text3">Añade y gestiona el contenido que se mostrará a los clientes.</h4>
+        <h3 class="clear-text1">Modificar Tip</h3>
+        <h4 class="clear-text3">Cambia la información a del tip en cuestión.</h4>
       </div>
       <div class="col-xs-12 col-md-3">
         <div class="menu-container">
@@ -96,29 +111,41 @@ Gestion Imagenes
           </div>
           <div class="body">
             <a href="/admin/tips/subir">
-              <div class="menu-item1 menu-item1-active">Nuevo elemento</div>
+              <div class="menu-item1">Nuevo elemento</div>
             </a>
             <a href="/admin/tips/gestion">
-              <div class="menu-item1">Gestionar contenido</div>
+              <div class="menu-item1">Volver a gestión</div>
             </a>
           </div>
         </div>
       </div>
       <div class="col-xs-12 col-md-9">
         <div class="card2">
-          <form class="" action="/admin/tips/subir" method="post" enctype="multipart/form-data">
+          <input type="hidden" name="title" value="{{$tip->titulo}}">
+          <input type="hidden" name="contenido" value="{{$tip->contenido}}">
+          <form class="" action="/admin/tips/modificar" method="post" enctype="multipart/form-data">
             <input type="hidden" name="_token" value="{{csrf_token()}}">
+            <input type="hidden" name="id" value="{{$tip->id}}">
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <p class="dark-text1 title2 text-center">Completa lo siguiente</p>
+              <p class="dark-text1 title2 text-center">Información del tip</p>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <p class="dark-text2 subtitle3">Título</p>
+              <p class="dark-text2 subtitle3 pull-left">Título</p>
+              <i class="material-icons pull-right restore-btn" id="title">restore</i>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <input type="text" name="title" value="" class="textbox4" style="width:100%">
+              <input type="text" name="title" value="{{$tip->titulo}}" class="textbox4" style="width:100%">
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <p class="dark-text2 subtitle3">Cover</p>
+              <p class="dark-text2 subtitle3">Cover actual</p>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <div class="last-cover-container">
+                <img src="{{asset('storage/'.$tip->src)}}" alt="" class="last-cover">
+              </div>
+            </div>
+            <div class="col-xs-12 col-md-6 col-md-offset-3">
+              <p class="dark-text2 subtitle3">Seleccionar nuevo cover</p>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
               <div class="img-file-selector">
@@ -127,10 +154,11 @@ Gestion Imagenes
               </div>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <p class="dark-text2 subtitle3">Contenido/Comentarios</p>
+              <p class="dark-text2 subtitle3 pull-left">Contenido/Comentarios</p>
+              <i class="material-icons pull-right restore-btn" id="contenido">restore</i>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
-              <textarea name="contenido" class="textbox4" style="width:100%"></textarea>
+              <textarea name="contenido" class="textbox4" style="width:100%">@if($tip->contenido){{$tip->contenido}}@endif</textarea>
             </div>
             <div class="col-xs-12">
             @if($msg = Session::get('msg'))
@@ -144,7 +172,7 @@ Gestion Imagenes
 			      @endif
             </div>
             <div class="col-xs-12" style="margin-top:15px;margin-bottom:30px">
-              <button type="submit" name="button" class="mybtn1 center">Subir</button>
+              <button type="submit" name="button" class="mybtn1 center">Guardar cambios</button>
             </div>
           </form>
         </div>
@@ -157,7 +185,21 @@ Gestion Imagenes
 <script type="text/javascript">
   $('.imagen-item>.img-container').height($('.imagen-item>.img-container').width())
 
+  $('.last-cover-container').height($('.last-cover-container').width())
+
   $(document).ready(function () {
+
+    $(window).resize(function () {
+      $('.last-cover-container').height($('.last-cover-container').width())
+    })
+
+    $('.restore-btn[id=title]').click(function () {
+      $('input[type=text][name=title]').val($('input[type=hidden][name=title]').val())
+    })
+
+    $('.restore-btn[id=contenido]').click(function () {
+      $('textarea[name=contenido]').val($('input[type=hidden][name=contenido]').val())
+    })
 
     function showMsgDialog(title, body, id) {
       $(id).show(0);

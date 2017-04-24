@@ -56,7 +56,7 @@ class ClienteController extends Controller
         $deudor = false;
         foreach ($cliente->citas as $cita) {
           $aPagar=0;
-          foreach ($cita->servicios() as $servicio) {
+          foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
             $aPagar  += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
           }
           if($cita->pagos()->sum('cantidad') < $aPagar)
@@ -89,7 +89,7 @@ class ClienteController extends Controller
         $deudor = false;
         foreach ($cliente->citas as $cita) {
           $aPagar=0;
-          foreach ($cita->servicios as $servicio) {
+          foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
             $aPagar  += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
           }
           if($cita->pagos()->sum('cantidad') < $aPagar)
@@ -182,7 +182,7 @@ class ClienteController extends Controller
       $cliente->compras = $cliente->compras()->orderBy('fecha_hora','desc')->get();
       foreach ($cliente->citas as $cita) {
         $aPagar=0;
-        foreach ($cita->servicios as $servicio) {
+        foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
           $aPagar  += $servicio->precio - ($servicio->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;

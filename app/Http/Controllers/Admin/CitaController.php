@@ -145,7 +145,7 @@ class CitaController extends Controller
       $estados = ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada'];
       $cita->estado = $estados[$cita->estado];
       $cita->pagos = $cita->pagos;
-      $cita->servicios = $cita->servicios;
+      $cita->servicios = $cita->servicios()->withTrashed()->get();
       $tiempo = Carbon::createFromFormat('H:i','00:00');
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
@@ -232,7 +232,7 @@ class CitaController extends Controller
 
       $cita = Cita::find($request->citaId);
       $monto = 0;
-      foreach ($cita->servicios as $servicio) {
+      foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
         $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
       }
       $cita->pagado = $cita->pagos()->sum('cantidad');
@@ -275,7 +275,7 @@ class CitaController extends Controller
     {
       $cita = Cita::find($request->citaId);
       $monto = 0;
-      foreach ($cita->servicios as $servicio) {
+      foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
         $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
       }
       $cita->pagado = $cita->pagos()->sum('cantidad');
@@ -442,8 +442,8 @@ class CitaController extends Controller
 
       $cliente->citas = $cliente->citas()->orderBy('fecha_hora','desc')->get();
       foreach ($cliente->citas as $cita) {
-        $aPagar=0;
-        foreach ($cita->servicios as $servicio) {
+        $aPagar = 0;
+        foreach ($cita->servicios()->withTrashed()->get() as $servicio) {
           $aPagar  += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
         }
         $cita->monto = $aPagar;

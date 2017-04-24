@@ -9,10 +9,11 @@ Registro
 }
 body{
 	color:#c5b358;
-	background-color: #efe;
+	background-color: #fff;
 	font-family: 'Lato';
 	background-image: url('{{asset("img/walls/2.jpg")}}');
-	background-size: 100% 100%;
+	background-size: contain;
+	background-attachment: fixed;
 	background-repeat: no-repeat;
 }
 input{
@@ -88,6 +89,14 @@ label{
 .footer{
 	box-shadow: 0 -3px 5px rgba(0, 0, 0, 0.5);
 }
+.registro-container{
+	background-color: rgba(0, 0, 0, 0.5);
+	padding: 15px;
+	border-radius: 3px;
+	border: 1px solid rgba(255, 255, 255, 0.5);
+	padding-top: 30px;
+	padding-bottom: 30px;
+}
 </style>
 @endsection
 @section('body')
@@ -118,57 +127,57 @@ label{
 		  <h1 class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Registro</h1><br><br>
 			<form class="form-horizontal" method="post" enctype="multipart/form-data" id="form">
 				<input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
-	      <div class="input-container col-xs-11 col-xs-offset-1">
+	      <div class="input-container col-xs-10 col-xs-offset-1">
 	         <label for="inputName" class="col-xs-12" style="padding:0">Nombre:</label>
 	         <div class="col-xs-12" style="padding:0;">
 	             <input type="text" class="input-login" placeholder="Escribe tu nombre" name="nombre">
 	         </div>
 				 </div>
-					 <div class="input-container col-xs-11 col-xs-offset-1">
+					 <div class="input-container col-xs-10 col-xs-offset-1">
 	 	         <label for="inputName" class="col-xs-12" style="padding:0">Apellidos:</label>
 	 	         <div class="col-xs-12" style="padding:0;">
 	 	             <input type="text" class="input-login" placeholder="Escribe tus apellidos" name="apellidos">
 	 	         </div>
 					 </div>
-					 <div class="input-container col-xs-11 col-xs-offset-1">
+					 <div class="input-container col-xs-10 col-xs-offset-1">
 						<label for="inputName" class="col-xs-12" style="padding:0">Telefono:</label>
 						<div class="col-xs-12" style="padding:0;">
 								<input type="text" class="input-login" placeholder="Escribe tu numero telefonico" name="telefono">
 						</div>
 					</div>
-					 <div class="input-container col-xs-11 col-xs-offset-1">
+					 <div class="input-container col-xs-10 col-xs-offset-1">
 						<label for="inputName" class="col-xs-12" style="padding:0">Email:</label>
 						<div class="col-xs-12" style="padding:0;">
 								<input type="email" class="input-login" placeholder="Escribe tu email" name="email">
 						</div>
 					</div>
-					<div class="input-container col-xs-11 col-xs-offset-1">
+					<div class="input-container col-xs-10 col-xs-offset-1">
 					 <label for="inputName" class="col-xs-12" style="padding:0">Contraseña:</label>
 					 <div class="col-xs-12" style="padding:0;">
 							 <input type="password" class="input-login" placeholder="Escribe tu contraseña" name="pass" id="pass">
 					 </div>
 				 </div>
-				 <div class="input-container col-xs-11 col-xs-offset-1">
+				 <div class="input-container col-xs-10 col-xs-offset-1">
 					<label for="inputName" class="col-xs-12" style="padding:0">Repite tu contraseña:</label>
 					<div class="col-xs-12" style="padding:0;">
 							<input type="password" class="input-login" placeholder="Vuelve a escribir tu contraseña" name="validar_pass">
 					</div>
 				</div>
-				<div class="input-container col-xs-11 col-xs-offset-1">
+				<div class="input-container col-xs-10 col-xs-offset-1">
 				 <label for="inputName" class="col-xs-12" style="padding:0">Fecha de nacimiento:</label>
 				 <div class="col-xs-12" style="padding:0;">
 						 <input type="date" class="input-login"  name="fecha">
 				 </div>
 			 </div>
-			 <div class="input-container col-xs-11 col-xs-offset-1">
+			 <div class="input-container col-xs-10 col-xs-offset-1">
 				<label for="inputName" class="col-xs-12" style="padding:0">Subir Imagen de perfil:</label>
 				<div class="col-xs-12" style="padding:0;">
 						<input type="file" class="input-login" name="imagen" accept="image/jpeg">
 				</div>
 			</div>
 			<div class="input-container">
-        <div class="col-xs-offset-1 col-xs-11" style="padding:0">
-           <button type="submit" class="white-btn1" id="subir" style="margin:auto;">Registrarse</button>
+        <div class="col-xs-offset-1 col-xs-10" style="margin-top:30px;padding:0;margin-bottom:15px">
+           <button type="submit" class="white-btn1 center" id="subir" style="margin:auto;">Registrarse</button>
         </div>
       </div>
 			</form>
