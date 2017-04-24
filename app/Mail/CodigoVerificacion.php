@@ -11,6 +11,7 @@ class CodigoVerificacion extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $codigo;
     /**
      * Create a new message instance.
      *

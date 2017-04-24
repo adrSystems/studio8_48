@@ -503,6 +503,11 @@ Información cliente
   }
   .btn-blue{
     background-color: dodgerblue;
+    color: #eee;
+  }
+  .btn-blue:hover{
+    background-color: #19f;
+    color: #fff;
   }
 </style>
 @endsection
@@ -929,7 +934,7 @@ Información cliente
                 <td class="hidden-xs" id="table-cita-pagada">No</td>
                 @endif
               @endif
-              <td style="padding-right:5px"><div class="mybtn btn-xs success-btn details-toggle" style="width:100%" id="{{$cita->id}}">Detalles</div></td>
+              <td style="padding-right:5px"><div class="btn btn-blue btn-xs details-toggle" style="width:100%" id="{{$cita->id}}">Detalles</div></td>
             </tr>
             @endforeach
           </tbody>
