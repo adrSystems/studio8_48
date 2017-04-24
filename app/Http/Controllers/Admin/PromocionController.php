@@ -21,7 +21,7 @@ class PromocionController extends Controller
         'fecha_inicio'=>'required|date|after:yesterday',
         'fecha_fin'=>'required|date|after:fecha_inicio',
         'servicio'=>'required',
-        'descuento'=>'numeric|between:0,1000'
+        'descuento'=>'numeric|between:1,99'
       ];
       $messages=[
         'cover.required'=>'La imagen de la promoción es requerida.',
@@ -58,7 +58,7 @@ class PromocionController extends Controller
         'fecha_inicio'=>'required|date',
         'fecha_fin'=>'date|after:fecha_inicio',
         'servicio'=>'required',
-        'descuento'=>'numeric|between:0,1000'
+        'descuento'=>'numeric|between:1,99'
       ];
       $messages=[
         'cover.mimes'=>'Debe subir una imagen con los siguientes formatos: jpeg,bmp,png,jpg.',

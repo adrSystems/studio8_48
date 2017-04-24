@@ -80,7 +80,7 @@ class CuentaController extends Controller
       $resultado = Validator::make($request->all(),$rules);
 
       if($resultado->fails()){
-        return back()->with("msg",['title' => 'Error.',"body" =>"Proporciona todos los datos."]);
+        return back()->with("msg",['title' => 'Error.',"body" => $resultado->messages()->all()])->withInput($request->except('password'));
       }
       else{
         if($user = User::where('email','=', $request['email'])->first()){
@@ -88,16 +88,16 @@ class CuentaController extends Controller
                 return back()->with("msg",
                   [
                     'title' => 'Error.',
-                    "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
+                    "body" =>["El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."]
                   ]
-                );
+                )->withInput($request->except('password'));
             }
             if(!$user->active)
             {
               return back()->with("msg",
                 [
                   'title' => 'Error.',
-                  "body" =>"El email ingresdo no esta activado."
+                  "body" =>["El email ingresdo no esta activado."]
                 ]
               );
             }
@@ -108,7 +108,7 @@ class CuentaController extends Controller
         return redirect('/');
     	}
     	else{
-    		return back()->with("msg",['title' => 'Error.',"body" =>"Los datos ingresados no son correctos"]);
+    		return back()->with("msg",['title' => 'Error.',"body" =>["Las credenciales proporcionadas no coinciden con ninguna cuenta."]])->withInput($request->except('password'));
     	}
     }
 
@@ -127,51 +127,60 @@ class CuentaController extends Controller
     	{
     		return view ('cliente.registro');
     	}
-        $rules = ["email"=>"required|email","nombre"=>"required","pass"=>"required","validar_pass"=>"required|same:pass",
-        "apellidos"=>"required","fecha"=>"required",'imagen'=>'mimes:jpeg,bmp,png,jpg'];
+        $rules = [
+          "email" => "required|email",
+          "nombre" => "required",
+          "password" => "required|string|min:6|max:21|same:confirmacion",
+          "confirmacion" => "required|string|min:6|max:21",
+          "apellidos" => "required",
+          "fecha" => "required|date|before:today",
+          'imagen' => 'mimes:jpeg,bmp,png,jpg',
+          'telefono' => 'required|numeric|min:999|max:9999999999999999999999|unique:clientes',
+      ];
 
-        $validacion=Validator::make($request->all(),$rules);
+        $validacion=Validator::make($request->all(), $rules);
+
         if($validacion->fails())
+          return back()->with("msg",['title' => 'Errors',"body" => $validacion->messages()->all()])->withInput($request->except('pass','validar_pass'));
+
+
+        if($user=User::where('email',$request->email)->first())
         {
-            return back()->with("msg",['title' => 'Error.',"body" =>"Proporciona todos los datos."]);
+            return back()->with("msg",['title' => 'Errors',"body" => ["El email ya ha sido tomado para otra cuenta."]])->withInput($request->except('pass','validar_pass'));
         }
-        else
+
+      	$cliente = new Cliente;
+        $cliente->nombre = $request['nombre'];
+        $cliente->apellido = $request['apellidos'];
+        $cliente->fecha_nacimiento = $request['fecha'];
+        $cliente->telefono = $request['telefono'];
+        $cliente->fecha_registro = carbon::now();
+        $cliente->credito = 0;
+        $cliente->save();
+
+        $cuenta = new User;
+      	$cuenta->email = $request['email'];
+      	$cuenta->password = hash::make($request['pass']);
+      	$cuenta->remember_token = $request['_token'];
+      	$cuenta->active = 0;
+        $cuenta->fb = 0;
+
+        if($request->hasfile('imagen'))
         {
-          if($user=User::where('email',$request->email)->first())
-          {
-              return back()->with("msg",['title' => 'Error.',"body" =>"El email ya ha sido tomado para otra cuenta."]);
-          }
-        	$registro = new User;
-        	$registro_cliente = new Cliente;
-          $registro_cliente->nombre=$request['nombre'];
-          $registro_cliente->apellido=$request['apellidos'];
-          $registro_cliente->fecha_nacimiento=$request['fecha'];
-          $registro_cliente->telefono=$request['telefono'];
-          $registro_cliente->fecha_registro=carbon::now();
-          $registro_cliente->credito=0;
-          $registro_cliente->save();
-        	$registro->email=$request['email'];
-        	$registro->password= hash::make($request['pass']);
-        	$registro->remember_token = $request['_token'];
-        	$registro->active=0;
-          $registro->fb=0;
-          if($request->hasfile('imagen'))
-          {
-              $archivo=$request->imagen;
-              $temp = $archivo->store('perfil','public');
-              $registro->photo=$temp;
-          }
-        	else
-          {
-              $registro->photo=null;
-          }
-          $codigo = str_random(30);
-          $registro->codigo_registro=$codigo;
-          $registro->cuentable()->associate($registro_cliente);
-      	  $registro->save();
-          Mail::to($request->email)->send(new CodigoVerificacion($codigo));
-            return redirect("/login")->with("msg",['title' => 'Aviso.',"body" =>"Revisa tu correo para activar tu cuenta."]);
+            $cuenta->photo = $request->imagen->store('perfil','public');
         }
+      	else
+        {
+            $cuenta->photo=null;
+        }
+        $codigo = str_random(30);
+        $cuenta->codigo_registro=$codigo;
+        $cuenta->cuentable()->associate($cliente);
+    	  $cuenta->save();
+        Mail::to($request->email)->send(new CodigoVerificacion($codigo));
+
+        return redirect("/login")->with("msg",['title' => 'Ok!',"body" =>["Enhorabuena! Revisa tu correo (".$request->email.") para activar tu cuenta."]]);
+
     }
 
     public function confirmar($codigo)

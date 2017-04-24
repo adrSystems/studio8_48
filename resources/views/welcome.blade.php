@@ -103,6 +103,20 @@ Studio8 48 - Inicio
       position:fixed;
       z-index:1;
     }
+    .video-content{
+      position: absolute;
+      width: 100%;
+    }
+    .video-content>div>i{
+      font-size: 100px;
+      width: 100%;
+      text-align: center;
+      color: #ddd;
+    }
+    .video-content>div>h3{
+      text-align: center;
+      color: #ddd;
+    }
 </style>
 @endsection
 
@@ -135,43 +149,60 @@ Studio8 48 - Inicio
 
 <img class="main-cover" src="{{asset("img/covers/1.jpg")}}">
 
-<div class="col-md-10 col-md-offset-1" style="margin-top: 50px; margin-bottom: 35px; padding:0;">
-    <a class="col-md-4" href="#">
-      <div class="col-xs-12" style="margin-bottom:15px;">
-        <div class="card col-xs-12" style="padding:0;">
-          <img src="{{asset('img/covers/15780874_1154790474616381_7086443775051567218_n.jpg')}}" alt="" width="100%">
-          <h3>¿Quienes somos?</h3>
-          <p>Descubre todo sobre nosotros.</p>
-          <div class="shadow-cover">
+<div class="container" style="margin-top: 50px; margin-bottom: 35px; padding:0;">
+    <div class="col-xs-12">
+      <a class="col-xs-12 col-md-4" href="/nosotros">
+        <div class="col-xs-12" style="margin-bottom:15px;">
+          <div class="card col-xs-12" style="padding:0;">
+            <img src="{{asset('img/covers/15780874_1154790474616381_7086443775051567218_n.jpg')}}" alt="" width="100%">
+            <h3>¿Quienes somos?</h3>
+            <p>Descubre todo sobre nosotros.</p>
+            <div class="shadow-cover">
 
+            </div>
           </div>
         </div>
-      </div>
-    </a>
-    <a class="col-md-4" href="#">
-      <div class="col-xs-12" style="margin-bottom:15px;">
-        <div class="card col-xs-12" style="padding:0;">
-          <img src="{{asset('img/covers/15202607_1129609833801112_6648032831072527106_n.jpg')}}" alt="" width="100%">
-          <h3>Agenda tu cita</h3>
-          <p>Que no te ganen el lugar, ¡Haz click aqui!</p>
-          <div class="shadow-cover">
+      </a>
+      <a class="col-xs-12 col-md-4" href="/productos">
+        <div class="col-xs-12" style="margin-bottom:15px;">
+          <div class="card col-xs-12" style="padding:0;">
+            <img src="{{asset('img/covers/15202607_1129609833801112_6648032831072527106_n.jpg')}}" alt="" width="100%">
+            <h3>Productos</h3>
+            <p>Solo la mas alta calidad!</p>
+            <div class="shadow-cover">
 
+            </div>
           </div>
         </div>
-      </div>
-    </a>
-    <a class="col-md-4" href="#">
-      <div class="col-xs-12" style="margin-bottom:15px;">
-        <div class="card col-xs-12" style="padding:0;">
-          <img src="{{asset('img/covers/10426294_728232000605566_5877951014255242326_n.jpg')}}" alt="" width="100%">
-          <h3>Title</h3>
-          <p>Message</p>
-          <div class="shadow-cover">
+      </a>
+      <a class="col-xs-12 col-md-4" href="/servicios">
+        <div class="col-xs-12" style="margin-bottom:15px;">
+          <div class="card col-xs-12" style="padding:0;">
+            <img src="{{asset('img/covers/10426294_728232000605566_5877951014255242326_n.jpg')}}" alt="" width="100%">
+            <h3>Servicios</h3>
+            <p>Sea cual sea la ocasión, ahí estaremos!</p>
+            <div class="shadow-cover">
 
+            </div>
           </div>
         </div>
+      </a>
+    </div>
+    <div class="col-xs-12" style="margin-top:50px;margin-bottom:50px">
+      <div class="col-xs-12">
+        <video src="{{asset('video/shoot.mp4')}}" poster="" controls="" class="col-xs-12"></video>
+        <!---
+        <div class="video-content">
+          <div class="col-xs-12">
+            <i class="material-icons">play_circle_outline</i>
+          </div>
+          <div class="col-xs-12">
+            <h3>Play presentation video</h3>
+          </div>
+        </div>
+        -->
       </div>
-    </a>
+    </div>
 </div>
 @endsection
 

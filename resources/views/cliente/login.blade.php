@@ -14,7 +14,7 @@ Studio8 48 -Login
     background-color: #efe;
     font-family: 'Lato';
     background-image: url('{{asset("img/walls/2.jpg")}}');
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;
   }
   .input-login:focus{
@@ -160,7 +160,7 @@ Studio8 48 -Login
         <div class="input-container col-xs-11 col-xs-offset-1">
            <label for="inputName" class="col-xs-12" style="padding:0">Email:</label>
            <div class="col-xs-12" style="padding:0;">
-               <input type="email" class="input-login" placeholder="Escribe tu email" name="email">
+               <input type="email" class="input-login" placeholder="Escribe tu email" name="email" value="{{old('email')}}">
            </div>
         </div>
         <div class="input-container col-xs-11 col-xs-offset-1">
@@ -228,8 +228,8 @@ Studio8 48 -Login
       });
 
       @if(session('msg'))
-      showMsg("{{session('msg')['title']}}",["{{session('msg')['body']}}"]);
-      @endif
+			showMsg("{{session('msg')['title']}}",[@foreach($msgs = session('msg')['body'] as $i => $msg)@if($i == count($msgs) - 1)"{{$msg}}"@else"{{$msg}}",@endif @endforeach]);
+			@endif
 
       var $formulario= $('Form');
       var $evento= $('#subir');
