@@ -778,7 +778,7 @@
               width: 100%;
               -webkit-filter: blur(0px);
               -webkit-transform: scale(1);
-              -webkit-transition: -webkit-transform .4s, -webkit-filter .5s;
+              -webkit-transition: -webkit-transform .1s, -webkit-filter .1s;
             }
             .dark-text1{
               color: #111;
