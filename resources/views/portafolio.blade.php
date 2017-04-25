@@ -211,6 +211,17 @@ Portafolio
 
     $(window).resize(function () {
       $('.imagen-item>.img-container').height($('.imagen-item>.img-container').width())
+      if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+        $('body').children('.footer').css({
+          position:'absolute',
+          bottom:'0'
+        });
+      }
+      else{
+        $('body').children('.footer').css({
+          position:'relative'
+        });
+      }
     })
 
     $('.imagen-item').click(function () {

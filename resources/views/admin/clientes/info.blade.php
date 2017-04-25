@@ -66,6 +66,7 @@ Información cliente
   .icon-btn>i{
     font-size: 18px;
     padding-top: 2px;
+    float: left;
   }
   .icon-btn:active{
     color: #ddd;
@@ -79,18 +80,20 @@ Información cliente
     box-shadow: 0 0 10px rgba(0, 0, 0, 1);
     text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
   }
-  .icon-square{
-    background-color: dodgerblue;
-  }
   .icon-btn>span{
     padding: 1px 5px 5px 5px;
     float: left;
   }
   #back-btn{
     float: right;
+    color: dodgerblue;
     background-color: rgba(255, 255, 255, 0.5);
     border: 1px solid transparent;
     margin-right: -10px;
+  }
+  #back-btn>i{
+    margin-top: 1px;
+    color: dodgerblue;
   }
   .title-card{
     background-color: rgba(255, 255, 255, 0.1);
@@ -815,72 +818,81 @@ Información cliente
 
 <div class="main-container">
 
-  <div class="col-xs-12">
-    <h3 class="main-title">Detalles del cliente</h3>
-    <a href="../" class="icon-btn" id="back-btn">
-      <i class="material-icons">arrow_back</i>
-      <span>Explorar todos los clientes</span>
-    </a>
-  </div>
+  <div class="container">
+    <div class="col-xs-12" style="padding:0">
+      <h3 class="clear-text1 title1">Detalles del cliente</h3>
+      <h4 class="clear-text3">Explore y gestione las citas y compras del cliente</h4>
+      <a href="../" class="icon-btn" id="back-btn">
+        <i class="material-icons">arrow_back</i>
+        <span>Explorar todos los clientes</span>
+      </a>
+    </div>
 
-  <div class="col-xs-12" id="summary-container">
-    <div class="col-xs-12 col-md-3">
-      <h5 class="title-card">Personal</h5>
-      <h4 class="white-text">{{$cliente->nombre." ".$cliente->apellido}}</h4>
-      <p>Telefono:<br> <span class="white-text">{{$cliente->telefono}}</span></p>
-      <p>Edad:<br> <span class="white-text">{{$cliente->edad." años (".date('d/m/Y',strtotime($cliente->fecha_nacimiento)).")"}}</span></p>
-    </div>
-    <div class="col-xs-12 col-md-3">
-      <h5 class="title-card">Historial</h5>
-      <p>Fecha de registro:<br> <span class="white-text">{{date('d/m/Y', strtotime($cliente->fecha_registro))}}</span></p>
-      <p>Antiguedad:<br> <span class="white-text">{{$cliente->antiguedad['tiempo']." ".$cliente->antiguedad['medida']}}</span></p>
-      <p>Frecuencia este mes
-        <br><span class="white-text">Compras: {{$cliente->compras()->whereMonth('fecha_hora',date('m'))->whereYear('fecha_hora',date('Y'))->count()}}</span>
-        <br><span class="white-text">Citas: {{$cliente->citas()->whereMonth('fecha_hora',date('m'))->whereYear('fecha_hora',date('Y'))->count()}}</span>
-      </p>
-      @if($cliente->esDeudor)
-      <p>Tiene deudas:<br><span style="color:#f36">Si</span></p>
-      @else
-      <p>Tiene deudas:<br><span style="color:#5f6">No</span></p>
-      @endif
-    </div>
-    <div class="col-xs-12 col-md-3">
-      <h5 class="title-card">Cuenta</h5>
-      @if($cliente->cuenta)
-      <p>Cuenta web: <br><span>Si</span></p>
-      <p>Email: <br><span class="white-text">{{$cliente->cuenta->email}}</span></p>
-      @else
-      <p>Cuenta web: <br><span class="white-text">No</span></p>
-      @endif
-    </div>
-    <div class="col-xs-12 col-md-3" id="options-container">
-      <a href="/admin/clientes/edit/{{$cliente->id}}" class="icon-btn icon-square">
-        <i class="material-icons">edit</i>
-        <span>Modificar</span>
-      </a>
-      <a href="/admin/citas/agregar/{{$cliente->id}}" class="icon-btn icon-square">
-        <i class="material-icons">date_range</i>
-        <span>Agendar cita</span>
-      </a>
-      <a href="/admin/ventas/agregar/{{$cliente->id}}" class="icon-btn icon-square">
-        <i class="material-icons">shopping_cart</i>
-        <span>Nueva venta</span>
-      </a>
-      @if($cliente->credito)
-      <div class="switch-container" id="modificar-credito" active="1">
-        <span>Activar credito</span>
-        <div class="switch-bar">
-          <div class="switch-btn active"></div>
-        </div>
+    <div class="col-xs-12" id="summary-container">
+      <div class="col-xs-12 col-md-3">
+        <h5 class="title-card">Personal</h5>
+        <h4 class="white-text">{{$cliente->nombre." ".$cliente->apellido}}</h4>
+        <p>Telefono:<br> <span class="white-text">{{$cliente->telefono}}</span></p>
+        <p>Edad:<br> <span class="white-text">{{$cliente->edad." años (".date('d/m/Y',strtotime($cliente->fecha_nacimiento)).")"}}</span></p>
       </div>
-      @else
-      <div class="switch-container" id="modificar-credito" active="0">
-        <span>Activar credito</span>
-        <div class="switch-bar">
-          <div class="switch-btn inactive"></div>
-        </div>
+      <div class="col-xs-12 col-md-3">
+        <h5 class="title-card">Historial</h5>
+        <p>Fecha de registro:<br> <span class="white-text">{{date('d/m/Y', strtotime($cliente->fecha_registro))}}</span></p>
+        <p>Antiguedad:<br> <span class="white-text">{{$cliente->antiguedad['tiempo']." ".$cliente->antiguedad['medida']}}</span></p>
+        <p>Frecuencia este mes
+          <br><span class="white-text">Compras: {{$cliente->compras()->whereMonth('fecha_hora',date('m'))->whereYear('fecha_hora',date('Y'))->count()}}</span>
+          <br><span class="white-text">Citas: {{$cliente->citas()->whereMonth('fecha_hora',date('m'))->whereYear('fecha_hora',date('Y'))->count()}}</span>
+        </p>
+        @if($cliente->esDeudor)
+        <p>Tiene deudas:<br><span style="color:#f36">Si</span></p>
+        @else
+        <p>Tiene deudas:<br><span style="color:#5f6">No</span></p>
+        @endif
       </div>
-      @endif
+      <div class="col-xs-12 col-md-3">
+        <h5 class="title-card">Cuenta</h5>
+        @if($cliente->cuenta)
+        <p>Cuenta web: <br><span>Si</span></p>
+        <p>Email: <br><span class="white-text">{{$cliente->cuenta->email}}</span></p>
+        @else
+        <p>Cuenta web: <br><span class="white-text">No</span></p>
+        @endif
+      </div>
+      <div class="col-xs-12 col-md-3" id="options-container">
+        <div class="col-xs-12" style="padding:0">
+          <a href="/admin/clientes/edit/{{$cliente->id}}" class="icon-btn icon-square pull-right">
+            <i class="material-icons">edit</i>
+            <span>Modificar</span>
+          </a>
+        </div>
+        <div class="col-xs-12" style="padding:0">
+          <a href="/admin/citas/agregar/{{$cliente->id}}" class="icon-btn icon-square pull-right">
+            <i class="material-icons">date_range</i>
+            <span>Agendar cita</span>
+          </a>
+        </div>
+        <div class="col-xs-12" style="padding:0">
+          <a href="/admin/ventas/agregar/{{$cliente->id}}" class="icon-btn icon-square pull-right">
+            <i class="material-icons">shopping_cart</i>
+            <span>Nueva venta</span>
+          </a>
+        </div>
+        @if($cliente->credito)
+        <div class="switch-container" id="modificar-credito" active="1">
+          <span>Activar credito</span>
+          <div class="switch-bar">
+            <div class="switch-btn active"></div>
+          </div>
+        </div>
+        @else
+        <div class="switch-container" id="modificar-credito" active="0">
+          <span>Activar credito</span>
+          <div class="switch-bar">
+            <div class="switch-btn inactive"></div>
+          </div>
+        </div>
+        @endif
+      </div>
     </div>
   </div>
 
@@ -1667,7 +1679,7 @@ Información cliente
 
     $('#back-btn').css({
       'margin-right':'0px',
-      'background-color':'rgba(0,0,0,.5)',
+      'background-color':'#fff',
       'border-color':'rgba(255,255,255,.5)'
     });
 

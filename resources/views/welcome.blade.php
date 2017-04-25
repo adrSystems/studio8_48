@@ -6,6 +6,9 @@ Studio8 48 - Inicio
 
 @section('css')
 <style>
+    body{
+        background: #222;
+    }
     .card{
       font-family: 'Cookie';
       box-shadow: 0 0 10px 0 #000;

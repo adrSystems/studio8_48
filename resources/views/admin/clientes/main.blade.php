@@ -263,14 +263,14 @@ Gestión de clientes
   $(document).ready(function () {
 
     $(window).resize(function () {
-      if($('.main-container').height() + 150 < $(window).height()){
-        $('.footer').css({
+      if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+        $('body').children('.footer').css({
           position:'absolute',
           bottom:'0'
         });
       }
       else{
-        $('.footer').css({
+        $('body').children('.footer').css({
           position:'relative'
         });
       }
@@ -348,7 +348,19 @@ Gestión de clientes
 
           $('tbody#clientes').append($tr);
         });
+        if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+          $('body').children('.footer').css({
+            position:'absolute',
+            bottom:'0'
+          });
+        }
+        else{
+          $('body').children('.footer').css({
+            position:'relative'
+          });
+        }
       });
+
     }
 
   });

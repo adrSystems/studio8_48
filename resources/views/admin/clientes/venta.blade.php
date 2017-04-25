@@ -7,7 +7,7 @@ Nueva venta
 @section('css')
 <style media="screen">
   body{
-    background-color: #eee;
+    background-color: #333;
   }
   .footer{
     box-shadow: none;
@@ -15,12 +15,13 @@ Nueva venta
   .card3{
     background-color: #fff;
     border: 1px solid rgba(0, 0, 0, .15);
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     border-radius: 3px;
     overflow: hidden;
   }
   .card3>.header{
     box-shadow: 0 1px 3px rgba(0, 0, 0, .1);
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
   }
   .card3>.header>h4{
     color: #555;
@@ -184,14 +185,25 @@ Nueva venta
     display: block;
     margin: auto;
   }
+  .white-link1{
+    color: #ddd;
+  }
+  .white-link1:link{
+    color: #eee;
+    text-decoration: none;
+    -webkit-transition: color .3s;
+  }
+  .white-link1:hover,.white-link1:visited,.white-link1:active{
+    color: #fff;
+  }
 </style>
 @endsection
 
 @section('body')
 <div class="main-container">
   <div class="col-xs-12">
-    <h3 style="font-family:Lobster Two;color:#777;float:left">Nueva venta</h3>
-    <a href="/admin/clientes/info/{{$cliente->id}}" style="float:right">Volver a información de {{$cliente->nombre}}</a>
+    <h3 style="font-family:Lobster Two;color:#fff;float:left">Nueva venta</h3>
+    <a href="/admin/clientes/info/{{$cliente->id}}" style="float:right" class="white-link1">Volver a información de {{$cliente->nombre}}</a>
   </div>
   <div class="col-xs-12 col-md-5">
     <div class="card">
@@ -269,7 +281,7 @@ Nueva venta
             </div>
           </div>
           <div class="col-xs-12" style="margin-bottom:15px">
-            <h5 style="color:#999">Productos</h5>
+            <h5 class="dark-text2">Productos</h5>
             <div class="gray-container" id="productos-container">
               <table style="display:none">
                 <thead>
@@ -286,7 +298,7 @@ Nueva venta
             </div>
           </div>
           <div class="col-xs-12" style="text-align:right">
-            <p style="color:#888">Monto a pagar: <span id="monto" style="font-weight:800">$0</span></p>
+            <p class="dark-text3">Monto a pagar: <span id="monto" style="font-weight:800">$0</span></p>
           </div>
           <div class="col-xs-12">
             <h5 style="color:#999">Pago</h5>
@@ -299,7 +311,7 @@ Nueva venta
               </div>
               <div class="col-xs-12" style="padding:0">
                 <span class="col-xs-2 col-md-1" style="text-align:center;color:#888">$</span>
-                <input type="text" name="abono" value="0" class="textbox3 col-xs-10 col-md-4 money">
+                <input type="text" name="abono" value="0" class="textbox3 col-xs-10 col-md-4 money" autocomplete="off">
               </div>
               @endif
               <div class="col-xs-12" style="padding:0;margin-top:10px">
@@ -307,7 +319,7 @@ Nueva venta
               </div>
               <div class="col-xs-12" style="padding:0">
                 <span class="col-xs-2 col-md-1" style="text-align:center;color:#888">$</span>
-                <input type="text" name="recibido" value="0" class="textbox3 col-xs-10 col-md-4 money">
+                <input type="text" name="recibido" value="0" class="textbox3 col-xs-10 col-md-4 money" autocomplete="off">
               </div>
               <div class="col-xs-12" style="padding:0;margin-top:10px">
                 <p class="col-xs-offset-2 col-md-offset-1" style="color:#999" id="cambio-p">Cambio: <span id="cambio" style="font-weight:800">$0</span></p>
@@ -480,38 +492,43 @@ $(document).ready(function () {
     })
     details.monto = parseFloat(parseFloat(details.monto).toFixed(2))
     @if($cliente->credito)
-    details.pago = parseFloat(parseFloat($('input[name=abono]').val()).toFixed(2))
-    details.recibido = parseFloat(parseFloat($('input[name=recibido]').val()).toFixed(2))
-    if(details.pago > details.monto)
-    {
-      $('#message-text').text('El pago no puede ser mayor que el monto a pagar')
-      $('#message-text').show()
-      $('#cambio-p').hide()
-    }
-    else if(details.recibido < details.pago)
-    {
-      $('#message-text').text('El dinero recibido debe ser igual o mayor a lo que se va pagar.')
-      $('#message-text').show()
-      $('#cambio-p').hide()
-    }
-    else {
-      $('#message-text').hide()
-      $('#cambio-p').show()
-    }
-    details.cambio = parseFloat(parseFloat(details.recibido - details.pago).toFixed(2))
+      if($('input[name=abono]').val() == '') details.pago = 0
+      else details.pago = parseFloat(parseFloat($('input[name=abono]').val()).toFixed(2))
+
+      if($('input[name=recibido]').val() == '') details.recibido = 0
+      else details.recibido = parseFloat(parseFloat($('input[name=recibido]').val()).toFixed(2))
+
+      if(details.pago > details.monto)
+      {
+        $('#message-text').text('El pago no puede ser mayor que el monto a pagar')
+        $('#message-text').show()
+        $('#cambio-p').hide()
+      }
+      else if(details.recibido < details.pago)
+      {
+        $('#message-text').text('El dinero recibido debe ser igual o mayor a lo que se va pagar.')
+        $('#message-text').show()
+        $('#cambio-p').hide()
+      }
+      else {
+        $('#message-text').hide()
+        $('#cambio-p').show()
+      }
+      details.cambio = parseFloat(parseFloat(details.recibido - details.pago).toFixed(2))
     @else
-    details.recibido = parseFloat(parseFloat($('input[name=recibido]').val()).toFixed(2))
-    if(details.recibido < details.monto)
-    {
-      $('#message-text').text('El monto recibido no puede ser menor que el monto a pagar')
-      $('#message-text').show()
-      $('#cambio-p').hide()
-    }
-    else {
-      $('#message-text').hide()
-      $('#cambio-p').show()
-    }
-    details.cambio = parseFloat(parseFloat(details.recibido - details.monto).toFixed(2));
+      if($('input[name=recibido]').val() == '') details.recibido = 0
+      else details.recibido = parseFloat(parseFloat($('input[name=recibido]').val()).toFixed(2))
+      if(details.recibido < details.monto)
+      {
+        $('#message-text').text('El monto recibido no puede ser menor que el monto a pagar')
+        $('#message-text').show()
+        $('#cambio-p').hide()
+      }
+      else {
+        $('#message-text').hide()
+        $('#cambio-p').show()
+      }
+      details.cambio = parseFloat(parseFloat(details.recibido - details.monto).toFixed(2))
     @endif
     $('#cambio').text("$"+details.cambio)
     $('#monto').text("$"+details.monto)
