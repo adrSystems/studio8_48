@@ -7,6 +7,29 @@ Promociones y concursos
   body{
     background: #fff;
   }
+  .mensaje{
+    margin-top: 30px;
+    color: #aaa;
+    border: 1px solid rgba(0, 0, 0, .08);
+    border-radius: 3px;
+    padding: 5px;
+    text-align: center;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, .05);
+  }
+  .item{
+    overflow: visible;
+  }
+  .item>.info-cont{
+    background-color: #333;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, .08);
+    border-top: none;
+    padding: 5px;
+    text-align: center;
+  }
+  .item>.info-cont>p{
+    margin: 0;
+  }
 </style>
 @endsection
 @section('body')
@@ -17,30 +40,21 @@ Promociones y concursos
           <div class="col-xs-12 col-md-5">
             <h3 class="dark-text1">¡Promociones!</h3>
             <h4 class="dark-text3">Aprovecha los descuentos que tenemos para ti.</h4>
-            @if(\App\Promocion::count() > 0)
+            @if($promociones->count() > 0)
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
               <div class="carousel-inner" role="listbox">
                   <div class="item active">
-                    <img src="{{asset('storage/'.App\Promocion::first()->cover)}}" alt="..." class="image center-block">
-                    <div class="carousel-caption">
-
-                      @if(App\Promocion::first()->fecha_termino < Carbon\Carbon::now())
-                      <p class="content-carrusel" style="">Terminado</p>
-                      @elseif(App\Promocion::first()->fecha_termino >= Carbon\Carbon::now())
-                      <p class="content-carrusel" style="">Disponible</p>
-                      @endif
+                    <img src="{{asset('storage/'.$promociones->first()->cover)}}" alt="..." class="image center-block">
+                    <div class="info-cont">
+                      <p class="clear-text2" style="">{{$promociones[0]->vigencia}}</p>
                     </div>
                   </div>
-                  @foreach(App\Promocion::get() as $promocion)
-                  @if($promocion->id!=1)
+                  @foreach($promociones as $i => $promocion)
+                  @if($i > 0)
                   <div class="item">
                     <img src="{{asset('storage/'.$promocion->cover)}}" alt="..." class="image center-block">
-                    <div class="carousel-caption">
-                      @if($promocion->fecha_termino < Carbon\Carbon::now())
-                      <p class="content-carrusel" style="">Terminado</p>
-                      @elseif($promocion->fecha_termino >= Carbon\Carbon::now())
-                      <p class="content-carrusel" style="">Disponible</p>
-                      @endif
+                    <div class="info-cont">
+                      <p class="clear-text2" style="">{{$promocion->vigencia}}</p>
                     </div>
                   </div>
                   @endif
@@ -67,29 +81,21 @@ Promociones y concursos
         <div class="col-xs-12 col-md-offset-2 col-xs-5 col-md-5">
           <h3 class="dark-text1">¡Concursos!</h3>
           <h4 class="dark-text3">Participa en nuestros concursos y podrás ganar increibles premios.</h4>
-          @if(\App\Concurso::count() > 0)
+          @if($concursos->count() > 0)
           <div id="carousel-example-generic2" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner" role="listbox">
-          <div class="item active">
-            <img src="{{asset('storage/'.App\Concurso::first()->imagen)}}" alt="..." class="image img-responsive center-block">
-            <div class="carousel-caption">
-               @if(App\Concurso::first()->fecha_termino < Carbon\Carbon::now())
-               <p class="content-carrusel" style="">Terminado</p>
-               @elseif(App\Concurso::first()->fecha_termino >= Carbon\Carbon::now())
-               <p class="content-carrusel" style="">Disponible</p>
-               @endif
+          <div class="carousel-inner" role="listbox">
+            <div class="item active">
+              <img src="{{asset('storage/'.$concursos[0]->imagen)}}" alt="..." class="image img-responsive center-block">
+              <div class="info-cont">
+                <p class="clear-text2" style="">{{$concursos[0]->vigencia}}</p>
+              </div>
             </div>
-          </div>
-          @foreach(App\Concurso::get() as $concurso)
-          @if($concurso->id!=1)
+          @foreach($concursos as $i => $concurso)
+          @if($i > 0)
           <div class="item">
             <img src="{{asset('storage/'.$concurso->imagen)}}" alt="..." class="image img-responsive center-block">
-            <div class="carousel-caption">
-              @if($concurso->fecha_termino < Carbon\Carbon::now())
-              <p class="content-carrusel" style="">Terminado</p>
-              @elseif($concurso->fecha_termino >= Carbon\Carbon::now())
-              <p class="content-carrusel" style="">Disponible</p>
-              @endif
+            <div class="info-cont">
+              <p class="clear-text2" style="">{{$concurso->vigencia}}</p>
             </div>
           </div>
           @endif

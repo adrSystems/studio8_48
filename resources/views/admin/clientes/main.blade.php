@@ -224,6 +224,7 @@ Gestión de clientes
               <i class="material-icons">info</i>
             </a>
           </td>
+          @if(Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
           <td>
             <a href="/admin/citas/agregar/{{$cliente->id}}" class="icon-btn icon-square">
               <i class="material-icons">date_range</i>
@@ -234,6 +235,7 @@ Gestión de clientes
               <i class="material-icons">shopping_cart</i>
             </a>
           </td>
+          @endif
         </tr>
         @endforeach
       </tbody>

@@ -607,8 +607,10 @@ Información cliente
       </div>
     </div>
     <div class="modal-footer">
+      @if(Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
       <button type="button" name="button" class="success-btn" id="liquidar-compra-toggle" compra=""><i class="material-icons">attach_money</i>Liquidar</button>
       <button type="button" name="button" class="success-btn" id="abonar-compra-toggle" compra=""><i class="material-icons">attach_money</i>Abonar</button>
+      @endif
       <button type="button" name="button" class="cancel-btn" id="close-btn"><i class="material-icons">block</i>Cerrar</button>
     </div>
   </div>
@@ -806,12 +808,14 @@ Información cliente
       </div>
     </div>
     <div class="modal-footer">
+      @if(Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
       <button type="button" name="button" class="blue-btn" id="abonar-toggle"><i class="material-icons">attach_money</i><span>Abonar</span></button>
       <button type="button" name="button" class="blue-btn" id="pagar-toggle"><i class="material-icons">attach_money</i><span>Pagar</span></button>
       <button type="button" name="button" class="blue-btn" id="start-toggle"><i class="material-icons">play_arrow</i>Comenzar</button>
       <button type="button" name="button" class="blue-btn" id="finish-toggle"><i class="material-icons">assignment_turned_in</i>Finalizar</button>
       <button type="button" name="button" class="blue-btn" id="update-date-toggle"><i class="material-icons">update</i>Cambiar fecha</button>
       <button type="button" name="button" class="cancel-btn" id="cancel-cita-toggle"><i class="material-icons">block</i>Cancelar</button>
+      @endif
     </div>
   </div>
 </div>
@@ -865,6 +869,7 @@ Información cliente
             <span>Modificar</span>
           </a>
         </div>
+        @if(Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
         <div class="col-xs-12" style="padding:0">
           <a href="/admin/citas/agregar/{{$cliente->id}}" class="icon-btn icon-square pull-right">
             <i class="material-icons">date_range</i>
@@ -877,6 +882,7 @@ Información cliente
             <span>Nueva venta</span>
           </a>
         </div>
+        @endif
         @if($cliente->credito)
         <div class="switch-container" id="modificar-credito" active="1">
           <span>Activar credito</span>
@@ -1095,6 +1101,7 @@ Información cliente
             $('#pagos-compra-tbody').append($tr)
             $('#pagado-compra').text("$"+response.compra.pagado);
             $('#por-liquidar-compra').text(parseFloat(response.compra.monto - response.compra.pagado))
+            $('#restante-compra').text(parseFloat(response.compra.monto - response.compra.pagado))
             $('#compra-no-pagos-msg').hide()
             if(response.compra.pagado < response.compra.monto)
             {

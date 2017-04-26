@@ -61,7 +61,7 @@ Route::group(['middleware' => ['auth','admin-recepcionista']], function () {
   Route::post('/admin/inventario/productos/check-changes','Admin\InventarioController@checkChanges');
   Route::post('/admin/inventario/productos/search','Admin\InventarioController@searchProducts');
 
-  ////servicios_admin/////////////
+  //servicios
   Route::get('/admin/servicios',function(){
     return view ('admin.servicios');
   });
@@ -97,13 +97,12 @@ Route::group(['middleware' => ['auth','admin-recepcionista']], function () {
   });
   Route::post('/clientes/editar','Admin\ClienteController@edit');
   Route::post('/admin/clientes/update-credit','Admin\ClienteController@updateCredit');
-  Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
-  Route::get('/admin/ventas/agregar/{cliente}', function ($clienteId=null){
-    if(!$clienteId) return redirect('/admin/clientes');
-    if(!$cliente = \App\Cliente::find($clienteId)) return redirect('/admin/clientes');
-    return view('admin.clientes.venta',['cliente' => $cliente]);
-  });
-  Route::post('/admin/ventas/agregar', 'Admin\ClienteController@registrarVenta');
+
+  //citas
+  Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
+
+  //compras
+  Route::post('/admin/compras/get-by-id','Admin\CompraController@getById');
 });
 
 Route::group(['middleware' => ['auth', 'admin']], function () {
@@ -190,7 +189,6 @@ Route::group(['middleware' => ['auth', 'admin']], function () {
 Route::group(['middleware' => ['auth', 'recepcionista']], function () {
   //citas
   Route::post('/getDateServicesInfo','Admin\CitaController@getDateServicesInfo');
-  Route::post('/getAppointmentDetails','Admin\CitaController@getAppointmentDetails');
   Route::post('/changeStylistFromAppointment','Admin\CitaController@changeStylistFromAppointment');
   Route::post('/admin/pay','Admin\CitaController@payByAdmin');
   Route::post('/admin/liquidar-cita','Admin\CitaController@liquidar');
@@ -199,11 +197,17 @@ Route::group(['middleware' => ['auth', 'recepcionista']], function () {
   Route::post('/admin/cancel-appointment','Admin\CitaController@cancel');
   Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
   Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
+  Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
 
   //compras
   Route::post('/admin/compras/abonar','Admin\CompraController@abonar');
   Route::post('/admin/compras/liquidar','Admin\CompraController@liquidar');
-  Route::post('/admin/compras/get-by-id','Admin\CompraController@getById');
+  Route::get('/admin/ventas/agregar/{cliente}', function ($clienteId=null){
+    if(!$clienteId) return redirect('/admin/clientes');
+    if(!$cliente = \App\Cliente::find($clienteId)) return redirect('/admin/clientes');
+    return view('admin.clientes.venta',['cliente' => $cliente]);
+  });
+  Route::post('/admin/ventas/agregar', 'Admin\ClienteController@registrarVenta');
 });
 
 Route::group(['middleware' => ['auth']], function () {
@@ -229,8 +233,39 @@ Route::group(['middleware' => ['auth']], function () {
   Route::get('/logout','Cliente\CuentaController@logout');
 });
 
-Route::get('/promociones_concursos',function(){
-  return view ('cliente.promociones_concursos');
+Route::get('/promociones_concursos', function(){
+  $promociones = \App\Promocion::whereDate('fecha_inicio','<=', date('Y-m-d'))
+  ->whereDate('fecha_termino','>=', date('Y-m-d'))
+  ->get();
+  $concursos = \App\Concurso::whereDate('fecha_inicio','<=', date('Y-m-d'))
+  ->whereDate('fecha_termino','>=', date('Y-m-d'))
+  ->get();
+  $months = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+  foreach ($promociones as $id => $p) {
+    $startDate = strtotime($p->fecha_inicio);
+    $endDate = strtotime($p->fecha_termino);
+    $p->vigencia = 'Del '
+      .date('d \d\e ', $startDate)
+      .$months[date('w', $startDate)]
+      .date(' \d\e\l Y', $startDate)
+      ." al "
+      .date('d \d\e ', $endDate)
+      .$months[date('w', $endDate)]
+      .date(' \d\e\l Y', $endDate);
+  }
+  foreach ($concursos as $id => $c) {
+    $startDate = strtotime($c->fecha_inicio);
+    $endDate = strtotime($c->fecha_termino);
+    $c->vigencia = 'Del '
+      .date('d \d\e ', $startDate)
+      .$months[date('w', $startDate)]
+      .date(' \d\e\l Y', $startDate)
+      ." al "
+      .date('d \d\e ', $endDate)
+      .$months[date('w', $endDate)]
+      .date(' \d\e\l Y', $endDate);
+  }
+  return view ('cliente.promociones_concursos', ['promociones' => $promociones, 'concursos' => $concursos]);
 });
 
 Route::get('/tips',function(){

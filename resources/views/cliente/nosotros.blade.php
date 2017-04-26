@@ -245,6 +245,8 @@ Profesionales
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'facebook-jssdk'));
 
+    $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
     $('.est-info-toggle').click(function () {
       setTimeout(function () {
         $.each($('.card2>.img-container') ,function (i, e) {

@@ -547,7 +547,9 @@ Mi cuenta
                                 </thead>
                                 <tbody style="color: #1F1F1F;">
                                   <td>{{$cit->empleado->nombre}} {{$cit->empleado->apellido}}</td>
-                                  <td style="text-align: center;"><img style="width: 25%;" src="{{asset('storage/'.$cit->empleado->cuenta->photo)}}" alt=""></td>
+                                  <td style="text-align: center;">
+                                    <img style="width: 25%;" src="{{asset('storage/'.$cit->empleado->fotografia)}}" alt="">
+                                  </td>
                                 </tbody>
                               </table>
                             </div>
@@ -632,12 +634,12 @@ Mi cuenta
                       <th>Monto</th>
                     </thead>
                     <tbody>
-                      @foreach($compra->productos as $productos)
+                      @foreach($compra->productos as $p)
                       <tr>
-                        <td>{{$productos->nombre}}</td>
-                        <td><img style="width: 40%;" src="{{asset('storage/'.$productos->fotografia)}}" alt=""></td>
-                        <td>{{$productos->pivot->cantidad}}</td>
-                        <td>${{$productos->precio_venta}}</td>
+                        <td>{{$p->nombre}}</td>
+                        <td><img style="width: 40%;" src="{{asset('storage/'.$p->fotografia)}}" alt=""></td>
+                        <td>{{$p->pivot->cantidad}}</td>
+                        <td>${{$p->precio_venta}}</td>
                       </tr>
                       @endforeach
                       <tr style="leter-spacing: 2px; font-size:16px; ">

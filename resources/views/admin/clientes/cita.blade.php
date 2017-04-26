@@ -69,7 +69,7 @@ Nueva cita
     padding: 1px 5px 5px 5px;
     float: right;
   }
-  .item{
+  .servicio-item{
     display: table;
     cursor: pointer;
     margin-bottom: 15px;
@@ -77,17 +77,17 @@ Nueva cita
     border-radius: 3px;
     -webkit-transition: border .4s, background-color .4s;
   }
-  .item:hover{
+  .servicio-item:hover{
     border: 1px dashed rgba(255, 255, 255, .2);
     background-color: rgba(255, 255, 255, .05);
   }
-  .item>.info{
+  .servicio-item>.info{
     float: left;
     margin-left: 10px;
     width: auto;
     font-size: 13px;
   }
-  .item>.img-container{
+  .servicio-item>.img-container{
     position: relative;
     float: left;
     height: 8.5vh;
@@ -95,10 +95,10 @@ Nueva cita
     overflow: hidden;
     border-radius: 2px;
   }
-  .item>.img-container>img{
+  .servicio-item>.img-container>img{
     width: 100%;
   }
-  .item>.img-container>.shadow{
+  .servicio-item>.img-container>.shadow{
     position: absolute;
     background-color: rgba(0, 0, 0, 0.4);
     z-index: 1;
@@ -106,7 +106,7 @@ Nueva cita
     width: 100%;
     display: none;
   }
-  .item>.img-container>.shadow>i{
+  .servicio-item>.img-container>.shadow>i{
     position: relative;
     background-color: rgba(0, 0, 0, 0.5);
     margin-top: 30%;
@@ -316,7 +316,7 @@ Nueva cita
               <p style="">No se encontraron servicios. Agrega servicios para poder agregar una cita.</p>
               @else
               @foreach(\App\Servicio::get() as $servicio)
-              <div class="item col-xs-12 col-sm-6" style="padding:0">
+              <div class="servicio-item col-xs-12 col-sm-6" style="padding:0">
                 <div class="img-container">
                   <div class="shadow" id="{{$servicio->id}}">
                     <i class="material-icons">check</i>
@@ -478,7 +478,7 @@ $(document).ready(function () {
     }
   });
 
-  $('.item').click(function () {
+  $('.servicio-item').click(function () {
     var $shadow = $(this).children('.img-container').children('.shadow');
     $shadow.fadeToggle(200, function () {
       if($shadow.is(':visible')){
