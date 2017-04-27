@@ -231,13 +231,23 @@ class ClienteController extends Controller
       }
       $citas = [];
       $roles = [];
+      $estilista= false;
+      $administrador=false;
       foreach ($empleado->citas as $cita) {
         array_push($citas,$cita);
       }
       foreach ($empleado->roles as $rol){
+        if($rol->nombre=='estilista')
+        {
+          $estilista=true;
+        }
+        if($rol->nombre=='administrador')
+        {
+          $administrador=true;
+        }
         array_push($roles,$rol->nombre);
       }
-      return view ('user.micuenta',['citas'=>$citas,'roles'=>$roles]);
+      return view ('user.micuenta',['citas'=>$citas,'roles'=>$roles,'estilista'=>$estilista,'administrador'=>$administrador]);
     }
     public function cancelarCita(Request $request)
     {

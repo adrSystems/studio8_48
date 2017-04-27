@@ -297,9 +297,13 @@ Mi cuenta
         @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
         <li role="presentation" class="item item-mensajes"><a>Mensajes</a></li>
         @else
+        @if($administrador)
         <li role="presentation" class="item item-mensajes"><a>Foro</a></li>
         @endif
+        @endif
+        @if($estilista)
         <li role="presentation" class="item item-citas"><a>Citas</a></li>
+        @endif
         @if(Auth::user()->cuentable_type == strval(App\Cliente::class))
         <li role="presentation" class="item item-compras"><a>Compras</a></li>
         @endif
@@ -738,6 +742,8 @@ Mi cuenta
     $(".compras").hide("slow")
     $(".mensajes").show(500)
     $(".mensajes").show("slow")
+    $(".seguridad").hide(500)
+    $(".seguridad").hide("slow")
   })
   $(".item-citas").click(function(){
     $(".item-mensajes").removeClass("active")
