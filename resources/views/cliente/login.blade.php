@@ -63,8 +63,8 @@ Studio8 48 -Login
   }
   #contenedor{
     float: left;
-    margin-top: 100px;
-    margin-bottom:130px;
+    margin-top: 20px;
+    margin-bottom:30px;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     padding-top: 30px;
@@ -157,20 +157,20 @@ Studio8 48 -Login
       <h3 class="col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1 clear-text1" style="padding:0;">Iniciar Sesion</h3>
       <form class="form-horizontal" id="form" method="post">
         <input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">
-        <div class="input-container col-xs-11 col-xs-offset-1">
+        <div class="input-container col-xs-10 col-xs-offset-1">
            <label for="inputName" class="col-xs-12" style="padding:0">Email:</label>
            <div class="col-xs-12" style="padding:0;">
                <input type="email" class="input-login" placeholder="Escribe tu email" name="email" value="{{old('email')}}">
            </div>
         </div>
-        <div class="input-container col-xs-11 col-xs-offset-1">
+        <div class="input-container col-xs-10 col-xs-offset-1">
            <label for="inputName" class="col-xs-12" style="padding:0">Contraseña:</label>
            <div class="col-xs-12" style="padding:0;">
                <input type="password" class="input-login" placeholder="Escribe tu contraseña" name="password">
            </div>
         </div>
         <div class="input-container">
-          <div class="col-xs-offset-1 col-xs-11" style="padding:0">
+          <div class="col-xs-offset-1 col-xs-10" style="padding:0">
              <button type="submit" class="white-btn1" id="subir" style="margin:auto;">Iniciar Sesion</button>
           </div>
         </div>

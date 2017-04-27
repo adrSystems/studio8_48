@@ -73,16 +73,23 @@ Catalogo de servicios
     border-radius: 3px;
     padding: 0 3px 1px 3px;
   }
+  .card2{
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+    padding: 15px;
+  }
 </style>
 @endsection
 @section('body')
 <div class="main-cover-fixed-container">
   <img class="main-cover-fixed" src="{{asset("img/covers/6.jpg")}}">
   <div class="info">
-    <div class="title">
+    <div class="title" id="main-title1">
       Catálogo de servicios
     </div>
-    <div class="caption">
+    <div class="caption" id="main-sub1">
       Explora los servicios de la mas alta calidad <br> que tenemos para ti.
     </div>
   </div>
@@ -95,11 +102,13 @@ Catalogo de servicios
       <h4 class="col-xs-12" style="color:#888">Explora los servicios de la mas alta calidad que tenemos para ti.</h4>
     </div>
     <div class="catalogo col-xs-12">
-      @if(App\servicio::count() < 1 )
-      <div class="vacia">
-        <p>Por el momento no hay ningun servicio disponible.</p>
-        <p>¡Gracias por visitarnos!</p>
-        <i class="material-icons">mood</i>
+      @if(App\Servicio::count() < 1 )
+      <div class="col-xs-12" style="padding-bottom:22px">
+        <div class="card2">
+          <h3 class="dark-text2">Por el momento no hay ningun servicio disponible.</h3>
+          <h4 class="dark-text3">¡Gracias por visitarnos!</h4>
+          <i class="material-icons">mood</i>
+        </div>
       </div>
       @else
       @foreach(App\Servicio::get() as $servicio)
@@ -140,6 +149,31 @@ Catalogo de servicios
 
   $('.img-container').height($('.img-container').width())
 
+  if($(window).width() < 768){
+    $('.main-cover-fixed-container').css('padding-top','60px')
+    $('#main-title1').css({
+      'font-size':'16px',
+      'margin-top':'30px',
+      'text-shadow':'0 0 3px rgba(0,0,0,.8)'
+    })
+    $('#main-sub1').css({
+      'font-size':'14px',
+      'text-shadow':'0 0 3px rgba(0,0,0,.8)'
+    })
+  }
+  else {
+    $('.main-cover-fixed-container').css('padding-top','0px')
+    $('#main-title1').css({
+      'font-size':'28px',
+      'margin-top':'0px'
+    })
+    $('#main-sub1').css({
+      'font-size':'21px'
+    })
+  }
+
+
+
   $(document).ready(function () {
 
     $('.img-container').height($('.img-container').width())
@@ -165,8 +199,41 @@ Catalogo de servicios
     })
 
     $(window).resize(function () {
-      $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
       $('.img-container').height($('.img-container').width())
+      if($(window).width() < 768){
+        $('.main-cover-fixed-container').css('padding-top','60px')
+        $('#main-title1').css({
+          'font-size':'16px',
+          'margin-top':'30px',
+          'text-shadow':'0 0 3px rgba(0,0,0,.8)'
+        })
+        $('#main-sub1').css({
+          'font-size':'14px',
+          'text-shadow':'0 0 3px rgba(0,0,0,.8)'
+        })
+      }
+      else {
+        $('.main-cover-fixed-container').css('padding-top','0px')
+        $('#main-title1').css({
+          'font-size':'28px',
+          'margin-top':'0px'
+        })
+        $('#main-sub1').css({
+          'font-size':'21px'
+        })
+      }
+      $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+      if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+        $('body').children('.footer').css({
+          position:'absolute',
+          bottom:'0'
+        });
+      }
+      else{
+        $('body').children('.footer').css({
+          position:'relative'
+        });
+      }
     })
 
   })

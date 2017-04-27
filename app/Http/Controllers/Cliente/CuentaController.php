@@ -56,7 +56,7 @@ class CuentaController extends Controller
           "msg",
           [
             'title' => 'Error.',
-            "body" =>"El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."
+            "body" =>["El email ya esta asociado con una cuenta de Facebook... Inicia sesión por facebook en su lugar."]
           ]
         );
       }

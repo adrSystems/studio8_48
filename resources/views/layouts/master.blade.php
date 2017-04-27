@@ -1395,7 +1395,7 @@
                 });
             });
         </script>
-        <script src="{{elixir('js\app.js')}}"></script>
+        <script src="{{elixir('js/app.js')}}"></script>
         @yield('js')
     </body>
 </html>

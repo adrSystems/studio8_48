@@ -287,6 +287,13 @@ body{
     padding-top: 60px;
     background-color: #222;
   }
+  .card2{
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, .1);
+    border: 1px solid rgba(0, 0, 0, .1);
+    padding: 15px;
+  }
 </style>
 @endsection
 
@@ -346,13 +353,10 @@ body{
     <h3 class="dark-text1">Catálogo de productos</h3>
   </div>
   @if(\App\Marca::count() < 1)
-  <div class="col-xs-12" style="padding:0;background-image:url('{{asset("img/walls/1.jpg")}}');background-size:cover;">
-    <div class="col-xs-12 col-md-6 col-md-offset-1" style="margin-top:50px">
-      <h1 style="font-family:Lobster Two;color:#fff">Estamos trabajando en esta sección...</h1>
-      <h2 style="font-family:Lobster Two;color:#fff">Disculpa las molestias</h2>
-    </div>
-    <div class="col-xs-12 col-md-4">
-      <img src="{{asset('img/logos/logo_studio-01.png')}}" alt="" width="100%">
+  <div class="col-xs-12 col-md-6 col-md-offset-3" style="padding-top:50px;padding-bottom:50px">
+    <div class="card2">
+      <h3 class="dark-text1 title1" style="margin-top:0">Disculpe las molestias...</h3>
+      <h4 class="dark-text3">Estamos trabajando en esta sección...</h4>
     </div>
   </div>
   @else
@@ -489,6 +493,17 @@ body{
 
     $(window).resize(function () {
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+      if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+        $('body').children('.footer').css({
+          position:'absolute',
+          bottom:'0'
+        });
+      }
+      else{
+        $('body').children('.footer').css({
+          position:'relative'
+        });
+      }
     })
 
     $('#quitar-filtros-btn').click(function () {

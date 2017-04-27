@@ -31,8 +31,8 @@ Registro
 	<div class="container">
 		<div class="col-xs-12 col-md-6 white-card1">
 			  <div class="col-xs-12">
-			  	<h3 class="dark-text1 col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Registro</h3>
-					<h4 class="dark-text3 col-xs-12 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Para brindarte un mejor servicio, necesitamos que llenes la siguiente información</h4>
+			  	<h3 class="dark-text1 col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Registro</h3>
+					<h4 class="dark-text3 col-xs-10 col-xs-offset-1 col-md-10 col-md-offset-1" style="padding:0">Para brindarte un mejor servicio, necesitamos que llenes la siguiente información</h4>
 			  </div>
 				<form class="form-horizontal" method="post" enctype="multipart/form-data" id="form">
 					<input type="hidden" name="_token" value="{{csrf_token()}}" class="form login">

@@ -171,8 +171,15 @@ Profesionales
     </div>
     <h2 style="font-weight:100;color:#222;margin-bottom:22px;padding-left:30px;padding-right:30px;margin-top:40px;float:left" id="profesionales">Profesionales</h2>
     <div class="col-xs-12">
-    @foreach(App\Empleado::with('roles')->get() as $empleado)
-    @if($empleado->roles()->where('nombre','estilista')->first())
+    @if(($rol = App\Rol::where('nombre','estilista')->first()) and count($empleados = $rol->empleados) < 1)
+    <div class="col-xs-12">
+      <div class="card2" style="padding:15px;margin-bottom:15px">
+        <h3 style="margin-top:5px" class="dark-text1">Disculpa las molestias...</h3>
+        <p class="dark-text3">Estamos trabajando en esta sección.</p>
+      </div>
+    </div>
+    @else
+    @foreach($empleados as $empleado)
     <div class="col-xs-12 col-md-3">
       <div class="card2 col-xs-12" style="padding:0">
         <div class="img-container">
@@ -187,8 +194,8 @@ Profesionales
         </div>
       </div>
     </div>
-    @endif
     @endforeach
+    @endif
     </div>
     <h2 style="font-weight:100;color:#222;margin-bottom:22px;padding-left:30px;padding-right:30px;margin-top:40px;float:left" id="contacto">Contacto</h2>
   </div>
