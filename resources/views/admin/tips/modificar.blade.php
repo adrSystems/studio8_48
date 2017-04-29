@@ -141,7 +141,7 @@ Gestion Imagenes
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">
               <div class="last-cover-container">
-                <img src="{{asset('storage/'.$tip->src)}}" alt="" class="last-cover">
+                <img src="{{asset($tip->src)}}" alt="" class="last-cover">
               </div>
             </div>
             <div class="col-xs-12 col-md-6 col-md-offset-3">

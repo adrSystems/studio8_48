@@ -8,7 +8,7 @@
   <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
     <div class="producto-item">
       <div class="img-container">
-        <img src="{{asset('storage/'.$producto->fotografia)}}" alt="">
+        <img src="{{asset($producto->fotografia)}}" alt="">
         <div class="shadow"></div>
         <i class="material-icons item-btn descontinuar-producto-toggle" id="{{$producto->id}}">delete</i>
         <i class="material-icons item-btn editar-producto-toggle" id="{{$producto->id}}">edit</i>
@@ -37,7 +37,7 @@
   <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
     <div class="producto-item">
       <div class="img-container">
-        <img src="{{asset('storage/'.$producto->fotografia)}}" alt="">
+        <img src="{{asset($producto->fotografia)}}" alt="">
         <div class="shadow"></div>
         <i class="material-icons item-btn restore-producto-toggle" id="{{$producto->id}}">restore</i>
       </div>

@@ -122,7 +122,7 @@ Studio8 48 - Servicios
           @foreach(\App\Servicio::get() as $servicio)
           <div class="servicio">
             <div class="col-xs-3" style="padding: 2px 5px;">
-              <img class="promo" src="{{asset('storage/'.$servicio->icono)}}" alt="">
+              <img class="promo" src="{{asset($servicio->icono)}}" alt="">
             </div>
             <div class="col-xs-8 detalle">
               <p>Nombre: {{$servicio->nombre}}</p>

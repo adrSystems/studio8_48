@@ -126,7 +126,7 @@ Concursos
           @foreach(\App\Concurso::get() as $concurso)
           <div class="concurso">
             <div class="col-xs-3" style="padding: 2px 5px;">
-              <img class="promo" src="{{asset('storage/'.$concurso->imagen)}}" alt="">
+              <img class="promo" src="{{asset($concurso->imagen)}}" alt="">
             </div>
             <div class="col-xs-8" style="margin-top: 25px;">
               <p>Fecha inicio: <i class="material-icons icono">date_range</i>{{$concurso->fecha_inicio}}</p>

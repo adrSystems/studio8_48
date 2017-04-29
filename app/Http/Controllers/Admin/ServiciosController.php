@@ -17,7 +17,7 @@ class ServiciosController extends Controller
       $rules=[
         'icono'=>'required|mimes:jpeg,bmp,png,jpg',
         'nombre'=>'required|unique:servicios,nombre',
-        'precio'=>'required|numeric|between:0,100000000000000',
+        'precio'=>'required|numeric|between:0,99999',
         'duracion'=>'required'
       ];
       $messages=[
@@ -38,7 +38,7 @@ class ServiciosController extends Controller
         ->withInput();
       }
       $file = $request->file('icono');
-      $temp = $file->store('IconosServicios','public');
+      $temp = $file->store('img/servicios','public-path');
       $servicio = new Servicio;
       $servicio->nombre= $request->nombre;
       $servicio->icono= $temp;
@@ -56,7 +56,7 @@ class ServiciosController extends Controller
       $rules=[
         'icono'=>'mimes:jpeg,bmp,png,jpg',
         'nombre'=>'required',
-        'precio'=>'required|numeric|between:0,100000000000000',
+        'precio'=>'required|numeric|between:0,99999',
         'duracion'=>'required'
       ];
       $messages=[
@@ -77,7 +77,7 @@ class ServiciosController extends Controller
       if($request->file('icono'))
       {
         $file = $request->file('icono');
-        $temp = $file->store('IconosServicios','public');
+        $temp = $file->store('img/servicios','public-path');
         $servicio->icono= $temp;
       }
       $servicio->nombre= $request->nombre;

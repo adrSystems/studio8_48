@@ -731,7 +731,7 @@ Información cliente
             <div class="shadow" id="{{$estilista->id}}">
               <i class="material-icons">check</i>
             </div>
-            <img src="{{asset('storage/'.$estilista->fotografia)}}" alt="">
+            <img src="{{asset($estilista->fotografia)}}" alt="">
           </div>
           <div class="info" style="text-align:center">
             {{$estilista->nombre." ".$estilista->apellido}}

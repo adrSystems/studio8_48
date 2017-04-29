@@ -25,7 +25,7 @@ class EmpleadosController extends Controller
       $esEstilista = in_array(Rol::where('nombre','estilista')->first()->id, $request->roles);
       if($esEstilista){
         $admin->info = $request->about;
-        $admin->fotografia = $request->foto->store('img/profile_photos','public');
+        $admin->fotografia = $request->foto->store('img/profile_photos','public-path');
       }
       $admin->fecha_registro = date("Y-m-d");
       $admin->save();
@@ -75,7 +75,7 @@ class EmpleadosController extends Controller
       $empleado->fecha_nacimiento = $request->year."-".$request->month."-".$request->day;
       if($esEstilista){
         $empleado->info = $request->about;
-        $empleado->fotografia = $request->foto->store('img/profile_photos','public');
+        $empleado->fotografia = $request->foto->store('img/profile_photos','public-path');
       }
       $empleado->fecha_registro = date("Y-m-d");
       $empleado->save();
@@ -132,7 +132,7 @@ class EmpleadosController extends Controller
         $emp->info = $request->about;
       }
       if($request->foto){
-        $emp->fotografia = $request->foto->store('img/profile_photos','public');
+        $emp->fotografia = $request->foto->store('img/profile_photos','public-path');
       }
 
       $emp->save();
@@ -174,7 +174,7 @@ class EmpleadosController extends Controller
     {
       $emp = Empleado::withTrashed()->where('id',$request->id)->first();
       if($emp->fotografia){
-        $emp->fotografia = asset('storage/'.$emp->fotografia);
+        $emp->fotografia = asset($emp->fotografia);
       }
       $emp->roles = $emp->roles;
       $emp->edad = Carbon::createFromFormat('Y-m-d', $emp->fecha_nacimiento)->diffInYears(Carbon::now());

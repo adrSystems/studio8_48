@@ -31,11 +31,11 @@ body{
 .main-cover-fixed-container>.info>.title{
   font-size: 28px;
   font-weight: 900;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.62), 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 1);
 }
 .main-cover-fixed-container>.info>.caption{
   font-size: 21px;
-  text-shadow: 0 0 20px rgba(0, 0, 0, 0.62), 0 0 2px rgba(0, 0, 0, .8);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 1);
 }
 .main-container{
   background-color: #fff;
@@ -146,7 +146,7 @@ body{
 <div class="dark-modal-back" id="{{$tip->id}}">
     <i class="material-icons">close</i>
     <div class="img-container col-xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-2 col-lg-offset-5">
-      <img src="{{asset('storage/'.$tip->src)}}" alt="">
+      <img src="{{asset($tip->src)}}" alt="">
     </div>
     <div class="info col-xs-12 col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
       <h3 class="text-center clear-text1">{{$tip->titulo}}</h3>
@@ -189,7 +189,7 @@ body{
       <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
         <div class="imagen-item">
           <div class="img-container">
-            <img src="{{asset('storage/'.$tip->src)}}" alt="">
+            <img src="{{asset($tip->src)}}" alt="">
             <span class="servicio">{{$tip->titulo}}</span>
             <div class="shadow" id="{{$tip->id}}"></div>
           </div>
@@ -208,7 +208,28 @@ body{
 
   $('.imagen-item>.img-container').height($('.imagen-item>.img-container').width())
 
-  $(document).ready(function () {
+  $(window).on('load',function () {
+
+    if($(window).width() < 768){
+      $('.main-cover-fixed-container').css('padding-top','60px')
+      $('.main-cover-fixed-container>.info>.title').css({
+        'font-size':'16px',
+        'margin-top':'30px'
+      })
+      $('.main-cover-fixed-container>.info>.caption').css({
+        'font-size':'14px'
+      })
+    }
+    else {
+      $('.main-cover-fixed-container').css('padding-top','0px')
+      $('.main-cover-fixed-container>.info>.title').css({
+        'font-size':'28px',
+        'margin-top':'0px'
+      })
+      $('.main-cover-fixed-container>.info>.caption').css({
+        'font-size':'21px'
+      })
+    }
 
     $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
@@ -223,6 +244,9 @@ body{
         position:'relative'
       });
     }
+  })
+
+  $(document).ready(function () {
 
     $('.imagen-item').css('opacity','1')
 
@@ -241,6 +265,26 @@ body{
     })
 
     $(window).resize(function () {
+      if($(window).width() < 768){
+        $('.main-cover-fixed-container').css('padding-top','60px')
+        $('.main-cover-fixed-container>.info>.title').css({
+          'font-size':'16px',
+          'margin-top':'30px'
+        })
+        $('.main-cover-fixed-container>.info>.caption').css({
+          'font-size':'14px'
+        })
+      }
+      else {
+        $('.main-cover-fixed-container').css('padding-top','0px')
+        $('.main-cover-fixed-container>.info>.title').css({
+          'font-size':'28px',
+          'margin-top':'0px'
+        })
+        $('.main-cover-fixed-container>.info>.caption').css({
+          'font-size':'21px'
+        })
+      }
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
       $('.imagen-item>.img-container').height($('.imagen-item>.img-container').width())
       if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){

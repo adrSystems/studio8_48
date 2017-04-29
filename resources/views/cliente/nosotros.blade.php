@@ -124,7 +124,7 @@ Profesionales
 <div class="dark-modal-back" id="{{$empleado->id}}">
     <i class="material-icons">close</i>
     <div class="img-container col-xs-12 col-md-4 col-sm-6 col-sm-offset-3 col-md-offset-4 col-lg-2 col-lg-offset-5">
-      <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+      <img src="{{asset($empleado->fotografia)}}" alt="">
     </div>
     <div class="info col-xs-12 col-md-6 col-md-offset-3 col-sm-4 col-sm-offset-4 col-lg-4 col-lg-offset-4" style="margin-top:20px">
       <h3 class="clear-text1 text-center">{{$empleado->nombre." ".$empleado->apellido}}</h3>
@@ -183,7 +183,7 @@ Profesionales
     <div class="col-xs-12 col-md-3">
       <div class="card2 col-xs-12" style="padding:0">
         <div class="img-container">
-          <img src="{{asset('storage/'.$empleado->fotografia)}}">
+          <img src="{{asset($empleado->fotografia)}}">
         </div>
         <div class="info">
           <h4 class="title">{{$empleado->nombre}}</h4>
@@ -229,7 +229,21 @@ Profesionales
 @section('js')
 <script type="text/javascript">
 
+$(window).on('load',function () {
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
+  if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+    $('body').children('.footer').css({
+      position:'absolute',
+      bottom:'0'
+    });
+  }
+  else{
+    $('body').children('.footer').css({
+      position:'relative'
+    });
+  }
+})
 
   $.each($('.card2>.img-container') ,function (i, e) {
     $(e).height($(e).width());

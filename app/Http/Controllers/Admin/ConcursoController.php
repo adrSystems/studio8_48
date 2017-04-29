@@ -36,7 +36,7 @@ class ConcursoController extends Controller
       $concurso = new Concurso;
       $file = $request->file('imagen');
 
-      $temp = $file->store('ImagenConcurso','public');
+      $temp = $file->store('img/concursos','public-path');
       $concurso->imagen=$temp;
       $concurso->fecha_inicio = $request->fecha_inicio;
       $concurso->fecha_termino = $request->fecha_fin;
@@ -69,7 +69,7 @@ class ConcursoController extends Controller
       if($request->file('imagen'))
       {
         $file = $request->file('imagen');
-        $temp = $file->store('ImagenConcurso','public');
+        $temp = $file->store('img/concursos','public-path');
         $concurso->imagen=$temp;
       }
       $concurso->fecha_inicio = $request->fecha_inicio;

@@ -117,7 +117,7 @@ Promociones
           @foreach(\App\Promocion::get() as $promocion)
           <div class="promocion">
             <div class="col-xs-3" style="padding: 2px 5px;">
-              <img class="promo" src="{{asset('storage/'.$promocion->cover)}}" alt="">
+              <img class="promo" src="{{asset($promocion->cover)}}" alt="">
             </div>
             <div class="col-xs-8">
               <p>Fecha inicio: <i class="material-icons icono">date_range</i>{{$promocion->fecha_inicio}}</p>

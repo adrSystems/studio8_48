@@ -145,7 +145,7 @@ class ClienteController extends Controller
       {
         $usuario = Empleado::find(\Auth::user()->cuentable->id);
         $file= $request->file('foto');
-        $temp= $file->store('ProfilePhotos','public');
+        $temp= $file->store('img/profile_photos','public-path');
         $usuario->cuenta->photo = $temp;
         $usuario->cuenta->update();
         return redirect ('/micuentaE/'.\Auth::user()->cuentable->id);
@@ -154,7 +154,7 @@ class ClienteController extends Controller
       {
         $cliente = Cliente::find(\Auth::user()->cuentable->id);
         $file= $request->file('foto');
-        $temp= $file->store('ProfilePhotos','public');
+        $temp= $file->store('img/profile_photos','public-path');
         $cliente->cuenta->photo = $temp;
         $cliente->cuenta->update();
         return redirect ('/micuenta/'.\Auth::user()->cuentable->id);

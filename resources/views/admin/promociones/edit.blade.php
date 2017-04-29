@@ -55,7 +55,7 @@ Editar promociones
             <div class="form-group">
               <div class="imagen">
                 <span>Imagen actual: </span>
-                <img class="promo" src="{{asset('storage/'.$promocion->cover)}}" alt="">
+                <img class="promo" src="{{asset($promocion->cover)}}" alt="">
               </div>
               <span>Cambiar imagen de la promocion</span>
               <input type="file" name="cover" value="" class="form-control" accept="image/*">

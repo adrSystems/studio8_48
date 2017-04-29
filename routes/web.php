@@ -347,3 +347,9 @@ Route::post('/admin/inventario/productos/get-by-id','Admin\InventarioController@
 Route::get('/servicios',function(){
   return view ('cliente.servicios');
 });
+
+//storage link
+Route::get('/admin/do/storage-link', function () {
+  Artisan::call('storage:link');
+  return 'success';
+});

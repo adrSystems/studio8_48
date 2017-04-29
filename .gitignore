@@ -2,6 +2,14 @@ vendor/
 node_modules/
 storage
 public/storage
+public/img/portafolio
+public/img/profile_photos
+public/img/tips
+public/img/concursos
+public/img/promociones
+public/img/productos
+public/img/servicios
+public/img/marcas
 
 # Laravel 4 specific
 bootstrap/compiled.php

@@ -116,7 +116,7 @@ Catalogo de servicios
           <div class="servicio">
             <div class="img-container">
               <span>${{$servicio->precio}}</span>
-              <img src="{{asset('storage/'.$servicio->icono)}}" alt="...">
+              <img src="{{asset($servicio->icono)}}" alt="...">
             </div>
             <div class="descripcion">
               <h5 style="color:#333">{{$servicio->nombre}}</h5>
@@ -145,7 +145,21 @@ Catalogo de servicios
 @section('js')
 <script type="text/javascript">
 
+$(window).on('load',function () {
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
+  if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+    $('body').children('.footer').css({
+      position:'absolute',
+      bottom:'0'
+    });
+  }
+  else{
+    $('body').children('.footer').css({
+      position:'relative'
+    });
+  }
+})
 
   $('.img-container').height($('.img-container').width())
 

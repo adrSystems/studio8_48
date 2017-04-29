@@ -37,7 +37,7 @@ class PromocionController extends Controller
         return back()->with('error',$validacion->messages()->all())->withInput();
       }
       $file = $request->file('cover');
-      $temp = $file->store('CoversPromocion','public');
+      $temp = $file->store('img/promociones','public-path');
       $promocion = new Promocion;
       $promocion->cover = $temp;
       $promocion->fecha_inicio = $request->fecha_inicio;
@@ -76,7 +76,7 @@ class PromocionController extends Controller
       if($request->file('cover'))
       {
         $file = $request->file('cover');
-        $temp = $file->store('CoversPromocion','public');
+        $temp = $file->store('img/promociones','public-path');
         $promocion->cover = $temp;
       }
       $promocion->fecha_termino = $request->fecha_termino;

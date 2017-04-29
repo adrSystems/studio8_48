@@ -1274,7 +1274,7 @@ Inventario
                               <i class="edit material-icons edit-marca" id="{{$marca->id}}" marca="{{$marca->nombre}}">edit</i>
                               <i class="delete material-icons delete-marca" id="{{$marca->id}}">delete</i>
                             </div>
-                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                            <img src="{{asset($marca->logo)}}" alt="">
                             <div class="info">
                               <span class="">{{$marca->nombre}}</span>
                             </div>
@@ -1295,7 +1295,7 @@ Inventario
                             <div class="options">
                               <i class="restore material-icons restore-marca" id="{{$marca->id}}">restore</i>
                             </div>
-                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                            <img src="{{asset($marca->logo)}}" alt="">
                             <div class="info">
                               <span class="">{{$marca->nombre}}</span>
                             </div>
@@ -1372,9 +1372,9 @@ Inventario
                       <div class="marca-item" id="{{$marca->id}}">
                         <div class="info">
                           <!--<i class="material-icons add-cat-toggle" id="{{$marca->id}}">add_circle</i>-->
-                          <div class="img-container-container" style="background-image:url({{asset('storage/'.$marca->logo)}})"></div>
+                          <div class="img-container-container" style="background-image:url({{asset($marca->logo)}})"></div>
                           <div class="img-container">
-                            <img src="{{asset('storage/'.$marca->logo)}}" alt="">
+                            <img src="{{asset($marca->logo)}}" alt="">
                           </div>
                           <p style="color:#fff;text-shadow:0 0 20px #000;z-index:1;position:relative">{{$marca->nombre}}</p>
                         </div>

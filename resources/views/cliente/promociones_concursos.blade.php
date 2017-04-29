@@ -44,7 +44,7 @@ Promociones y concursos
             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
               <div class="carousel-inner" role="listbox">
                   <div class="item active">
-                    <img src="{{asset('storage/'.$promociones->first()->cover)}}" alt="..." class="image center-block">
+                    <img src="{{asset($promociones->first()->cover)}}" alt="..." class="image center-block">
                     <div class="info-cont">
                       <p class="clear-text2" style="">{{$promociones[0]->vigencia}}</p>
                     </div>
@@ -52,7 +52,7 @@ Promociones y concursos
                   @foreach($promociones as $i => $promocion)
                   @if($i > 0)
                   <div class="item">
-                    <img src="{{asset('storage/'.$promocion->cover)}}" alt="..." class="image center-block">
+                    <img src="{{asset($promocion->cover)}}" alt="..." class="image center-block">
                     <div class="info-cont">
                       <p class="clear-text2" style="">{{$promocion->vigencia}}</p>
                     </div>
@@ -85,7 +85,7 @@ Promociones y concursos
           <div id="carousel-example-generic2" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner" role="listbox">
             <div class="item active">
-              <img src="{{asset('storage/'.$concursos[0]->imagen)}}" alt="..." class="image img-responsive center-block">
+              <img src="{{asset($concursos[0]->imagen)}}" alt="..." class="image img-responsive center-block">
               <div class="info-cont">
                 <p class="clear-text2" style="">{{$concursos[0]->vigencia}}</p>
               </div>
@@ -93,7 +93,7 @@ Promociones y concursos
           @foreach($concursos as $i => $concurso)
           @if($i > 0)
           <div class="item">
-            <img src="{{asset('storage/'.$concurso->imagen)}}" alt="..." class="image img-responsive center-block">
+            <img src="{{asset($concurso->imagen)}}" alt="..." class="image img-responsive center-block">
             <div class="info-cont">
               <p class="clear-text2" style="">{{$concurso->vigencia}}</p>
             </div>

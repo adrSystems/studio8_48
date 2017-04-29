@@ -22,7 +22,7 @@ class CompraController extends Controller
       $compra->hora = Carbon::createFromFormat('Y-m-d H:i:s', $compra->fecha_hora)->format('g:i a');
 
       foreach ($compra->productos as $p) {
-        $p->fotografia = asset('storage/'.$p->fotografia);
+        $p->fotografia = asset($p->fotografia);
       }
 
       foreach ($compra->pagos as $p) {
@@ -133,7 +133,7 @@ class CompraController extends Controller
             'id' => $producto->id,
             'precio_venta' => $producto->precio_venta,
             'cantidad' => 1,
-            'foto' => asset('storage/'.$producto->fotografia)
+            'foto' => asset($producto->fotografia)
           ]);
           $monto = 0;
           $productosWithPushed = session('cart')['productos'];
@@ -158,7 +158,7 @@ class CompraController extends Controller
               'id' => $producto->id,
               'cantidad' => 1,
               'precio_venta' => $producto->precio_venta,
-              'foto' => asset('storage/'.$producto->fotografia)
+              'foto' => asset($producto->fotografia)
             ]
           ]
         ]);

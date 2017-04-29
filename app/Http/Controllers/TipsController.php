@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 Use App\Tip;
 Use Redirect;
 use Storage;
+use File;
 
 use Illuminate\Http\Request;
 
@@ -22,7 +23,7 @@ class TipsController extends Controller
         $tip = new Tip;
         $tip ->titulo = $request->title;
         $tip->contenido = $request->contenido;
-        $tip->src = $request->imagen->store('tips','public');
+        $tip->src = $request->imagen->store('img/tips','public-path');
         $tip->save();
 
         return back()->with('msg', ['title' => 'OK!', 'type' => 'success', 'body' => 'Tip agregado con exito!']);
@@ -32,7 +33,8 @@ class TipsController extends Controller
     {
       $tip = Tip::find($request->id);
       $tip->delete();
-      Storage::delete('/public/'.$tip->src);
+      //Storage::delete('/public/'.$tip->src);
+      File::delete($tip->src);
 
       return back();
     }
@@ -58,8 +60,9 @@ class TipsController extends Controller
 
       if($request->hasfile('imagen'))
       {
-        Storage::delete('/public/'.$tip->src);
-        $tip->src = $request->imagen->store('tips','public');
+        //Storage::delete('/public/'.$tip->src);
+        File::delete($tip->src);
+        $tip->src = $request->imagen->store('img/tips','public-path');
       }
       $tip->update();
 

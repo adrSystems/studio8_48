@@ -345,7 +345,7 @@ body{
 </div>
 
 <div class="main-cover-fixed-container">
-  <img class="main-cover-fixed" src="{{asset("img/covers/2.jpg")}}">
+  <img class="main-cover-fixed" src="{{asset('img/covers/2.jpg')}}">
 </div>
 
 <div class="main-container">
@@ -398,7 +398,7 @@ body{
             <div class="col-xs-12 filter-marca-item">
               <div class="marca-body">
                 <div class="img-container">
-                  <img src="{{asset('storage/'.$marca->logo)}}" alt="" width="100%">
+                  <img src="{{asset($marca->logo)}}" alt="" width="100%">
                 </div>
                 <div class="info">
                   <span>{{$marca->nombre}}</span>
@@ -413,7 +413,7 @@ body{
         </div>
         <div class="col-xs-12">
           <select class="textbox3" name="categoria">
-            <option value="">Seleccione una opción...</option>
+            <option value="">Todas...</option>
             @foreach($categorias as $cat)
             <option value="{{$cat->id}}">{{$cat->nombre}}</option>
             @endforeach
@@ -424,7 +424,7 @@ body{
         </div>
         <div class="col-xs-12">
           <select class="textbox3" name="subcategoria">
-            <option value="">Seleccione una opción...</option>
+            <option value="">Todas...</option>
             @foreach($subcategorias as $sub)
             <option value="{{$sub->id}}">{{$sub->nombre}}</option>
             @endforeach
@@ -449,7 +449,7 @@ body{
       <p>Para realizar compras debes iniciar sesión...</p>
     </div>
     @endif
-    <div class="card4">
+    <div class="card4" style="width:100%">
       <div class="body" id="productos-container">
         @if(count($productos = \App\Producto::where('venta_publico','1')->get()) < 1)
         <p style="padding:20px;text-align:center;color:#777">No se encontraron coincidencias.</p>
@@ -458,7 +458,7 @@ body{
         <div class="col-xs-12 col-sm-4 col-md-3" style="padding:15px">
           <div class="p-item">
             <div class="img-container">
-              <img src="{{asset('storage/'.$p->fotografia)}}" alt="" width="100%">
+              <img src="{{asset($p->fotografia)}}" alt="" width="100%">
               <i class="material-icons info-toggle" id="{{$p->id}}">info</i>
               <span class="existencia">{{$p->existencia()}} en existencia</span>
               <span class="costo">${{$p->precio_venta}}</span>
@@ -485,14 +485,72 @@ body{
 @section('js')
 <script type="text/javascript">
 
+$(window).on('load',function () {
+
+  if($(window).width() < 768){
+    $('.main-cover-fixed-container').css('padding-top','60px')
+    $('.main-cover-fixed-container>.info>.title').css({
+      'font-size':'16px',
+      'margin-top':'30px'
+    })
+    $('.main-cover-fixed-container>.info>.caption').css({
+      'font-size':'14px'
+    })
+  }
+  else {
+    $('.main-cover-fixed-container').css('padding-top','0px')
+    $('.main-cover-fixed-container>.info>.title').css({
+      'font-size':'28px',
+      'margin-top':'0px'
+    })
+    $('.main-cover-fixed-container>.info>.caption').css({
+      'font-size':'21px'
+    })
+  }
+
   $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
+  if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
+    $('body').children('.footer').css({
+      position:'absolute',
+      bottom:'0'
+    });
+  }
+  else{
+    $('body').children('.footer').css({
+      position:'relative'
+    });
+  }
+})
 
   $(document).ready(function () {
 
     $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
 
     $(window).resize(function () {
+      if($(window).width() < 768){
+        $('.main-cover-fixed-container').css('padding-top','60px')
+        $('.main-cover-fixed-container>.info>.title').css({
+          'font-size':'16px',
+          'margin-top':'30px'
+        })
+        $('.main-cover-fixed-container>.info>.caption').css({
+          'font-size':'14px'
+        })
+      }
+      else {
+        $('.main-cover-fixed-container').css('padding-top','0px')
+        $('.main-cover-fixed-container>.info>.title').css({
+          'font-size':'28px',
+          'margin-top':'0px'
+        })
+        $('.main-cover-fixed-container>.info>.caption').css({
+          'font-size':'21px'
+        })
+      }
+
       $('.main-container').css('margin-top', $('.main-cover-fixed-container').outerHeight(true))
+
       if($('.main-container').outerHeight(true) + $('body').children('.footer').outerHeight(true) <= $(window).height()){
         $('body').children('.footer').css({
           position:'absolute',

@@ -269,7 +269,7 @@ Mi cuenta
       @endforeach
       @endif
       @if(Auth::user()->photo)
-      <a href="#"><img class="a-image" src="{{asset('storage/'.Auth::user()->photo)}}" alt=""></a>
+      <a href="#"><img class="a-image" src="{{asset(Auth::user()->photo)}}" alt=""></a>
       <form class="horizontal" action="/subirfoto" method="post" enctype="multipart/form-data">
         <div class="form-group">
           {{csrf_field()}}
@@ -548,7 +548,7 @@ Mi cuenta
                                 <tbody style="color: #1F1F1F;">
                                   <td>{{$cit->empleado->nombre}} {{$cit->empleado->apellido}}</td>
                                   <td style="text-align: center;">
-                                    <img style="width: 25%;" src="{{asset('storage/'.$cit->empleado->fotografia)}}" alt="">
+                                    <img style="width: 25%;" src="{{asset($cit->empleado->fotografia)}}" alt="">
                                   </td>
                                 </tbody>
                               </table>
@@ -637,7 +637,7 @@ Mi cuenta
                       @foreach($compra->productos as $p)
                       <tr>
                         <td>{{$p->nombre}}</td>
-                        <td><img style="width: 40%;" src="{{asset('storage/'.$p->fotografia)}}" alt=""></td>
+                        <td><img style="width: 40%;" src="{{asset($p->fotografia)}}" alt=""></td>
                         <td>{{$p->pivot->cantidad}}</td>
                         <td>${{$p->precio_venta}}</td>
                       </tr>

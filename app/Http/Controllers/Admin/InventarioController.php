@@ -42,7 +42,7 @@ class InventarioController extends Controller
 
       $marca = new Marca;
       $marca->nombre = $request->nombreMarca;
-      $marca->logo = $request->logo->store('img/marcas','public');
+      $marca->logo = $request->logo->store('img/marcas','public-path');
       $marca->save();
 
       foreach ($request->categorias as $catinput) {
@@ -134,7 +134,7 @@ class InventarioController extends Controller
       ])->withInput();
 
       $marca = Marca::find($request->marcaToEdit);
-      if($request->nuevoLogo) $marca->logo = $request->nuevoLogo->store('img/marcas','public');
+      if($request->nuevoLogo) $marca->logo = $request->nuevoLogo->store('img/marcas','public-path');
       if($request->newMarcaName) $marca->nombre = $request->newMarcaName;
 
       $marca->save();
@@ -385,7 +385,7 @@ class InventarioController extends Controller
         $producto->precio_venta = $request->precioVenta;
       $producto->venta_publico = $request->seVendeAlPublico;
       $producto->subcategoria_id = $subcategoria->id;
-      $producto->fotografia = $request->productoCover->store('img/productos','public');
+      $producto->fotografia = $request->productoCover->store('img/productos','public-path');
       $producto->save();
 
       return back()->with('options', [
@@ -429,7 +429,7 @@ class InventarioController extends Controller
       $producto->paraAplicacion = $paraAplicacion;
       $producto->paraVenta = $paraVenta;
       $producto->expectativaGanancias = $expectativaGanancias;
-      $producto->fotografia = asset('storage/'.$producto->fotografia);
+      $producto->fotografia = asset($producto->fotografia);
       $producto->agregadosEsteMes = $paraVenta + $paraAplicacion;
       $producto->compras = $producto->compras;
       $producto->comprasMensuales =  $producto->compras()->whereYear('fecha_hora', Carbon::now()->format('Y'))
@@ -491,7 +491,7 @@ class InventarioController extends Controller
       }
       if($request->nuevaFoto)
       {
-        $producto->fotografia = $request->nuevaFoto->store('img/productos','public');
+        $producto->fotografia = $request->nuevaFoto->store('img/productos','public-path');
         $changes = true;
       }
 

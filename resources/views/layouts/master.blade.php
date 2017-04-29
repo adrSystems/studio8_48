@@ -967,7 +967,7 @@
             <div href="#" id="nav-user-info">
               @if(Auth::user()->photo)
               <div class="user-photo">
-                <img src="{{asset('storage/'.Auth::user()->photo)}}" alt="">
+                <img src="{{asset(Auth::user()->photo)}}" alt="">
               </div>
               @else
               <div class="user-photo">

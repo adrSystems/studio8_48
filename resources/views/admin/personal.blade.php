@@ -646,7 +646,7 @@ Studio8 48 - Personal
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
                 <div class="img-container">
-                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="" style="width:100%">
+                  <img src="{{asset($servicio->icono)}}" alt="" style="width:100%">
                 </div>
                 <label>{{ucfirst($servicio->nombre)}}</label>
                 <div class="select-icon rol-unselected" style="margin-top:8px">
@@ -705,7 +705,7 @@ Studio8 48 - Personal
         </div>
         <div class="img-container col-xs-4">
           @if($empleado->fotografia)
-          <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+          <img src="{{asset($empleado->fotografia)}}" alt="">
           @else
           <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
           @endif
@@ -763,7 +763,7 @@ Studio8 48 - Personal
         </div>
         <div class="img-container col-xs-4">
           @if($empleado->fotografia)
-          <img src="{{asset('storage/'.$empleado->fotografia)}}" alt="">
+          <img src="{{asset($empleado->fotografia)}}" alt="">
           @else
           <img src="{{asset('img/profile_photos/default.gif')}}" alt="">
           @endif
@@ -864,7 +864,7 @@ Studio8 48 - Personal
               <div class="item" id="{{$servicio->id}}"
                 @if($i == App\Servicio::count()-1) style="border-bottom: none;"@endif>
                 <div class="img-container">
-                  <img src="{{asset('storage/'.$servicio->icono)}}" alt="">
+                  <img src="{{asset($servicio->icono)}}" alt="">
                 </div>
                 <label>{{ucfirst($servicio->nombre)}}</label>
                 <div class="select-icon rol-unselected">

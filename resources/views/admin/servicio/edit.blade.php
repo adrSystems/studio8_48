@@ -66,7 +66,7 @@ Editar
             </div>
             <div class="form-group">
               <span>Icono actual:</span><br>
-              <img src="{{asset('storage/'.$servicio->icono)}}" alt=""><br>
+              <img src="{{asset($servicio->icono)}}" alt=""><br>
               <span>Modificar icono:</span>
               <input type="file" name="icono" value="" class="form-control" accept="image/*">
             </div>

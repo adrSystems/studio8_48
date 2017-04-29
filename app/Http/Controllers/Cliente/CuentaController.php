@@ -167,7 +167,7 @@ class CuentaController extends Controller
 
         if($request->hasfile('imagen'))
         {
-            $cuenta->photo = $request->imagen->store('perfil','public');
+            $cuenta->photo = $request->imagen->store('img/profile_photos','public-path');
         }
       	else
         {

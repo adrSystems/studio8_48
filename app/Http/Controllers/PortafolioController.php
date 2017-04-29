@@ -8,6 +8,7 @@ use Redirect;
 use Storage;
 use Validator;
 use Carbon\Carbon;
+use File;
 
 class PortafolioController extends Controller
 {
@@ -28,7 +29,7 @@ class PortafolioController extends Controller
     }
 
     $imagen = new Imagen;
-    $imagen->src = $request->imagen->store('portafolio','public');
+    $imagen->src = $request->imagen->store('img/portafolio','public-path');
     $imagen->created_at = carbon::now()->format('Y-m-d H:i:s');
     $imagen->servicio_id = $request->servicio;
     $imagen->save();
@@ -40,7 +41,8 @@ class PortafolioController extends Controller
   {
     $imagen = Imagen::find($request->id);
     $imagen->delete();
-    Storage::delete("/public/".$imagen->src);
+    //Storage::delete("/public/".$imagen->src);
+    File::delete($imagen->src);
     return back();
   }
 

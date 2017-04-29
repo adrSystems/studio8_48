@@ -170,7 +170,7 @@ Portafolio
               <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
                 <div class="imagen-item">
                   <div class="img-container">
-                    <img src="{{asset('storage/'.$imagen->src)}}" alt="">
+                    <img src="{{asset($imagen->src)}}" alt="">
                     <div class="shadow"></div>
                   </div>
                 </div>
@@ -185,7 +185,7 @@ Portafolio
               <div class="col-xs-12 col-sm-6 col-md-4" style="padding:15px">
                 <div class="imagen-item">
                   <div class="img-container">
-                    <img src="{{asset('storage/'.$imagen->src)}}" alt="">
+                    <img src="{{asset($imagen->src)}}" alt="">
                     <span class="servicio">{{$imagen->servicio->nombre}}</span>
                     <div class="shadow"></div>
                   </div>

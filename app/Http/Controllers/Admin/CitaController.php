@@ -136,7 +136,7 @@ class CitaController extends Controller
       $cita = Cita::find($request->id);
       $cita->cliente = $cita->cliente;
       $cita->estilista = $cita->empleado;
-      $cita->estilista->fotografia = asset("storage/".$cita->estilista->fotografia);
+      $cita->estilista->fotografia = asset($cita->estilista->fotografia);
       $fecha = Carbon::createFromFormat('Y-m-d H:i:s',$cita->fecha_hora);
       $dias = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sabado'];
       $meses = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
@@ -150,7 +150,7 @@ class CitaController extends Controller
       $monto = 0;
       foreach ($cita->servicios as $servicio) {
         //concatenar storage, imagenes se guardaran en otro lado despues
-        $servicio->icono = asset('storage/'.$servicio->icono);
+        $servicio->icono = asset($servicio->icono);
         $tiempo->addHours(date('H',strtotime($servicio->tiempo)));
         $tiempo->addMinutes(date('i',strtotime($servicio->tiempo)));
         $monto += $servicio->pivot->precio - ($servicio->pivot->precio * (".".$servicio->pivot->descuento));
@@ -215,7 +215,7 @@ class CitaController extends Controller
       if($cita->estado != 5)
       {
         $cita->empleado_id = $estilista->id;
-        $estilista->foto = asset("storage/".$estilista->fotografia);
+        $estilista->foto = asset($estilista->fotografia);
         $cita->save();
       }
 

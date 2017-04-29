@@ -236,7 +236,7 @@ Nueva venta
               <div class="col-xs-12 col-md-4 producto-item">
                 <div class="item-card">
                   <div class="img-container" producto="{{json_encode($producto)}}" existencia="{{$producto->existencia()}}">
-                    <img src="{{asset('storage/'.$producto->fotografia)}}" alt="">
+                    <img src="{{asset($producto->fotografia)}}" alt="">
                     <span class="precio">{{"$".$producto->precio_venta}}</span>
                     <i class="material-icons add" id="{{$producto->id}}">add_circle</i>
                     <i class="material-icons remove" id="{{$producto->id}}">remove_circle</i>
