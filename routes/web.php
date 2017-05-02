@@ -353,3 +353,8 @@ Route::get('/admin/do/storage-link', function () {
   Artisan::call('storage:link');
   return 'success';
 });
+
+Route::get('/android/login/attempt/{email}/{pass}','Cliente\CuentaController@androidLoginAttempt');
+Route::get('/android/user/get-by-id/{id}','Cliente\CuentaController@getAccountById');
+Route::get('/android/services/get-all', 'Cliente\CitaController@getServices');
+Route::get('/android/stylists/get-all', 'Cliente\CitaController@getStylists');

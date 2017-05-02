@@ -160,8 +160,8 @@ class CuentaController extends Controller
 
         $cuenta = new User;
       	$cuenta->email = $request['email'];
-      	$cuenta->password = hash::make($request['pass']);
-      	$cuenta->remember_token = $request['_token'];
+      	$cuenta->password = hash::make($request['password']);
+      	$cuenta->remember_token = null;
       	$cuenta->active = 0;
         $cuenta->fb = 0;
 
@@ -187,21 +187,57 @@ class CuentaController extends Controller
     {
         if(!$codigo)
         {
-            throw new InvalidConfirmationCodeException;
+            return redirect('/login')->with("msg",['title' => 'Ups!',"body" =>["Ha ocurrido un error."]]);
         }
 
-        $user = User::where('codigo_registro',($codigo))->first();
+        $user = User::where('codigo_registro', $codigo)->first();
 
         if (!$user)
         {
-            throw new InvalidConfirmationCodeException;
+            return redirect('/login')->with("msg",['title' => 'Ups!',"body" =>["Ha ocurrido un error."]]);
         }
 
         $user->active = 1;
         $user->codigo_registro = null;
         $user->save();
 
-        return redirect('/login')->with("msg",['title' => 'Listo!',"body" =>"La cuenta ha sido activada!"]);
+        return redirect('/login')->with("msg",['title' => 'Listo!',"body" =>["La cuenta ha sido activada!"]]);
+    }
+
+    public function androidLoginAttempt(Request $request)
+    {
+      if(Auth::attempt([
+        'email' => $request->email,
+        'password' => $request->pass,
+        'active' => '1',
+        'cuentable_type' => Cliente::class
+      ]))
+      {
+        $cuenta = Auth::user();
+        $cuenta->cliente = $cuenta->cuentable;
+        if($cuenta->photo)
+            $cuenta->photo = asset($cuenta->photo);
+        return ['result' => true, 'cuenta' => $cuenta];
+      }
+      else
+      {
+        return ['result' => false];
+      }
+    }
+    
+    public function getAccountById(Request $request)
+    {
+      if($cuenta = User::find($request->id) and $cuenta->cuentable_type == Cliente::class)
+      {
+        $cuenta->cliente = $cuenta->cuentable;
+        if($cuenta->photo)
+            $cuenta->photo = asset($cuenta->photo);
+        return ['result' => true, 'cuenta' => $cuenta];
+      }
+      else
+      {
+        return ['result' => false];
+      }
     }
 
 }
