@@ -462,4 +462,12 @@ class CitaController extends Controller
         'estados' => ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada']
       ]);
     }
+
+    public function confirmar(Request $request)
+    {
+      $cita = Cita::find($request->id);
+      $cita->estado = 1;
+      $cita->save();
+      return ['result' => true];
+    }
 }

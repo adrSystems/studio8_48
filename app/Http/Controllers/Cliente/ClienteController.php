@@ -246,4 +246,23 @@ class ClienteController extends Controller
       $cita->update();
     }
 
+    public function getAppointments(Request $request)
+    {
+      if(!$cliente = Cliente::find($request->id))
+        return ['result' => false];
+       $citas = $cliente->citas()->with('empleado','servicios')->orderBy('fecha_hora','desc')->get();
+       $estados = ['En espera','Confirmada','En curso','Inconclusa','Finalizada','Cancelada'];
+       foreach ($citas as $cita) {
+         $cita->estadoString = $estados[$cita->estado];
+         $cita->fecha = date('d/m/Y', strtotime($cita->fecha_hora));
+         $cita->hora = date('g:i a', strtotime($cita->fecha_hora));
+         $cita->monto = $cita->monto();
+         $cita->empleado->fotografia = asset($cita->empleado->fotografia);
+         foreach ($cita->servicios as $s) {
+           $s->precioFinal = $s->pivot->precio - ($s->pivot->precio * doubleval(".".$s->pivot->descuento));
+         }
+       }
+       return ['result' => true, 'appointments' => $citas];
+    }
+
 }

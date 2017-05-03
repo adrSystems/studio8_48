@@ -198,6 +198,7 @@ Route::group(['middleware' => ['auth', 'recepcionista']], function () {
   Route::post('/admin/update-appointment-datetime','Admin\CitaController@updateDatetime');
   Route::post('/admin/getClientAppointmentsTable','Admin\CitaController@getAppointmentsTableByClient');
   Route::match(['GET','POST'],'/admin/citas/agregar/{id?}','Admin\CitaController@add');
+  Route::post('/admin/citas/confirmar','Admin\CitaController@confirmar');
 
   //compras
   Route::post('/admin/compras/abonar','Admin\CompraController@abonar');
@@ -356,5 +357,7 @@ Route::get('/admin/do/storage-link', function () {
 
 Route::get('/android/login/attempt/{email}/{pass}','Cliente\CuentaController@androidLoginAttempt');
 Route::get('/android/user/get-by-id/{id}','Cliente\CuentaController@getAccountById');
+Route::get('/android/user/get-appointments/{id}','Cliente\ClienteController@getAppointments');
 Route::get('/android/services/get-all', 'Cliente\CitaController@getServices');
 Route::get('/android/stylists/get-all', 'Cliente\CitaController@getStylists');
+Route::get('/android/appointment/new/{appointment}', 'Cliente\CitaController@program');

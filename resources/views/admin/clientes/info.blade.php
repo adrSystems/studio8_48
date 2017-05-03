@@ -809,6 +809,7 @@ Información cliente
     </div>
     <div class="modal-footer">
       @if(Auth::user()->cuentable->roles()->where('nombre','recepcionista')->first())
+      <button type="button" name="button" class="blue-btn" id="confirmar-cita-btn" cita=""><i class="material-icons">check</i><span>Confirmar solicitud</span></button>
       <button type="button" name="button" class="blue-btn" id="abonar-toggle"><i class="material-icons">attach_money</i><span>Abonar</span></button>
       <button type="button" name="button" class="blue-btn" id="pagar-toggle"><i class="material-icons">attach_money</i><span>Pagar</span></button>
       <button type="button" name="button" class="blue-btn" id="start-toggle"><i class="material-icons">play_arrow</i>Comenzar</button>
@@ -1016,6 +1017,28 @@ Información cliente
   }
 
   $(document).ready(function () {
+
+    $('#confirmar-cita-btn').click(function () {
+      var id = $(this).attr('cita')
+      $.ajax({
+        url:"/admin/citas/confirmar",
+        type:"post",
+        dataType:"json",
+        data:{
+          _token:"{{csrf_token()}}",
+          id: id
+        }
+      }).done(function(response){
+        if(response.result){
+          showMsg('OK!', ['Cita confirmada.'])
+          $('.modal-black-card').find('#estado').text('Confirmada');
+          $('#confirmar-cita-btn').hide();
+        }
+        else {
+          showMsg('Ups!', ['Ha ocurrido un error.'])
+        }
+      })
+    })
 
     $('#liquidar-compra-btn').click(function () {
       var id = $(this).attr('compra')
@@ -1630,9 +1653,18 @@ Información cliente
           $('#pagar-toggle').hide()
           $('#abonar-toggle').hide()
         }
+        if(cita.estado == 'En espera')
+        {
+          $('#confirmar-cita-btn').show()
+          $('#confirmar-cita-btn').attr('cita', cita.id)
+        }
+        else{
+          $('#confirmar-cita-btn').hide()
+          $('#confirmar-cita-btn').attr('cita', '')
+        }
         $('.modal-black-card').find('#servicios-count').text(cita.servicios.length);
+        $('.servicio-item').remove();
         $.each(cita.servicios, function (i, servicio) {
-          $('.servicio-item').remove();
           $item = $('<div class="servicio-item">');
           $imgCont = $('<div class="img-container2">')
           $imgCont.append($('<img src="'+servicio.icono+'">'))
